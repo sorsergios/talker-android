@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Conversador</string>
+
+    <!-- pantalla principal -->
+    <string name="new_conversation">NUEVA CONVERSACIÓN</string>
+    <string name="history_panel">VER HISTORIAL</string>
+    <string name="action_settings">CONFIGURACIÓN</string>
+    <string name="manner_of_use">MODO DE USO</string>
+    <string name="exit">SALIR</string>
+
+    <!-- pantalla configuración -->
+    <string name="title_activity_settings">CONFIGURACIÓN</string>
+    <string name="settings_back">ATRAS</string>
+    
+    <string name="settings_pencil_size">TAMAÑO DE LÁPIZ</string>
+    <string name="settings_pencil_color">COLOR DE LÁPIZ</string>
+    <string name="settings_eraser_size">TAMAÑO GOMA</string>
+    <string name="settings_scenery">ESCENARIOS</string>
+    <string name="settings_elements">ELEMENTOS</string>
+    <string name="settings_people">PERSONAS</string>
+    <string name="settings_user">USUARIO</string>
+    <string name="settings_login">ENTRAR</string>
+    <string name="settings_logout">SALIR</string>
+    <string name="settings_element_text">USAR ETIQUETAS EN ELEMENTOS?</string>
+
+    <!-- pantalla login -->
+     <string name="login_title">ENTRAR</string>
+     <string name="login_user">INGRESE USUARIO</string>
+     <string name="login_password">INGRESE CONTRASEÑA</string>
+     <string name="login_pin">INGRESE PIN</string>
+     <string name="login_logup">CREAR CUENTA</string>
+     <string name="login_accept">ACEPTAR</string>
+     <string name="login_cancel">CANCELAR</string>
+    
+    <!-- pantalla logout -->
+    <string name="logout_title">SALIR</string>
+     <string name="logout_message">HA ELEGIDO SALIR DE SU CUENTA Y CONTINUAR SIN CONEXIÓN. ¿DESEA CONTINUAR?</string>
+     <string name="logout_accept">ACEPTAR</string>
+     <string name="logout_cancel">CANCELAR</string>
+    
+    
+    <!-- pantalla elegir escenario -->
+    <string name="title_activity_new_scene">SELECCIONE ESCENA</string>
+    <string name="new_scene_start">EMPEZAR</string>
+    <string name="new_scene_inner">INTERIOR</string>
+    <string name="new_scene_exit">SALIR</string>
+
+    <!-- pantalla elegir interior de escenario -->
+    <string name="title_activity_new_scene_inner">SELECCIONE INTERIOR DE ESCENA</string>
+    <string name="new_scene_inner_start">EMPEZAR</string>
+    <string name="new_scene_inner_exit">SALIR</string>
+    
+    <!-- Canvas texts -->
+    <string name="canvas_done">HECHO</string>
+
+    <!-- otras pantallas -->
+
+</resources>

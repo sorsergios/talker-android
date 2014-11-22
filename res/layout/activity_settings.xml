@@ -1,0 +1,94 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/settings_pencil_size"
+                android:layout_height="31dp"
+                android:text="@string/settings_pencil_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/settings_eraser_size"
+                android:layout_height="31dp"
+                android:text="@string/settings_eraser_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/settings_scenery"
+                android:layout_height="31dp"
+                android:text="@string/settings_scenery" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/settings_elements"
+                android:layout_height="31dp"
+                android:text="@string/settings_elements" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_element_text"
+                android:typeface="monospace" />
+
+            <CheckBox
+                android:id="@+id/checkbox_settings_element_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/settings_people"
+                android:layout_height="31dp"
+                android:text="@string/settings_people"
+                android:textSize="12sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/settings_user"
+                android:layout_height="31dp"
+                android:clickable="false"
+                android:text="@string/settings_user" 
+                />
+
+            <Button
+                android:id="@+id/settings_login"
+                android:layout_height="31dp"
+                android:text="@string/settings_login"
+                android:textSize="12sp"  
+                />
+
+            <Button
+                android:id="@+id/settings_logout"
+                android:layout_height="31dp"
+                android:text="@string/settings_logout"  
+               />
+        </TableRow>
+
+        <Button
+            android:id="@+id/settings_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:text="@string/settings_back" />
+    </TableLayout>
+
+</ScrollView>
