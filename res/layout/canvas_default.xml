@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:id="@+id/canvas_default" >
 
-<!--     <ar.uba.fi.talker.component.Scenario -->
-<!--         android:id="@+id/gestureOverlayView1" -->
-<!--         android:layout_width="fill_parent" -->
-<!--         android:layout_height="fill_parent" -->
-<!--         android:layout_alignParentLeft="true" -->
-<!--         android:layout_alignParentTop="true" > -->
-<!--     </ar.uba.fi.talker.component.Scenario> -->
+    <ar.uba.fi.talker.component.Scenario
+        android:id="@+id/gestureOverlayView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/pencilOption" >
+    </ar.uba.fi.talker.component.Scenario>
 
     <ImageButton
         android:id="@+id/pencilOption"

@@ -30,9 +30,6 @@ public class CanvasActivity extends ActionBarActivity {
 				if (!pencilIsEnabled){
 					pencilIsEnabled = true;
 					//agregar vista de escenario
-					s = new Scenario(CanvasActivity.this);
-					RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_default);
-					r.addView(s);
 				}
 			}
 		});
@@ -46,8 +43,7 @@ public class CanvasActivity extends ActionBarActivity {
 					eraserIsEnabled = true;
 					pencilIsEnabled = false;
 					//agregar vista de escenario
-					RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_default);
-					r.removeView(s);
+
 				}
 			}
 		});
