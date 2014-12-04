@@ -27,10 +27,10 @@ public class CanvasActivity extends ActionBarActivity {
 		pencilOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (!pencilIsEnabled){
-					pencilIsEnabled = true;
-					//agregar vista de escenario
-				}
+				
+				s = (Scenario) findViewById(R.id.gestureOverlayView1);
+//				s.setActiveComponent();
+
 			}
 		});
 		
