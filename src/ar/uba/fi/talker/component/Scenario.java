@@ -3,30 +3,20 @@ package ar.uba.fi.talker.component;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class Scenario extends View {
 
-	private Paint paint, canvasPaint;
-	private Path path;
+	private Paint paint;
 
-	private boolean isWriting = false;
-	
 	private List<Component> components;
 	
 	private Component activeComponent;
-
-	// canvas
-	private Canvas drawCanvas;
-	// canvas bitmap
-	private Bitmap canvasBitmap;
 
 	public Scenario(Context context) {
 		super(context);
@@ -49,9 +39,7 @@ public class Scenario extends View {
 		paint.setStrokeWidth(20); // size
 		paint.setColor(Color.BLUE); // color
 
-		path = new Path();
-
-		canvasPaint = new Paint(Paint.DITHER_FLAG);
+		activeComponent = new PencilStroke(paint); 
 	}
 
 	@Override
@@ -60,17 +48,23 @@ public class Scenario extends View {
 		activeComponent.draw(canvas);
 	}
 	
-
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		super.onSizeChanged(w, h, oldw, oldh);
-		canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-		drawCanvas = new Canvas(canvasBitmap);
+	public boolean performClick() {
+		super.performClick();
+		return true;
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		return activeComponent.touchEvent(event);
+		super.onTouchEvent(event);
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				this.performClick();
+				break;
+		}
+		invalidate();
+		activeComponent.touchEvent(event);			
+		return true; 
 	}
 
 
