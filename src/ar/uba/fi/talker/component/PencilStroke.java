@@ -10,33 +10,32 @@ import android.graphics.Point;
 import android.view.MotionEvent;
 
 public class PencilStroke extends Component {
-	private Paint paint;
-	private Path path;
 		
 	private List<PencilPoint> points;
 	
-	public PencilStroke(Paint paint) {
-		this.paint = paint;
-		path = new Path();
+	public PencilStroke() {
+		super();
 		points = new ArrayList<PencilPoint>();
 	}
-	
-	public void draw(Canvas canvas) {
-		path.reset();
+
+	@Override
+	public void draw(Canvas canvas, Paint paint) {
+		Path path = new Path();
 		for (PencilPoint point : points) {
 			if (point.initial) {
 				path.moveTo(point.x, point.y);
-				canvas.drawPoint(point.x, point.y, paint);
+				canvas.drawCircle(point.x, point.y, 3, paint);
 			} else {
 				path.lineTo(point.x, point.y);
 			}
 			if (point.end) {
-				canvas.drawPoint(point.x, point.y, paint);
+				canvas.drawCircle(point.x, point.y, 3, paint);
 			}
 		}
 		canvas.drawPath(path, paint);
 	}
 	
+	@Override
 	public boolean touchEvent(MotionEvent event) {
 		float eventX = event.getAxisValue(MotionEvent.AXIS_X);
 		float eventY = event.getAxisValue(MotionEvent.AXIS_Y);
@@ -53,19 +52,11 @@ public class PencilStroke extends Component {
 			point.x = (int) eventX;
 			point.y = (int) eventY;
 		}
+		dimension.evalPoint(point);
 		points.add(point);
 		return true;
 	}
-	
-	
-	public List<PencilPoint> getPoints() {
-		return points;
-	}
 
-	public void setPoints(List<PencilPoint> points) {
-		this.points = points;
-	}
-	
 	private class PencilPoint extends Point {
 		public boolean initial = false;
 		public boolean end = false;
