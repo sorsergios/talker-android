@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -31,12 +32,14 @@ public class InnerActivity extends ActionBarActivity {
 		gridViewInner.setAdapter(customGridInnerAdapter);
 		
 		Button startBttn = (Button) findViewById(R.id.start_conversation);
-
+		Button exitBttn = (Button) findViewById(R.id.button3);
+		
 		gridViewInner.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				Toast.makeText(InnerActivity.this, position + "#Selected",
 						Toast.LENGTH_SHORT).show();
+				v.setSelected(true);
 			}
 
 		});
@@ -47,6 +50,14 @@ public class InnerActivity extends ActionBarActivity {
 				Intent i = new Intent(getApplicationContext(),
 						CanvasActivity.class);
 				startActivity(i);
+			}
+		});
+		
+		exitBttn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+				System.exit(0);
 			}
 		});
 	}

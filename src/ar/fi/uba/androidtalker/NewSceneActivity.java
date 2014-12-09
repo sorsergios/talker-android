@@ -1,44 +1,46 @@
 package ar.fi.uba.androidtalker;
 
-import java.util.ArrayList;
-
-import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class NewSceneActivity extends ActionBarActivity {
 
-	private GridView gridView;
-	private GridViewAdapter customGridAdapter;
+	int idSelected;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_scenes);
 
-		gridView = (GridView) findViewById(R.id.gridView);
-		customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
-		gridView.setAdapter(customGridAdapter);
+	    GridView gridview = (GridView) findViewById(R.id.gridView);
+	    gridview.setAdapter(new ImageNewSceneAdapter(this));
 
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-				Toast.makeText(NewSceneActivity.this, position + "#Selected",
-						Toast.LENGTH_SHORT).show();
-			}
-
-		});
+	    gridview.setOnItemClickListener(new OnItemClickListener() {
+	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+	            Toast.makeText(NewSceneActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+	            Button startScenarioBttn = (Button) findViewById(R.id.new_scene_start);
+				startScenarioBttn.setEnabled(true);
+				v.setSelected(true);
+				
+				TypedArray imgs = getResources().obtainTypedArray(R.array.image_scenario_ids);
+				idSelected = imgs.getResourceId(position, -1);
+				
+	        }
+	    });
+	    
 		Button exitBttn = (Button) findViewById(R.id.new_scene_exit);
 		Button innerBttn = (Button) findViewById(R.id.new_scene_inner);
 		Button startScenarioBttn = (Button) findViewById(R.id.new_scene_start);
@@ -65,9 +67,12 @@ public class NewSceneActivity extends ActionBarActivity {
 		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(),
-						CanvasActivity.class);
-				startActivity(i);
+				Bitmap image = BitmapFactory.decodeResource(getResources(),idSelected);
+				Bundle extras = new Bundle();
+				extras.putParcelable("imagebitmap", image);
+				Intent intent = new Intent(getApplicationContext(), CanvasActivity.class);
+				intent.putExtras(extras);
+				startActivity(intent);
 			}
 		});
 		
@@ -93,15 +98,15 @@ public class NewSceneActivity extends ActionBarActivity {
 	}
 
 	
-	private ArrayList<ImageItem> getData() {
-		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
-		// retrieve String drawable array
-		TypedArray imgs = getResources().obtainTypedArray(R.array.image_scenario_ids);
-		for (int i = 0; i < imgs.length(); i++) {
-			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
-					imgs.getResourceId(i, -1));
-			imageItems.add(new ImageItem(bitmap, "Image#" + i));
-		}
-		return imageItems;
-	}
+//	private ArrayList<ImageItem> getData() {
+//		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
+//		// retrieve String drawable array
+//		TypedArray imgs = getResources().obtainTypedArray(R.array.image_scenario_ids);
+//		for (int i = 0; i < imgs.length(); i++) {
+//			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
+//					imgs.getResourceId(i, -1));
+//			imageItems.add(new ImageItem(bitmap, "Image#" + i));
+//		}
+//		return imageItems;
+//	}
 }

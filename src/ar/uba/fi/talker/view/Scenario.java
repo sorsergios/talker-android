@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +12,7 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
@@ -28,7 +30,9 @@ public class Scenario extends View {
 	private Component activeComponent;
 
 	private PointF erasePoint;
-
+	
+	private Bitmap backgroudImage;
+	
 	public Scenario(Context context) {
 		super(context);
 		this.init();
@@ -61,6 +65,7 @@ public class Scenario extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+		canvas.drawBitmap(backgroudImage, 0, 0, paint);
 		Component removeComponent = null;
 		for (Component component : components) {
 			if (eraseMode) {
@@ -104,6 +109,10 @@ public class Scenario extends View {
 	public void setActiveComponent(ComponentType type) {
 		eraseMode = ComponentType.ERASER.equals(type);
 		this.activeComponentType = type;
+	}
+
+	public void setBackgroundImage(Bitmap previewThumbnail) {
+		backgroudImage = previewThumbnail;
 	}
 
 }
