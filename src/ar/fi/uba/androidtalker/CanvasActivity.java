@@ -41,7 +41,7 @@ public class CanvasActivity extends ActionBarActivity {
 				
 				Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 				s.setActiveComponent(ComponentType.PENCIL);
-
+				s.invalidate();
 			}
 		});
 		
