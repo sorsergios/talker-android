@@ -13,7 +13,6 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
@@ -68,7 +67,9 @@ public class Scenario extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		Component removedComponent = null;
-		canvas.drawBitmap(backgroudImage, 0, 0, paint);
+		if (backgroudImage != null){
+			canvas.drawBitmap(backgroudImage, 0, 0, paint);
+		}
 		for (Component component : components) {
 			if (eraseMode) {
 				component.drawDimension(canvas, erasePaint);
@@ -125,6 +126,11 @@ public class Scenario extends View {
 
 	public void setComponents(Collection<Component> components) {
 		this.components = components;
+	}
+	
+	
+	public void clear(){
+		this.getComponents().clear();
 	}
 
 }

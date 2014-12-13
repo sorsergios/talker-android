@@ -1,15 +1,12 @@
 package ar.fi.uba.androidtalker;
 
-import java.util.ArrayList;
-
-import android.R;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.view.Scenario;
 
@@ -17,31 +14,30 @@ public class CanvasActivity extends ActionBarActivity {
 		
 	private static final String BACKGROUND_IMAGE = "imagebitmap";
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.canvas_default);
+		
+		final Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
+		
 		if(getIntent().hasExtra(BACKGROUND_IMAGE)) {
 		    Bundle extras = getIntent().getExtras();
 		    Bitmap image = extras.getParcelable(BACKGROUND_IMAGE);
-		    Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 		    s.setBackgroundImage(image);
 		}
 		
 		ImageButton pencilOp = (ImageButton) findViewById(R.id.pencilOption);
-				
 		pencilOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 				s.setActiveComponent(ComponentType.PENCIL);
 				s.invalidate();
 			}
 		});
 		
-		final Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 		ImageButton eraserOp = (ImageButton) findViewById(R.id.eraserOption);
-
 		eraserOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -51,17 +47,15 @@ public class CanvasActivity extends ActionBarActivity {
 		});
 		
 		ImageButton eraseAllOp = (ImageButton) findViewById(R.id.eraseAllOption);
-		eraserOp.setOnClickListener(new View.OnClickListener() {
+		eraseAllOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setComponents(new ArrayList<Component>());
+				s.clear();
+				s.invalidate();
 			}
 		});
 		
-
 	}
-	
-	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
