@@ -24,12 +24,12 @@ public class PencilStroke extends Component {
 		for (PencilPoint point : points) {
 			if (point.initial) {
 				path.moveTo(point.x, point.y);
-				canvas.drawCircle(point.x, point.y, 3, paint);
+				canvas.drawPoint(point.x, point.y, paint);
 			} else {
 				path.lineTo(point.x, point.y);
 			}
 			if (point.end) {
-				canvas.drawCircle(point.x, point.y, 3, paint);
+				canvas.drawPoint(point.x, point.y, paint);
 			}
 		}
 		canvas.drawPath(path, paint);

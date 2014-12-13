@@ -2,31 +2,35 @@ package ar.uba.fi.talker.component;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
-import android.graphics.PointF;
 import android.view.MotionEvent;
 
 public abstract class Component {
 	
 	protected Dimension dimension;
+	private static int TOLERANCE = 10;
 	
 	public Component() {
 		dimension = new Dimension();
 	}
 
-	public boolean isInDimensions(PointF erasePoint) {
+	public boolean isInDimensions(Point erasePoint) {
 		return erasePoint != null 
-				&& dimension.x1 <= erasePoint.x 
-				&& dimension.y1 <= erasePoint.y 
-				&& dimension.x2 >= erasePoint.x 
-				&& dimension.y2 >= erasePoint.y;
+				&& dimension.x1-Component.TOLERANCE <= erasePoint.x 
+				&& dimension.y1-Component.TOLERANCE <= erasePoint.y 
+				&& dimension.x2+Component.TOLERANCE >= erasePoint.x 
+				&& dimension.y2+Component.TOLERANCE >= erasePoint.y;
 	}
 
 	public void drawDimension(Canvas canvas, Paint paint) {
-		canvas.drawLine(dimension.x1, dimension.y1, dimension.x2, dimension.y1, paint);
-		canvas.drawLine(dimension.x2, dimension.y1, dimension.x2, dimension.y2, paint);
-		canvas.drawLine(dimension.x2, dimension.y2, dimension.x1, dimension.y2, paint);
-		canvas.drawLine(dimension.x1, dimension.y2, dimension.x1, dimension.y1, paint);
+		Path path = new Path();
+		path.moveTo(dimension.x1, dimension.y1);
+		path.lineTo(dimension.x2, dimension.y1);
+		path.lineTo(dimension.x2, dimension.y2);
+		path.lineTo(dimension.x1, dimension.y2);
+		path.lineTo(dimension.x1, dimension.y1);
+		canvas.drawPath(path, paint);
 	}
 
 	public abstract void draw(Canvas canvas, Paint paint);
@@ -34,23 +38,24 @@ public abstract class Component {
 	public abstract boolean touchEvent(MotionEvent event);
 
 	class Dimension {
-		public float x1 = -1, y1 = -1, x2, y2;
+		public int x1 = -1, y1 = -1, x2, y2;
 		
 		public void evalPoint(Point point) {
 			if (x1 == -1 || point.x < x1) {
-				x1 = point.x;
+				x1 = point.x - Component.TOLERANCE;
 			}
 			if (point.x > x2) {
-				x2 = point.x;
+				x2 = point.x + Component.TOLERANCE;
 			}
 			
 			if (y1 == -1 || point.y < y1) {
-				y1 = point.y;
+				y1 = point.y - Component.TOLERANCE;
 			}
 			if (point.y > y2) {
-				y2 = point.y;
+				y2 = point.y + Component.TOLERANCE;
 			}
 		}
 	}
+
 }
 

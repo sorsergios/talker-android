@@ -55,6 +55,16 @@
     <!-- Canvas texts -->
     <string name="canvas_done">HECHO</string>
 
+    <!-- imagenes -->
+    <string name="casa">CASA</string>
+    <string name="oficina">OFICINA</string>
+    <string name="colectivo">COLECTIVO</string>
+    <string name="escuela">ESCUELA</string>
+    <string name="nuevo">NUEVO</string>
+    <string name="living">LIVING</string>
+    <string name="habitacion">HABITACIÓN</string>
+    <string name="cocina">COCINA</string>
+    <string name="banio">BAÑO</string>
     <!-- otras pantallas -->
 
 </resources>
