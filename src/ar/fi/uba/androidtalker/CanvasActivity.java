@@ -1,7 +1,8 @@
 package ar.fi.uba.androidtalker;
 
+import android.R;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,12 @@ public class CanvasActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.canvas_default);
+		if(getIntent().hasExtra("imagebitmap")) {
+		    Bundle extras = getIntent().getExtras();
+		    Bitmap image = extras.getParcelable("imagebitmap");
+		    Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
+		    s.setBackgroundImage(image);
+		}
 		
 		ImageButton pencilOp = (ImageButton) findViewById(R.id.pencilOption);
 				
