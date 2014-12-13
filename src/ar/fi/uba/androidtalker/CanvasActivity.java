@@ -1,19 +1,26 @@
 package ar.fi.uba.androidtalker;
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment;
+import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.view.Scenario;
 
-public class CanvasActivity extends ActionBarActivity {
+public class CanvasActivity extends ActionBarActivity implements TextDialogListener{
 		
 	private static final String BACKGROUND_IMAGE = "imagebitmap";
 
+	final String TAG = "CanvasActivity";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +39,7 @@ public class CanvasActivity extends ActionBarActivity {
 		pencilOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setActiveComponent(ComponentType.PENCIL);
+				s.setActiveComponentType(ComponentType.PENCIL);
 				s.invalidate();
 			}
 		});
@@ -41,7 +48,7 @@ public class CanvasActivity extends ActionBarActivity {
 		eraserOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setActiveComponent(ComponentType.ERASER);
+				s.setActiveComponentType(ComponentType.ERASER);
 				s.invalidate();
 			}
 		});
@@ -55,6 +62,28 @@ public class CanvasActivity extends ActionBarActivity {
 			}
 		});
 		
+		ImageButton textOp = (ImageButton) findViewById(R.id.textOption);
+		textOp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				s.setActiveComponentType(ComponentType.TEXT);
+				DialogFragment newFragment = new TextDialogFragment();
+				newFragment.show(getSupportFragmentManager(), "insert_text");
+			}
+		});
+		
+		
+	}
+	
+	@Override
+	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
+	    Dialog dialogView = dialog.getDialog();
+	    EditText inputText = (EditText) dialogView.findViewById(R.id.ale_capa);
+	    Log.i(TAG, inputText.getText().toString());
+	}
+	@Override
+	public void onDialogNegativeClickTextDialogListener(DialogFragment dialog) {
+		// TODO Auto-generated method stub
 	}
 	
 	@Override
@@ -75,4 +104,6 @@ public class CanvasActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+
 }

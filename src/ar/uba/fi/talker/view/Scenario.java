@@ -32,6 +32,8 @@ public class Scenario extends View {
 	private Point erasePoint;
 	
 	private Bitmap backgroudImage;
+	
+	private String text;
 
 	public Scenario(Context context) {
 		super(context);
@@ -60,7 +62,7 @@ public class Scenario extends View {
 		erasePaint.setStrokeWidth(5); // size
 		erasePaint.setColor(Color.RED);
 		components = new LinkedHashSet<Component>();
-		this.setActiveComponent(ComponentType.PENCIL); 
+		this.setActiveComponentType(ComponentType.PENCIL); 
 	}
 
 	@Override
@@ -111,9 +113,13 @@ public class Scenario extends View {
 		return true; 
 	}
 
-	public void setActiveComponent(ComponentType type) {
+	public void setActiveComponentType(ComponentType type) {
 		eraseMode = ComponentType.ERASER.equals(type);
 		this.activeComponentType = type;
+	}
+	
+	public ComponentType getActiveComponentType() {
+		return activeComponentType;
 	}
 
 	public void setBackgroundImage(Bitmap previewThumbnail) {
@@ -128,9 +134,12 @@ public class Scenario extends View {
 		this.components = components;
 	}
 	
-	
 	public void clear(){
 		this.getComponents().clear();
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 }

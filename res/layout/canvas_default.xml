@@ -39,7 +39,7 @@
         android:src="@drawable/abc_spinner_ab_pressed_holo_light" />
 
     <ImageButton
-        android:id="@+id/text"
+        android:id="@+id/textOption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/gestureOverlayView1"
@@ -48,7 +48,7 @@
         android:src="@drawable/abc_cab_background_top_holo_dark" />
 
     <ImageButton
-        android:id="@+id/ImageButton01"
+        android:id="@+id/bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
