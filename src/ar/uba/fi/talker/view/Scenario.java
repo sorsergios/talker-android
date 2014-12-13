@@ -6,9 +6,11 @@ import java.util.LinkedHashSet;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.graphics.PointF;
+import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import ar.uba.fi.talker.component.Component;
@@ -27,7 +29,7 @@ public class Scenario extends View {
 
 	private Component activeComponent;
 
-	private PointF erasePoint;
+	private Point erasePoint;
 
 	public Scenario(Context context) {
 		super(context);
@@ -52,6 +54,7 @@ public class Scenario extends View {
 
 		erasePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		erasePaint.setStyle(Paint.Style.STROKE);
+		erasePaint.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
 		erasePaint.setStrokeWidth(5); // size
 		erasePaint.setColor(Color.RED);
 		components = new LinkedHashSet<Component>();
@@ -61,7 +64,7 @@ public class Scenario extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		Component removeComponent = null;
+		Component removedComponent = null;
 		for (Component component : components) {
 			if (eraseMode) {
 				component.drawDimension(canvas, erasePaint);
@@ -69,10 +72,10 @@ public class Scenario extends View {
 			if (!component.isInDimensions(erasePoint)) {
 				component.draw(canvas, paint);
 			} else {
-				removeComponent = component;
+				removedComponent = component;
 			}
 		}
-		components.remove(removeComponent);
+		components.remove(removedComponent);
 		erasePoint = null;
 	}
 	
@@ -88,15 +91,17 @@ public class Scenario extends View {
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			if (eraseMode) {
-				erasePoint = new PointF();
-				erasePoint.x = event.getAxisValue(MotionEvent.AXIS_X);
-				erasePoint.y = event.getAxisValue(MotionEvent.AXIS_Y);
+				erasePoint = new Point();
+				erasePoint.x = (int) event.getAxisValue(MotionEvent.AXIS_X);
+				erasePoint.y = (int) event.getAxisValue(MotionEvent.AXIS_Y);
 			} else {
 				activeComponent = ComponentFactory.createComponent(activeComponentType);
 				components.add(activeComponent);
 			}
 		}
-		activeComponent.touchEvent(event);			
+		if (!eraseMode) {
+			activeComponent.touchEvent(event);
+		}
 		invalidate();
 		return true; 
 	}
