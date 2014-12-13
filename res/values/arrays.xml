@@ -10,10 +10,10 @@
     </string-array>
     
     <string-array name="image_house_inner_ids">
-      	<item>@drawable/living</item>
-        <item>@drawable/habitacion</item>
-        <item>@drawable/cocina</item>
-        <item>@drawable/banio</item>
+      	<item name="living">@drawable/living</item>
+        <item name="habitacion">@drawable/habitacion</item>
+        <item name="cocina">@drawable/cocina</item>
+        <item name="banio">@drawable/banio</item>
     </string-array>
 	
 	 <string-array name="image_ids">

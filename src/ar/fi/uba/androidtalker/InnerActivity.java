@@ -20,36 +20,44 @@ import android.widget.Toast;
 
 public class InnerActivity extends ActionBarActivity {
 
-	private GridView gridViewInner;
-	private GridViewAdapter customGridInnerAdapter;
+	
+	int idSelected;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_inner_scenes);
-
-		gridViewInner = (GridView) findViewById(R.id.gridViewInner);
-		customGridInnerAdapter = new GridViewAdapter(this, R.layout.row_grid_inner, getImageData());
+		
+		GridView gridViewInner = (GridView) findViewById(R.id.gridViewInner);
+		GridViewAdapter customGridInnerAdapter = new GridViewAdapter(this, R.layout.row_grid_inner, getImageData());
 		gridViewInner.setAdapter(customGridInnerAdapter);
 		
-		Button startBttn = (Button) findViewById(R.id.start_conversation);
-		Button exitBttn = (Button) findViewById(R.id.button3);
 		
 		gridViewInner.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
-				Toast.makeText(InnerActivity.this, position + "#Selected",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(InnerActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+	            Button startScenarioBttn = (Button) findViewById(R.id.new_scene_start);
+				startScenarioBttn.setEnabled(true);
 				v.setSelected(true);
+				
+				TypedArray imgs = getResources().obtainTypedArray(R.array.image_house_inner_ids);
+				idSelected = imgs.getResourceId(position, -1);
 			}
 
 		});
-
+		
+		Button startBttn = (Button) findViewById(R.id.start_conversation);
+		Button exitBttn = (Button) findViewById(R.id.button3);
+		
 		startBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(),
-						CanvasActivity.class);
-				startActivity(i);
+				Bitmap image = BitmapFactory.decodeResource(getResources(),idSelected);
+				Bundle extras = new Bundle();
+				extras.putParcelable("imagebitmap", image);
+				Intent intent = new Intent(getApplicationContext(), CanvasActivity.class);
+				intent.putExtras(extras);
+				startActivity(intent);
 			}
 		});
 		

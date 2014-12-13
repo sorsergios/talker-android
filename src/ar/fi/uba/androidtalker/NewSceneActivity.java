@@ -1,7 +1,6 @@
 package ar.fi.uba.androidtalker;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -10,36 +9,34 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 public class NewSceneActivity extends ActionBarActivity {
 
-	int idSelected;
+//	int idSelected;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_scenes);
 
-	    GridView gridview = (GridView) findViewById(R.id.gridView);
+	    final GridView gridview = (GridView) findViewById(R.id.gridView);
 	    gridview.setAdapter(new ImageNewSceneAdapter(this));
 
-	    gridview.setOnItemClickListener(new OnItemClickListener() {
-	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            Toast.makeText(NewSceneActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-	            Button startScenarioBttn = (Button) findViewById(R.id.new_scene_start);
-				startScenarioBttn.setEnabled(true);
-				v.setSelected(true);
-				
-				TypedArray imgs = getResources().obtainTypedArray(R.array.image_scenario_ids);
-				idSelected = imgs.getResourceId(position, -1);
-				
-	        }
-	    });
+//	    gridview.setOnItemClickListener(new OnItemClickListener() {
+//	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//	            Toast.makeText(NewSceneActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+//	            Button startScenarioBttn = (Button) findViewById(R.id.new_scene_start);
+//				startScenarioBttn.setEnabled(true);
+//				v.setSelected(true);
+//				
+////				TypedArray imgs = getResources().obtainTypedArray(R.array.image_scenario_ids);
+////				idSelected = imgs.getResourceId(position, -1);
+//				
+//	        }
+//	    });
 	    
 		Button exitBttn = (Button) findViewById(R.id.new_scene_exit);
 		Button innerBttn = (Button) findViewById(R.id.new_scene_inner);
@@ -67,7 +64,9 @@ public class NewSceneActivity extends ActionBarActivity {
 		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Bitmap image = BitmapFactory.decodeResource(getResources(),idSelected);
+				
+				long imageViewId = (Long) ImageNewSceneAdapter.getItemSelectedId();
+				Bitmap image = BitmapFactory.decodeResource(getResources(),(int) imageViewId);
 				Bundle extras = new Bundle();
 				extras.putParcelable("imagebitmap", image);
 				Intent intent = new Intent(getApplicationContext(), CanvasActivity.class);
