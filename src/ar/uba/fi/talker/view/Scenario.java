@@ -13,6 +13,7 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
