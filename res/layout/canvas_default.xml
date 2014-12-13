@@ -25,7 +25,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/pencilOption"
         android:src="@drawable/abc_spinner_ab_pressed_holo_light" />
+    
+    <ImageButton
+        android:id="@+id/eraseAllOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/abc_spinner_ab_pressed_holo_light" />
+    
+    
+    
 
 </RelativeLayout>
