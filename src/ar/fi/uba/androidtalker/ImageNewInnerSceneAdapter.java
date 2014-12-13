@@ -12,12 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ImageNewSceneAdapter extends BaseAdapter {
+public class ImageNewInnerSceneAdapter extends BaseAdapter {
 
 	    private Context mContext;
 	    static Object itemSelectedId;
 	    
-	    public ImageNewSceneAdapter(Context c) {
+	    public ImageNewInnerSceneAdapter(Context c) {
 	        mContext = c;
 	    }
 
@@ -52,7 +52,7 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 			  public void onClick(View v) {
 
 					Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
-					Button startScenarioBttn = (Button) ((ActionBarActivity) mContext).findViewById(R.id.new_scene_start);
+					Button startScenarioBttn = (Button) ((ActionBarActivity) mContext).findViewById(R.id.start_conversation);
 					startScenarioBttn.setEnabled(true);
 					v.setSelected(true);
 					itemSelectedId = getItemId(position);
@@ -66,19 +66,17 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 	    
 	    // references to our images
 	    private Integer[] mThumbIds = {
-	            R.drawable.casa,
-	            R.drawable.oficina,
-	            R.drawable.colectivo, 
-	            R.drawable.escuela,
-	            R.drawable.nuevo
+	            R.drawable.living,
+	            R.drawable.cocina,
+	            R.drawable.habitacion, 
+	            R.drawable.banio
 	    };
 	    
 	    private Integer[] mTextsIds = {
-	    		R.string.casa,
-	    		R.string.oficina,
-	    		R.string.colectivo,
-	    		R.string.escuela,
-	    		R.string.nuevo
+	    		R.string.living,
+	    		R.string.cocina,
+	    		R.string.habitacion,
+	    		R.string.banio
 	    };
 
 		public static Object getItemSelectedId() {

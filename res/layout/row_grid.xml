@@ -13,7 +13,9 @@
         android:id="@+id/image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:focusable="false" >
+        android:focusable="true" 
+        android:scaleType="centerInside"
+    	android:adjustViewBounds="true" >
     </ImageView>
 
     <TextView

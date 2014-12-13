@@ -1,22 +1,20 @@
 package ar.fi.uba.androidtalker;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.Toast;
 
 public class InnerActivity extends ActionBarActivity {
 
@@ -27,37 +25,39 @@ public class InnerActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_inner_scenes);
 		
-		GridView gridViewInner = (GridView) findViewById(R.id.gridViewInner);
-		GridViewAdapter customGridInnerAdapter = new GridViewAdapter(this, R.layout.row_grid_inner, getImageData());
-		gridViewInner.setAdapter(customGridInnerAdapter);
-		
-		
-		gridViewInner.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-				Toast.makeText(InnerActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-	            Button startScenarioBttn = (Button) findViewById(R.id.new_scene_start);
-				startScenarioBttn.setEnabled(true);
-				v.setSelected(true);
-				
-				TypedArray imgs = getResources().obtainTypedArray(R.array.image_house_inner_ids);
-				idSelected = imgs.getResourceId(position, -1);
-			}
 
-		});
-		
+	    final GridView gridViewInner = (GridView) findViewById(R.id.gridViewInner);
+	    gridViewInner.setAdapter(new ImageNewInnerSceneAdapter(this));
+	    
 		Button startBttn = (Button) findViewById(R.id.start_conversation);
 		Button exitBttn = (Button) findViewById(R.id.button3);
 		
 		startBttn.setOnClickListener(new View.OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
-				Bitmap image = BitmapFactory.decodeResource(getResources(),idSelected);
+				long imageViewId = (Long) ImageNewInnerSceneAdapter.getItemSelectedId();
+				byte[] bytes = transformImage(imageViewId); 
+
 				Bundle extras = new Bundle();
-				extras.putParcelable("imagebitmap", image);
+				extras.putByteArray("BMP",bytes);
 				Intent intent = new Intent(getApplicationContext(), CanvasActivity.class);
 				intent.putExtras(extras);
 				startActivity(intent);
+			}
+
+			private byte[] transformImage(long imageViewId) {
+				Bitmap image = BitmapFactory.decodeResource(getResources(),(int) imageViewId);
+				Display display = getWindowManager().getDefaultDisplay();
+				Point size = new Point();
+				display.getSize(size);
+				int width = size.x;
+				int height = size.y;
+		        Bitmap resized = Bitmap.createScaledBitmap(image, width , height, true);
+		        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		        resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		        byte[] bytes = stream.toByteArray();
+				return bytes;
 			}
 		});
 		
@@ -89,19 +89,4 @@ public class InnerActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	
-	private ArrayList<ImageItem> getImageData() {
-		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
-		// retrieve String drawable array
-		TypedArray imgs = getResources().obtainTypedArray(R.array.image_house_inner_ids);
-		for (int i = 0; i < imgs.length(); i++) {
-			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
-					imgs.getResourceId(i, -1));
-			imageItems.add(new ImageItem(bitmap, "Image#" + i));
-		}
-		imgs.recycle();
-
-		return imageItems;
-
-	}
 }

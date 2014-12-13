@@ -1,17 +1,20 @@
 package ar.fi.uba.androidtalker;
 
+import java.io.ByteArrayOutputStream;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
 
 public class NewSceneActivity extends ActionBarActivity {
 
@@ -24,19 +27,6 @@ public class NewSceneActivity extends ActionBarActivity {
 
 	    final GridView gridview = (GridView) findViewById(R.id.gridView);
 	    gridview.setAdapter(new ImageNewSceneAdapter(this));
-
-//	    gridview.setOnItemClickListener(new OnItemClickListener() {
-//	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//	            Toast.makeText(NewSceneActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-//	            Button startScenarioBttn = (Button) findViewById(R.id.new_scene_start);
-//				startScenarioBttn.setEnabled(true);
-//				v.setSelected(true);
-//				
-////				TypedArray imgs = getResources().obtainTypedArray(R.array.image_scenario_ids);
-////				idSelected = imgs.getResourceId(position, -1);
-//				
-//	        }
-//	    });
 	    
 		Button exitBttn = (Button) findViewById(R.id.new_scene_exit);
 		Button innerBttn = (Button) findViewById(R.id.new_scene_inner);
@@ -64,17 +54,24 @@ public class NewSceneActivity extends ActionBarActivity {
 		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
 				long imageViewId = (Long) ImageNewSceneAdapter.getItemSelectedId();
-				Bitmap image = BitmapFactory.decodeResource(getResources(),(int) imageViewId);
+				byte[] bytes = transformImage(imageViewId); 
+
 				Bundle extras = new Bundle();
-				extras.putParcelable("imagebitmap", image);
+				extras.putByteArray("BMP",bytes);
 				Intent intent = new Intent(getApplicationContext(), CanvasActivity.class);
 				intent.putExtras(extras);
 				startActivity(intent);
 			}
+
+			private byte[] transformImage(long imageViewId) {
+				Bitmap image = BitmapFactory.decodeResource(getResources(),(int) imageViewId);
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		        byte[] bytes = stream.toByteArray();
+				return bytes;
+			}
 		});
-		
 	}
 
 	@Override
@@ -96,16 +93,4 @@ public class NewSceneActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	
-//	private ArrayList<ImageItem> getData() {
-//		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
-//		// retrieve String drawable array
-//		TypedArray imgs = getResources().obtainTypedArray(R.array.image_scenario_ids);
-//		for (int i = 0; i < imgs.length(); i++) {
-//			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
-//					imgs.getResourceId(i, -1));
-//			imageItems.add(new ImageItem(bitmap, "Image#" + i));
-//		}
-//		return imageItems;
-//	}
 }
