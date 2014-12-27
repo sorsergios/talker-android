@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,19 +16,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import ar.fi.uba.androidtalker.adapter.ImageNewInnerSceneAdapter;
 
 public class InnerActivity extends ActionBarActivity {
 
 	
-	int idSelected;
+	long idSelected;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_inner_scenes);
 		
-
 	    final GridView gridViewInner = (GridView) findViewById(R.id.gridViewInner);
-	    gridViewInner.setAdapter(new ImageNewInnerSceneAdapter(this));
+	    gridViewInner.setAdapter(new ImageNewInnerSceneAdapter(this, 0));
 	    
 		Button startBttn = (Button) findViewById(R.id.start_conversation);
 		Button exitBttn = (Button) findViewById(R.id.button3);
