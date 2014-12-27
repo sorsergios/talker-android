@@ -43,7 +43,7 @@ public class TalkerMainActivity extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				Log.e(null, "ESTÁ ACA");
+				Log.i(null, "ESTÁ ACA");
 				Intent i = new Intent(getApplicationContext(),
 						SettingsActivity.class);
 				startActivity(i);

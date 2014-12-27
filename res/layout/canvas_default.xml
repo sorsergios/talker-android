@@ -8,8 +8,10 @@
         android:id="@+id/gestureOverlayView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_above="@+id/ImageButton01"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/pencilOption" >
+
     </ar.uba.fi.talker.view.Scenario>
 
     <ImageButton
@@ -27,5 +29,30 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/pencilOption"
         android:src="@drawable/abc_spinner_ab_pressed_holo_light" />
+    
+    <ImageButton
+        android:id="@+id/eraseAllOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/eraserOption"
+        android:src="@drawable/abc_spinner_ab_pressed_holo_light" />
+
+    <ImageButton
+        android:id="@+id/textOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/eraseAllOption"
+        android:src="@drawable/abc_cab_background_top_holo_dark" />
+
+    <ImageButton
+        android:id="@+id/bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/abc_ic_clear_normal" />
 
 </RelativeLayout>

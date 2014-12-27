@@ -1,10 +1,12 @@
 package ar.fi.uba.androidtalker.action.userlog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.LayoutInflater;
 import ar.fi.uba.androidtalker.R;
 
 public class LogoutDialogFragment extends DialogFragment {
@@ -13,6 +15,10 @@ public class LogoutDialogFragment extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+//		LayoutInflater i = getActivity().getLayoutInflater();
+//		builder.setView(i.inflate(R.layout.layout_scenes, null));
+
 		builder.setMessage(R.string.logout_message)
 			.setTitle(R.string.logout_title)
 				.setPositiveButton(R.string.logout_accept,

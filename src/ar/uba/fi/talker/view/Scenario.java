@@ -13,7 +13,6 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
@@ -33,6 +32,8 @@ public class Scenario extends View {
 	private Point erasePoint;
 	
 	private Bitmap backgroudImage;
+	
+	private String text;
 
 	public Scenario(Context context) {
 		super(context);
@@ -61,14 +62,16 @@ public class Scenario extends View {
 		erasePaint.setStrokeWidth(5); // size
 		erasePaint.setColor(Color.RED);
 		components = new LinkedHashSet<Component>();
-		this.setActiveComponent(ComponentType.PENCIL); 
+		this.setActiveComponentType(ComponentType.PENCIL); 
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		Component removedComponent = null;
-		canvas.drawBitmap(backgroudImage, 0, 0, paint);
+		if (backgroudImage != null){
+			canvas.drawBitmap(backgroudImage, 0, 0, paint);
+		}
 		for (Component component : components) {
 			if (eraseMode) {
 				component.drawDimension(canvas, erasePaint);
@@ -110,13 +113,33 @@ public class Scenario extends View {
 		return true; 
 	}
 
-	public void setActiveComponent(ComponentType type) {
+	public void setActiveComponentType(ComponentType type) {
 		eraseMode = ComponentType.ERASER.equals(type);
 		this.activeComponentType = type;
+	}
+	
+	public ComponentType getActiveComponentType() {
+		return activeComponentType;
 	}
 
 	public void setBackgroundImage(Bitmap previewThumbnail) {
 		backgroudImage = previewThumbnail;
+	}
+
+	public Collection<Component> getComponents() {
+		return components;
+	}
+
+	public void setComponents(Collection<Component> components) {
+		this.components = components;
+	}
+	
+	public void clear(){
+		this.getComponents().clear();
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 }

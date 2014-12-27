@@ -1,6 +1,6 @@
 package ar.fi.uba.androidtalker;
 
-import android.content.res.Resources;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -8,21 +8,31 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment;
+import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.view.Scenario;
 
-public class CanvasActivity extends ActionBarActivity {
+public class CanvasActivity extends ActionBarActivity implements TextDialogListener{
 		
+	private static final String BACKGROUND_IMAGE = "imagebitmap";
+
+	final String TAG = "CanvasActivity";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.canvas_default);
+		
 		if(getIntent().hasExtra("BMP")) {
 		    Bundle extras = getIntent().getExtras();
 		    byte[] bytes = extras.getByteArray("BMP");	
@@ -32,30 +42,62 @@ public class CanvasActivity extends ActionBarActivity {
 		    Bitmap transformedImage = reTransformImage(image);
 		    s.setBackgroundImage(transformedImage);
 		}
-		
+	    final Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
+	
+		if(getIntent().hasExtra(BACKGROUND_IMAGE)) {
+		    Bundle extras = getIntent().getExtras();
+		    Bitmap image = extras.getParcelable(BACKGROUND_IMAGE);
+		    s.setBackgroundImage(image);
+		}
+	
 		ImageButton pencilOp = (ImageButton) findViewById(R.id.pencilOption);
-				
 		pencilOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
-				s.setActiveComponent(ComponentType.PENCIL);
+				s.setActiveComponentType(ComponentType.PENCIL);
 				s.invalidate();
 			}
 		});
 		
 		ImageButton eraserOp = (ImageButton) findViewById(R.id.eraserOption);
-		
 		eraserOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
-				s.setActiveComponent(ComponentType.ERASER);
+				s.setActiveComponentType(ComponentType.ERASER);
 				s.invalidate();
 			}
 		});
+		
+		ImageButton eraseAllOp = (ImageButton) findViewById(R.id.eraseAllOption);
+		eraseAllOp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				s.clear();
+				s.invalidate();
+			}
+		});
+		
+		ImageButton textOp = (ImageButton) findViewById(R.id.textOption);
+		textOp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				s.setActiveComponentType(ComponentType.TEXT);
+				DialogFragment newFragment = new TextDialogFragment();
+				newFragment.show(getSupportFragmentManager(), "insert_text");
+			}
+		});
+
+	}
+	
+	@Override
+	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
+	    Dialog dialogView = dialog.getDialog();
+	    EditText inputText = (EditText) dialogView.findViewById(R.id.ale_capa);
+	    Log.i(TAG, inputText.getText().toString());
+	}
+	@Override
+	public void onDialogNegativeClickTextDialogListener(DialogFragment dialog) {
+		// TODO Auto-generated method stub
 	}
 
 	private Bitmap reTransformImage(Bitmap image) {
@@ -101,4 +143,6 @@ public class CanvasActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+
 }
