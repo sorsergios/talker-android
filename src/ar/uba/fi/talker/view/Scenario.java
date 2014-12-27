@@ -10,12 +10,14 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
+import ar.uba.fi.talker.component.command.ActivityCommand;
 
 public class Scenario extends View {
 
@@ -33,7 +35,7 @@ public class Scenario extends View {
 	
 	private Bitmap backgroudImage;
 	
-	private String text;
+	private ActivityCommand command;
 
 	public Scenario(Context context) {
 		super(context);
@@ -53,6 +55,8 @@ public class Scenario extends View {
 	private void init() {
 		paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setStyle(Paint.Style.STROKE);
+		paint.setFlags(Paint.LINEAR_TEXT_FLAG);
+		paint.setTextSize(200);
 		paint.setStrokeWidth(20); // size
 		paint.setColor(Color.BLUE); // color
 
@@ -107,7 +111,7 @@ public class Scenario extends View {
 			}
 		}
 		if (!eraseMode) {
-			activeComponent.touchEvent(event);
+			activeComponent.touchEvent(event, command);
 		}
 		invalidate();
 		return true; 
@@ -116,6 +120,7 @@ public class Scenario extends View {
 	public void setActiveComponentType(ComponentType type) {
 		eraseMode = ComponentType.ERASER.equals(type);
 		this.activeComponentType = type;
+		this.command = null;
 	}
 	
 	public ComponentType getActiveComponentType() {
@@ -138,8 +143,13 @@ public class Scenario extends View {
 		this.getComponents().clear();
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setActiveComponentType(ComponentType type, ActivityCommand command) {
+		this.activeComponentType = type;
+		this.command = command;
+	}
+
+	public void setText(Editable text) {
+		activeComponent.setValue(text);
 	}
 
 }

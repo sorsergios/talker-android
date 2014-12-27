@@ -4,7 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.text.Editable;
 import android.view.MotionEvent;
+import ar.uba.fi.talker.component.command.ActivityCommand;
 
 public abstract class Component {
 	
@@ -35,7 +37,7 @@ public abstract class Component {
 
 	public abstract void draw(Canvas canvas, Paint paint);
 
-	public abstract boolean touchEvent(MotionEvent event);
+	public abstract boolean touchEvent(MotionEvent event, ActivityCommand command);
 
 	class Dimension {
 		public int x1 = -1, y1 = -1, x2, y2;
@@ -55,6 +57,10 @@ public abstract class Component {
 				y2 = point.y + Component.TOLERANCE;
 			}
 		}
+	}
+
+	public void setValue(Editable text) {
+		// anything to do;
 	}
 
 }

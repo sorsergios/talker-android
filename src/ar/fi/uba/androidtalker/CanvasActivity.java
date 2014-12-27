@@ -10,7 +10,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,9 +19,10 @@ import android.widget.ImageButton;
 import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment;
 import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.component.ComponentType;
+import ar.uba.fi.talker.component.command.ActivityCommand;
 import ar.uba.fi.talker.view.Scenario;
 
-public class CanvasActivity extends ActionBarActivity implements TextDialogListener{
+public class CanvasActivity extends ActionBarActivity implements TextDialogListener {
 		
 	private static final String BACKGROUND_IMAGE = "imagebitmap";
 
@@ -76,14 +76,20 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 				s.invalidate();
 			}
 		});
-		
+
 		ImageButton textOp = (ImageButton) findViewById(R.id.textOption);
 		textOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setActiveComponentType(ComponentType.TEXT);
-				DialogFragment newFragment = new TextDialogFragment();
-				newFragment.show(getSupportFragmentManager(), "insert_text");
+				ActivityCommand command = new ActivityCommand() {
+					
+					@Override
+					public void execute() {
+						DialogFragment newFragment = new TextDialogFragment();
+						newFragment.show(getSupportFragmentManager(), "insert_text");
+					}
+				};
+				s.setActiveComponentType(ComponentType.TEXT, command);
 			}
 		});
 
@@ -93,7 +99,9 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
 	    Dialog dialogView = dialog.getDialog();
 	    EditText inputText = (EditText) dialogView.findViewById(R.id.ale_capa);
-	    Log.i(TAG, inputText.getText().toString());
+	    Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
+	    s.setText(inputText.getText());
+	    s.invalidate();
 	}
 	@Override
 	public void onDialogNegativeClickTextDialogListener(DialogFragment dialog) {
