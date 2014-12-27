@@ -13,6 +13,7 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
@@ -56,8 +57,8 @@ public class Scenario extends View {
 
 		erasePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		erasePaint.setStyle(Paint.Style.STROKE);
-		erasePaint.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
-		erasePaint.setStrokeWidth(5); // size
+		erasePaint.setPathEffect(new DashPathEffect(new float[]{5, 20}, 0));
+		erasePaint.setStrokeWidth(2); // size
 		erasePaint.setColor(Color.RED);
 		components = new LinkedHashSet<Component>();
 		this.setActiveComponent(ComponentType.PENCIL); 
@@ -82,6 +83,7 @@ public class Scenario extends View {
 		}
 		components.remove(removedComponent);
 		erasePoint = null;
+
 	}
 	
 	@Override
@@ -113,6 +115,10 @@ public class Scenario extends View {
 
 	public void setActiveComponent(ComponentType type) {
 		eraseMode = ComponentType.ERASER.equals(type);
+
+		if (ComponentType.TEXT.equals(type)) {
+			new EditText(getContext());
+		}
 		this.activeComponentType = type;
 	}
 

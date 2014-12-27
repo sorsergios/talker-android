@@ -54,7 +54,15 @@ public class CanvasActivity extends ActionBarActivity {
 				s.invalidate();
 			}
 		});
-		
+
+		ImageButton textOp = (ImageButton) findViewById(R.id.textOption);
+		textOp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				s.setActiveComponent(ComponentType.TEXT);
+				s.invalidate();
+			}
+		});
 	}
 	
 	@Override
