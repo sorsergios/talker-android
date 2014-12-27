@@ -15,7 +15,7 @@ import android.widget.Toast;
 public class ImageNewSceneAdapter extends BaseAdapter {
 
 	    private Context mContext;
-	    static Object itemSelectedId;
+	    private long itemSelectedId;
 	    
 	    public ImageNewSceneAdapter(Context c) {
 	        mContext = c;
@@ -54,6 +54,8 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 					Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
 					Button startScenarioBttn = (Button) ((ActionBarActivity) mContext).findViewById(R.id.new_scene_start);
 					startScenarioBttn.setEnabled(true);
+					Button innerScenarioBttn = (Button) ((ActionBarActivity) mContext).findViewById(R.id.new_scene_inner);
+					innerScenarioBttn.setEnabled(true);
 					v.setSelected(true);
 					itemSelectedId = getItemId(position);
 				}
@@ -81,7 +83,7 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 	    		R.string.nuevo
 	    };
 
-		public static Object getItemSelectedId() {
+		public long getItemSelectedId() {
 			return itemSelectedId;
 		}
 }
