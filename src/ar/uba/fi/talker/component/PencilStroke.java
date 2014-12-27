@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.view.MotionEvent;
+import ar.uba.fi.talker.component.command.ActivityCommand;
 
 public class PencilStroke extends Component {
 		
@@ -36,7 +37,7 @@ public class PencilStroke extends Component {
 	}
 	
 	@Override
-	public boolean touchEvent(MotionEvent event) {
+	public boolean touchEvent(MotionEvent event, ActivityCommand command) {
 		float eventX = event.getAxisValue(MotionEvent.AXIS_X);
 		float eventY = event.getAxisValue(MotionEvent.AXIS_Y);
 		PencilPoint point = new PencilPoint();
