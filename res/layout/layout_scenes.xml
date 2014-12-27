@@ -41,6 +41,7 @@
       android:layout_alignBaseline="@+id/new_scene_start"
       android:layout_alignBottom="@+id/new_scene_start"
       android:layout_toLeftOf="@+id/new_scene_start"
+      android:enabled="false"
       android:text="@string/new_scene_inner" />
 
   <Button
