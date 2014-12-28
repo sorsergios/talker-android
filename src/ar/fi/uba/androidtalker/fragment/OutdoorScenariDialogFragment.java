@@ -18,9 +18,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import ar.fi.uba.androidtalker.CanvasActivity;
-import ar.fi.uba.androidtalker.ImageNewSceneAdapter;
 import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
+import ar.fi.uba.androidtalker.adapter.ImageNewSceneAdapter;
 
 public class OutdoorScenariDialogFragment extends Fragment {
 

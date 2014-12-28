@@ -1,4 +1,4 @@
-package ar.fi.uba.androidtalker;
+package ar.fi.uba.androidtalker.adapter;
 
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import ar.fi.uba.androidtalker.R;
 
 public class ImageNewSceneAdapter extends BaseAdapter {
 

@@ -23,9 +23,6 @@
         <activity android:name=".NewSceneActivity" android:label="@string/title_activity_new_scene" android:screenOrientation="landscape">
         </activity>
         
-         <activity android:name=".InnerActivity" android:label="@string/title_activity_new_scene_inner" android:screenOrientation="landscape">
-        </activity>
-        
          <activity android:name=".CanvasActivity" android:label="@string/new_scene_start" android:screenOrientation="landscape">
         </activity>
     </application>
