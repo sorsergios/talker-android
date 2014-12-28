@@ -22,7 +22,7 @@ import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
 import ar.fi.uba.androidtalker.adapter.ImageNewInnerSceneAdapter;
 
-public class innerScenariDialogFragment extends Fragment {
+public class InnerScenariDialogFragment extends Fragment {
 
 	private long imageViewId;
 	
