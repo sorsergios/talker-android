@@ -4,12 +4,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     
-	<fragment android:name="ar.fi.uba.androidtalker.fragment.InnerScenariDialogFragment"
+	<fragment android:name="ar.fi.uba.androidtalker.fragment.InnerScenarioDialogFragment"
           android:id="@+id/fragmentInner"
 	      android:layout_width="wrap_content"
 	      android:layout_height="wrap_content" />
 	
-  <fragment android:name="ar.fi.uba.androidtalker.fragment.OutdoorScenariDialogFragment"
+	<fragment android:name="ar.fi.uba.androidtalker.fragment.OutdoorScenarioDialogFragment"
           android:id="@+id/fragmentOutdoors"
 	      android:layout_width="wrap_content"
 	      android:layout_height="wrap_content" />

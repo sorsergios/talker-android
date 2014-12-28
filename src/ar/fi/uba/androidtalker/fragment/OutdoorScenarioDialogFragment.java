@@ -22,7 +22,7 @@ import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
 import ar.fi.uba.androidtalker.adapter.ImageNewSceneAdapter;
 
-public class OutdoorScenariDialogFragment extends Fragment {
+public class OutdoorScenarioDialogFragment extends Fragment {
 
 	// Use this instance of the interface to deliver action events
 	NewSceneActivity listener;
@@ -65,8 +65,8 @@ public class OutdoorScenariDialogFragment extends Fragment {
 				Log.i("ID", " "+ imageViewId);
 				
 				FragmentManager fm = getFragmentManager();
-				OutdoorScenariDialogFragment fragmentOutdoor = (OutdoorScenariDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
-				InnerScenariDialogFragment fragmentInner = (InnerScenariDialogFragment)fm.findFragmentById(R.id.fragmentInner);
+				OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
+				InnerScenarioDialogFragment fragmentInner = (InnerScenarioDialogFragment)fm.findFragmentById(R.id.fragmentInner);
 		        
 				FragmentTransaction tran = fm.beginTransaction();
 				tran.hide(fragmentOutdoor);

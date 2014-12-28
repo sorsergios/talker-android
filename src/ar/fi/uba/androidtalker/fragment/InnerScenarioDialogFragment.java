@@ -22,7 +22,7 @@ import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
 import ar.fi.uba.androidtalker.adapter.ImageNewInnerSceneAdapter;
 
-public class InnerScenariDialogFragment extends Fragment {
+public class InnerScenarioDialogFragment extends Fragment {
 
 	private long imageViewId;
 	
@@ -43,7 +43,7 @@ public class InnerScenariDialogFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.layout_inner_scenes, container, false);
         
-        final GridView gridViewInner = (GridView) v.findViewById(R.id.gridViewInner);
+        GridView gridViewInner = (GridView) v.findViewById(R.id.gridViewInner);
 	    gridViewInner.setAdapter(new ImageNewInnerSceneAdapter(listener, imageViewId));
 	    
 	    Log.i("lala", ""+imageViewId);
