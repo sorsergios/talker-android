@@ -64,7 +64,9 @@
     <string name="habitacion">HABITACIÓN</string>
     <string name="cocina">COCINA</string>
     <string name="banio">BAÑO</string>
-
+    <string name="aula">AULA</string>
+    <string name="patio">PATIO</string>
+    
     <!-- otras pantallas -->
 	
     <!-- fragment text -->

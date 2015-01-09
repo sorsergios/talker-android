@@ -15,6 +15,12 @@
         <item name="cocina">@drawable/cocina</item>
         <item name="banio">@drawable/banio</item>
     </string-array>
+    
+    <string-array name="image_school_inner_ids">
+      	<item name="aulaescuela">@drawable/aulaescuela</item>
+        <item name="banioescuela">@drawable/banioescuela</item>
+        <item name="patioescuela">@drawable/patioescuela</item>
+    </string-array>
 	
 	 <string-array name="image_ids">
       	<item>@drawable/image_1</item>

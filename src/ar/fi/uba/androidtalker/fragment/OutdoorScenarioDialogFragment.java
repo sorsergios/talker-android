@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,7 +19,9 @@ import android.widget.GridView;
 import ar.fi.uba.androidtalker.CanvasActivity;
 import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
+import ar.fi.uba.androidtalker.adapter.ImageNewInnerSceneAdapter;
 import ar.fi.uba.androidtalker.adapter.ImageNewSceneAdapter;
+import ar.fi.uba.androidtalker.dao.ImagesDao;
 
 public class OutdoorScenarioDialogFragment extends Fragment {
 
@@ -41,8 +42,8 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		View v = inflater.inflate(R.layout.layout_ext_scenes, container, false);
-        final GridView gridview = (GridView) v.findViewById(R.id.gridView);
-        gridview.setAdapter(new ImageNewSceneAdapter(listener));
+        GridView gridView = (GridView) v.findViewById(R.id.gridView);
+        gridView.setAdapter(new ImageNewSceneAdapter(listener));
         
 		Button exitBttn = (Button) v.findViewById(R.id.new_scene_exit);
 		Button innerBttn = (Button) v.findViewById(R.id.new_scene_inner);
@@ -60,14 +61,13 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				ImageNewSceneAdapter adapter = ((ImageNewSceneAdapter)gridview.getAdapter());
-				long imageViewId = adapter.getItemSelectedId();
-				Log.i("ID", " "+ imageViewId);
-				
 				FragmentManager fm = getFragmentManager();
 				OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
 				InnerScenarioDialogFragment fragmentInner = (InnerScenarioDialogFragment)fm.findFragmentById(R.id.fragmentInner);
-		        
+				
+				int position = (int) ImageNewSceneAdapter.getPosition();
+				
+				ImagesDao.getInstance().setPositionDao(position);
 				FragmentTransaction tran = fm.beginTransaction();
 				tran.hide(fragmentOutdoor);
 				tran.show(fragmentInner);
@@ -78,10 +78,9 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ImageNewSceneAdapter adapter = ((ImageNewSceneAdapter)gridview.getAdapter());
-				long imageViewId = adapter.getItemSelectedId();
+				long imageViewId = (Long) ImageNewSceneAdapter.getItemSelectedId();
 				byte[] bytes = transformImage(imageViewId); 
-
+				
 				Bundle extras = new Bundle();
 				extras.putByteArray("BMP",bytes);
 				Intent intent = new Intent(listener.getApplicationContext(), CanvasActivity.class);
@@ -91,11 +90,14 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 
 			private byte[] transformImage(long imageViewId) {
 				Bitmap image = BitmapFactory.decodeResource(getResources(),(int) imageViewId);
-				ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+				int newHeight = (int) ( image.getHeight() * (512.0 / image.getWidth()) );
+				Bitmap scaled = Bitmap.createScaledBitmap(image, 512, newHeight, true);
+		        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		        scaled.compress(Bitmap.CompressFormat.PNG, 70, stream);
 		        byte[] bytes = stream.toByteArray();
 				return bytes;
 			}
+
 		});
 		
 		return v;

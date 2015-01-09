@@ -4,13 +4,12 @@ import java.io.ByteArrayOutputStream;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +23,7 @@ import ar.fi.uba.androidtalker.adapter.ImageNewInnerSceneAdapter;
 
 public class InnerScenarioDialogFragment extends Fragment {
 
-	private long imageViewId;
+	public static long position;
 	
 	// Use this instance of the interface to deliver action events
 	NewSceneActivity listener;
@@ -44,11 +43,10 @@ public class InnerScenarioDialogFragment extends Fragment {
         View v = inflater.inflate(R.layout.layout_inner_scenes, container, false);
         
         GridView gridViewInner = (GridView) v.findViewById(R.id.gridViewInner);
-	    gridViewInner.setAdapter(new ImageNewInnerSceneAdapter(listener, imageViewId));
+	    gridViewInner.setAdapter(new ImageNewInnerSceneAdapter(listener, getPosition()));
 	    
-	    Log.i("lala", ""+imageViewId);
 		Button startBttn = (Button) v.findViewById(R.id.start_conversation);
-		Button exitBttn = (Button) v.findViewById(R.id.button3);
+		Button exitBttn = (Button) v.findViewById(R.id.backGridView);
 		
 		startBttn.setOnClickListener(new View.OnClickListener() {
 			
@@ -66,14 +64,10 @@ public class InnerScenarioDialogFragment extends Fragment {
 
 			private byte[] transformImage(long imageViewId) {
 				Bitmap image = BitmapFactory.decodeResource(getResources(),(int) imageViewId);
-				Display display = listener.getWindowManager().getDefaultDisplay();
-				Point size = new Point();
-				display.getSize(size);
-				int width = size.x;
-				int height = size.y;
-		        Bitmap resized = Bitmap.createScaledBitmap(image, width , height, true);
+				int newHeight = (int) ( image.getHeight() * (512.0 / image.getWidth()) );
+				Bitmap scaled = Bitmap.createScaledBitmap(image, 512, newHeight, true);
 		        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		        resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		        scaled.compress(Bitmap.CompressFormat.PNG, 70, stream);
 		        byte[] bytes = stream.toByteArray();
 				return bytes;
 			}
@@ -82,14 +76,28 @@ public class InnerScenarioDialogFragment extends Fragment {
 		exitBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				listener.finish();
-				System.exit(0);
+				FragmentManager fm = getFragmentManager();
+				OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
+				InnerScenarioDialogFragment fragmentInner = (InnerScenarioDialogFragment)fm.findFragmentById(R.id.fragmentInner);
+		        
+				FragmentTransaction tran = fm.beginTransaction();
+				tran.show(fragmentOutdoor);
+				tran.hide(fragmentInner);
+				tran.commit();
 			}
 		});
         return v;
 	}
 
-	public void setSelectId(long imageViewId) {
+/*	public void setSelectId(long imageViewId) {
 		this.imageViewId = imageViewId;
+	}
+*/
+	public long getPosition() {
+		return InnerScenarioDialogFragment.position;
+	}
+	
+	public void setPosition(long position) {
+		InnerScenarioDialogFragment.position = position;
 	}
 }
