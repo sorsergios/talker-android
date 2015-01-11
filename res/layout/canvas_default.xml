@@ -16,36 +16,44 @@
 
     <ImageButton
         android:id="@+id/pencilOption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/abc_ic_clear_normal" />
+        android:src="@drawable/pencil"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  />
 
     <ImageButton
         android:id="@+id/eraserOption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/pencilOption"
-        android:src="@drawable/abc_spinner_ab_pressed_holo_light" />
+        android:src="@drawable/eraser"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  />
     
     <ImageButton
         android:id="@+id/eraseAllOption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/eraserOption"
-        android:src="@drawable/abc_spinner_ab_pressed_holo_light" />
+        android:src="@drawable/erase_all"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  />
 
     <ImageButton
         android:id="@+id/textOption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_above="@+id/gestureOverlayView1"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/eraseAllOption"
-        android:src="@drawable/abc_cab_background_top_holo_dark" />
+        android:src="@drawable/insert_text"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  />
 
     <ImageButton
         android:id="@+id/bottom"

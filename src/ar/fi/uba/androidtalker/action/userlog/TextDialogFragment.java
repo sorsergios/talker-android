@@ -11,24 +11,28 @@ import ar.fi.uba.androidtalker.R;
 
 public class TextDialogFragment extends DialogFragment {
 
-	public interface TextDialogListener{
-	    public void onDialogPositiveClickTextDialogListener(DialogFragment dialog);
-	    public void onDialogNegativeClickTextDialogListener(DialogFragment dialog);
+	public interface TextDialogListener {
+		public void onDialogPositiveClickTextDialogListener(
+				DialogFragment dialog);
+
+		public void onDialogNegativeClickTextDialogListener(
+				DialogFragment dialog);
 	}
 
 	// Use this instance of the interface to deliver action events
 	TextDialogListener listener;
-	
+
 	@Override
-	public void onAttach(Activity activity){
-	    super.onAttach(activity);
-	    try{
-	        listener = (TextDialogListener) activity;
-	    }catch(ClassCastException e){
-	        throw new ClassCastException(activity.toString() + " must implement StartPayperiodDialogListener");
-	    }
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			listener = (TextDialogListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement TextDialogListener");
+		}
 	}
-	
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the Builder class for convenient dialog construction
