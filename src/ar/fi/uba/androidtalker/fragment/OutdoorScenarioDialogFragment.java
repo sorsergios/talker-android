@@ -19,7 +19,6 @@ import android.widget.GridView;
 import ar.fi.uba.androidtalker.CanvasActivity;
 import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
-import ar.fi.uba.androidtalker.adapter.ImageNewInnerSceneAdapter;
 import ar.fi.uba.androidtalker.adapter.ImageNewSceneAdapter;
 import ar.fi.uba.androidtalker.dao.ImagesDao;
 
@@ -64,14 +63,15 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 				FragmentManager fm = getFragmentManager();
 				OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
 				InnerScenarioDialogFragment fragmentInner = (InnerScenarioDialogFragment)fm.findFragmentById(R.id.fragmentInner);
+				fragmentInner.initAdapter();
 				
-				int position = (int) ImageNewSceneAdapter.getPosition();
-				
-				ImagesDao.getInstance().setPositionDao(position);
 				FragmentTransaction tran = fm.beginTransaction();
 				tran.hide(fragmentOutdoor);
 				tran.show(fragmentInner);
 				tran.commit();
+				//TODO: por ahora se usa la posicion como key para buscar las imagenes de escenarios interiores
+				int position = (int) ImageNewSceneAdapter.getPosition();
+				ImagesDao.getInstance().setPositionDao(position);
 			}
 		});
 		

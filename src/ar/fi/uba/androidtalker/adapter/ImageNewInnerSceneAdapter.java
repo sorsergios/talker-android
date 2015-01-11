@@ -50,11 +50,9 @@ public class ImageNewInnerSceneAdapter extends BaseAdapter {
 
 	    @Override
 	    public View getView(final int position, View convertView, ViewGroup parent) {
-	      // TODO Auto-generated method stub
 	      View grid;
 	      LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	      if (convertView == null) {
-	    	  grid = new View(mContext);
 	          grid = inflater.inflate(R.layout.row_grid, null);
 	          TextView textView = (TextView) grid.findViewById(R.id.text);
 	          ImageView imageView = (ImageView)grid.findViewById(R.id.image);

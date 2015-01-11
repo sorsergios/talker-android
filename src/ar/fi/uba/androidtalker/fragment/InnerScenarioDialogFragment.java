@@ -37,14 +37,18 @@ public class InnerScenarioDialogFragment extends Fragment {
 	        throw new ClassCastException(activity.toString() + " must implement StartPayperiodDialogListener");
 	    }
 	}
+	/***
+	 * Initialize to reload images show in GridView.
+	 */
+	public void initAdapter() {
+		 GridView gridViewInner = (GridView) this.getView().findViewById(R.id.gridViewInner);
+		 ImageNewInnerSceneAdapter innerAdapter = new ImageNewInnerSceneAdapter(listener, getPosition());
+		 gridViewInner.setAdapter(innerAdapter);
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.layout_inner_scenes, container, false);
-        
-        GridView gridViewInner = (GridView) v.findViewById(R.id.gridViewInner);
-	    gridViewInner.setAdapter(new ImageNewInnerSceneAdapter(listener, getPosition()));
-	    
 		Button startBttn = (Button) v.findViewById(R.id.start_conversation);
 		Button exitBttn = (Button) v.findViewById(R.id.backGridView);
 		
@@ -89,10 +93,6 @@ public class InnerScenarioDialogFragment extends Fragment {
         return v;
 	}
 
-/*	public void setSelectId(long imageViewId) {
-		this.imageViewId = imageViewId;
-	}
-*/
 	public long getPosition() {
 		return InnerScenarioDialogFragment.position;
 	}
