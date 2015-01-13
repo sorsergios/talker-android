@@ -98,7 +98,7 @@ public class ImagesDao {
             R.drawable.oficina,
             R.drawable.colectivo, 
             R.drawable.escuela,
-            R.drawable.nuevo
+            R.drawable.blanco
     };
     
     private static Integer[] mTextsIdsScenario = {
@@ -106,7 +106,7 @@ public class ImagesDao {
     		R.string.oficina,
     		R.string.colectivo,
     		R.string.escuela,
-    		R.string.nuevo
+    		R.string.blanco
     };
     
 	public static Integer getScenarioImageByPos(int position) {

@@ -6,7 +6,7 @@
          <item name="oficina">@drawable/oficina</item>
          <item name="escuela">@drawable/escuela</item>
          <item name="colectivo">@drawable/colectivo</item>
-         <item name="nuevo">@drawable/nuevo</item>
+         <item name="blanco">@drawable/blanco</item>
     </string-array>
     
     <string-array name="image_house_inner_ids">

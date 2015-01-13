@@ -72,6 +72,8 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 				//TODO: por ahora se usa la posicion como key para buscar las imagenes de escenarios interiores
 				int position = (int) ImageNewSceneAdapter.getPosition();
 				ImagesDao.getInstance().setPositionDao(position);
+				String title = getResources().getString(ImagesDao.getScenarioNameByPos(position));
+				listener.setTitle("SELECCIONE UN INTERIOR DE " + title);
 			}
 		});
 		
