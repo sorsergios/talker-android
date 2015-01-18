@@ -41,13 +41,13 @@
     <string name="logout_cancel">CANCELAR</string>
     
     <!-- pantalla elegir escenario -->
-    <string name="title_activity_new_scene">SELECCIONE ESCENA</string>
+    <string name="title_activity_new_scene">SELECCIONE UN ESCENARIO</string>
     <string name="new_scene_start">EMPEZAR</string>
     <string name="new_scene_inner">INTERIOR</string>
     <string name="new_scene_exit">SALIR</string>
 
     <!-- pantalla elegir interior de escenario -->
-    <string name="title_activity_new_scene_inner">SELECCIONE INTERIOR DE ESCENA</string>
+    <string name="title_activity_new_scene_inner">SELECCIONE EL INTERIOR DE ESCENARIO</string>
     <string name="new_scene_inner_start">EMPEZAR</string>
     <string name="new_scene_inner_exit">SALIR</string>
     
@@ -59,7 +59,7 @@
     <string name="oficina">OFICINA</string>
     <string name="colectivo">COLECTIVO</string>
     <string name="escuela">ESCUELA</string>
-    <string name="nuevo">NUEVO</string>
+    <string name="blanco">BLANCO</string>
     <string name="living">LIVING</string>
     <string name="habitacion">HABITACIÓN</string>
     <string name="cocina">COCINA</string>
