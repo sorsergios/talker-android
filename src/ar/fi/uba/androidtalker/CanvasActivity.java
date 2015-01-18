@@ -1,6 +1,8 @@
 package ar.fi.uba.androidtalker;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;

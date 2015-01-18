@@ -6,8 +6,6 @@ import java.util.LinkedHashSet;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.text.Editable;
@@ -18,10 +16,10 @@ import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.command.ActivityCommand;
+import ar.uba.fi.talker.paint.PaintManager;
+import ar.uba.fi.talker.paint.PaintType;
 
 public class Scenario extends View {
-
-	private Paint paint, erasePaint;
 
 	private Collection<Component> components;
 	
@@ -53,18 +51,6 @@ public class Scenario extends View {
 	}
 
 	private void init() {
-		paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setFlags(Paint.LINEAR_TEXT_FLAG);
-		paint.setTextSize(200);
-		paint.setStrokeWidth(20); // size
-		paint.setColor(Color.BLUE); // color
-
-		erasePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		erasePaint.setStyle(Paint.Style.STROKE);
-		erasePaint.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
-		erasePaint.setStrokeWidth(5); // size
-		erasePaint.setColor(Color.RED);
 		components = new LinkedHashSet<Component>();
 		this.setActiveComponentType(ComponentType.PENCIL); 
 	}
@@ -73,15 +59,16 @@ public class Scenario extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		Component removedComponent = null;
+		Paint paint = PaintManager.getPaint(PaintType.REGULAR);
 		if (backgroudImage != null){
 			canvas.drawBitmap(backgroudImage, 0, 0, paint);
 		}
 		for (Component component : components) {
 			if (eraseMode) {
-				component.drawDimension(canvas, erasePaint);
+				component.drawDimension(canvas);
 			}
 			if (!component.isInDimensions(erasePoint)) {
-				component.draw(canvas, paint);
+				component.draw(canvas);
 			} else {
 				removedComponent = component;
 			}
@@ -106,12 +93,16 @@ public class Scenario extends View {
 				erasePoint.x = (int) event.getAxisValue(MotionEvent.AXIS_X);
 				erasePoint.y = (int) event.getAxisValue(MotionEvent.AXIS_Y);
 			} else {
-				activeComponent = ComponentFactory.createComponent(activeComponentType);
+				activeComponent = ComponentFactory.createComponent(activeComponentType, getContext());
 				components.add(activeComponent);
+				if (command != null) {
+					command.execute();
+				}
 			}
 		}
+
 		if (!eraseMode) {
-			activeComponent.touchEvent(event, command);
+			activeComponent.touchEvent(event);
 		}
 		invalidate();
 		return true; 
@@ -144,6 +135,7 @@ public class Scenario extends View {
 	}
 
 	public void setActiveComponentType(ComponentType type, ActivityCommand command) {
+		eraseMode = ComponentType.ERASER.equals(type);
 		this.activeComponentType = type;
 		this.command = command;
 	}

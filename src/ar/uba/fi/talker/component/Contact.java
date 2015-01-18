@@ -1,9 +1,17 @@
 package ar.uba.fi.talker.component;
 
+import android.content.Context;
+
 public class Contact extends Image {
 
 	private static String name;
 	private static String phone;
+
+	public Contact(Context arg0) {
+		super(arg0);
+		// TODO Auto-generated constructor stub
+	}
+	
 	public static String getName() {
 		return name;
 	}

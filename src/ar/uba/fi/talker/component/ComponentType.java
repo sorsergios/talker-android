@@ -4,18 +4,18 @@ package ar.uba.fi.talker.component;
  * List of components for View @link{Scenario}
  */
 public enum ComponentType {
-	PENCIL(PencilStroke.class.getName()),
+	PENCIL(PencilStroke.class),
 	ERASER(null),
-	TEXT(Text.class.getName()),
-	CONTACT(Contact.class.getName()),
-	IMAGE(Image.class.getName());
+	TEXT(Text.class),
+	CONTACT(Contact.class),
+	IMAGE(Image.class);
 
-	private String className;
+	private Class<? extends Component> className;
 	
-	private ComponentType(String className) {
+	private ComponentType(Class<? extends Component> className) {
 		this.className = className;
 	}
-	public String className() {
+	public Class<? extends Component> className() {
 		return className;
 	}
 }
