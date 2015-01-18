@@ -88,6 +88,7 @@ public class InnerScenarioDialogFragment extends Fragment {
 				tran.show(fragmentOutdoor);
 				tran.hide(fragmentInner);
 				tran.commit();
+				listener.setTitle(R.string.title_activity_new_scene);
 			}
 		});
         return v;
