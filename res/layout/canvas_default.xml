@@ -54,6 +54,55 @@
         android:layout_height="50dp"
         android:scaleType="fitCenter"
 		android:adjustViewBounds="true"  />
+    
+
+	<ImageButton
+        android:id="@+id/insertImageOption"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/textOption"
+        android:src="@drawable/image_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  />
+            
+            
+	<ImageButton
+        android:id="@+id/insertContactOption"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/insertImageOption"
+        android:src="@drawable/contact_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  />
+                
+                
+	<ImageButton
+        android:id="@+id/calculatorOption"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/insertContactOption"
+        android:src="@drawable/calculator_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  />
+	
+	<ImageButton
+        android:id="@+id/calendarOption"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/calculatorOption"
+        android:src="@drawable/calendar_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  />
+
+    
 
     <ImageButton
         android:id="@+id/bottom"
