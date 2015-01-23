@@ -60,6 +60,7 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				//FIXME validar que si tiene cero interiores no cambie de pantalla o vuelva atras
 				FragmentManager fm = getFragmentManager();
 				OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
 				InnerScenarioDialogFragment fragmentInner = (InnerScenarioDialogFragment)fm.findFragmentById(R.id.fragmentInner);
