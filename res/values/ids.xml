@@ -21,6 +21,6 @@
     <item type="id" name="progress_circular"/>
     <item type="id" name="progress_horizontal"/>
     
-    <item name="ale_capa" type="id"/>	
+    <item name="insert_text_input" type="id"/>	
     
 </resources>
