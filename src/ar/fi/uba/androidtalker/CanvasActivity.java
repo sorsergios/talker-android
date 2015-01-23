@@ -13,9 +13,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment;
 import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.component.ComponentType;
@@ -33,16 +37,16 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.canvas_default);
 		
+		final Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
+		
 		if(getIntent().hasExtra("BMP")) {
 		    Bundle extras = getIntent().getExtras();
 		    byte[] bytes = extras.getByteArray("BMP");	
 		    Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 		    
-		    Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 		    Bitmap transformedImage = reTransformImage(image);
 		    s.setBackgroundImage(transformedImage);
 		}
-	    final Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 	
 		if(getIntent().hasExtra(BACKGROUND_IMAGE)) {
 		    Bundle extras = getIntent().getExtras();
@@ -72,6 +76,7 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 		eraseAllOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				s.setActiveComponentType(ComponentType.ERASE_ALL);
 				s.clear();
 				s.invalidate();
 			}
@@ -81,6 +86,8 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 		textOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				s.setActiveComponentType(ComponentType.TEXT);
+				
 				ActivityCommand command = new ActivityCommand() {
 					
 					@Override
@@ -90,15 +97,71 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 					}
 				};
 				s.setActiveComponentType(ComponentType.TEXT, command);
+				s.invalidate();
+			}
+		});
+		
+		ImageButton imageOption = (ImageButton) findViewById(R.id.insertImageOption);
+		imageOption.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				final int windowwidth = getWindowManager().getDefaultDisplay()
+						.getWidth();
+				final int windowheight = getWindowManager().getDefaultDisplay()
+						.getHeight();
+				System.out.println("width" + windowwidth);
+				System.out.println("height" + windowheight);
+				RelativeLayout linearLayout = (RelativeLayout)findViewById(R.id.canvas_default);
+				final ImageView ima1 = new ImageView(CanvasActivity.this);
+				ima1.setImageResource(R.drawable.ic_launcher);
+				
+				ima1.setOnTouchListener(new View.OnTouchListener() {
+					public boolean onTouch(View v, MotionEvent event) {
+						LayoutParams layoutParams = (RelativeLayout.LayoutParams) ima1
+								.getLayoutParams();
+
+						switch (event.getAction()) {
+						case MotionEvent.ACTION_DOWN:
+							break;
+
+						case MotionEvent.ACTION_MOVE:
+							int x_cord = (int) event.getRawX();
+							int y_cord = (int) event.getRawY();
+
+							System.out.println("value of x" + x_cord);
+							System.out.println("value of y" + y_cord);
+
+							if (x_cord > windowwidth) {
+								x_cord = windowwidth;
+							}
+							if (y_cord > windowheight) {
+								y_cord = windowheight;
+							}
+							layoutParams.leftMargin = x_cord - 25;
+							layoutParams.topMargin = y_cord - 25;
+
+							ima1.setLayoutParams(layoutParams);
+							break;
+						default:
+							break;
+						}
+						return true;
+					}
+				});
+				linearLayout.addView(ima1);
+				s.setActiveComponentType(ComponentType.IMAGE);
+				s.invalidate();
 			}
 		});
 
+		
 	}
 	
 	@Override
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
 	    Dialog dialogView = dialog.getDialog();
-	    EditText inputText = (EditText) dialogView.findViewById(R.id.ale_capa);
+	    EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
 	    Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 	    s.setText(inputText.getText());
 	    s.invalidate();

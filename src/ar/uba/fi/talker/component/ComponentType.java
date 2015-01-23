@@ -8,8 +8,9 @@ public enum ComponentType {
 	ERASER(null),
 	TEXT(Text.class.getName()),
 	CONTACT(Contact.class.getName()),
-	IMAGE(Image.class.getName());
-
+	IMAGE(Image.class.getName()),
+	ERASE_ALL(null);
+	
 	private String className;
 	
 	private ComponentType(String className) {

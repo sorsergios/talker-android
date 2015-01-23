@@ -39,7 +39,7 @@ public class TextDialogFragment extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		EditText input = new EditText(getActivity());
-		input.setId(R.id.ale_capa);
+		input.setId(R.id.insert_text_input);
 		builder.setView(input)
 				.setTitle(R.string.insert_text_title)
 				.setPositiveButton(R.string.insert_text_accept,

@@ -26,6 +26,8 @@ public class Scenario extends View {
 	private Collection<Component> components;
 	
 	private boolean eraseMode;
+	
+	private boolean eraseAllMode;
 
 	private ComponentType activeComponentType;
 
@@ -105,24 +107,34 @@ public class Scenario extends View {
 				erasePoint = new Point();
 				erasePoint.x = (int) event.getAxisValue(MotionEvent.AXIS_X);
 				erasePoint.y = (int) event.getAxisValue(MotionEvent.AXIS_Y);
-			} else {
+			} else if (!eraseAllMode) {
 				activeComponent = ComponentFactory.createComponent(activeComponentType);
 				components.add(activeComponent);
 			}
 		}
-		if (!eraseMode) {
+		if (!(eraseMode || eraseAllMode)) {
 			activeComponent.touchEvent(event, command);
 		}
 		invalidate();
 		return true; 
 	}
 
-	public void setActiveComponentType(ComponentType type) {
+	private void setCommonModes(ComponentType type) {
 		eraseMode = ComponentType.ERASER.equals(type);
-		this.activeComponentType = type;
-		this.command = null;
+		eraseAllMode = ComponentType.ERASE_ALL.equals(type);
 	}
 	
+	public void setActiveComponentType(ComponentType type) {
+		setCommonModes(type);
+		setActiveComponentType(type, null);
+	}
+
+	public void setActiveComponentType(ComponentType type, ActivityCommand command) {
+		setCommonModes(type);
+		this.activeComponentType = type;
+		this.command = command;
+	}
+
 	public ComponentType getActiveComponentType() {
 		return activeComponentType;
 	}
@@ -141,11 +153,6 @@ public class Scenario extends View {
 	
 	public void clear(){
 		this.getComponents().clear();
-	}
-
-	public void setActiveComponentType(ComponentType type, ActivityCommand command) {
-		this.activeComponentType = type;
-		this.command = command;
 	}
 
 	public void setText(Editable text) {
