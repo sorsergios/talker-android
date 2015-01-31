@@ -24,11 +24,16 @@ public class Image extends Component {
 	public void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
 	}
-
+	
+	@Override
+	public boolean performClick() {
+		// TODO Auto-generated method stub
+		return super.performClick();
+	}
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
 		return this.performClick();
 	}
-
 }

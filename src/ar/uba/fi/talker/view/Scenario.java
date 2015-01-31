@@ -124,7 +124,6 @@ public class Scenario extends FrameLayout {
 		this.removeAllViews();
 	}
 
-
 	public void setActiveComponentType(ComponentType type) {
 		this.setActiveComponentType(type, null);
 	}

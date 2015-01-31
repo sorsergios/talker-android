@@ -27,6 +27,7 @@ public class InnerScenarioDialogFragment extends Fragment {
 	
 	// Use this instance of the interface to deliver action events
 	NewSceneActivity listener;
+	GridView gridViewInner;
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -34,14 +35,14 @@ public class InnerScenarioDialogFragment extends Fragment {
 	    try{
 	        listener = (NewSceneActivity) activity;
 	    }catch(ClassCastException e){
-	        throw new ClassCastException(activity.toString() + " must implement StartPayperiodDialogListener");
+	        throw new ClassCastException(activity.toString() + " must implement NewSceneActivity");
 	    }
 	}
 	/***
 	 * Initialize to reload images show in GridView.
 	 */
 	public void initAdapter() {
-		 GridView gridViewInner = (GridView) this.getView().findViewById(R.id.gridViewInner);
+		 gridViewInner = (GridView) this.getView().findViewById(R.id.gridViewInner);
 		 ImageNewInnerSceneAdapter innerAdapter = new ImageNewInnerSceneAdapter(listener, getPosition());
 		 gridViewInner.setAdapter(innerAdapter);
 	}
@@ -101,4 +102,5 @@ public class InnerScenarioDialogFragment extends Fragment {
 	public void setPosition(long position) {
 		InnerScenarioDialogFragment.position = position;
 	}
+	
 }

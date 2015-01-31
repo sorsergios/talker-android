@@ -16,6 +16,10 @@ import android.widget.CheckBox;
 import ar.fi.uba.androidtalker.action.userlog.LogoutDialogFragment;
 
 public class SettingsActivity extends ActionBarActivity {
+	
+	Settings settings;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
