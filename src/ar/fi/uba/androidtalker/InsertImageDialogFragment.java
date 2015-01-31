@@ -1,4 +1,4 @@
-package ar.fi.uba.androidtalker.action.userlog;
+package ar.fi.uba.androidtalker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,47 +7,45 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.EditText;
-import ar.fi.uba.androidtalker.R;
+import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment.TextDialogListener;
 
-public class TextDialogFragment extends DialogFragment {
-
-	public interface TextDialogListener {
-		public void onDialogPositiveClickTextDialogListener(
+public class InsertImageDialogFragment extends DialogFragment {
+	
+	
+	public interface InsertImageDialogListener {
+		public void onDialogPositiveClickInsertImageDialogListener(
 				DialogFragment dialog);
-
 	}
-
-	// Use this instance of the interface to deliver action events
-	TextDialogListener listener;
-
+	
+	InsertImageDialogListener listener;
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			listener = (TextDialogListener) activity;
+			listener = (InsertImageDialogListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement TextDialogListener");
+					+ " must implement InsertImageDialogListener");
 		}
 	}
 
+	
+	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-		EditText input = new EditText(getActivity());
-		input.setId(R.id.insert_text_input);
-		builder.setView(input)
-				.setTitle(R.string.insert_text_title)
-				.setPositiveButton(R.string.insert_text_accept,
+		builder.setTitle(R.string.insert_image_title)
+				.setPositiveButton(R.string.insert_image_accept,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								listener.onDialogPositiveClickTextDialogListener(TextDialogFragment.this);
+								listener.onDialogPositiveClickInsertImageDialogListener(InsertImageDialogFragment.this);
 								dialog.dismiss();
 							}
 						})
-				.setNegativeButton(R.string.insert_text_cancel,
+				.setNegativeButton(R.string.insert_image_cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
@@ -55,5 +53,4 @@ public class TextDialogFragment extends DialogFragment {
 						});
 		return builder.create();
 	}
-
 }
