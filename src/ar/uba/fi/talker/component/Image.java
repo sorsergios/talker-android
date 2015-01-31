@@ -21,15 +21,14 @@ public class Image extends Component {
 	}
 
 	@Override
-	public void draw(Canvas canvas) {
+	public void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public boolean touchEvent(MotionEvent event) {
+	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		return false;
+		return this.performClick();
 	}
 
 }

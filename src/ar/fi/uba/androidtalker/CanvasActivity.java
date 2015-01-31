@@ -1,18 +1,11 @@
 package ar.fi.uba.androidtalker;
 
 import android.app.Dialog;
-import android.content.ClipData;
-import android.content.ClipDescription;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,8 +19,6 @@ import ar.uba.fi.talker.view.Scenario;
 
 public class CanvasActivity extends ActionBarActivity implements TextDialogListener {
 		
-	private static final String BACKGROUND_IMAGE = "imagebitmap";
-
 	final String TAG = "CanvasActivity";
 	
 	@Override
@@ -35,29 +26,21 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.canvas_default);
 		
+		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
 		if(getIntent().hasExtra("BMP")) {
 		    Bundle extras = getIntent().getExtras();
-		    byte[] bytes = extras.getByteArray("BMP");	
+		    byte[] bytes = extras.getByteArray("BMP");
 		    Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 		    
-		    Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
-		    Bitmap transformedImage = reTransformImage(image);
-		    s.setBackgroundImage(transformedImage);
-		}
-	    final Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
-	
-		if(getIntent().hasExtra(BACKGROUND_IMAGE)) {
-		    Bundle extras = getIntent().getExtras();
-		    Bitmap image = extras.getParcelable(BACKGROUND_IMAGE);
-		    s.setBackgroundImage(image);
+		    scenario.invalidate();	
+		    scenario.setBackgroundImage(image);
 		}
 	
 		ImageButton pencilOp = (ImageButton) findViewById(R.id.pencilOption);
 		pencilOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setActiveComponentType(ComponentType.PENCIL);
-				s.invalidate();
+				scenario.setActiveComponentType(ComponentType.PENCIL);
 			}
 		});
 		
@@ -65,8 +48,7 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 		eraserOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setActiveComponentType(ComponentType.ERASER);
-				s.invalidate();
+				scenario.setActiveComponentType(ComponentType.ERASER);
 			}
 		});
 		
@@ -74,8 +56,7 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 		eraseAllOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.clear();
-				s.invalidate();
+				scenario.clear();
 			}
 		});
 
@@ -91,7 +72,7 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 						newFragment.show(getSupportFragmentManager(), "insert_text");
 					}
 				};
-				s.setActiveComponentType(ComponentType.TEXT, command);
+				scenario.setActiveComponentType(ComponentType.TEXT, command);
 			}
 		});
 
@@ -108,31 +89,6 @@ public class CanvasActivity extends ActionBarActivity implements TextDialogListe
 	@Override
 	public void onDialogNegativeClickTextDialogListener(DialogFragment dialog) {
 		// TODO Auto-generated method stub
-	}
-
-	private Bitmap reTransformImage(Bitmap image) {
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		int height = size.y;
-		Bitmap resized = Bitmap.createScaledBitmap(image, width , height, true);
-		int transparency = getResources().getInteger(R.integer.alpha);
-		image = makeTransparent(resized, transparency);
-		return image;
-	}
-	
-	public Bitmap makeTransparent(Bitmap src, int value) {
-		int width = src.getWidth();
-		int height = src.getHeight();
-		Bitmap transBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-		Canvas canvas = new Canvas(transBitmap);
-		canvas.drawARGB(0, 0, 0, 0);
-		// config paint
-		final Paint paint = new Paint();
-		paint.setAlpha(value);
-		canvas.drawBitmap(src, 0, 0, paint);
-		return transBitmap;
 	}
 	
 	@Override

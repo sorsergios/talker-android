@@ -14,11 +14,26 @@ import ar.uba.fi.talker.paint.PaintType;
 public abstract class Component extends View {
 	
 	protected Dimension dimension;
+	private boolean active = true;
 	private static int TOLERANCE = 10;
 	
 	public Component(Context context) {
 		super(context);
 		dimension = new Dimension();
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+		
+		if (event.getAction() == MotionEvent.ACTION_UP) {
+			active  = false;
+		}
+		return active && super.dispatchTouchEvent(event);
+	}
+
+	@Override
+	public boolean performClick() {
+		return active && super.performClick();
 	}
 	
 	public boolean isInDimensions(Point erasePoint) {
@@ -39,16 +54,7 @@ public abstract class Component extends View {
 		path.lineTo(dimension.x1, dimension.y1);
 		canvas.drawPath(path, paint);
 	}
-
-	@Override
-	protected void onDraw(Canvas canvas) {
-		this.draw(canvas);
-	}
-
-	public abstract void draw(Canvas canvas);
-
-	public abstract boolean touchEvent(MotionEvent event);
-
+	
 	class Dimension {
 		public int x1 = -1, y1 = -1, x2, y2;
 		

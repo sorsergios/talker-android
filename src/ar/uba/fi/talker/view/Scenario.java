@@ -5,13 +5,15 @@ import java.util.LinkedHashSet;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Point;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
+import android.widget.FrameLayout;
 import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
@@ -19,20 +21,16 @@ import ar.uba.fi.talker.component.command.ActivityCommand;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
 
-public class Scenario extends View {
+public class Scenario extends FrameLayout {
 
 	private Collection<Component> components;
-	
-	private boolean eraseMode;
 
 	private ComponentType activeComponentType;
 
 	private Component activeComponent;
+	
+	private Bitmap mImage = null;
 
-	private Point erasePoint;
-	
-	private Bitmap backgroudImage;
-	
 	private ActivityCommand command;
 
 	public Scenario(Context context) {
@@ -52,74 +50,65 @@ public class Scenario extends View {
 
 	private void init() {
 		components = new LinkedHashSet<Component>();
-		this.setActiveComponentType(ComponentType.PENCIL); 
+		this.setActiveComponentType(ComponentType.PENCIL);
 	}
 
-	@Override
-	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-		Component removedComponent = null;
-		Paint paint = PaintManager.getPaint(PaintType.REGULAR);
-		if (backgroudImage != null){
-			canvas.drawBitmap(backgroudImage, 0, 0, paint);
-		}
-		for (Component component : components) {
-			if (eraseMode) {
-				component.drawDimension(canvas);
-			}
-			if (!component.isInDimensions(erasePoint)) {
-				component.draw(canvas);
-			} else {
-				removedComponent = component;
-			}
-		}
-		components.remove(removedComponent);
-		erasePoint = null;
-	}
-	
 	@Override
 	public boolean performClick() {
 		super.performClick();
 		return true;
 	}
-
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		this.performClick();
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			if (eraseMode) {
-				erasePoint = new Point();
-				erasePoint.x = (int) event.getAxisValue(MotionEvent.AXIS_X);
-				erasePoint.y = (int) event.getAxisValue(MotionEvent.AXIS_Y);
-			} else {
-				activeComponent = ComponentFactory.createComponent(activeComponentType, getContext());
-				components.add(activeComponent);
-				if (command != null) {
-					command.execute();
-				}
+
+			activeComponent = ComponentFactory.createComponent(
+					activeComponentType, getContext());
+			
+			android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
+			
+			layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+			layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+			
+			this.addView(activeComponent, layoutParams);
+			if (command != null) {
+				command.execute();
 			}
+			this.bringToFront();
+			components.add(activeComponent);
 		}
-
-		if (!eraseMode) {
-			activeComponent.touchEvent(event);
-		}
-		invalidate();
-		return true; 
-	}
-
-	public void setActiveComponentType(ComponentType type) {
-		eraseMode = ComponentType.ERASER.equals(type);
-		this.activeComponentType = type;
-		this.command = null;
+		activeComponent.onTouchEvent(event);
+		return true;
 	}
 	
-	public ComponentType getActiveComponentType() {
-		return activeComponentType;
+	@Override
+	protected void onDraw(Canvas canvas) {
+		if (mImage != null) {
+			int width = this.getWidth();
+			int height = this.getHeight();
+			Bitmap resized = Bitmap.createScaledBitmap(mImage, width , height, true);
+			BitmapShader fillBMPshader = new BitmapShader(
+					resized, 
+					Shader.TileMode.REPEAT, 
+					Shader.TileMode.REPEAT
+					);  
+			
+			Paint fillPaint = PaintManager.getPaint(PaintType.ERASE);
+			fillPaint.setShader(fillBMPshader);
+			mImage = null;
+		}
+		
+		super.onDraw(canvas);
 	}
-
-	public void setBackgroundImage(Bitmap previewThumbnail) {
-		backgroudImage = previewThumbnail;
+	
+	public void setBackgroundImage(Bitmap image) {
+		mImage = image;
+		
+        BitmapDrawable background = new BitmapDrawable(getResources(), image);
+		this.setBackground(background);
 	}
 
 	public Collection<Component> getComponents() {
@@ -129,13 +118,18 @@ public class Scenario extends View {
 	public void setComponents(Collection<Component> components) {
 		this.components = components;
 	}
-	
-	public void clear(){
+
+	public void clear() {
 		this.getComponents().clear();
+		this.removeAllViews();
 	}
 
+
+	public void setActiveComponentType(ComponentType type) {
+		this.setActiveComponentType(type, null);
+	}
+	
 	public void setActiveComponentType(ComponentType type, ActivityCommand command) {
-		eraseMode = ComponentType.ERASER.equals(type);
 		this.activeComponentType = type;
 		this.command = command;
 	}

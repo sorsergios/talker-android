@@ -5,7 +5,7 @@ package ar.uba.fi.talker.component;
  */
 public enum ComponentType {
 	PENCIL(PencilStroke.class),
-	ERASER(null),
+	ERASER(EraserStroke.class),
 	TEXT(Text.class),
 	CONTACT(Contact.class),
 	IMAGE(Image.class);

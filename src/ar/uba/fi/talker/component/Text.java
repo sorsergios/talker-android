@@ -22,19 +22,18 @@ public class Text extends Component {
 	}
 
 	@Override
-	public void draw(Canvas canvas) {
+	protected void onDraw(Canvas canvas) {
 		canvas.drawText(value, point.x, point.y, paint);
 
-		dimension.evalPoint(point);
-		Point secondPoint = new Point(point);
-		secondPoint.x += value.length() * 4;
-		secondPoint.y += 4;
-		dimension.evalPoint(secondPoint);
-
 	}
-
+	
 	@Override
-	public boolean touchEvent(MotionEvent event) {
+	public boolean performClick() {
+		return super.performClick();
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
 		float eventX = event.getAxisValue(MotionEvent.AXIS_X);
 		float eventY = event.getAxisValue(MotionEvent.AXIS_Y);
 
@@ -44,12 +43,13 @@ public class Text extends Component {
 			value = "";
 		}
 
-		return true;
+		return this.performClick();
 	}
 
 	@Override
 	public void setValue(Editable text) {
 		this.value = text.toString();
+		this.invalidate();
 	}
 
 }

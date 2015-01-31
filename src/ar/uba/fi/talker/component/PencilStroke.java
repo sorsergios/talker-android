@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -26,8 +25,12 @@ public class PencilStroke extends Component {
 		path = new Path();
 	}
 
+	protected void setPaint(Paint paint) {
+		this.paint = paint;
+	}
+	
 	@Override
-	public void draw(Canvas canvas) {
+	protected void onDraw(Canvas canvas) {
 		path.reset();
 		for (PencilPoint point : points) {
 			if (point.initial) {
@@ -45,7 +48,12 @@ public class PencilStroke extends Component {
 	}
 	
 	@Override
-	public boolean touchEvent(MotionEvent event) {
+	public boolean performClick() {
+		return super.performClick();
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
 		float eventX = event.getAxisValue(MotionEvent.AXIS_X);
 		float eventY = event.getAxisValue(MotionEvent.AXIS_Y);
 		PencilPoint point = new PencilPoint();
@@ -63,7 +71,9 @@ public class PencilStroke extends Component {
 		}
 		dimension.evalPoint(point);
 		points.add(point);
-		return true;
+		
+		this.invalidate();
+		return this.performClick();
 	}
 
 	private class PencilPoint extends Point {
