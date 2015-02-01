@@ -2,10 +2,7 @@ package ar.fi.uba.androidtalker;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -30,39 +27,28 @@ import ar.uba.fi.talker.view.Scenario;
 public class CanvasActivity extends ActionBarActivity implements
 		TextDialogListener, InsertImageDialogListener {
 
-	private static final String BACKGROUND_IMAGE = "imagebitmap";
-
 	final String TAG = "CanvasActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.canvas_default);
+		
+		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
+		if(getIntent().hasExtra("BMP")) {
+		    Bundle extras = getIntent().getExtras();
+		    byte[] bytes = extras.getByteArray("BMP");
+		    Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		    
+		    scenario.setBackgroundImage(image);
 
-		final Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
-
-		if (getIntent().hasExtra("BMP")) {
-			Bundle extras = getIntent().getExtras();
-			byte[] bytes = extras.getByteArray("BMP");
-			Bitmap image = BitmapFactory
-					.decodeByteArray(bytes, 0, bytes.length);
-
-			Bitmap transformedImage = reTransformImage(image);
-			s.setBackgroundImage(transformedImage);
-		}
-
-		if (getIntent().hasExtra(BACKGROUND_IMAGE)) {
-			Bundle extras = getIntent().getExtras();
-			Bitmap image = extras.getParcelable(BACKGROUND_IMAGE);
-			s.setBackgroundImage(image);
 		}
 
 		ImageButton pencilOp = (ImageButton) findViewById(R.id.pencilOption);
 		pencilOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setActiveComponentType(ComponentType.PENCIL);
-				s.invalidate();
+				scenario.setActiveComponentType(ComponentType.PENCIL);
 			}
 		});
 
@@ -70,8 +56,7 @@ public class CanvasActivity extends ActionBarActivity implements
 		eraserOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setActiveComponentType(ComponentType.ERASER);
-				s.invalidate();
+				scenario.setActiveComponentType(ComponentType.ERASER);
 			}
 		});
 
@@ -79,9 +64,7 @@ public class CanvasActivity extends ActionBarActivity implements
 		eraseAllOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setActiveComponentType(ComponentType.ERASE_ALL);
-				s.clear();
-				s.invalidate();
+				scenario.clear();
 			}
 		});
 
@@ -89,7 +72,6 @@ public class CanvasActivity extends ActionBarActivity implements
 		textOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setActiveComponentType(ComponentType.TEXT);
 				ActivityCommand command = new ActivityCommand() {
 					@Override
 					public void execute() {
@@ -98,8 +80,7 @@ public class CanvasActivity extends ActionBarActivity implements
 								"insert_text");
 					}
 				};
-				s.setActiveComponentType(ComponentType.TEXT, command);
-				s.invalidate();
+				scenario.setActiveComponentType(ComponentType.TEXT, command);
 			}
 		});
 
@@ -107,10 +88,10 @@ public class CanvasActivity extends ActionBarActivity implements
 		imageOption.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				s.setActiveComponentType(ComponentType.IMAGE);
+				scenario.setActiveComponentType(ComponentType.IMAGE);
 				DialogFragment newFragment = new InsertImageDialogFragment();
 				newFragment.show(getSupportFragmentManager(), "insert_image");
-				s.invalidate();
+				scenario.invalidate();
 			}
 		});
 
@@ -123,36 +104,8 @@ public class CanvasActivity extends ActionBarActivity implements
 				.findViewById(R.id.insert_text_input);
 		Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 		s.setText(inputText.getText());
-		s.invalidate();
 	}
-
-	private Bitmap reTransformImage(Bitmap image) {
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		int height = size.y;
-		Bitmap resized = Bitmap.createScaledBitmap(image, width, height, true);
-		int transparency = getResources().getInteger(R.integer.alpha);
-		image = makeTransparent(resized, transparency);
-		return image;
-	}
-
-	public Bitmap makeTransparent(Bitmap src, int value) {
-		int width = src.getWidth();
-		int height = src.getHeight();
-		Bitmap transBitmap = Bitmap.createBitmap(width, height,
-				Config.ARGB_8888);
-		Canvas canvas = new Canvas(transBitmap);
-		canvas.drawARGB(0, 0, 0, 0);
-		// config paint
-		final Paint paint = new Paint();
-		paint.setAlpha(value);
-		canvas.drawBitmap(src, 0, 0, paint);
-		return transBitmap;
-	}
-
-	@Override
+	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.settings, menu);
@@ -175,10 +128,13 @@ public class CanvasActivity extends ActionBarActivity implements
 	public void onDialogPositiveClickInsertImageDialogListener(
 			DialogFragment dialog) {
 		final Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
-		final int windowwidth = getWindowManager().getDefaultDisplay()
-				.getWidth();
-		final int windowheight = getWindowManager().getDefaultDisplay()
-				.getHeight();
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		final int windowwidth = size.x;
+		final int windowheight = size.y;
+
 		System.out.println("width" + windowwidth);
 		System.out.println("height" + windowheight);
 		RelativeLayout linearLayout = (RelativeLayout) findViewById(R.id.canvas_default);
@@ -186,6 +142,7 @@ public class CanvasActivity extends ActionBarActivity implements
 		ima1.setImageResource(R.drawable.ic_launcher);
 
 		ima1.setOnTouchListener(new View.OnTouchListener() {
+			
 			public boolean onTouch(View v, MotionEvent event) {
 				LayoutParams layoutParams = (RelativeLayout.LayoutParams) ima1
 						.getLayoutParams();
@@ -215,7 +172,7 @@ public class CanvasActivity extends ActionBarActivity implements
 				default:
 					break;
 				}
-				return true;
+				return v.performClick();
 			}
 		});
 		linearLayout.addView(ima1);
