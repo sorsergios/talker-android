@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +42,6 @@ public class TalkerMainActivity extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				Log.i(null, "ESTÁ ACA");
 				Intent i = new Intent(getApplicationContext(),
 						SettingsActivity.class);
 				startActivity(i);

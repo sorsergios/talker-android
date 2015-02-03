@@ -1,11 +1,14 @@
 package ar.uba.fi.talker.component;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.view.MotionEvent;
-import ar.uba.fi.talker.component.command.ActivityCommand;
 
 public class Image extends Component {
+	
+	public Image(Context arg0) {
+		super(arg0);
+	}
 
 	private static String label;
 
@@ -18,34 +21,19 @@ public class Image extends Component {
 	}
 
 	@Override
-	public void draw(Canvas canvas, Paint paint) {
+	public void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
-
 	}
-
+	
 	@Override
-	public boolean touchEvent(MotionEvent event, ActivityCommand command) {
-//		float eventX = event.getAxisValue(MotionEvent.AXIS_X);
-//		float eventY = event.getAxisValue(MotionEvent.AXIS_Y);
-//		switch (event.getAction()) {
-//		case MotionEvent.ACTION_DOWN:
-//			break;
-//
-//		case MotionEvent.ACTION_MOVE:
-//			float x_cord = (float) event.getRawX();
-//			float y_cord = (float) event.getRawY();
-//
-//			if (x_cord > eventX) {
-//				x_cord = eventX;
-//			}
-//			if (y_cord > eventY) {
-//				y_cord = eventY;
-//			}
-//			break;
-//		default:
-//			break;
-//		}
-		return true;
+	public boolean performClick() {
+		// TODO Auto-generated method stub
+		return super.performClick();
 	}
-
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		return this.performClick();
+	}
 }
