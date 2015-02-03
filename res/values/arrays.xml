@@ -20,6 +20,7 @@
       	<item name="aulaescuela">@drawable/aulaescuela</item>
         <item name="banioescuela">@drawable/banioescuela</item>
         <item name="patioescuela">@drawable/patioescuela</item>
+        <item name="nueva">@drawable/nueva</item>
     </string-array>
 	
 	 <string-array name="image_ids">

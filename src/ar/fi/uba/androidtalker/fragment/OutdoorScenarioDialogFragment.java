@@ -9,6 +9,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,10 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 
 	// Use this instance of the interface to deliver action events
 	NewSceneActivity listener;
+	private static int RESULT_LOAD_IMAGE = 1;
+	private ImageNewSceneAdapter imageAdapter;
+	private GridView gridView = null;
+	
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -41,8 +46,10 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		View v = inflater.inflate(R.layout.layout_ext_scenes, container, false);
-        GridView gridView = (GridView) v.findViewById(R.id.gridView);
-        gridView.setAdapter(new ImageNewSceneAdapter(listener));
+        gridView = (GridView) v.findViewById(R.id.gridView);
+        imageAdapter = new ImageNewSceneAdapter(listener);
+        imageAdapter.setParentFragment(this);
+        gridView.setAdapter(imageAdapter);
         
 		Button exitBttn = (Button) v.findViewById(R.id.new_scene_exit);
 		Button innerBttn = (Button) v.findViewById(R.id.new_scene_inner);
@@ -70,11 +77,12 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 				tran.hide(fragmentOutdoor);
 				tran.show(fragmentInner);
 				tran.commit();
-				//TODO: por ahora se usa la posicion como key para buscar las imagenes de escenarios interiores
+				// TODO: por ahora se usa la posicion como key para buscar las imagenes 
+				//de escenarios interiores, cambiar cuando se traiga de la base de datos
 				int position = (int) ImageNewSceneAdapter.getPosition();
 				ImagesDao.getInstance().setPositionDao(position);
 				String title = getResources().getString(ImagesDao.getScenarioNameByPos(position));
-				listener.setTitle("SELECCIONE UN INTERIOR DE " + title);
+				listener.setTitle(getResources().getString(R.string.title_activity_new_scene_inner) + " " + title);
 			}
 		});
 		
@@ -102,7 +110,20 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 			}
 
 		});
-		
+				
 		return v;
+	}	
+	Bitmap selectedImage=null;
+	String picturePath;
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == RESULT_LOAD_IMAGE && null != data) {
+			Uri selectedImage = data.getData();
+			// View gridItem = imageAdapter.addItem(5, null, gridView);
+			View gridItem = imageAdapter.getItemGrid(6);
+			imageAdapter.setItem(gridItem, "IMAGEN NUEVA", selectedImage);
+		}
 	}
 }

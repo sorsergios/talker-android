@@ -44,12 +44,13 @@
     <string name="title_activity_new_scene">SELECCIONE UN ESCENARIO</string>
     <string name="new_scene_start">EMPEZAR</string>
     <string name="new_scene_inner">INTERIOR</string>
+    <string name="new_scene_load_picture">AGREGAR ESCENARIO</string>
     <string name="new_scene_exit">SALIR</string>
 
     <!-- pantalla elegir interior de escenario -->
-    <string name="title_activity_new_scene_inner">SELECCIONE EL INTERIOR DE ESCENARIO</string>
+    <string name="title_activity_new_scene_inner">SELECCIONE UN INTERIOR DE</string>
     <string name="new_scene_inner_start">EMPEZAR</string>
-    <string name="new_scene_inner_exit">SALIR</string>
+    <string name="new_scene_inner_exit">VOLVER</string>
     
     <!-- Canvas texts -->
     <string name="canvas_done">HECHO</string>
@@ -66,18 +67,19 @@
     <string name="banio">BAÑO</string>
     <string name="aula">AULA</string>
     <string name="patio">PATIO</string>
+    <string name="nueva">NUEVA</string>
     
     <!-- otras pantallas -->
 	
-    <!-- fragment text -->
+    <!-- fragment insert text -->
     <string name="insert_text_title">INSERTAR TEXTO</string>
     <string name="insert_text_accept">ACEPTAR</string>
     <string name="insert_text_cancel">CANCELAR</string>
 
-    
-    
-    
-    
-    
+    <!-- fragment insert image -->
+    <string name="insert_image_title">INSERTAR IMAGEN</string>
+    <string name="insert_image_accept">ACEPTAR</string>
+    <string name="insert_image_cancel">CANCELAR</string>
 
+    
 </resources>
