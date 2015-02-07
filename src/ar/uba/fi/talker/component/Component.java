@@ -25,9 +25,6 @@ public abstract class Component extends View {
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
 		
-		if (event.getAction() == MotionEvent.ACTION_UP) {
-			active  = false;
-		}
 		return active && super.dispatchTouchEvent(event);
 	}
 
@@ -73,6 +70,10 @@ public abstract class Component extends View {
 				y2 = point.y + Component.TOLERANCE;
 			}
 		}
+	}
+	
+	public void toggleActive() {
+		active = !active;
 	}
 
 	public void setValue(Editable text) {

@@ -19,6 +19,7 @@ public class Text extends Component {
 		super(context);
 		point = new Point();
 		paint = PaintManager.getPaint(PaintType.TEXT);
+		value = "";
 	}
 
 	@Override
@@ -29,7 +30,7 @@ public class Text extends Component {
 	
 	@Override
 	public boolean performClick() {
-		return super.performClick();
+		return super.performClick() || true;
 	}
 	
 	@Override
@@ -37,12 +38,15 @@ public class Text extends Component {
 		float eventX = event.getAxisValue(MotionEvent.AXIS_X);
 		float eventY = event.getAxisValue(MotionEvent.AXIS_Y);
 
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+		case MotionEvent.ACTION_MOVE:
 			point.x = (int) eventX;
 			point.y = (int) eventY;
-			value = "";
+			break;
 		}
-
+		
+		this.invalidate();
 		return this.performClick();
 	}
 
