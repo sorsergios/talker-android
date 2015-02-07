@@ -14,9 +14,11 @@ import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
+import ar.uba.fi.talker.component.Image;
 import ar.uba.fi.talker.component.command.ActivityCommand;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
@@ -31,7 +33,7 @@ public class Scenario extends FrameLayout {
 	
 	private Bitmap mImage = null;
 
-	private ActivityCommand command;
+	private Component alterComponent;
 
 	public Scenario(Context context) {
 		super(context);
@@ -55,8 +57,7 @@ public class Scenario extends FrameLayout {
 
 	@Override
 	public boolean performClick() {
-		super.performClick();
-		return true;
+		return super.performClick() || true;
 	}
 	
 	@Override
@@ -74,10 +75,7 @@ public class Scenario extends FrameLayout {
 			layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 			
 			this.addView(activeComponent, layoutParams);
-			if (command != null) {
-				command.execute();
-			}
-//			this.bringToFront();
+
 			components.add(activeComponent);
 		}
 		activeComponent.onTouchEvent(event);
@@ -108,7 +106,7 @@ public class Scenario extends FrameLayout {
 		mImage = image;
 		
         BitmapDrawable background = new BitmapDrawable(getResources(), image);
-		this.setBackgroundDrawable(background);
+		this.setBackground(background);
 	}
 
 	public Collection<Component> getComponents() {
@@ -126,15 +124,37 @@ public class Scenario extends FrameLayout {
 
 	public void setActiveComponentType(ComponentType type) {
 		this.setActiveComponentType(type, null);
+		if (this.alterComponent != null) {
+			this.alterComponent.toggleActive();
+			this.alterComponent = null;
+		}
 	}
 	
 	public void setActiveComponentType(ComponentType type, ActivityCommand command) {
 		this.activeComponentType = type;
-		this.command = command;
 	}
 
 	public void setText(Editable text) {
-		activeComponent.setValue(text);
+		alterComponent = ComponentFactory.createComponent(ComponentType.TEXT, getContext());
+	
+		android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
+		layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+		layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+		
+		this.addView(alterComponent, layoutParams);
+		alterComponent.setValue(text);
+	}
+
+	public void addImage(ImageView image) {
+		alterComponent = ComponentFactory.createComponent(ComponentType.IMAGE, getContext());
+	
+		android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
+		layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+		layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+		
+		this.addView(alterComponent, layoutParams);
+		
+		((Image) alterComponent).setContent(image);
 	}
 
 }
