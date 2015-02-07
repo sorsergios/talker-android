@@ -77,7 +77,7 @@ public class Scenario extends FrameLayout {
 			if (command != null) {
 				command.execute();
 			}
-			this.bringToFront();
+//			this.bringToFront();
 			components.add(activeComponent);
 		}
 		activeComponent.onTouchEvent(event);
@@ -108,7 +108,7 @@ public class Scenario extends FrameLayout {
 		mImage = image;
 		
         BitmapDrawable background = new BitmapDrawable(getResources(), image);
-		this.setBackground(background);
+		this.setBackgroundDrawable(background);
 	}
 
 	public Collection<Component> getComponents() {

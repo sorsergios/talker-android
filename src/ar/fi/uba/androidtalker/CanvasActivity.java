@@ -49,6 +49,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			@Override
 			public void onClick(View v) {
 				scenario.setActiveComponentType(ComponentType.PENCIL);
+				scenario.invalidate();
 			}
 		});
 
@@ -57,6 +58,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			@Override
 			public void onClick(View v) {
 				scenario.setActiveComponentType(ComponentType.ERASER);
+				scenario.invalidate();
 			}
 		});
 
@@ -172,7 +174,7 @@ public class CanvasActivity extends ActionBarActivity implements
 				default:
 					break;
 				}
-				return v.performClick();
+				return true;//v.performClick();
 			}
 		});
 		linearLayout.addView(ima1);
