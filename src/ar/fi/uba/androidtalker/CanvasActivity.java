@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -129,8 +130,8 @@ public class CanvasActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onDialogPositiveClickInsertImageDialogListener(
-			DialogFragment dialog) {
+	public void onDialogPositiveClickInsertImageDialogListener(Uri uri) {
+		
 		final Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 		
 		Display display = getWindowManager().getDefaultDisplay();
@@ -143,7 +144,7 @@ public class CanvasActivity extends ActionBarActivity implements
 		System.out.println("height" + windowheight);
 		RelativeLayout linearLayout = (RelativeLayout) findViewById(R.id.canvas_default);
 		final ImageView ima1 = new ImageView(CanvasActivity.this);
-		ima1.setImageResource(R.drawable.ic_launcher);
+		ima1.setImageURI(uri);
 
 		ima1.setOnTouchListener(new View.OnTouchListener() {
 			
@@ -180,6 +181,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			}
 		});
 		linearLayout.addView(ima1);
+		ima1.getLayoutParams().height = 150;
 		s.setActiveComponentType(ComponentType.IMAGE);
 		s.invalidate();
 
