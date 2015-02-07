@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import ar.fi.uba.androidtalker.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
 import ar.fi.uba.androidtalker.InsertImageDialogFragment.InsertImageDialogListener;
 import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment;
 import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment.TextDialogListener;
@@ -25,7 +26,7 @@ import ar.uba.fi.talker.component.command.ActivityCommand;
 import ar.uba.fi.talker.view.Scenario;
 
 public class CanvasActivity extends ActionBarActivity implements
-		TextDialogListener, InsertImageDialogListener {
+		TextDialogListener, InsertImageDialogListener, EraseAllConfirmationDialogListener {
 
 	final String TAG = "CanvasActivity";
 
@@ -64,9 +65,10 @@ public class CanvasActivity extends ActionBarActivity implements
 
 		ImageButton eraseAllOp = (ImageButton) findViewById(R.id.eraseAllOption);
 		eraseAllOp.setOnClickListener(new View.OnClickListener() {
-			@Override
 			public void onClick(View v) {
-				scenario.clear();
+				DialogFragment newFragment = new EraseAllConfirmationDialogFragment();
+				newFragment.show(getSupportFragmentManager(), "erase_all");
+				scenario.invalidate();
 			}
 		});
 
@@ -181,6 +183,13 @@ public class CanvasActivity extends ActionBarActivity implements
 		s.setActiveComponentType(ComponentType.IMAGE);
 		s.invalidate();
 
+	}
+
+	@Override
+	public void onDialogPositiveClickEraseAllConfirmationListener(
+			DialogFragment dialog) {
+		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
+		scenario.clear();
 	}
 
 }

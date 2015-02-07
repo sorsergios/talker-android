@@ -34,21 +34,12 @@
         android:scaleType="fitCenter"
 		android:adjustViewBounds="true"  />
     
-    <ImageButton
-        android:id="@+id/eraseAllOption"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/eraserOption"
-        android:src="@drawable/erase_all"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="fitCenter"
-		android:adjustViewBounds="true"  />
 
     <ImageButton
         android:id="@+id/textOption"
         android:layout_above="@+id/gestureOverlayView1"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/eraseAllOption"
+        android:layout_toRightOf="@+id/eraserOption"
         android:src="@drawable/insert_text"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -102,7 +93,16 @@
         android:scaleType="fitCenter"
 		android:adjustViewBounds="true"  />
 
-    
+	<ImageButton
+        android:id="@+id/eraseAllOption"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/calendarOption"
+        android:src="@drawable/erase_all"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  />
+	
 
     <ImageButton
         android:id="@+id/bottom"

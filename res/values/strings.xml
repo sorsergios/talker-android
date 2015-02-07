@@ -80,5 +80,12 @@
     <string name="insert_image_accept">ACEPTAR</string>
     <string name="insert_image_cancel">CANCELAR</string>
 
+    <!-- erase all -->
+    <string name="erase_all_title">BORRAR TODO</string>
+    <string name="erase_all_message">ESTA SEGURO QUE DESEA BORRAR TODO?</string>
+    <string name="erase_all_accept">ACEPTAR</string>
+    <string name="erase_all_cancel">CANCELAR</string>
+    
+    
     
 </resources>
