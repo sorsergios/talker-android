@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.InputType;
 import android.widget.EditText;
 import ar.fi.uba.androidtalker.R;
 
@@ -38,6 +39,7 @@ public class TextDialogFragment extends DialogFragment {
 
 		EditText input = new EditText(getActivity());
 		input.setId(R.id.insert_text_input);
+		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
 		builder.setView(input)
 				.setTitle(R.string.insert_text_title)
 				.setPositiveButton(R.string.insert_text_accept,
