@@ -27,14 +27,14 @@ public class InnerScenarioDialogFragment extends Fragment {
 	public static long position;
 	
 	// Use this instance of the interface to deliver action events
-	NewSceneActivity listener;
+	NewSceneActivity newSceneActivity;
 	GridView gridViewInner;
 	
 	@Override
 	public void onAttach(Activity activity){
 	    super.onAttach(activity);
 	    try{
-	        listener = (NewSceneActivity) activity;
+	        newSceneActivity = (NewSceneActivity) activity;
 	    }catch(ClassCastException e){
 	        throw new ClassCastException(activity.toString() + " must implement NewSceneActivity");
 	    }
@@ -44,7 +44,7 @@ public class InnerScenarioDialogFragment extends Fragment {
 	 */
 	public void initAdapter() {
 		 gridViewInner = (GridView) this.getView().findViewById(R.id.gridViewInner);
-		 ImageNewInnerSceneAdapter innerAdapter = new ImageNewInnerSceneAdapter(listener, getPosition());
+		 ImageNewInnerSceneAdapter innerAdapter = new ImageNewInnerSceneAdapter(newSceneActivity, getPosition());
 		 gridViewInner.setAdapter(innerAdapter);
 	}
 	
@@ -63,7 +63,7 @@ public class InnerScenarioDialogFragment extends Fragment {
 
 				Bundle extras = new Bundle();
 				extras.putByteArray("BMP",bytes);
-				Intent intent = new Intent(listener.getApplicationContext(), CanvasActivity.class);
+				Intent intent = new Intent(newSceneActivity.getApplicationContext(), CanvasActivity.class);
 				intent.putExtras(extras);
 				startActivity(intent);
 			}
@@ -90,7 +90,7 @@ public class InnerScenarioDialogFragment extends Fragment {
 				tran.show(fragmentOutdoor);
 				tran.hide(fragmentInner);
 				tran.commit();
-				listener.setTitle(R.string.title_activity_new_scene);
+				newSceneActivity.setTitle(R.string.title_activity_new_scene);
 			}
 		});
         return v;
