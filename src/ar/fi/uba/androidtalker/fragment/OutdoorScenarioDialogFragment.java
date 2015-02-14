@@ -1,6 +1,5 @@
 package ar.fi.uba.androidtalker.fragment;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import android.app.Activity;
@@ -25,7 +24,7 @@ import ar.fi.uba.talker.utils.ImageUtils;
 public class OutdoorScenarioDialogFragment extends Fragment {
 
 	// Use this instance of the interface to deliver action events
-	NewSceneActivity listener;
+	NewSceneActivity newSceneActivity;
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static int RESULT_SELECT_IMAGE = 2;
 	private ImageNewSceneAdapter imageAdapter;
@@ -36,7 +35,7 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 	public void onAttach(Activity activity){
 	    super.onAttach(activity);
 	    try{
-	        listener = (NewSceneActivity) activity;
+	        newSceneActivity = (NewSceneActivity) activity;
 	    }catch(ClassCastException e){
 	        throw new ClassCastException(activity.toString() + " must implement StartPayperiodDialogListener");
 	    }
@@ -47,7 +46,7 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 		
 		View v = inflater.inflate(R.layout.layout_ext_scenes, container, false);
         gridView = (GridView) v.findViewById(R.id.gridView);
-        imageAdapter = new ImageNewSceneAdapter(listener);
+        imageAdapter = new ImageNewSceneAdapter(newSceneActivity);
         imageAdapter.setParentFragment(this);
         gridView.setAdapter(imageAdapter);
        
@@ -57,7 +56,7 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 		exitBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				listener.finish();
+				newSceneActivity.finish();
 				System.exit(0);
 			}
 		});
@@ -71,7 +70,7 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 				
 				Bundle extras = new Bundle();
 				extras.putByteArray("BMP",bytes);
-				Intent intent = new Intent(listener.getApplicationContext(), CanvasActivity.class);
+				Intent intent = new Intent(newSceneActivity.getApplicationContext(), CanvasActivity.class);
 				intent.putExtras(extras);
 				startActivity(intent);
 			}
@@ -85,11 +84,12 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		//TODO acá esta configurado el codigo de empezar directo
 		if (requestCode == RESULT_LOAD_IMAGE && null != data) {
 			Uri imageUri = data.getData();
 	        Bitmap bitmap = null;
 			try {
-				bitmap = MediaStore.Images.Media.getBitmap(listener.getContentResolver(), imageUri);
+				bitmap = MediaStore.Images.Media.getBitmap(newSceneActivity.getContentResolver(), imageUri);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -101,7 +101,7 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 			
 			Bundle extras = new Bundle();
 			extras.putByteArray("BMP",bytes);
-			Intent intent = new Intent(listener.getApplicationContext(), CanvasActivity.class);
+			Intent intent = new Intent(newSceneActivity.getApplicationContext(), CanvasActivity.class);
 			intent.putExtras(extras);
 			startActivity(intent);
 		}		
