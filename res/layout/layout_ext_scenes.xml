@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:gravity="top"
 	android:background="#000"
@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/new_scene_start"
+        android:layout_alignParentRight="true"
         android:layout_margin="5dp"
         android:columnWidth="300dp"
         android:drawSelectorOnTop="true"
@@ -43,7 +44,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/gridView"
         android:background="?android:selectableItemBackground"
-        android:layout_marginBottom="14dp"
         android:enabled="false"
         android:src="@drawable/start" />
 

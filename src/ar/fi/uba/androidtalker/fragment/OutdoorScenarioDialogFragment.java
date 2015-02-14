@@ -73,7 +73,7 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 			@Override
 			public void onClick(View v) {
 				if (ImageNewSceneAdapter.getItemSelectedId() == null) {
-					Toast.makeText(newSceneActivity, "Debe elegir una imagen para continuar", Toast.LENGTH_SHORT).show();
+					Toast.makeText(newSceneActivity, "Debe elegir un escenario para continuar", Toast.LENGTH_SHORT).show();
 				} else{
 					long imageViewId = ImageNewSceneAdapter.getItemSelectedId();
 					byte[] bytes = ImageUtils.transformImage(getResources(), imageViewId); 
@@ -90,7 +90,7 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 			@Override
 			public void onClick(View v) {
 				if (ImageNewSceneAdapter.getItemSelectedId() == null) {
-					Toast.makeText(newSceneActivity, "Debe elegir una imagen para continuar", Toast.LENGTH_SHORT).show();
+					Toast.makeText(newSceneActivity, "Debe elegir un escenario para continuar", Toast.LENGTH_SHORT).show();
 				} else {
 					ActivityCommand command = new ActivityCommand() {
 						@Override
