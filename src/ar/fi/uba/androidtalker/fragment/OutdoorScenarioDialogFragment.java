@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -90,6 +91,9 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (ImageNewSceneAdapter.getItemSelectedId() == null) {
+					Toast.makeText(newSceneActivity, "Debe elegir una imagen para continuar", Toast.LENGTH_SHORT).show();
+				} else{
 				ActivityCommand command = new ActivityCommand() {
 					@Override
 					public void execute() {
@@ -98,6 +102,7 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 					}
 				};
 				command.execute();
+				}
 			}
 		});
 		return v;
@@ -127,12 +132,16 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		}		
 	}
 
-	@Override
-	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
+	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog, int position) {
 		Dialog dialogView = dialog.getDialog();
 		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
 		Bitmap selectedImage=null;
-		View gridItem = imageAdapter.getItemGrid(6);
+		View gridItem = imageAdapter.getItemGrid(position);
 		imageAdapter.setItem(gridItem, inputText.getText().toString(), selectedImage);
+	}
+
+	@Override
+	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
+		Log.d("error", "viene por aca");
 	}
 }
