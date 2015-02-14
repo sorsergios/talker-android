@@ -134,6 +134,12 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 			return gridItem;
 		}
 		
+		public View setItem(View gridItem,String text){
+			TextView textView = (TextView) gridItem.findViewById(R.id.text);
+ 	        textView.setText(text);        
+			return gridItem;
+		}
+		
 		public View addItem(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
   	      	View gridItem=null;	  
@@ -145,7 +151,7 @@ public class ImageNewSceneAdapter extends BaseAdapter {
   	      	}  	      
   	      	return gridItem;
 		}
-		
+
 		public View getItemGrid(int position){
 			return this.gridItems.get(position);
 		}

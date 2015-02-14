@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,10 +33,9 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 	// Use this instance of the interface to deliver action events
 	NewSceneActivity newSceneActivity;
 	private static int RESULT_LOAD_IMAGE = 1;
-	private static int RESULT_SELECT_IMAGE = 2;
 	private ImageNewSceneAdapter imageAdapter;
 	private GridView gridView = null;
-	
+	private View view = null;
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -93,22 +91,30 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 			public void onClick(View v) {
 				if (ImageNewSceneAdapter.getItemSelectedId() == null) {
 					Toast.makeText(newSceneActivity, "Debe elegir una imagen para continuar", Toast.LENGTH_SHORT).show();
-				} else{
-				ActivityCommand command = new ActivityCommand() {
-					@Override
-					public void execute() {
-						DialogFragment newFragment = new ChangeNameDialogFragment();
-						newFragment.show(newSceneActivity.getSupportFragmentManager(), "insert_text");
-					}
-				};
-				command.execute();
+				} else {
+					ActivityCommand command = new ActivityCommand() {
+						@Override
+						public void execute() {
+							final int numVisibleChildren = gridView.getChildCount();
+							final int firstVisiblePosition = gridView.getFirstVisiblePosition();
+
+							for ( int i = 0; i < numVisibleChildren; i++ ) {
+							    int positionOfView = firstVisiblePosition + i;
+							    int positionIamLookingFor = (int) ImageNewSceneAdapter.getPosition();
+							    if (positionOfView == positionIamLookingFor) {
+							        view = gridView.getChildAt(i);
+							    }
+							}
+							DialogFragment newFragment = new ChangeNameDialogFragment();
+							newFragment.show(newSceneActivity.getSupportFragmentManager(), "insert_text");
+						}
+					};
+					command.execute();
 				}
 			}
 		});
 		return v;
 	}	
-	Bitmap selectedImage=null;
-	String picturePath;
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -132,20 +138,10 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		}		
 	}
 
-	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog, int position) {
-		Dialog dialogView = dialog.getDialog();
-		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
-		Bitmap selectedImage=null;
-		View gridItem = imageAdapter.getItemGrid(position);
-		imageAdapter.setItem(gridItem, inputText.getText().toString(), selectedImage);
-	}
-
 	@Override
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
 		Dialog dialogView = dialog.getDialog();
 		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
-		Bitmap selectedImage=null;
-		View gridItem = imageAdapter.getItemGrid(6);
-		imageAdapter.setItem(gridItem, inputText.getText().toString(), selectedImage);
+		imageAdapter.setItem(view, inputText.getText().toString());
 	}
 }

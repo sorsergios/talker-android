@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ar.fi.uba.androidtalker.R;
 import ar.fi.uba.androidtalker.dao.ImagesDao;
+import ar.fi.uba.talker.utils.ImageUtils;
 
 public class ImageNewInnerSceneAdapter extends BaseAdapter {
 
@@ -21,15 +22,7 @@ public class ImageNewInnerSceneAdapter extends BaseAdapter {
 	    
 	    public ImageNewInnerSceneAdapter(Context c,long position) {
 	        mContext = c;
-	        ImagesDao.getInstance().setPositionDao(safeLongToInt(position));
-	    }
-	    
-	    public static int safeLongToInt(long l) {
-	        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
-	            throw new IllegalArgumentException
-	                (l + " cannot be cast to int without changing its value.");
-	        }
-	        return (int) l;
+	        ImagesDao.getInstance().setPositionDao(ImageUtils.safeLongToInt(position));
 	    }
 	    
 	    @Override

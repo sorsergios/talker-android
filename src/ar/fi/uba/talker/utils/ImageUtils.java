@@ -26,4 +26,12 @@ public final class ImageUtils {
 		byte[] bytes = stream.toByteArray();
 		return bytes;
 	}
+	
+	public static int safeLongToInt(long l) {
+	    int i = (int)l;
+	    if ((long)i != l) {
+	        throw new IllegalArgumentException(l + " cannot be cast to int without changing its value.");
+	    }
+	    return i;
+	}
 }
