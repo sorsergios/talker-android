@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,19 +62,22 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 			  public void onClick(View v) {
 
 					Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
-					if (position == 5) {
+					if (position == 1) {
+						
+					}
+					else if (position == 2) {
+						
+					}
+					else if (position == 5) {
 						Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 						parentFragment.startActivityForResult(i, RESULT_LOAD_IMAGE);
 						
 					}
 					else{
-						Button startScenarioBttn = (Button) ((ActionBarActivity) mContext).findViewById(R.id.new_scene_start);
+						ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) mContext).findViewById(R.id.new_scene_start);
 						startScenarioBttn.setEnabled(true);
-						//enables the "INTERIOR" button only if you have internal images
-						if (ImagesDao.getInstance().getInnerScenarioSize() > 0){
-							Button innerScenarioBttn = (Button) ((ActionBarActivity) mContext).findViewById(R.id.new_scene_inner);
-							innerScenarioBttn.setEnabled(true);
-						}
+						ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) mContext).findViewById(R.id.new_scene_edit_scenario_name);
+						editNameScenarioBttn.setEnabled(true);
 						v.setSelected(true);
 						itemSelectedId = getItemId(position);
 						pos = position;

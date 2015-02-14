@@ -21,6 +21,7 @@ import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
 import ar.fi.uba.androidtalker.adapter.ImageNewInnerSceneAdapter;
 
+@Deprecated
 public class InnerScenarioDialogFragment extends Fragment {
 
 	public static long position;

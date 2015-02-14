@@ -5,6 +5,7 @@ import ar.fi.uba.androidtalker.R;
 /*
  * dao to images.
  */
+
 public class ImagesDao {
 	
 	private static ImagesDao instance = null;
@@ -99,7 +100,14 @@ public class ImagesDao {
             R.drawable.colectivo, 
             R.drawable.escuela,
             R.drawable.blanco,
-            R.drawable.nueva
+            R.drawable.nueva,
+            R.drawable.living,
+            R.drawable.cocina,
+            R.drawable.habitacion, 
+            R.drawable.banio,
+            R.drawable.aulaescuela,
+            R.drawable.banioescuela,
+            R.drawable.patioescuela
     };
     
     private static Integer[] mTextsIdsScenario = {
@@ -108,7 +116,14 @@ public class ImagesDao {
     		R.string.colectivo,
     		R.string.escuela,
     		R.string.blanco,
-    		R.string.nueva
+    		R.string.nueva,
+    		R.string.living,
+    		R.string.cocina,
+    		R.string.habitacion,
+    		R.string.banio,
+    		R.string.aula,
+    		R.string.banio,
+    		R.string.patio
     };
     
 	public static Integer getScenarioImageByPos(int position) {

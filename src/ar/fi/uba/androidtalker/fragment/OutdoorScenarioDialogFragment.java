@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,13 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import ar.fi.uba.androidtalker.CanvasActivity;
 import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
 import ar.fi.uba.androidtalker.adapter.ImageNewSceneAdapter;
-import ar.fi.uba.androidtalker.dao.ImagesDao;
 
 public class OutdoorScenarioDialogFragment extends Fragment {
 
@@ -51,9 +48,8 @@ public class OutdoorScenarioDialogFragment extends Fragment {
         imageAdapter.setParentFragment(this);
         gridView.setAdapter(imageAdapter);
         
-		Button exitBttn = (Button) v.findViewById(R.id.new_scene_exit);
-		Button innerBttn = (Button) v.findViewById(R.id.new_scene_inner);
-		Button startScenarioBttn = (Button) v.findViewById(R.id.new_scene_start);
+		ImageButton exitBttn = (ImageButton) v.findViewById(R.id.new_scene_exit);
+		ImageButton startScenarioBttn = (ImageButton) v.findViewById(R.id.new_scene_start);
 		
 		exitBttn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -63,28 +59,6 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 			}
 		});
 
-		innerBttn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				//FIXME validar que si tiene cero interiores no cambie de pantalla o vuelva atras
-				FragmentManager fm = getFragmentManager();
-				OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
-				InnerScenarioDialogFragment fragmentInner = (InnerScenarioDialogFragment)fm.findFragmentById(R.id.fragmentInner);
-				fragmentInner.initAdapter();
-				
-				FragmentTransaction tran = fm.beginTransaction();
-				tran.hide(fragmentOutdoor);
-				tran.show(fragmentInner);
-				tran.commit();
-				// TODO: por ahora se usa la posicion como key para buscar las imagenes 
-				//de escenarios interiores, cambiar cuando se traiga de la base de datos
-				int position = (int) ImageNewSceneAdapter.getPosition();
-				ImagesDao.getInstance().setPositionDao(position);
-				String title = getResources().getString(ImagesDao.getScenarioNameByPos(position));
-				listener.setTitle(getResources().getString(R.string.title_activity_new_scene_inner) + " " + title);
-			}
-		});
 		
 		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
