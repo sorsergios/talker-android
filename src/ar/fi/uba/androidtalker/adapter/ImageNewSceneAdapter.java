@@ -5,16 +5,18 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import ar.fi.uba.androidtalker.CanvasActivity;
@@ -53,12 +55,30 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 	    
 	    @Override
 	    public View getView(final int position, View convertView, ViewGroup parent) {	          
-			View gridItem = addItem(position, convertView, parent);
+			final View gridItem = addItem(position, convertView, parent);
 			gridItems.add(gridItem);
 			TextView textView = (TextView) gridItem.findViewById(R.id.text);
 			ImageView imageView = (ImageView) gridItem.findViewById(R.id.image);
 			textView.setText(mContext.getResources().getString(ImagesDao.getScenarioNameByPos(position)));
 			imageView.setImageResource(ImagesDao.getScenarioImageByPos(position));
+			//esto hay que ponerselo a la grilla o a cada imageView segun corresponda
+			
+			if (position == 2) {
+				imageView.setOnLongClickListener(new OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View v) {
+//						Toast toast = Toast.makeText(mContext, "LONGTOUCHEASTE ;)", 200);
+//						toast.show();
+						
+						PopupMenu menu = new PopupMenu(mContext, gridItem);
+						menu.getMenu().add("titleRes");
+						menu.show();
+						
+						return true;
+					}
+				});
+			}
+			
 			imageView.setOnClickListener(new OnClickListener() {
 			  
 
@@ -76,9 +96,7 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 						intent.putExtras(extras);
 						parentFragment.startActivityForResult(intent, RESULT_SELECT_IMAGE);
 					}
-					else if (position == 2) {
-						//TODO:long touch
-					}
+					
 					else if (position == 5) {
 						Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 						parentFragment.startActivityForResult(i, RESULT_LOAD_IMAGE);						
@@ -108,11 +126,11 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 			this.parentFragment = outdoorScenarioDialogFragment;
 		}
 
-		public View setItem(View gridItem,String text,Uri imageUri){
+		public View setItem(View gridItem,String text,Bitmap imageBitmap){
 			TextView textView = (TextView) gridItem.findViewById(R.id.text);
  	        ImageView imageView = (ImageView)gridItem.findViewById(R.id.image);
  	        textView.setText(text); 	        
- 	        imageView.setImageURI(imageUri); 	        
+ 	        imageView.setImageBitmap(imageBitmap); 	        
 			return gridItem;
 		}
 		
