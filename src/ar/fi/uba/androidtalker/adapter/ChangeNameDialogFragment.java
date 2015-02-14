@@ -39,7 +39,6 @@ public class ChangeNameDialogFragment extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		final int position = (int)savedInstanceState.get("position");
 		EditText input = new EditText(getActivity());
 		input.setId(R.id.insert_text_input);
 		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
@@ -50,7 +49,7 @@ public class ChangeNameDialogFragment extends DialogFragment {
 							public void onClick(DialogInterface dialog, int id) {
 								FragmentManager fm = newSceneActivity.getFragmentManager();
 								OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
-								fragmentOutdoor.onDialogPositiveClickTextDialogListener(ChangeNameDialogFragment.this, position);
+								fragmentOutdoor.onDialogPositiveClickTextDialogListener(ChangeNameDialogFragment.this);
 								dialog.dismiss();
 							}
 						})

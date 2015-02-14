@@ -142,6 +142,10 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 
 	@Override
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
-		Log.d("error", "viene por aca");
+		Dialog dialogView = dialog.getDialog();
+		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
+		Bitmap selectedImage=null;
+		View gridItem = imageAdapter.getItemGrid(6);
+		imageAdapter.setItem(gridItem, inputText.getText().toString(), selectedImage);
 	}
 }
