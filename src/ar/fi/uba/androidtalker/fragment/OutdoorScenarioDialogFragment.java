@@ -1,14 +1,15 @@
 package ar.fi.uba.androidtalker.fragment;
 
-import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,12 +20,14 @@ import ar.fi.uba.androidtalker.CanvasActivity;
 import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
 import ar.fi.uba.androidtalker.adapter.ImageNewSceneAdapter;
+import ar.fi.uba.talker.utils.ImageUtils;
 
 public class OutdoorScenarioDialogFragment extends Fragment {
 
 	// Use this instance of the interface to deliver action events
 	NewSceneActivity listener;
 	private static int RESULT_LOAD_IMAGE = 1;
+	private static int RESULT_SELECT_IMAGE = 2;
 	private ImageNewSceneAdapter imageAdapter;
 	private GridView gridView = null;
 	
@@ -47,7 +50,7 @@ public class OutdoorScenarioDialogFragment extends Fragment {
         imageAdapter = new ImageNewSceneAdapter(listener);
         imageAdapter.setParentFragment(this);
         gridView.setAdapter(imageAdapter);
-        
+       
 		ImageButton exitBttn = (ImageButton) v.findViewById(R.id.new_scene_exit);
 		ImageButton startScenarioBttn = (ImageButton) v.findViewById(R.id.new_scene_start);
 		
@@ -64,7 +67,7 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				long imageViewId = (Long) ImageNewSceneAdapter.getItemSelectedId();
-				byte[] bytes = transformImage(imageViewId); 
+				byte[] bytes = ImageUtils.transformImage(getResources(), imageViewId); 
 				
 				Bundle extras = new Bundle();
 				extras.putByteArray("BMP",bytes);
@@ -72,17 +75,6 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 				intent.putExtras(extras);
 				startActivity(intent);
 			}
-
-			private byte[] transformImage(long imageViewId) {
-				Bitmap image = BitmapFactory.decodeResource(getResources(),(int) imageViewId);
-				int newHeight = (int) ( image.getHeight() * (512.0 / image.getWidth()) );
-				Bitmap scaled = Bitmap.createScaledBitmap(image, 512, newHeight, true);
-		        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		        scaled.compress(Bitmap.CompressFormat.PNG, 70, stream);
-		        byte[] bytes = stream.toByteArray();
-				return bytes;
-			}
-
 		});
 				
 		return v;
@@ -94,10 +86,24 @@ public class OutdoorScenarioDialogFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == RESULT_LOAD_IMAGE && null != data) {
-			Uri selectedImage = data.getData();
-			// View gridItem = imageAdapter.addItem(5, null, gridView);
-			View gridItem = imageAdapter.getItemGrid(6);
-			imageAdapter.setItem(gridItem, "IMAGEN NUEVA", selectedImage);
-		}
+			Uri imageUri = data.getData();
+	        Bitmap bitmap = null;
+			try {
+				bitmap = MediaStore.Images.Media.getBitmap(listener.getContentResolver(), imageUri);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+//			// View gridItem = imageAdapter.addItem(5, null, gridView);
+//			View gridItem = imageAdapter.getItemGrid(6);
+//			imageAdapter.setItem(gridItem, "IMAGEN NUEVA", selectedImage);
+			 
+			byte[] bytes = ImageUtils.transformImage(bitmap); 
+			
+			Bundle extras = new Bundle();
+			extras.putByteArray("BMP",bytes);
+			Intent intent = new Intent(listener.getApplicationContext(), CanvasActivity.class);
+			intent.putExtras(extras);
+			startActivity(intent);
+		}		
 	}
 }

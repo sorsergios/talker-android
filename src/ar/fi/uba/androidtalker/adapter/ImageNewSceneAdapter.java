@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import ar.fi.uba.androidtalker.CanvasActivity;
 import ar.fi.uba.androidtalker.R;
 import ar.fi.uba.androidtalker.dao.ImagesDao;
 import ar.fi.uba.androidtalker.fragment.OutdoorScenarioDialogFragment;
+import ar.fi.uba.talker.utils.ImageUtils;
 
 public class ImageNewSceneAdapter extends BaseAdapter {
 
@@ -27,6 +30,7 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 	    private static long itemSelectedId;
 	    private static int pos;
 	    private static int RESULT_LOAD_IMAGE = 1;
+		private static int RESULT_SELECT_IMAGE = 2;
 	    private List<View> gridItems = new ArrayList<View>();
 	    
 	    public ImageNewSceneAdapter(Context c) {
@@ -63,15 +67,21 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 
 					Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
 					if (position == 1) {
+						Intent intent = new Intent(v.getContext(), CanvasActivity.class);
+						long imageViewId = getItemId(position);
+						byte[] bytes =ImageUtils.transformImage(parentFragment.getResources(), imageViewId); 
 						
+						Bundle extras = new Bundle();
+						extras.putByteArray("BMP",bytes);
+						intent.putExtras(extras);
+						parentFragment.startActivityForResult(intent, RESULT_SELECT_IMAGE);
 					}
 					else if (position == 2) {
-						
+						//TODO:long touch
 					}
 					else if (position == 5) {
 						Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-						parentFragment.startActivityForResult(i, RESULT_LOAD_IMAGE);
-						
+						parentFragment.startActivityForResult(i, RESULT_LOAD_IMAGE);						
 					}
 					else{
 						ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) mContext).findViewById(R.id.new_scene_start);
@@ -81,7 +91,7 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 						v.setSelected(true);
 						itemSelectedId = getItemId(position);
 						pos = position;
-					}
+					}					
 				}
 			});
 	        return gridItem;
