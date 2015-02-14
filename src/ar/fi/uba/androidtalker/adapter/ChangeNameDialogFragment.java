@@ -22,13 +22,13 @@ public class ChangeNameDialogFragment extends DialogFragment {
 	}
 
 	// Use this instance of the interface to deliver action events
-	NewSceneActivity listener;
+	NewSceneActivity newSceneActivity;
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			listener = (NewSceneActivity) activity;
+			newSceneActivity = (NewSceneActivity) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement NewSceneActivity");
@@ -48,7 +48,7 @@ public class ChangeNameDialogFragment extends DialogFragment {
 				.setPositiveButton(R.string.insert_text_accept,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								FragmentManager fm = listener.getFragmentManager();
+								FragmentManager fm = newSceneActivity.getFragmentManager();
 								OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
 								fragmentOutdoor.onDialogPositiveClickTextDialogListener(ChangeNameDialogFragment.this);
 								dialog.dismiss();

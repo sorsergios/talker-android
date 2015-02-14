@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import ar.fi.uba.androidtalker.CanvasActivity;
 import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
@@ -72,14 +73,17 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				long imageViewId = (Long) ImageNewSceneAdapter.getItemSelectedId();
-				byte[] bytes = ImageUtils.transformImage(getResources(), imageViewId); 
-				
-				Bundle extras = new Bundle();
-				extras.putByteArray("BMP",bytes);
-				Intent intent = new Intent(newSceneActivity.getApplicationContext(), CanvasActivity.class);
-				intent.putExtras(extras);
-				startActivity(intent);
+				if (ImageNewSceneAdapter.getItemSelectedId() == null) {
+					Toast.makeText(newSceneActivity, "Debe elegir una imagen para continuar", Toast.LENGTH_SHORT).show();
+				} else{
+					long imageViewId = ImageNewSceneAdapter.getItemSelectedId();
+					byte[] bytes = ImageUtils.transformImage(getResources(), imageViewId); 
+					Bundle extras = new Bundle();
+					extras.putByteArray("BMP",bytes);
+					Intent intent = new Intent(newSceneActivity.getApplicationContext(), CanvasActivity.class);
+					intent.putExtras(extras);
+					startActivity(intent);
+				}
 			}
 		});
 		

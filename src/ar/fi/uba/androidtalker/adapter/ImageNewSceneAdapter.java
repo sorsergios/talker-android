@@ -29,7 +29,7 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 
 	    private Context mContext;
 		private OutdoorScenarioDialogFragment parentFragment;
-	    private static long itemSelectedId;
+	    private static Long itemSelectedId;
 	    private static int pos;
 	    private static int RESULT_LOAD_IMAGE = 1;
 		private static int RESULT_SELECT_IMAGE = 2;
@@ -115,7 +115,7 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 	        return gridItem;
 	    }
 	    
-		public static long getItemSelectedId() {
+		public static Long getItemSelectedId() {
 			return itemSelectedId;
 		}
 		public static long getPosition() {
