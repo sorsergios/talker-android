@@ -3,6 +3,8 @@ package ar.fi.uba.androidtalker.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ar.fi.uba.androidtalker.CanvasActivity;
 import ar.fi.uba.androidtalker.R;
+import ar.fi.uba.androidtalker.constant.QuickActionItem;
 import ar.fi.uba.androidtalker.dao.ImagesDao;
 import ar.fi.uba.androidtalker.fragment.OutdoorScenarioDialogFragment;
 import ar.fi.uba.talker.utils.ImageUtils;
@@ -61,18 +64,45 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 			ImageView imageView = (ImageView) gridItem.findViewById(R.id.image);
 			textView.setText(mContext.getResources().getString(ImagesDao.getScenarioNameByPos(position)));
 			imageView.setImageResource(ImagesDao.getScenarioImageByPos(position));
-			//esto hay que ponerselo a la grilla o a cada imageView segun corresponda
+			//FIXME esto hay que ponerselo a la grilla o a cada imageView segun corresponda
 			
 			if (position == 2) {
 				imageView.setOnLongClickListener(new OnLongClickListener() {
 					@Override
 					public boolean onLongClick(View v) {
-//						Toast toast = Toast.makeText(mContext, "LONGTOUCHEASTE ;)", 200);
-//						toast.show();
+
+						ActionItem nextItem = new ActionItem(QuickActionItem.ESCENARIO_EMPEZAR_ID, 
+								QuickActionItem.ESCENARIO_EMPEZAR_TITLE, mContext.getResources().getDrawable(R.drawable.start));
+						ActionItem nextItem2     = new ActionItem(QuickActionItem.ESCENARIO_EDITAR_ID, 
+								QuickActionItem.ESCENARIO_EDITAR_TITLE, mContext.getResources().getDrawable(R.drawable.editname));
+						ActionItem nextItem3     = new ActionItem(QuickActionItem.ESCENARIO_ELIMINAR_ID, 
+								QuickActionItem.ESCENARIO_ELIMINAR__TITLE, mContext.getResources().getDrawable(R.drawable.erase_all));
+						QuickAction quickAction = new QuickAction(mContext, QuickAction.HORIZONTAL);
+						quickAction.addActionItem(nextItem);
+						quickAction.addActionItem(nextItem2);
+						quickAction.addActionItem(nextItem3);
+						quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {          
+				            @Override
+				            public void onItemClick(QuickAction source, int pos, int actionId) {
+									if (actionId == QuickActionItem.ESCENARIO_EMPEZAR_ID) {
+										//TEST
+										Toast toast = Toast.makeText(mContext,
+												"Cargando escenario", 200);
+										toast.show();
+										
+										Intent intent = new Intent(mContext, CanvasActivity.class);
+										long imageViewId = getItemId(position);
+										byte[] bytes =ImageUtils.transformImage(parentFragment.getResources(), imageViewId); 
+										
+										Bundle extras = new Bundle();
+										extras.putByteArray("BMP",bytes);
+										intent.putExtras(extras);
+										parentFragment.startActivityForResult(intent, RESULT_SELECT_IMAGE);
+									}
+				            }
+				        });
 						
-						PopupMenu menu = new PopupMenu(mContext, gridItem);
-						menu.getMenu().add("titleRes");
-						menu.show();
+						quickAction.show(v);
 						
 						return true;
 					}
@@ -84,7 +114,6 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 
 			@Override
 			  public void onClick(View v) {
-
 					Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
 					if (position == 1) {
 						Intent intent = new Intent(v.getContext(), CanvasActivity.class);
