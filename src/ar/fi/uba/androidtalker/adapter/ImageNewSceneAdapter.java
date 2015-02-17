@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import ar.fi.uba.androidtalker.CanvasActivity;
@@ -87,7 +86,7 @@ public class ImageNewSceneAdapter extends BaseAdapter {
 									if (actionId == QuickActionItem.ESCENARIO_EMPEZAR_ID) {
 										//TEST
 										Toast toast = Toast.makeText(mContext,
-												"Cargando escenario", 200);
+												"Cargando escenario", Toast.LENGTH_LONG);
 										toast.show();
 										
 										Intent intent = new Intent(mContext, CanvasActivity.class);

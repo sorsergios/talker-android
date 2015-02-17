@@ -43,6 +43,11 @@
             android:label="@string/new_scene_start"
             android:screenOrientation="landscape" >
         </activity>
+         <activity
+            android:name=".HistoricalActivity"
+            android:label="@string/conversation_history"
+            android:screenOrientation="landscape" >
+        </activity>
     </application>
 
 </manifest>

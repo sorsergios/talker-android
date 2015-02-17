@@ -86,6 +86,7 @@
     <string name="erase_all_accept">ACEPTAR</string>
     <string name="erase_all_cancel">CANCELAR</string>
     
-    
+    <!-- historial -->
+    <string name="conversation_history">HISTORIAL DE CONVERSACIONES</string>
     
 </resources>

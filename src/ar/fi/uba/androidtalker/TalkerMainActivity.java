@@ -28,6 +28,7 @@ public class TalkerMainActivity extends ActionBarActivity {
 		Button exitBttn = (Button) findViewById(R.id.exit_app_button);
 		Button settingsBttn = (Button) findViewById(R.id.action_settings_button);
 		Button scenarioBttn = (Button) findViewById(R.id.new_conversation_button);
+		Button historicalBttn = (Button) findViewById(R.id.history_panel_button);
 		
 		exitBttn.setOnClickListener(new OnClickListener() {
 
@@ -57,7 +58,14 @@ public class TalkerMainActivity extends ActionBarActivity {
 			}
 		});
 		
-
+		historicalBttn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(getApplicationContext(),
+						HistoricalActivity.class);
+				startActivity(i);
+			}
+		});	
 	}
 
 	@Override
