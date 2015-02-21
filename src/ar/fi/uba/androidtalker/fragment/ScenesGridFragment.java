@@ -12,19 +12,21 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 import ar.fi.uba.androidtalker.R;
-import ar.fi.uba.androidtalker.adapter.GridAdapter;
+import ar.fi.uba.androidtalker.adapter.GridScenesAdapter;
 import ar.fi.uba.talker.utils.GridItems;
 
-public class GridFragment extends Fragment {
+public class ScenesGridFragment extends Fragment {
 
 	private GridView mGridView;
-	private GridAdapter mGridAdapter;
+	private GridScenesAdapter mGridAdapter;
 	GridItems[] gridItems = {};
 	private Activity activity;
+	private OutdoorScenarioDialogFragment parent;
 
-	public GridFragment(GridItems[] gridItems, Activity activity) {
+	public ScenesGridFragment(GridItems[] gridItems, Activity activity, OutdoorScenarioDialogFragment parent) {
 		this.gridItems = gridItems;
 		this.activity = activity;
+		this.parent = parent;
 	}
 
 	@Override
@@ -35,6 +37,10 @@ public class GridFragment extends Fragment {
 		mGridView = (GridView) view.findViewById(R.id.gridView);
 		return view;
 	}
+	
+	public void setParent(OutdoorScenarioDialogFragment parent) {
+		this.parent = parent;
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -42,7 +48,7 @@ public class GridFragment extends Fragment {
 
 		if (activity != null) {
 
-			mGridAdapter = new GridAdapter(activity, gridItems);
+			mGridAdapter = new GridScenesAdapter(activity, gridItems, parent);
 			if (mGridView != null) {
 				mGridView.setAdapter(mGridAdapter);
 			}
@@ -63,5 +69,9 @@ public class GridFragment extends Fragment {
 				"Position Clicked: - " + position + " & " + "Text is: - "
 						+ gridItems[position].getCategory().getName(), Toast.LENGTH_LONG).show();
 		Log.e("TAG", "POSITION CLICKED " + position);
+	}
+	
+	public GridView getmGridView() {
+		return mGridView;
 	}
 }

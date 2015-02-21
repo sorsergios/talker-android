@@ -1,6 +1,8 @@
 package ar.fi.uba.androidtalker.fragment;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -11,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,18 +27,26 @@ import ar.fi.uba.androidtalker.NewSceneActivity;
 import ar.fi.uba.androidtalker.R;
 import ar.fi.uba.androidtalker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.fi.uba.androidtalker.adapter.ChangeNameDialogFragment;
-import ar.fi.uba.androidtalker.adapter.ImageNewSceneAdapter;
+import ar.fi.uba.androidtalker.adapter.GridScenesAdapter;
+import ar.fi.uba.androidtalker.adapter.PagerScenesAdapter;
+import ar.fi.uba.androidtalker.dao.ImagesDao;
+import ar.fi.uba.talker.utils.Category;
+import ar.fi.uba.talker.utils.GridUtils;
 import ar.fi.uba.talker.utils.ImageUtils;
 import ar.uba.fi.talker.component.command.ActivityCommand;
+
+import com.viewpagerindicator.PageIndicator;
 
 public class OutdoorScenarioDialogFragment extends Fragment implements TextDialogListener {
 
 	// Use this instance of the interface to deliver action events
 	NewSceneActivity newSceneActivity;
 	private static int RESULT_LOAD_IMAGE = 1;
-	private ImageNewSceneAdapter imageAdapter;
 	private GridView gridView = null;
 	private View view = null;
+	public PageIndicator pageIndicator;
+	private ViewPager viewPager;
+	private PagerScenesAdapter pagerAdapter;
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -51,11 +62,24 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		View v = inflater.inflate(R.layout.layout_ext_scenes, container, false);
-        gridView = (GridView) v.findViewById(R.id.gridView);
-        imageAdapter = new ImageNewSceneAdapter(newSceneActivity);
-        imageAdapter.setParentFragment(this);
-        gridView.setAdapter(imageAdapter);
-       
+		viewPager = (ViewPager) v.findViewById(R.id.pager);
+		pageIndicator = (PageIndicator) v.findViewById(R.id.pagerIndicator);
+		ArrayList<Category> a = new ArrayList<Category>();
+
+		Category m = null;
+		for (int i = 0; i < ImagesDao.getScenarioSize(); i++) {
+			m = new Category();
+			m.setName(this.getResources().getString(ImagesDao.getScenarioNameByPos(i)));
+			m.setId(ImagesDao.getScenarioImageByPos(i));
+			a.add(m);
+		}
+		
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(newSceneActivity, a, this);
+
+		pagerAdapter = new PagerScenesAdapter(newSceneActivity.getSupportFragmentManager(), gridFragments);
+		viewPager.setAdapter(pagerAdapter);
+		pageIndicator.setViewPager(viewPager);
+		
 		ImageButton exitBttn = (ImageButton) v.findViewById(R.id.new_scene_exit);
 		ImageButton startScenarioBttn = (ImageButton) v.findViewById(R.id.new_scene_start);
 		ImageButton editNameScenarioBttn = (ImageButton) v.findViewById(R.id.new_scene_edit_scenario_name);
@@ -67,15 +91,14 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 				System.exit(0);
 			}
 		});
-
 		
 		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (ImageNewSceneAdapter.getItemSelectedId() == null) {
+				if (GridScenesAdapter.getItemSelectedId() == null) {
 					Toast.makeText(newSceneActivity, "Debe elegir un escenario para continuar", Toast.LENGTH_SHORT).show();
 				} else{
-					long imageViewId = ImageNewSceneAdapter.getItemSelectedId();
+					long imageViewId = GridScenesAdapter.getItemSelectedId();
 					byte[] bytes = ImageUtils.transformImage(getResources(), imageViewId); 
 					Bundle extras = new Bundle();
 					extras.putByteArray("BMP",bytes);
@@ -89,18 +112,20 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (ImageNewSceneAdapter.getItemSelectedId() == null) {
+				if (GridScenesAdapter.getItemSelectedId() == null) {
 					Toast.makeText(newSceneActivity, "Debe elegir un escenario para continuar", Toast.LENGTH_SHORT).show();
 				} else {
 					ActivityCommand command = new ActivityCommand() {
 						@Override
 						public void execute() {
+							ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
+							gridView = sgf.getmGridView();
 							final int numVisibleChildren = gridView.getChildCount();
 							final int firstVisiblePosition = gridView.getFirstVisiblePosition();
 
 							for ( int i = 0; i < numVisibleChildren; i++ ) {
 							    int positionOfView = firstVisiblePosition + i;
-							    int positionIamLookingFor = (int) ImageNewSceneAdapter.getPosition();
+							    int positionIamLookingFor = (int) GridScenesAdapter.getPosition();
 							    if (positionOfView == positionIamLookingFor) {
 							        view = gridView.getChildAt(i);
 							    }
@@ -142,6 +167,7 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
 		Dialog dialogView = dialog.getDialog();
 		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
-		imageAdapter.setItem(view, inputText.getText().toString());
+		GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
+		gsa.setItem(view, inputText.getText().toString());
 	}
 }
