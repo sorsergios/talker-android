@@ -6,7 +6,7 @@ Aplicación para teléfonos y tablets con Android OS, orientada a personas con A
 
 ## Desarrollo
 
-1 - [Descargar Eclipse ADT (Android Development Tools)](link: http://developer.android.com/sdk/index.html)
+1 - [Descargar Eclipse ADT (Android Development Tools)](http://developer.android.com/sdk/index.html)
   
 2 - Platform Tools - ADB
 
@@ -71,3 +71,8 @@ Aplicación para teléfonos y tablets con Android OS, orientada a personas con A
 		a.2 Si elijo el teléfono celular
 
 			- Ya se instala la aplicación en el celular y se puede probar desde el mismo equipo. Verificar que el equipo permita correr en modo debug.
+			- 
+			
+## Agradecimientos
+
+Se ha utilizado el [NewQuickAction](https://github.com/lorensiuswlt/NewQuickAction) de [lorensiuswlt](https://github.com/lorensiuswlt)
