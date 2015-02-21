@@ -1,10 +1,13 @@
-afasia-android
+# Talker - Conversador
 ==============
 
-1 - Descargar Eclipse ADT (Android Development Tools)
-  
-    link: http://developer.android.com/sdk/index.html
+Aplicación para teléfonos y tablets con Android OS, orientada a personas con Afasia o desórdenes del habla, para facilitar la comunicación a través de distintas opciones visuales en una pizarra.
 
+
+## Desarrollo
+
+1 - [Descargar Eclipse ADT (Android Development Tools)](link: http://developer.android.com/sdk/index.html)
+  
 2 - Platform Tools - ADB
 
 	1. a . Chequear que ADB no esté ya instalado
@@ -53,7 +56,7 @@ afasia-android
 
 	a. Run Android Application 
 	
-		Si tengo el celu conectado, me va a preguntar donde quiero correrlo -emulador o celu- 
+		Si tengo el teléfono celular conectado, me va a preguntar dónde quiero correrlo -emulador o celular- 
 		
 		a.1 Si elijo el emulador: 
 		
@@ -63,8 +66,8 @@ afasia-android
 				- AVD Nombre (cualquiera)
 				- Device (cualquiera)
 				- Target (esto sirve para probar otra version de android - hay que bajar la SDK)
-				- completar demás campos..
+				- completar demás campos.
 				 
-		a.2 Si elijo el celu
+		a.2 Si elijo el teléfono celular
 
-			- Ya se instala la aplicación en el celu y se puede probar desde ahí
+			- Ya se instala la aplicación en el celular y se puede probar desde el mismo equipo. Verificar que el equipo permita correr en modo debug.
