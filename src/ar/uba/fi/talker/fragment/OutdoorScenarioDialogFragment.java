@@ -26,7 +26,6 @@ import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.NewSceneActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.action.userlog.TextDialogFragment.TextDialogListener;
-import ar.uba.fi.talker.adapter.ChangeNameDialogFragment;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ImagesDao;

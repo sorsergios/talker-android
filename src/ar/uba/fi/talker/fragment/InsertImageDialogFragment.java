@@ -1,4 +1,4 @@
-package ar.uba.fi.talker;
+package ar.uba.fi.talker.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +13,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.R.string;
 
 public class InsertImageDialogFragment extends DialogFragment {
 

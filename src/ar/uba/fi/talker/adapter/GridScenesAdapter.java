@@ -1,5 +1,7 @@
 package ar.uba.fi.talker.adapter;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -25,33 +27,29 @@ public class GridScenesAdapter extends BaseAdapter {
 		public TextView textTitle;
 	}
 
-	private GridItems[] items;
+	private List<GridItems> items;
 	private LayoutInflater mInflater;
 	private OutdoorScenarioDialogFragment parentFragment;
     private static Long itemSelectedId;
     private static int pos;
     private static int RESULT_LOAD_IMAGE = 1;
 
-	public GridScenesAdapter(Context context, GridItems[] locations, OutdoorScenarioDialogFragment parent) {
+	public GridScenesAdapter(Context context, List<GridItems> gridItems, OutdoorScenarioDialogFragment parent) {
 
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
-		items = locations;
+		items = gridItems;
 		parentFragment = parent;
 	}
 
-	public GridItems[] getItems() {
+	public List<GridItems> getItems() {
 		return items;
-	}
-
-	public void setItems(GridItems[] items) {
-		this.items = items;
 	}
 
 	@Override
 	public int getCount() {
 		if (items != null) {
-			return items.length;
+			return items.size();
 		}
 		return 0;
 	}
@@ -64,7 +62,7 @@ public class GridScenesAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		if (items != null && position >= 0 && position < getCount()) {
-			return items[position];
+			return items.get(position);
 		}
 		return null;
 	}
@@ -72,12 +70,12 @@ public class GridScenesAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		if (items != null && position >= 0 && position < getCount()) {
-			return items[position].getCategory().getId();
+			return items.get(position).getCategory().getId();
 		}
 		return 0;
 	}
 
-	public void setItemsList(GridItems[] locations) {
+	public void setItemsList(List<GridItems> locations) {
 		this.items = locations;
 	}
 
@@ -119,7 +117,7 @@ public class GridScenesAdapter extends BaseAdapter {
 			}
 		});
 
-		GridItems gridItems = items[position];
+		GridItems gridItems = items.get(position);
 		setCatImage(gridItems.getCategory().getId(), viewHolder, gridItems.getCategory().getName());
 		return view;
 	}
