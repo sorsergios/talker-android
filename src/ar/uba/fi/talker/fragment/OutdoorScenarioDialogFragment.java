@@ -80,23 +80,16 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		viewPager.setAdapter(pagerAdapter);
 		pageIndicator.setViewPager(viewPager);
 		
-		ImageButton exitBttn = (ImageButton) v.findViewById(R.id.new_scene_exit);
 		ImageButton startScenarioBttn = (ImageButton) v.findViewById(R.id.new_scene_start);
 		ImageButton editNameScenarioBttn = (ImageButton) v.findViewById(R.id.new_scene_edit_scenario_name);
-		
-		exitBttn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				newSceneActivity.finish();
-				System.exit(0);
-			}
-		});
+		ImageButton deleteScenarioBttn = (ImageButton) v.findViewById(R.id.new_scene_delete_scenario_name);
+		ImageButton galleryScenarioBttn = (ImageButton) v.findViewById(R.id.new_scene_gallery);
 		
 		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (GridScenesAdapter.getItemSelectedId() == null) {
-					Toast.makeText(newSceneActivity, "Debe elegir un escenario para continuar", Toast.LENGTH_SHORT).show();
+					Toast.makeText(newSceneActivity, "DEBE ELEGIR UN ESCENARIO PARA CONTINUAR", Toast.LENGTH_SHORT).show();
 				} else{
 					long imageViewId = GridScenesAdapter.getItemSelectedId();
 					byte[] bytes = ImageUtils.transformImage(getResources(), imageViewId); 
@@ -109,11 +102,19 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 			}
 		});
 		
+		galleryScenarioBttn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+				startActivityForResult(i, RESULT_LOAD_IMAGE);
+			}
+		});
+		
 		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (GridScenesAdapter.getItemSelectedId() == null) {
-					Toast.makeText(newSceneActivity, "Debe elegir un escenario para continuar", Toast.LENGTH_SHORT).show();
+					Toast.makeText(newSceneActivity, "DEBE ELEGIR UN ESCENARIO PARA CONTINUAR", Toast.LENGTH_SHORT).show();
 				} else {
 					ActivityCommand command = new ActivityCommand() {
 						@Override

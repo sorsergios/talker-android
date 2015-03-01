@@ -97,27 +97,25 @@ public class GridScenesAdapter extends BaseAdapter {
 		} else {
 			viewHolder = (ViewHolder) view.getTag();
 		}
-	
+		final ViewHolder viewHolderShow = viewHolder;
+		
 		viewHolder.imageView.setOnClickListener(new OnClickListener() {
 		  
 
 		@Override
 		  public void onClick(View v) {
-				Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
-				
-				if (position == 5) {
-					Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-					parentFragment.startActivityForResult(i, RESULT_LOAD_IMAGE);						
-				}
-				else{
-					ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context).findViewById(R.id.new_scene_start);
-					startScenarioBttn.setEnabled(true);
-					ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) context).findViewById(R.id.new_scene_edit_scenario_name);
-					editNameScenarioBttn.setEnabled(true);
-					v.setSelected(true);
-					itemSelectedId = getItemId(position);
-					pos = position;
-				}					
+				Toast.makeText(context, "HAS SELECCIONADO ESCENARIO: " + viewHolderShow.textTitle.getText(), Toast.LENGTH_SHORT).show();
+				ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context).findViewById(R.id.new_scene_start);
+				startScenarioBttn.setEnabled(true);
+				startScenarioBttn.setVisibility(View.VISIBLE);
+				ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) context).findViewById(R.id.new_scene_edit_scenario_name);
+				editNameScenarioBttn.setEnabled(true);
+				editNameScenarioBttn.setVisibility(View.VISIBLE);
+				ImageButton deleteScenarioBttn = (ImageButton) ((ActionBarActivity) context).findViewById(R.id.new_scene_delete_scenario_name);
+				deleteScenarioBttn.setVisibility(View.VISIBLE);
+				v.setSelected(true);
+				itemSelectedId = getItemId(position);
+				pos = position;
 			}
 		});
 

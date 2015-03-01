@@ -14,7 +14,8 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"  />
+        android:layout_alignRight="@+id/pagerIndicator"
+        android:padding="20dp" />
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/pagerIndicator"
@@ -25,31 +26,46 @@
         android:padding="3dp" />
 
     <ImageButton
-        android:id="@+id/new_scene_exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/new_scene_start"
-        android:background="?android:selectableItemBackground"
-        android:src="@drawable/exit" />
+        android:id="@+id/new_scene_start"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignBottom="@+id/pager"
+        android:layout_alignRight="@+id/pager"
+        android:enabled="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/start"
+        android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/new_scene_edit_scenario_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/new_scene_exit"
-        android:layout_centerHorizontal="true"
-        android:background="?android:selectableItemBackground"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/pager"
+        android:layout_toRightOf="@+id/new_scene_gallery"
         android:enabled="false"
-        android:src="@drawable/editname" />
+        android:src="@drawable/editname"
+        android:visibility="gone" />
 
     <ImageButton
-        android:id="@+id/new_scene_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/new_scene_gallery"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignBottom="@+id/pager"
-        android:layout_alignRight="@+id/pager"
-        android:background="?android:selectableItemBackground"
+        android:layout_alignLeft="@+id/pager"
         android:enabled="false"
-        android:src="@drawable/start" />
+        android:scaleType="fitXY"
+        android:src="@drawable/gallery"
+        android:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/new_scene_delete_scenario_name"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/pager"
+        android:layout_toRightOf="@+id/new_scene_edit_scenario_name"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/erase_all" 
+        android:visibility="gone"/>
 
 </RelativeLayout>
