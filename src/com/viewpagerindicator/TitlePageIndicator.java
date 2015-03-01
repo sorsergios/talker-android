@@ -35,7 +35,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import ar.fi.uba.androidtalker.R;
+import ar.uba.fi.talker.R;
 
 import java.util.ArrayList;
 
