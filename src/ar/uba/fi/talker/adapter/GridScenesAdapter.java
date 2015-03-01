@@ -3,7 +3,6 @@ package ar.uba.fi.talker.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,17 +28,14 @@ public class GridScenesAdapter extends BaseAdapter {
 
 	private List<GridItems> items;
 	private LayoutInflater mInflater;
-	private OutdoorScenarioDialogFragment parentFragment;
     private static Long itemSelectedId;
     private static int pos;
-    private static int RESULT_LOAD_IMAGE = 1;
 
 	public GridScenesAdapter(Context context, List<GridItems> gridItems, OutdoorScenarioDialogFragment parent) {
 
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
 		items = gridItems;
-		parentFragment = parent;
 	}
 
 	public List<GridItems> getItems() {
@@ -130,9 +126,6 @@ public class GridScenesAdapter extends BaseAdapter {
 	private void setCatImage(Integer catImage, ViewHolder viewHolder, String catTitle) {
 		viewHolder.imageView.setImageResource(catImage);
 		viewHolder.textTitle.setText(catTitle);
-	}
-	public void setParentFragment(OutdoorScenarioDialogFragment outdoorScenarioDialogFragment) {
-		this.parentFragment = outdoorScenarioDialogFragment;
 	}
 
 	public View setItem(View gridItem,String text){
