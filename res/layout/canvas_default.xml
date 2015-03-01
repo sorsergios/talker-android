@@ -45,63 +45,6 @@
         android:layout_height="50dp"
         android:scaleType="fitCenter"
 		android:adjustViewBounds="true"  />
-    
-
-	<ImageButton
-        android:id="@+id/insertImageOption"
-        android:layout_above="@+id/gestureOverlayView1"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textOption"
-        android:src="@drawable/image_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="fitCenter"
-		android:adjustViewBounds="true"  />
-            
-            
-	<ImageButton
-        android:id="@+id/insertContactOption"
-        android:layout_above="@+id/gestureOverlayView1"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/insertImageOption"
-        android:src="@drawable/contact_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="fitCenter"
-		android:adjustViewBounds="true"  />
-                
-                
-	<ImageButton
-        android:id="@+id/calculatorOption"
-        android:layout_above="@+id/gestureOverlayView1"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/insertContactOption"
-        android:src="@drawable/calculator_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="fitCenter"
-		android:adjustViewBounds="true"  />
-	
-	<ImageButton
-        android:id="@+id/calendarOption"
-        android:layout_above="@+id/gestureOverlayView1"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/calculatorOption"
-        android:src="@drawable/calendar_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="fitCenter"
-		android:adjustViewBounds="true"  />
-
-	<ImageButton
-        android:id="@+id/eraseAllOption"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/calendarOption"
-        android:src="@drawable/erase_all"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="fitCenter"
-		android:adjustViewBounds="true"  />
 	
 
     <ImageButton
@@ -111,5 +54,56 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:src="@drawable/abc_ic_clear_normal" />
+
+    <ImageButton
+        android:id="@+id/insertContactOption"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_toRightOf="@+id/insertImageOption"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/contact_icon" />
+
+    <ImageButton
+        android:id="@+id/calculatorOption"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_toRightOf="@+id/insertContactOption"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/calculator_icon" />
+
+    <ImageButton
+        android:id="@+id/calendarOption"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_toRightOf="@+id/calculatorOption"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/calendar_icon" />
+
+    <ImageButton
+        android:id="@+id/eraseAllOption"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/erase_all" />
+
+    <ImageButton
+        android:id="@+id/insertImageOption"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="48dp"
+        android:layout_toRightOf="@+id/textOption"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/image_icon" />
 
 </RelativeLayout>
