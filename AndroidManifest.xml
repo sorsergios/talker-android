@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ar.fi.uba.androidtalker"
+    package="ar.uba.fi.talker"
     android:versionCode="1"
     android:versionName="1.0" >
 

@@ -17,7 +17,7 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import ar.fi.uba.androidtalker.R;
+import ar.uba.fi.talker.R;
 
 /**
  * QuickAction dialog, shows action list as icon and text like the one in Gallery3D app. Currently supports vertical 
