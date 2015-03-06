@@ -3,6 +3,7 @@ package ar.uba.fi.talker.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.fragment.OutdoorScenarioDialogFragment;
+import ar.uba.fi.talker.utils.Category;
 import ar.uba.fi.talker.utils.GridItems;
 
 public class GridScenesAdapter extends BaseAdapter {
@@ -76,58 +78,56 @@ public class GridScenesAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, final ViewGroup parent) {
 
-		View view = convertView;
+		final View view = convertView != null ? convertView : mInflater.inflate(R.layout.row_grid, parent, false);
 
-		ViewHolder viewHolder = new ViewHolder();
-		if (view == null) {
+		LinearLayout viewHolder = (LinearLayout) view.findViewById(R.id.grid_element);
 
-			view = mInflater.inflate(R.layout.row_grid, parent, false);
-			viewHolder = new ViewHolder();
-			viewHolder.imageView = (ImageView) view.findViewById(R.id.image);
-			viewHolder.textTitle = (TextView) view.findViewById(R.id.text);
-			view.setTag(viewHolder);
-		} else {
-			viewHolder = (ViewHolder) view.getTag();
-		}
-		final ViewHolder viewHolderShow = viewHolder;
-		
-		viewHolder.imageView.setOnClickListener(new OnClickListener() {
-		  
+		viewHolder.setOnClickListener(new OnClickListener() {
 
-		@Override
-		  public void onClick(View v) {
-				Toast.makeText(context, "HAS SELECCIONADO ESCENARIO: " + viewHolderShow.textTitle.getText(), Toast.LENGTH_SHORT).show();
-				ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context).findViewById(R.id.new_scene_start);
+			@Override
+			public void onClick(View v) {
+				ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+						.findViewById(R.id.new_scene_start);
 				startScenarioBttn.setEnabled(true);
 				startScenarioBttn.setVisibility(View.VISIBLE);
-				ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) context).findViewById(R.id.new_scene_edit_scenario_name);
+				ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+						.findViewById(R.id.new_scene_edit_scenario_name);
 				editNameScenarioBttn.setEnabled(true);
 				editNameScenarioBttn.setVisibility(View.VISIBLE);
-				ImageButton deleteScenarioBttn = (ImageButton) ((ActionBarActivity) context).findViewById(R.id.new_scene_delete_scenario_name);
+				ImageButton deleteScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+						.findViewById(R.id.new_scene_delete_scenario_name);
 				deleteScenarioBttn.setVisibility(View.VISIBLE);
-				v.setSelected(true);
+				for (int i = 0; i < parent.getChildCount(); i++) {
+					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
+				}
+				view.setBackgroundColor(Color.CYAN);
+				System.out.println(parent.getChildCount());
 				itemSelectedId = getItemId(position);
 				pos = position;
 			}
 		});
 
 		GridItems gridItems = items.get(position);
-		setCatImage(gridItems.getCategory().getId(), viewHolder, gridItems.getCategory().getName());
+		this.setCatImage(viewHolder, gridItems.getCategory());
 		return view;
 	}
+	private void setCatImage(LinearLayout viewHolder, Category category) {
+		ImageView imageView = (ImageView) viewHolder.findViewById(R.id.image);
+		imageView.setImageResource(category.getId());
+		TextView textTitle = (TextView) viewHolder.findViewById(R.id.text);
+		textTitle .setText(category.getName());
+	}
+
 	public static Long getItemSelectedId() {
 		return itemSelectedId;
 	}
+	
 	public static long getPosition() {
 		return pos;
 	}
-	private void setCatImage(Integer catImage, ViewHolder viewHolder, String catTitle) {
-		viewHolder.imageView.setImageResource(catImage);
-		viewHolder.textTitle.setText(catTitle);
-	}
-
+	
 	public View setItem(View gridItem,String text){
 		TextView textView = (TextView) gridItem.findViewById(R.id.text);
 	    textView.setText(text);        

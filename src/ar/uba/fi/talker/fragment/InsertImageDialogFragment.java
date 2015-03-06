@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.R.string;
 
 public class InsertImageDialogFragment extends DialogFragment {
 
@@ -88,9 +87,6 @@ public class InsertImageDialogFragment extends DialogFragment {
 			Cursor cursor = getActivity().getContentResolver().query(
 					selectedImage, filePathColumn, null, null, null);
 			cursor.moveToFirst();
-
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
 			cursor.close();
 
 			getDialog().dismiss();
