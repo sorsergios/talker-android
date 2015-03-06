@@ -13,19 +13,27 @@ public class Text extends Component {
 
 	private String value;
 	private Point point;
+	private Point deltaPoint;
+	private Point downPoint;
 	private Paint paint;
 
 	public Text(Context context) {
 		super(context);
 		point = new Point();
+		deltaPoint = new Point();
+		downPoint = new Point();
+		// TODO Calcular donde aparece el texto.
+		point.x = 200; 
+		point.y = 200;
+		deltaPoint.x = 0;
+		deltaPoint.y = 0;
 		paint = PaintManager.getPaint(PaintType.TEXT);
 		value = "";
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		canvas.drawText(value, point.x, point.y, paint);
-
+		canvas.drawText(value, point.x+deltaPoint.x, point.y+deltaPoint.y, paint);
 	}
 	
 	@Override
@@ -40,9 +48,18 @@ public class Text extends Component {
 
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
+			downPoint.x = (int) eventX;
+			downPoint.y = (int) eventY;
+			break;
 		case MotionEvent.ACTION_MOVE:
-			point.x = (int) eventX;
-			point.y = (int) eventY;
+			deltaPoint.x = (int) eventX - downPoint.x;
+			deltaPoint.y = (int) eventY - downPoint.y;
+			break;
+		case MotionEvent.ACTION_UP:
+			point.x += deltaPoint.x;
+			point.y += deltaPoint.y;
+			deltaPoint.x = 0;
+			deltaPoint.y = 0;
 			break;
 		}
 		
