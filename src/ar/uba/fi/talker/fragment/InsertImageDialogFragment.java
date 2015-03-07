@@ -76,9 +76,6 @@ public class InsertImageDialogFragment extends DialogFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		Toast.makeText(getActivity(), "requestCode: " + requestCode,
-				Toast.LENGTH_SHORT).show();
-
 		if (requestCode == RESULT_LOAD_IMAGE
 				&& resultCode == Activity.RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();

@@ -1,5 +1,8 @@
 package ar.uba.fi.talker.view;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -12,13 +15,11 @@ import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.Image;
 import ar.uba.fi.talker.component.Text;
-import ar.uba.fi.talker.component.command.ActivityCommand;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
 
@@ -27,6 +28,8 @@ public class Scenario extends FrameLayout {
 	private ComponentType activeComponentType;
 
 	private Component activeComponent;
+	
+	private List<Component> draggableComponents;
 	
 	private Bitmap mImage = null;
 
@@ -47,6 +50,7 @@ public class Scenario extends FrameLayout {
 
 	private void init() {
 		this.setActiveComponentType(ComponentType.PENCIL);
+		draggableComponents = new LinkedList<Component>(); 
 	}
 
 	@Override
@@ -56,21 +60,21 @@ public class Scenario extends FrameLayout {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		boolean foundElement = false;
-		int eventX = (int) event.getAxisValue(MotionEvent.AXIS_X);
-		int eventY = (int) event.getAxisValue(MotionEvent.AXIS_Y);
-		Point point = new Point(eventX, eventY);
 		
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			for (int i = 0; i < this.getChildCount(); i++) {
-				Component child = (Component) this.getChildAt(i);
-				
-				foundElement = child.isPointInnerBounds(point);
-				if (foundElement) {
+			boolean foundElement = false;
+			int eventX = (int) event.getAxisValue(MotionEvent.AXIS_X);
+			int eventY = (int) event.getAxisValue(MotionEvent.AXIS_Y);
+			Point point = new Point(eventX, eventY);
+
+			for (Component child : draggableComponents) {
+				if (child.isPointInnerBounds(point)) {
+					foundElement = true;
 					activeComponent = child;
 					activeComponent.toggleActive();
 				}
 			}
+			
 			if (!foundElement) {
 				activeComponent = ComponentFactory.createComponent(
 						activeComponentType, getContext());
@@ -81,7 +85,6 @@ public class Scenario extends FrameLayout {
 				
 				this.addView(activeComponent, layoutParams);
 			}
-			
 
 		}
 		activeComponent.onTouchEvent(event);
@@ -118,12 +121,8 @@ public class Scenario extends FrameLayout {
 	public void clear() {
 		this.removeAllViews();
 	}
-
-	public void setActiveComponentType(ComponentType type) {
-		this.setActiveComponentType(type, null);
-	}
 	
-	public void setActiveComponentType(ComponentType type, ActivityCommand command) {
+	public void setActiveComponentType(ComponentType type) {
 		this.activeComponentType = type;
 	}
 
@@ -137,9 +136,10 @@ public class Scenario extends FrameLayout {
 		this.addView(alterComponent, layoutParams);
 		((Text) alterComponent).setValue(text);
 		alterComponent.toggleActive();
+		draggableComponents.add(alterComponent);
 	}
 
-	public void addImage(ImageView image) {
+	public void addImage(Bitmap image) {
 		Component alterComponent = ComponentFactory.createComponent(ComponentType.IMAGE, getContext());
 	
 		android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
@@ -149,6 +149,8 @@ public class Scenario extends FrameLayout {
 		this.addView(alterComponent, layoutParams);
 		
 		((Image) alterComponent).setContent(image);
+		alterComponent.toggleActive();
+		draggableComponents.add(alterComponent);
 	}
 
 }

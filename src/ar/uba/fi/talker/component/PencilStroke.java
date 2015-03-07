@@ -68,6 +68,7 @@ public class PencilStroke extends Component {
 			point.end = true;
 			point.x = (int) eventX;
 			point.y = (int) eventY;
+			this.toggleActive();
 		}
 		points.add(point);
 		

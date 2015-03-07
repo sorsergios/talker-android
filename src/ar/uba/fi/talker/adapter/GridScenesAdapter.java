@@ -103,7 +103,6 @@ public class GridScenesAdapter extends BaseAdapter {
 					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
 				}
 				view.setBackgroundColor(Color.CYAN);
-				System.out.println(parent.getChildCount());
 				itemSelectedId = getItemId(position);
 				pos = position;
 			}

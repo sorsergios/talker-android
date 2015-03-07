@@ -1,26 +1,30 @@
 package ar.uba.fi.talker;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore.Images.Media;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.Toast;
 import ar.uba.fi.talker.action.userlog.TextDialogFragment;
 import ar.uba.fi.talker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.component.ComponentType;
-import ar.uba.fi.talker.component.command.ActivityCommand;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
-import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
+import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment.InsertImageDialogListener;
 import ar.uba.fi.talker.view.Scenario;
 
@@ -75,16 +79,8 @@ public class CanvasActivity extends ActionBarActivity implements
 		textOp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ActivityCommand command = new ActivityCommand() {
-					@Override
-					public void execute() {
-						DialogFragment newFragment = new TextDialogFragment();
-						newFragment.show(getSupportFragmentManager(),
-								"insert_text");
-					}
-				};
-				command.execute();
-				// scenario.setActiveComponentType(ComponentType.TEXT, command);
+				DialogFragment newFragment = new TextDialogFragment();
+				newFragment.show(getSupportFragmentManager(), "insert_text");
 			}
 		});
 
@@ -133,10 +129,17 @@ public class CanvasActivity extends ActionBarActivity implements
 
 		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
 		
-		final ImageView ima1 = new ImageView(CanvasActivity.this);
-		ima1.setImageURI(uri);
-
-		scenario.addImage(ima1);
+		Bitmap ima1;
+		try {
+			ima1 = Media.getBitmap(this.getContentResolver(), uri);
+			scenario.addImage(ima1);
+		} catch (FileNotFoundException e) {
+			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
+			Log.e("CANVAS", "Unexpected error adding imagen.", e);
+		} catch (IOException e) {
+			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
+			Log.e("CANVAS", "Unexpected error adding imagen.", e);
+		}
 	}
 	
 	@Override
