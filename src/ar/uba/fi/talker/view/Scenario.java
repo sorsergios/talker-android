@@ -1,13 +1,11 @@
 package ar.uba.fi.talker.view;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.Editable;
@@ -19,21 +17,18 @@ import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.Image;
+import ar.uba.fi.talker.component.Text;
 import ar.uba.fi.talker.component.command.ActivityCommand;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
 
 public class Scenario extends FrameLayout {
 
-	private Collection<Component> components;
-
 	private ComponentType activeComponentType;
 
 	private Component activeComponent;
 	
 	private Bitmap mImage = null;
-
-	private Component alterComponent;
 
 	public Scenario(Context context) {
 		super(context);
@@ -51,7 +46,6 @@ public class Scenario extends FrameLayout {
 	}
 
 	private void init() {
-		components = new LinkedHashSet<Component>();
 		this.setActiveComponentType(ComponentType.PENCIL);
 	}
 
@@ -62,24 +56,36 @@ public class Scenario extends FrameLayout {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		this.performClick();
-
+		boolean foundElement = false;
+		int eventX = (int) event.getAxisValue(MotionEvent.AXIS_X);
+		int eventY = (int) event.getAxisValue(MotionEvent.AXIS_Y);
+		Point point = new Point(eventX, eventY);
+		
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			for (int i = 0; i < this.getChildCount(); i++) {
+				Component child = (Component) this.getChildAt(i);
+				
+				foundElement = child.isPointInnerBounds(point);
+				if (foundElement) {
+					activeComponent = child;
+					activeComponent.toggleActive();
+				}
+			}
+			if (!foundElement) {
+				activeComponent = ComponentFactory.createComponent(
+						activeComponentType, getContext());
+				android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
+				
+				layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+				layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+				
+				this.addView(activeComponent, layoutParams);
+			}
+			
 
-			activeComponent = ComponentFactory.createComponent(
-					activeComponentType, getContext());
-			
-			android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
-			
-			layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-			layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-			
-			this.addView(activeComponent, layoutParams);
-
-			components.add(activeComponent);
 		}
 		activeComponent.onTouchEvent(event);
-		return true;
+		return this.performClick();
 	}
 	
 	@Override
@@ -109,25 +115,12 @@ public class Scenario extends FrameLayout {
 		this.setBackground(background);
 	}
 
-	public Collection<Component> getComponents() {
-		return components;
-	}
-
-	public void setComponents(Collection<Component> components) {
-		this.components = components;
-	}
-
 	public void clear() {
-		this.getComponents().clear();
 		this.removeAllViews();
 	}
 
 	public void setActiveComponentType(ComponentType type) {
 		this.setActiveComponentType(type, null);
-		if (this.alterComponent != null) {
-			this.alterComponent.toggleActive();
-			this.alterComponent = null;
-		}
 	}
 	
 	public void setActiveComponentType(ComponentType type, ActivityCommand command) {
@@ -135,18 +128,19 @@ public class Scenario extends FrameLayout {
 	}
 
 	public void setText(Editable text) {
-		alterComponent = ComponentFactory.createComponent(ComponentType.TEXT, getContext());
+		Component alterComponent = ComponentFactory.createComponent(ComponentType.TEXT, getContext());
 	
 		android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
 		layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		
 		this.addView(alterComponent, layoutParams);
-		alterComponent.setValue(text);
+		((Text) alterComponent).setValue(text);
+		alterComponent.toggleActive();
 	}
 
 	public void addImage(ImageView image) {
-		alterComponent = ComponentFactory.createComponent(ComponentType.IMAGE, getContext());
+		Component alterComponent = ComponentFactory.createComponent(ComponentType.IMAGE, getContext());
 	
 		android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
 		layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;

@@ -69,7 +69,6 @@ public class PencilStroke extends Component {
 			point.x = (int) eventX;
 			point.y = (int) eventY;
 		}
-		dimension.evalPoint(point);
 		points.add(point);
 		
 		this.invalidate();
