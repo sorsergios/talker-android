@@ -32,7 +32,6 @@ import ar.uba.fi.talker.dao.ImagesDao;
 import ar.uba.fi.talker.utils.Category;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
-import ar.uba.fi.talker.component.command.ActivityCommand;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -115,26 +114,24 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 				if (GridScenesAdapter.getItemSelectedId() == null) {
 					Toast.makeText(newSceneActivity, "DEBE ELEGIR UN ESCENARIO PARA CONTINUAR", Toast.LENGTH_SHORT).show();
 				} else {
-					ActivityCommand command = new ActivityCommand() {
-						@Override
-						public void execute() {
-							ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-							gridView = sgf.getmGridView();
-							final int numVisibleChildren = gridView.getChildCount();
-							final int firstVisiblePosition = gridView.getFirstVisiblePosition();
-
-							for ( int i = 0; i < numVisibleChildren; i++ ) {
-							    int positionOfView = firstVisiblePosition + i;
-							    int positionIamLookingFor = (int) GridScenesAdapter.getPosition();
-							    if (positionOfView == positionIamLookingFor) {
-							        view = gridView.getChildAt(i);
-							    }
-							}
-							DialogFragment newFragment = new ChangeNameDialogFragment();
-							newFragment.show(newSceneActivity.getSupportFragmentManager(), "insert_text");
+					ScenesGridFragment sgf = pagerAdapter.getItem(viewPager
+							.getCurrentItem());
+					gridView = sgf.getmGridView();
+					final int numVisibleChildren = gridView.getChildCount();
+					final int firstVisiblePosition = gridView
+							.getFirstVisiblePosition();
+	
+					for (int i = 0; i < numVisibleChildren; i++) {
+						int positionOfView = firstVisiblePosition + i;
+						int positionIamLookingFor = (int) GridScenesAdapter
+								.getPosition();
+						if (positionOfView == positionIamLookingFor) {
+							view = gridView.getChildAt(i);
 						}
-					};
-					command.execute();
+					}
+					DialogFragment newFragment = new ChangeNameDialogFragment();
+					newFragment.show(newSceneActivity.getSupportFragmentManager(),
+							"insert_text");
 				}
 			}
 		});
