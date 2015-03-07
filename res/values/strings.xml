@@ -59,14 +59,13 @@
     <string name="oficina">OFICINA</string>
     <string name="colectivo">COLECTIVO</string>
     <string name="escuela">ESCUELA</string>
-    <string name="blanco">BLANCO</string>
+    <string name="blanco">PIZARRA</string>
     <string name="living">LIVING</string>
     <string name="habitacion">HABITACIÓN</string>
     <string name="cocina">COCINA</string>
     <string name="banio">BAÑO</string>
     <string name="aula">AULA</string>
     <string name="patio">PATIO</string>
-    <string name="nueva">NUEVA</string>
     
     <!-- otras pantallas -->
 	
