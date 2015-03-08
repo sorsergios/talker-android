@@ -28,7 +28,8 @@ import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
-import ar.uba.fi.talker.dao.ImagesDao;
+import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dao.ScenarioDAO;
 import ar.uba.fi.talker.utils.Category;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
@@ -45,6 +46,7 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerScenesAdapter pagerAdapter;
+	private ImageTalkerDataSource datasource;
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -65,13 +67,16 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		ArrayList<Category> a = new ArrayList<Category>();
 
 		Category m = null;
-		for (int i = 0; i < ImagesDao.getScenarioSize(); i++) {
+		datasource = new ImageTalkerDataSource(newSceneActivity.getApplicationContext());
+	    datasource.open();
+		List<ScenarioDAO> allImages = datasource.getAllImages();
+		for (int i = 0; i < allImages.size(); i++) {
 			m = new Category();
-			m.setName(this.getResources().getString(ImagesDao.getScenarioNameByPos(i)));
-			m.setId(ImagesDao.getScenarioImageByPos(i));
+			ScenarioDAO scenarioDAO = (ScenarioDAO) allImages.get(i);
+			m.setName(scenarioDAO.getText());
+			m.setId(scenarioDAO.getID());
 			a.add(m);
 		}
-		
 		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(newSceneActivity, a, this);
 
 		pagerAdapter = new PagerScenesAdapter(newSceneActivity.getSupportFragmentManager(), gridFragments);
