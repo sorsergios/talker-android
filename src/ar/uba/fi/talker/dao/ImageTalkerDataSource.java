@@ -42,11 +42,10 @@ public class ImageTalkerDataSource {
 		return newScenario;
 	}
 
-	public void deleteImages(ScenarioDAO images) {
-		long id = images.getID();
-		System.out.println("Images deleted with id: " + id);
+	public void deleteScenario(Long keyID) {
+		System.out.println("Images deleted with id: " + keyID);
 		database.delete(ImagesSQLiteHelper.TABLE_IMAGES,
-				ImagesSQLiteHelper.COLUMN_IDCODE + " = " + id, null);
+				ImagesSQLiteHelper.COLUMN_IDCODE + " = " + keyID, null);
 	}
 
 	public List<ScenarioDAO> getAllImages() {

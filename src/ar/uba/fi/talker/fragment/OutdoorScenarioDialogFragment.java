@@ -46,7 +46,7 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerScenesAdapter pagerAdapter;
-	private ImageTalkerDataSource datasource;
+	private ImageTalkerDataSource datasource = null;
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -67,7 +67,9 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		ArrayList<Category> a = new ArrayList<Category>();
 
 		Category m = null;
-		datasource = new ImageTalkerDataSource(newSceneActivity.getApplicationContext());
+		if (datasource == null ) {
+			datasource = new ImageTalkerDataSource(newSceneActivity.getApplicationContext());
+		}
 	    datasource.open();
 		List<ScenarioDAO> allImages = datasource.getAllImages();
 		for (int i = 0; i < allImages.size(); i++) {
@@ -116,6 +118,7 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				//TODO: ver si se tiene que volar este if
 				if (GridScenesAdapter.getItemSelectedId() == null) {
 					Toast.makeText(newSceneActivity, "DEBE ELEGIR UN ESCENARIO PARA CONTINUAR", Toast.LENGTH_SHORT).show();
 				} else {
@@ -138,6 +141,20 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 					newFragment.show(newSceneActivity.getSupportFragmentManager(),
 							"insert_text");
 				}
+			}
+		});
+		
+		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				datasource.deleteScenario(GridScenesAdapter.getItemSelectedId());
+				//TODO: falta refrescar la view
+				/*pagerAdapter.notifyDataSetChanged();
+				v.invalidate();
+				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager
+						.getCurrentItem());
+				gridView = sgf.getmGridView();
+				gridView.invalidateViews();*/
 			}
 		});
 		return v;
