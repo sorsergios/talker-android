@@ -93,17 +93,13 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (GridScenesAdapter.getItemSelectedId() == null) {
-					Toast.makeText(newSceneActivity, "DEBE ELEGIR UN ESCENARIO PARA CONTINUAR", Toast.LENGTH_SHORT).show();
-				} else{
-					long imageViewId = GridScenesAdapter.getItemSelectedId();
-					byte[] bytes = ImageUtils.transformImage(getResources(), imageViewId); 
-					Bundle extras = new Bundle();
-					extras.putByteArray("BMP",bytes);
-					Intent intent = new Intent(newSceneActivity.getApplicationContext(), CanvasActivity.class);
-					intent.putExtras(extras);
-					startActivity(intent);
-				}
+				long imageViewId = GridScenesAdapter.getItemSelectedId();
+				byte[] bytes = ImageUtils.transformImage(getResources(), imageViewId); 
+				Bundle extras = new Bundle();
+				extras.putByteArray("BMP",bytes);
+				Intent intent = new Intent(newSceneActivity.getApplicationContext(), CanvasActivity.class);
+				intent.putExtras(extras);
+				startActivity(intent);				
 			}
 		});
 		
@@ -118,29 +114,21 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//TODO: ver si se tiene que volar este if
-				if (GridScenesAdapter.getItemSelectedId() == null) {
-					Toast.makeText(newSceneActivity, "DEBE ELEGIR UN ESCENARIO PARA CONTINUAR", Toast.LENGTH_SHORT).show();
-				} else {
-					ScenesGridFragment sgf = pagerAdapter.getItem(viewPager
-							.getCurrentItem());
-					gridView = sgf.getmGridView();
-					final int numVisibleChildren = gridView.getChildCount();
-					final int firstVisiblePosition = gridView
-							.getFirstVisiblePosition();
-	
-					for (int i = 0; i < numVisibleChildren; i++) {
-						int positionOfView = firstVisiblePosition + i;
-						int positionIamLookingFor = (int) GridScenesAdapter
-								.getPosition();
-						if (positionOfView == positionIamLookingFor) {
-							view = gridView.getChildAt(i);
-						}
+				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
+				gridView = sgf.getmGridView();
+				final int numVisibleChildren = gridView.getChildCount();
+				final int firstVisiblePosition = gridView
+						.getFirstVisiblePosition();
+
+				for (int i = 0; i < numVisibleChildren; i++) {
+					int positionOfView = firstVisiblePosition + i;
+					int positionIamLookingFor = (int) GridScenesAdapter.getPosition();
+					if (positionOfView == positionIamLookingFor) {
+						view = gridView.getChildAt(i);
 					}
-					DialogFragment newFragment = new ChangeNameDialogFragment();
-					newFragment.show(newSceneActivity.getSupportFragmentManager(),
-							"insert_text");
 				}
+				DialogFragment newFragment = new ChangeNameDialogFragment();
+				newFragment.show(newSceneActivity.getSupportFragmentManager(),"insert_text");
 			}
 		});
 		
