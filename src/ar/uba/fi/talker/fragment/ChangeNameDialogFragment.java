@@ -8,7 +8,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.NewSceneActivity;
 import ar.uba.fi.talker.R;
 
@@ -37,21 +41,29 @@ public class ChangeNameDialogFragment extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the Builder class for convenient dialog construction
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
 		EditText input = new EditText(getActivity());
 		input.setId(R.id.insert_text_input);
 		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+		input.setOnEditorActionListener(new OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView v, int actionId,
+					KeyEvent event) {
+
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					FragmentManager fm = newSceneActivity.getFragmentManager();
+					OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
+					fragmentOutdoor.onDialogPositiveClickTextDialogListener(ChangeNameDialogFragment.this);
+					ChangeNameDialogFragment.this.dismiss();
+					return true;
+				}
+				return false;
+			}
+		});
 		builder.setView(input)
 				.setTitle(R.string.insert_text_title)
-				.setPositiveButton(R.string.insert_text_accept,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								FragmentManager fm = newSceneActivity.getFragmentManager();
-								OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
-								fragmentOutdoor.onDialogPositiveClickTextDialogListener(ChangeNameDialogFragment.this);
-								dialog.dismiss();
-							}
-						})
 				.setNegativeButton(R.string.insert_text_cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {

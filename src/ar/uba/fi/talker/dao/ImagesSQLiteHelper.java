@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import ar.uba.fi.talker.R;
 
 public class ImagesSQLiteHelper extends SQLiteOpenHelper {
 
@@ -56,10 +57,10 @@ public class ImagesSQLiteHelper extends SQLiteOpenHelper {
 			if (!isTableExists(db, TABLE_IMAGES)) {
 				db.execSQL("CREATE TABLE " + TABLE_IMAGES + " ( "
 						+ COLUMN_IDCODE + " INTEGER, " + COLUMN_TEXT + " TEXT)");
-				for (int i = 0; i < ImagesDao.getScenarioSize(); i++) {
+				for (int i = 0; i < mThumbIdsScenario.length; i++) {
 					// Generate and insert default data
-					int idCode = ImagesDao.getScenarioImageByPos(i);
-					String name = context.getResources().getString(ImagesDao.getScenarioNameByPos(i));
+					int idCode = mThumbIdsScenario[i];
+					String name = context.getResources().getString(mThumbTextsScenario[i]);
 
 					db.execSQL("INSERT INTO " + TABLE_IMAGES + " ( "
 							+ COLUMN_IDCODE + " , " + COLUMN_TEXT + " ) "
@@ -77,5 +78,35 @@ public class ImagesSQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGES);
 		onCreate(db);
 	}
-
+	
+	/*IMAGES OF SCENARIO*/
+	private static Integer[] mThumbIdsScenario = {
+			R.drawable.blanco,    
+			R.drawable.casa,
+	        R.drawable.oficina,
+	        R.drawable.colectivo, 
+	        R.drawable.escuela,
+	        R.drawable.living,
+	        R.drawable.cocina,
+	        R.drawable.habitacion, 
+	        R.drawable.banio,
+	        R.drawable.aulaescuela,
+	        R.drawable.banioescuela,
+	        R.drawable.patioescuela
+	};
+	
+	private static Integer[] mThumbTextsScenario = {
+			R.string.blanco,
+			R.string.casa,
+			R.string.oficina,
+			R.string.colectivo,
+			R.string.escuela,
+			R.string.living,
+			R.string.cocina,
+			R.string.habitacion,
+			R.string.banio,
+			R.string.aula,
+			R.string.banio,
+			R.string.patio
+	};
 }

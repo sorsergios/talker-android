@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.Toast;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.NewSceneActivity;
 import ar.uba.fi.talker.R;
@@ -117,8 +116,7 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
 				gridView = sgf.getmGridView();
 				final int numVisibleChildren = gridView.getChildCount();
-				final int firstVisiblePosition = gridView
-						.getFirstVisiblePosition();
+				final int firstVisiblePosition = gridView.getFirstVisiblePosition();
 
 				for (int i = 0; i < numVisibleChildren; i++) {
 					int positionOfView = firstVisiblePosition + i;
@@ -129,6 +127,7 @@ public class OutdoorScenarioDialogFragment extends Fragment implements TextDialo
 				}
 				DialogFragment newFragment = new ChangeNameDialogFragment();
 				newFragment.show(newSceneActivity.getSupportFragmentManager(),"insert_text");
+				datasource.updateScenario(GridScenesAdapter.getItemSelectedId(), "PRUEBA");
 			}
 		});
 		
