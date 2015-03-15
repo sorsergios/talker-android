@@ -128,7 +128,6 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 				}
 				DialogFragment newFragment = new ChangeNameDialogFragment();
 				newFragment.show(newSceneActivity.getSupportFragmentManager(),"insert_text");
-				datasource.updateScenario(GridScenesAdapter.getItemSelectedId(), "PRUEBA");
 			}
 		});
 		
@@ -176,7 +175,9 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 		Dialog dialogView = dialog.getDialog();
 		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
 		GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
-		gsa.setItem(view, inputText.getText().toString());
+		String newScenarioName = inputText.getText().toString();
+		gsa.setItem(view, newScenarioName);
+		datasource.updateScenario(GridScenesAdapter.getItemSelectedId(), newScenarioName);
 	}
 
 	@Override

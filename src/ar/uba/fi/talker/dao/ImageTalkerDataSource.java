@@ -8,7 +8,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import ar.uba.fi.talker.R;
 
 public class ImageTalkerDataSource {
 	
@@ -83,8 +82,8 @@ public class ImageTalkerDataSource {
 		cursor.close();
 		return scenario;
 	}
+	
 	public void updateScenario(Long keyID, String text) {
-		
 		System.out.println("Images update with id: " + keyID+ " text: " + text);
 		ContentValues values = new ContentValues();
 		values.put(ImagesSQLiteHelper.COLUMN_TEXT,text);
