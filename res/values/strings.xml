@@ -45,7 +45,13 @@
     <string name="new_scene_start">EMPEZAR</string>
     <string name="new_scene_inner">INTERIOR</string>
     <string name="new_scene_exit">SALIR</string>
-
+    
+    <string name="delete_scenario_title">BORRAR ESCENARIO</string>
+    <string name="delete_scenario_message">ESTA SEGURO QUE DESEA BORRAR ESCENARIO?</string>
+    <string name="delete_scenario_accept">ACEPTAR</string>
+    <string name="delete_scenario_cancel">CANCELAR</string>
+    
+    
     <!-- pantalla elegir interior de escenario -->
     <string name="title_activity_new_scene_inner">SELECCIONE UN INTERIOR DE</string>
     <string name="new_scene_inner_start">EMPEZAR</string>

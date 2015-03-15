@@ -24,18 +24,19 @@ import android.widget.ImageButton;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.NewSceneActivity;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.action.userlog.TextDialogFragment.TextDialogListener;
+import ar.uba.fi.talker.fragment.ChangeNameDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioDAO;
+import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.utils.Category;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class OutdoorScenarioFragment extends Fragment implements TextDialogListener {
+public class OutdoorScenarioFragment extends Fragment implements TextDialogListener, DeleteScenarioDialogListener {
 
 	// Use this instance of the interface to deliver action events
 	NewSceneActivity newSceneActivity;
@@ -134,7 +135,8 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				datasource.deleteScenario(GridScenesAdapter.getItemSelectedId());
+				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment();
+				newFragment.show(newSceneActivity.getSupportFragmentManager(), "delete_scenario");
 				//TODO: falta refrescar la view
 				/*pagerAdapter.notifyDataSetChanged();
 				v.invalidate();
@@ -175,5 +177,11 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
 		GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 		gsa.setItem(view, inputText.getText().toString());
+	}
+
+	@Override
+	public void onDialogPositiveClickDeleteScenarioDialogListener(
+			DialogFragment dialog) {
+		datasource.deleteScenario(GridScenesAdapter.getItemSelectedId());
 	}
 }
