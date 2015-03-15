@@ -54,7 +54,7 @@ public class ChangeNameDialogFragment extends DialogFragment {
 
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
 					FragmentManager fm = newSceneActivity.getFragmentManager();
-					OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
+					OutdoorScenarioFragment fragmentOutdoor = (OutdoorScenarioFragment)fm.findFragmentById(R.id.fragmentOutdoors);
 					fragmentOutdoor.onDialogPositiveClickTextDialogListener(ChangeNameDialogFragment.this);
 					ChangeNameDialogFragment.this.dismiss();
 					return true;

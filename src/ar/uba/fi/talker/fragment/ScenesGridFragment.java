@@ -23,9 +23,9 @@ public class ScenesGridFragment extends Fragment {
 	private GridScenesAdapter mGridAdapter;
 	List<GridItems> gridItems;
 	private Activity activity;
-	private OutdoorScenarioDialogFragment parent;
+	private OutdoorScenarioFragment parent;
 
-	public ScenesGridFragment(List<GridItems> gridItems, Activity activity, OutdoorScenarioDialogFragment parent) {
+	public ScenesGridFragment(List<GridItems> gridItems, Activity activity, OutdoorScenarioFragment parent) {
 		this.gridItems = gridItems;
 		this.activity = activity;
 		this.parent = parent;
@@ -40,7 +40,7 @@ public class ScenesGridFragment extends Fragment {
 		return view;
 	}
 	
-	public void setParent(OutdoorScenarioDialogFragment parent) {
+	public void setParent(OutdoorScenarioFragment parent) {
 		this.parent = parent;
 	}
 

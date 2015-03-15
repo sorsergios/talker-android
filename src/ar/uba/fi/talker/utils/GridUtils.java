@@ -6,7 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import ar.uba.fi.talker.fragment.GridFragment;
-import ar.uba.fi.talker.fragment.OutdoorScenarioDialogFragment;
+import ar.uba.fi.talker.fragment.OutdoorScenarioFragment;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 
 public final class GridUtils {
@@ -32,7 +32,7 @@ public final class GridUtils {
 		return gridFragments;
 	}
 	
-	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, ArrayList<Category> categories, OutdoorScenarioDialogFragment parent) {
+	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, ArrayList<Category> categories, OutdoorScenarioFragment parent) {
 
 		Iterator<Category> it = categories.iterator();
 

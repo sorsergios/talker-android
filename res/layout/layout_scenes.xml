@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 	
-	<fragment android:name="ar.uba.fi.talker.fragment.OutdoorScenarioDialogFragment"
+	<fragment android:name="ar.uba.fi.talker.fragment.OutdoorScenarioFragment"
           android:id="@+id/fragmentOutdoors"
 	      android:layout_width="wrap_content"
 	      android:layout_height="wrap_content"  />

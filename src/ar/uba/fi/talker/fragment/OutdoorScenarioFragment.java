@@ -35,7 +35,7 @@ import ar.uba.fi.talker.utils.ImageUtils;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class OutdoorScenarioDialogFragment extends Fragment implements TextDialogListener {
+public class OutdoorScenarioFragment extends Fragment implements TextDialogListener {
 
 	// Use this instance of the interface to deliver action events
 	NewSceneActivity newSceneActivity;
