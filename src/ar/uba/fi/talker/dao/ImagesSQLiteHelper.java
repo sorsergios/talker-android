@@ -14,9 +14,9 @@ public class ImagesSQLiteHelper extends SQLiteOpenHelper {
 	//SQL sentence to create Images table
     
 	private Context context;
-	private static final String DATABASE_NAME = "Talker.db";
+	private static final String DATABASE_NAME = "talker.db";
 	private static final int DATABASE_VERSION = 1;
-	public static final String TABLE_IMAGES = "ImagesTalker";
+	public static final String TABLE_IMAGES = "image";
 	public static final String COLUMN_IDCODE = "idCode";
 	public static final String COLUMN_TEXT = "text";
 

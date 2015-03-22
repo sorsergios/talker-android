@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import ar.uba.fi.talker.fragment.OutdoorScenarioDialogFragment;
+import ar.uba.fi.talker.fragment.OutdoorScenarioFragment;
 
 public class NewSceneActivity extends ActionBarActivity {
 
@@ -17,7 +17,7 @@ public class NewSceneActivity extends ActionBarActivity {
 		setContentView(R.layout.layout_scenes);
 		
 		FragmentManager fm = getFragmentManager();
-		OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
+		OutdoorScenarioFragment fragmentOutdoor = (OutdoorScenarioFragment)fm.findFragmentById(R.id.fragmentOutdoors);
         
 		FragmentTransaction tran = fm.beginTransaction();
 		tran.show(fragmentOutdoor);

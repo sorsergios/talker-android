@@ -13,7 +13,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import ar.uba.fi.talker.NewSceneActivity;
 import ar.uba.fi.talker.R;
 
 public class ChangeNameDialogFragment extends DialogFragment {
@@ -24,17 +23,20 @@ public class ChangeNameDialogFragment extends DialogFragment {
 
 	}
 
+	TextDialogListener listener;
+	
 	// Use this instance of the interface to deliver action events
-	NewSceneActivity newSceneActivity;
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			newSceneActivity = (NewSceneActivity) activity;
+			FragmentManager fm = activity.getFragmentManager();
+			OutdoorScenarioFragment fragmentOutdoor = (OutdoorScenarioFragment)fm.findFragmentById(R.id.fragmentOutdoors);
+			listener = (TextDialogListener) fragmentOutdoor;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement NewSceneActivity");
+					+ " must implement TextDialogListener");
 		}
 	}
 
@@ -53,9 +55,7 @@ public class ChangeNameDialogFragment extends DialogFragment {
 					KeyEvent event) {
 
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
-					FragmentManager fm = newSceneActivity.getFragmentManager();
-					OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
-					fragmentOutdoor.onDialogPositiveClickTextDialogListener(ChangeNameDialogFragment.this);
+					listener.onDialogPositiveClickTextDialogListener(ChangeNameDialogFragment.this);
 					ChangeNameDialogFragment.this.dismiss();
 					return true;
 				}
