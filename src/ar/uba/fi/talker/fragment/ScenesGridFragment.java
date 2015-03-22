@@ -24,6 +24,7 @@ public class ScenesGridFragment extends Fragment {
 	List<GridItems> gridItems;
 	private Activity activity;
 	private OutdoorScenarioFragment parent;
+	
 
 	public ScenesGridFragment(List<GridItems> gridItems, Activity activity, OutdoorScenarioFragment parent) {
 		this.gridItems = gridItems;
