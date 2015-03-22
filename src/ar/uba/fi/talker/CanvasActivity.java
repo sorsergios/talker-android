@@ -25,6 +25,7 @@ import ar.uba.fi.talker.action.userlog.TextDialogFragment;
 import ar.uba.fi.talker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
+import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
@@ -103,6 +104,15 @@ public class CanvasActivity extends ActionBarActivity implements
 			@Override
 			public void onClick(View v) {
 				DialogFragment newFragment = new CalculatorFragment();
+				newFragment.show(getSupportFragmentManager(), "calculator");
+			}
+		});
+
+		ImageButton calendarOption = (ImageButton) findViewById(R.id.calendarOption);
+		calendarOption.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogFragment newFragment = new DatePickerFragment();
 				newFragment.show(getSupportFragmentManager(), "calculator");
 			}
 		});
