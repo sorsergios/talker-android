@@ -2,7 +2,9 @@ package ar.uba.fi.talker;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Calendar;
 
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,27 +15,29 @@ import android.os.Bundle;
 import android.provider.MediaStore.Images.Media;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import ar.uba.fi.talker.action.userlog.TextDialogFragment;
-import ar.uba.fi.talker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
+import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment.InsertImageDialogListener;
+import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.view.Scenario;
 
 public class CanvasActivity extends ActionBarActivity implements
-		TextDialogListener, InsertImageDialogListener, EraseAllConfirmationDialogListener {
+		TextDialogListener, InsertImageDialogListener, EraseAllConfirmationDialogListener, OnDateSetListener {
 
 	final String TAG = "CanvasActivity";
 
@@ -125,6 +129,20 @@ public class CanvasActivity extends ActionBarActivity implements
 				.findViewById(R.id.insert_text_input);
 		Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 		s.setText(inputText.getText());
+	}
+	
+	@Override
+	public void onDateSet(DatePicker view, int year, int monthOfYear,
+			int dayOfMonth) {
+		Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
+		
+		final Calendar calendar = Calendar.getInstance();
+		calendar.set(year, monthOfYear, dayOfMonth);
+		
+		SpannableStringBuilder date = new SpannableStringBuilder();
+		date.append(String.format("%1$tA %1$td/%1$tB/%1$tY", calendar));
+		
+		s.setText(date);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {

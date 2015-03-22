@@ -1,4 +1,4 @@
-package ar.uba.fi.talker.action.userlog;
+package ar.uba.fi.talker.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
