@@ -1,5 +1,6 @@
 package ar.uba.fi.talker.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -24,7 +25,13 @@ public class ScenesGridFragment extends Fragment {
 	List<GridItems> gridItems;
 	private Activity activity;
 	private OutdoorScenarioDialogFragment parent;
-
+	
+	public ScenesGridFragment() {
+		this.gridItems = new ArrayList<GridItems>();
+		this.activity = null;
+		this.parent = null;
+	}
+	
 	public ScenesGridFragment(List<GridItems> gridItems, Activity activity, OutdoorScenarioDialogFragment parent) {
 		this.gridItems = gridItems;
 		this.activity = activity;

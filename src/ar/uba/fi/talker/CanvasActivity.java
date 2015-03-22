@@ -6,6 +6,8 @@ import java.io.IOException;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.Images.Media;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import ar.uba.fi.talker.action.userlog.TextDialogFragment;
 import ar.uba.fi.talker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.component.ComponentType;
+import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
@@ -95,6 +98,14 @@ public class CanvasActivity extends ActionBarActivity implements
 			}
 		});
 
+		ImageButton calcOption = (ImageButton) findViewById(R.id.calculatorOption);
+		calcOption.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogFragment newFragment = new CalculatorFragment();
+				newFragment.show(getSupportFragmentManager(), "calculator");
+			}
+		});
 	}
 
 	@Override
@@ -132,6 +143,40 @@ public class CanvasActivity extends ActionBarActivity implements
 		Bitmap ima1;
 		try {
 			ima1 = Media.getBitmap(this.getContentResolver(), uri);
+			
+			ExifInterface exif = new ExifInterface(uri.getPath());
+	          int orientation = exif.getAttributeInt(
+	          ExifInterface.TAG_ORIENTATION,
+	          ExifInterface.ORIENTATION_NORMAL);
+	          System.out.println(orientation);
+
+          Matrix matrix = new Matrix();
+			switch (orientation) {
+	              case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+	                  matrix .setScale(-1, 1);
+	                  break;
+	              case ExifInterface.ORIENTATION_ROTATE_180:
+	                  matrix.setRotate(180);
+	                  break;
+	              case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+	                  matrix.setRotate(180);
+	                  matrix.postScale(-1, 1);
+	                  break;
+	              case ExifInterface.ORIENTATION_TRANSPOSE:
+	                  matrix.setRotate(90);
+	                  matrix.postScale(-1, 1);
+	                  break;
+	              case ExifInterface.ORIENTATION_ROTATE_90:
+	                  matrix.setRotate(90);
+	                  break;
+	              case ExifInterface.ORIENTATION_TRANSVERSE:
+	                  matrix.setRotate(-90);
+	                  matrix.postScale(-1, 1);
+	                  break;
+	              case ExifInterface.ORIENTATION_ROTATE_270:
+	                  matrix.setRotate(-90);
+	                  break;
+	              }
 			scenario.addImage(ima1);
 		} catch (FileNotFoundException e) {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
