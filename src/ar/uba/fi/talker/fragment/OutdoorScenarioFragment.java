@@ -171,6 +171,7 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 	        Bitmap bitmap = null;
 			try {
 				bitmap = MediaStore.Images.Media.getBitmap(newSceneActivity.getContentResolver(), imageUri);
+				bytes = ImageUtils.transformImage(bitmap);
 				Context ctx = newSceneActivity.getApplicationContext();
 				saveFileInternalStorage(scenarioName, bitmap, ctx);
 				File file = new File(ctx.getFilesDir(), scenarioName);
