@@ -1,5 +1,9 @@
 package ar.uba.fi.talker.fragment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +11,10 @@ import java.util.List;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,18 +27,19 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.NewSceneActivity;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.fragment.ChangeNameDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioDAO;
+import ar.uba.fi.talker.fragment.ChangeNameDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
-import ar.uba.fi.talker.utils.Category;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
+import ar.uba.fi.talker.utils.ScenarioView;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -47,6 +54,9 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 	private ViewPager viewPager;
 	private PagerScenesAdapter pagerAdapter;
 	private ImageTalkerDataSource datasource = null;
+	private LayoutInflater inflater;
+	private ViewGroup container;
+	private View thisView=null;
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -61,22 +71,22 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
+		this.inflater = inflater;
+		this.container = container;
 		View v = inflater.inflate(R.layout.layout_ext_scenes, container, false);
 		viewPager = (ViewPager) v.findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) v.findViewById(R.id.pagerIndicator);
-		ArrayList<Category> a = new ArrayList<Category>();
+		ArrayList<ScenarioView> a = new ArrayList<ScenarioView>();
 
-		Category m = null;
+		ScenarioView m = null;
 		if (datasource == null ) {
 			datasource = new ImageTalkerDataSource(newSceneActivity.getApplicationContext());
 		}
 	    datasource.open();
 		List<ScenarioDAO> allImages = datasource.getAllImages();
 		for (int i = 0; i < allImages.size(); i++) {
-			m = new Category();
 			ScenarioDAO scenarioDAO = (ScenarioDAO) allImages.get(i);
-			m.setName(scenarioDAO.getText());
-			m.setId(scenarioDAO.getID());
+			m = new ScenarioView(scenarioDAO.getId(), scenarioDAO.getIdCode(), scenarioDAO.getPath(), scenarioDAO.getName());
 			a.add(m);
 		}
 		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(newSceneActivity, a, this);
@@ -93,8 +103,16 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				long imageViewId = GridScenesAdapter.getItemSelectedId();
-				byte[] bytes = ImageUtils.transformImage(getResources(), imageViewId); 
+				int imageViewId = GridScenesAdapter.getItemSelectedId().intValue();
+				ScenarioDAO scenariodao = datasource.getScenarioByID(imageViewId);
+				long imageDatasourceID = scenariodao.getIdCode();
+				byte[] bytes = null;
+				if (imageDatasourceID != 0){
+					bytes = ImageUtils.transformImage(getResources(), imageDatasourceID); 
+				} else {
+					Context ctx = newSceneActivity.getApplicationContext();
+					bytes = ImageUtils.transformImage(getImageBitmap(ctx, scenariodao.getPath()));
+				}
 				Bundle extras = new Bundle();
 				extras.putByteArray("BMP",bytes);
 				Intent intent = new Intent(newSceneActivity.getApplicationContext(), CanvasActivity.class);
@@ -136,31 +154,30 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 			public void onClick(View v) {
 				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment();
 				newFragment.show(newSceneActivity.getSupportFragmentManager(), "delete_scenario");
-				//TODO: falta refrescar la view
-				/*pagerAdapter.notifyDataSetChanged();
-				v.invalidate();
-				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager
-						.getCurrentItem());
-				gridView = sgf.getmGridView();
-				gridView.invalidateViews();*/
 			}
 		});
+		thisView = v;
 		return v;
 	}	
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		//TODO acá esta configurado el codigo de empezar directo
+		//TODO acá esta configurado el codigo de empezar directo y guardarlo en la base
+		byte[] bytes = null;
 		if (requestCode == RESULT_LOAD_IMAGE && null != data) {
 			Uri imageUri = data.getData();
+			String scenarioName = imageUri.getLastPathSegment(); 
 	        Bitmap bitmap = null;
 			try {
 				bitmap = MediaStore.Images.Media.getBitmap(newSceneActivity.getContentResolver(), imageUri);
+				Context ctx = newSceneActivity.getApplicationContext();
+				saveFileInternalStorage(scenarioName, bitmap, ctx);
+				File file = new File(ctx.getFilesDir(), scenarioName);
+				datasource.createScenario(file.getPath(), scenarioName);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			byte[] bytes = ImageUtils.transformImage(bitmap); 
 			
 			Bundle extras = new Bundle();
 			extras.putByteArray("BMP",bytes);
@@ -169,7 +186,36 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 			startActivity(intent);
 		}		
 	}
+	
+	
+	private void saveFileInternalStorage(String name, Bitmap b, Context context) {
 
+		FileOutputStream out;
+		try {
+			out = context.openFileOutput(name, Context.MODE_PRIVATE);
+			b.compress(Bitmap.CompressFormat.JPEG, 90, out);
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Bitmap getImageBitmap(Context context, String name) {
+		/*
+		 * try { FileInputStream fis = context.openFileInput(name); Bitmap b =
+		 * BitmapFactory.decodeStream(fis); fis.close(); return b; } catch
+		 * (Exception e) { } return null;
+		 */
+		try {
+			File f = new File(name);
+			Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+			return b;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@Override
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
 		Dialog dialogView = dialog.getDialog();
@@ -178,6 +224,17 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 		String newScenarioName = inputText.getText().toString();
 		gsa.setItem(view, newScenarioName);
 		datasource.updateScenario(GridScenesAdapter.getItemSelectedId(), newScenarioName);
+
+		//TODO: falta refrescar la view
+		pagerAdapter.notifyDataSetChanged();
+	
+	    onCreateView(this.inflater,this.container, null);
+		
+		
+	/*	ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
+		gridView = sgf.getmGridView();
+		gridView.invalidateViews();
+		gridView.refreshDrawableState();*/
 	}
 
 	@Override

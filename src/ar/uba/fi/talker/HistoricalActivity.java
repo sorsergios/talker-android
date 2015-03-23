@@ -13,7 +13,7 @@ import ar.uba.fi.talker.adapter.PagerAdapter;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioDAO;
 import ar.uba.fi.talker.fragment.GridFragment;
-import ar.uba.fi.talker.utils.Category;
+import ar.uba.fi.talker.utils.ScenarioView;
 import ar.uba.fi.talker.utils.GridUtils;
 
 import com.viewpagerindicator.PageIndicator;
@@ -33,17 +33,15 @@ public class HistoricalActivity extends ActionBarActivity implements
 		
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) findViewById(R.id.pagerIndicator);
-		ArrayList<Category> a = new ArrayList<Category>();
+		ArrayList<ScenarioView> a = new ArrayList<ScenarioView>();
 
-		Category m = null;
+		ScenarioView m = null;
 		datasource = new ImageTalkerDataSource(this);
 	    datasource.open();
 		List<ScenarioDAO> allImages = datasource.getAllImages();
 		for (int i = 0; i < allImages.size(); i++) {
-			m = new Category();
 			ScenarioDAO scenarioDAO = (ScenarioDAO) allImages.get(i);
-			m.setName(scenarioDAO.getText());
-			m.setId(scenarioDAO.getID());
+			m = new ScenarioView(scenarioDAO.getId(), scenarioDAO.getIdCode(), scenarioDAO.getPath(), scenarioDAO.getName());
 			a.add(m);
 		}
 		

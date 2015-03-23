@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.fragment.OutdoorScenarioFragment;
-import ar.uba.fi.talker.utils.Category;
 import ar.uba.fi.talker.utils.GridItems;
+import ar.uba.fi.talker.utils.ScenarioView;
 
 public class GridScenesAdapter extends BaseAdapter {
 
@@ -68,7 +69,7 @@ public class GridScenesAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		if (items != null && position >= 0 && position < getCount()) {
-			return items.get(position).getCategory().getId();
+			return items.get(position).getScenarioView().getId();
 		}
 		return 0;
 	}
@@ -109,14 +110,20 @@ public class GridScenesAdapter extends BaseAdapter {
 		});
 
 		GridItems gridItems = items.get(position);
-		this.setCatImage(viewHolder, gridItems.getCategory());
+		this.setCatImage(viewHolder, gridItems.getScenarioView());
 		return view;
 	}
-	private void setCatImage(LinearLayout viewHolder, Category category) {
+
+	private void setCatImage(LinearLayout viewHolder, ScenarioView scenarioView) {
 		ImageView imageView = (ImageView) viewHolder.findViewById(R.id.image);
-		imageView.setImageResource(category.getId());
+		if (scenarioView.getIdCode() != 0){
+			imageView.setImageResource(scenarioView.getIdCode());
+		} else {
+			Uri uri = Uri.parse(scenarioView.getPath());
+			imageView.setImageURI(uri);
+		}
 		TextView textTitle = (TextView) viewHolder.findViewById(R.id.text);
-		textTitle .setText(category.getName());
+		textTitle .setText(scenarioView.getName());
 	}
 
 	public static Long getItemSelectedId() {

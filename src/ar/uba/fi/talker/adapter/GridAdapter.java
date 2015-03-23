@@ -89,7 +89,7 @@ public class GridAdapter extends BaseAdapter {
 		}
 
 		GridItems gridItems = items[position];
-		setCatImage(gridItems.getCategory().getId(), viewHolder, gridItems.getCategory().getName());
+		setCatImage(gridItems.getScenarioView().getIdCode(), viewHolder, gridItems.getScenarioView().getName());
 		return view;
 	}
 
