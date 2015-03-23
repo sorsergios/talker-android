@@ -9,7 +9,6 @@ import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.Images.Media;
@@ -29,10 +28,10 @@ import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
-import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment.InsertImageDialogListener;
+import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.view.Scenario;
 
@@ -164,48 +163,13 @@ public class CanvasActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onDialogPositiveClickInsertImageDialogListener(Uri uri) {
+	public void onDialogPositiveClickInsertImageDialogListener(Uri uri, Matrix matrix) {
 
 		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
 		
-		Bitmap ima1;
 		try {
-			ima1 = Media.getBitmap(this.getContentResolver(), uri);
-			
-			ExifInterface exif = new ExifInterface(uri.getPath());
-	          int orientation = exif.getAttributeInt(
-	          ExifInterface.TAG_ORIENTATION,
-	          ExifInterface.ORIENTATION_NORMAL);
-	          System.out.println(orientation);
-
-          Matrix matrix = new Matrix();
-			switch (orientation) {
-	              case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
-	                  matrix .setScale(-1, 1);
-	                  break;
-	              case ExifInterface.ORIENTATION_ROTATE_180:
-	                  matrix.setRotate(180);
-	                  break;
-	              case ExifInterface.ORIENTATION_FLIP_VERTICAL:
-	                  matrix.setRotate(180);
-	                  matrix.postScale(-1, 1);
-	                  break;
-	              case ExifInterface.ORIENTATION_TRANSPOSE:
-	                  matrix.setRotate(90);
-	                  matrix.postScale(-1, 1);
-	                  break;
-	              case ExifInterface.ORIENTATION_ROTATE_90:
-	                  matrix.setRotate(90);
-	                  break;
-	              case ExifInterface.ORIENTATION_TRANSVERSE:
-	                  matrix.setRotate(-90);
-	                  matrix.postScale(-1, 1);
-	                  break;
-	              case ExifInterface.ORIENTATION_ROTATE_270:
-	                  matrix.setRotate(-90);
-	                  break;
-	              }
-			scenario.addImage(ima1);
+			Bitmap ima1 = Media.getBitmap(this.getContentResolver(), uri);
+			scenario.addImage(Bitmap.createBitmap(ima1, 0, 0, ima1.getWidth(), ima1.getHeight(), matrix, true));
 		} catch (FileNotFoundException e) {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 			Log.e("CANVAS", "Unexpected error adding imagen.", e);

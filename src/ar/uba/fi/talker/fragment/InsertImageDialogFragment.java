@@ -6,13 +6,13 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import ar.uba.fi.talker.R;
 
 public class InsertImageDialogFragment extends DialogFragment {
@@ -20,7 +20,7 @@ public class InsertImageDialogFragment extends DialogFragment {
 	private static int RESULT_LOAD_IMAGE = 1;
 
 	public interface InsertImageDialogListener {
-		public void onDialogPositiveClickInsertImageDialogListener(Uri uri);
+		public void onDialogPositiveClickInsertImageDialogListener(Uri uri, Matrix matrix);
 	}
 
 	InsertImageDialogListener listener;
@@ -79,15 +79,22 @@ public class InsertImageDialogFragment extends DialogFragment {
 		if (requestCode == RESULT_LOAD_IMAGE
 				&& resultCode == Activity.RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
-			String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
+            
+			String[] filePathColumn = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION};
+            
 			Cursor cursor = getActivity().getContentResolver().query(
 					selectedImage, filePathColumn, null, null, null);
 			cursor.moveToFirst();
+			int orientation = -1;
+			if (cursor != null && cursor.moveToFirst()) {
+				orientation = cursor.getInt(cursor.getColumnIndex(filePathColumn[1]));
+			}  
+			Matrix matrix = new Matrix();
+			matrix.postRotate(orientation);
 			cursor.close();
 
 			getDialog().dismiss();
-			listener.onDialogPositiveClickInsertImageDialogListener(selectedImage);
+			listener.onDialogPositiveClickInsertImageDialogListener(selectedImage, matrix);
 		}
 
 	}
