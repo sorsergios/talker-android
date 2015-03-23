@@ -24,4 +24,9 @@ public class PagerScenesAdapter extends FragmentStatePagerAdapter {
 	public int getCount() {
 		return this.scenesFragments.size();
 	}
+	
+	@Override
+	public int getItemPosition(Object object) {
+		return POSITION_NONE;
+	}
 }

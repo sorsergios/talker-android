@@ -16,9 +16,11 @@ public class ImagesSQLiteHelper extends SQLiteOpenHelper {
 	private Context context;
 	private static final String DATABASE_NAME = "talker.db";
 	private static final int DATABASE_VERSION = 1;
-	public static final String TABLE_IMAGES = "image";
+	public static final String TABLE_SCENARIO = "scenario";
+	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_IDCODE = "idCode";
-	public static final String COLUMN_TEXT = "text";
+	public static final String COLUMN_PATH = "path";
+	public static final String COLUMN_NAME = "name";
 
 	public ImagesSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -54,17 +56,21 @@ public class ImagesSQLiteHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// Execute SQL sentence to create table
 		if (checkDataBase()) {
-			if (!isTableExists(db, TABLE_IMAGES)) {
-				db.execSQL("CREATE TABLE " + TABLE_IMAGES + " ( "
-						+ COLUMN_IDCODE + " INTEGER, " + COLUMN_TEXT + " TEXT)");
+			if (!isTableExists(db, TABLE_SCENARIO)) {
+				db.execSQL("CREATE TABLE " + TABLE_SCENARIO + " ( "
+						+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+						+ COLUMN_IDCODE + " INTEGER, "
+						+ COLUMN_PATH + " TEXT, "
+						+ COLUMN_NAME + " TEXT)");
 				for (int i = 0; i < mThumbIdsScenario.length; i++) {
 					// Generate and insert default data
 					int idCode = mThumbIdsScenario[i];
 					String name = context.getResources().getString(mThumbTextsScenario[i]);
 
-					db.execSQL("INSERT INTO " + TABLE_IMAGES + " ( "
-							+ COLUMN_IDCODE + " , " + COLUMN_TEXT + " ) "
-							+ " VALUES (" + idCode + ", '" + name + "')");
+					db.execSQL("INSERT INTO " + TABLE_SCENARIO + " ( "
+							+ COLUMN_IDCODE + " , " 
+							+ COLUMN_PATH + " , " + COLUMN_NAME + " ) "
+							+ " VALUES (" + idCode + ", " + "NULL" + ", '" + name + "')");
 				}
 			}
 		}
@@ -75,7 +81,7 @@ public class ImagesSQLiteHelper extends SQLiteOpenHelper {
 		Log.w(ImagesSQLiteHelper.class.getName(),
 				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCENARIO);
 		onCreate(db);
 	}
 	

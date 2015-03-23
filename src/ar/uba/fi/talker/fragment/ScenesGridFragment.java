@@ -70,7 +70,7 @@ public class ScenesGridFragment extends Fragment {
 		Toast.makeText(
 				activity,
 				"Position Clicked: - " + position + " & " + "Text is: - "
-						+ gridItems.get(position).getCategory().getName(), Toast.LENGTH_LONG).show();
+						+ gridItems.get(position).getScenarioView().getName(), Toast.LENGTH_LONG).show();
 		Log.e("TAG", "POSITION CLICKED " + position);
 	}
 	

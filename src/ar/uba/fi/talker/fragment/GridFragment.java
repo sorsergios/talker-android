@@ -61,7 +61,7 @@ public class GridFragment extends Fragment {
 		Toast.makeText(
 				activity,
 				"Position Clicked: - " + position + " & " + "Text is: - "
-						+ gridItems[position].getCategory().getName(), Toast.LENGTH_LONG).show();
+						+ gridItems[position].getScenarioView().getName(), Toast.LENGTH_LONG).show();
 		Log.e("TAG", "POSITION CLICKED " + position);
 	}
 }

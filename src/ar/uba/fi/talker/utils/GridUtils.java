@@ -11,9 +11,9 @@ import ar.uba.fi.talker.fragment.ScenesGridFragment;
 
 public final class GridUtils {
 
-	public static List<GridFragment> setGridFragments(Activity activity, ArrayList<Category> a) {
+	public static List<GridFragment> setGridFragments(Activity activity, ArrayList<ScenarioView> a) {
 
-		Iterator<Category> it = a.iterator();
+		Iterator<ScenarioView> it = a.iterator();
 
 		List<GridFragment> gridFragments = new ArrayList<GridFragment>();
 
@@ -32,9 +32,9 @@ public final class GridUtils {
 		return gridFragments;
 	}
 	
-	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, ArrayList<Category> categories, OutdoorScenarioFragment parent) {
+	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, ArrayList<ScenarioView> scenarioViews, OutdoorScenarioFragment parent) {
 
-		Iterator<Category> it = categories.iterator();
+		Iterator<ScenarioView> it = scenarioViews.iterator();
 
 		List<ScenesGridFragment> gridFragments = new ArrayList<ScenesGridFragment>();
 
