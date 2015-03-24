@@ -5,8 +5,6 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:background="@drawable/grid_color_selector"
-    android:clickable="true"
-    android:focusable="true"
     android:orientation="vertical"
     android:padding="5dp" >
 

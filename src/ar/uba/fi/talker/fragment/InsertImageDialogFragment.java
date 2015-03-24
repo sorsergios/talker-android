@@ -16,10 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.adapter.InsertImageCategoryAdapter;
 
@@ -70,12 +69,15 @@ public class InsertImageDialogFragment extends DialogFragment {
 
 		GridView gridView = (GridView) gridViewContainer.findViewById(R.id.insert_image_gridview);
 		 
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_list_item_1, CATEGORIES);
+		
 		gridView.setAdapter(new InsertImageCategoryAdapter(getActivity(), CATEGORIES));
  
 		gridView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				Toast.makeText(getActivity(), ((TextView) v.findViewById(R.id.grid_item_label)).getText(), Toast.LENGTH_SHORT).show();
-
+			public void onItemClick(AdapterView<?> parent, View v,
+				int position, long id) {
+			   
 				ImageView imageView = (ImageView) v.findViewById(R.id.grid_item_image);
 
 				imageView.buildDrawingCache();
