@@ -12,24 +12,24 @@ import ar.uba.fi.talker.R;
 public class InsertImageCategoryAdapter extends BaseAdapter {
 	private Context context;
 	private final String[] mobileValues;
+	private LayoutInflater mInflater;
 
 	public InsertImageCategoryAdapter(Context context, String[] mobileValues) {
+		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
 		this.mobileValues = mobileValues;
 	}
-
+	
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View gridViewItem;
 
 		if (convertView == null) {
-
+			
 			gridViewItem = new View(context);
-
 			// get layout from mobile.xml
-			gridViewItem = inflater.inflate(R.layout.insert_image_grid_item, null);
+			gridViewItem = mInflater.inflate(R.layout.insert_image_grid_item, null);
 
 			// set value into textview
 			TextView textView = (TextView) gridViewItem.findViewById(R.id.grid_item_label);

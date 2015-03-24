@@ -187,9 +187,9 @@ public class CanvasActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onDialogPositiveClickInsertImageDialogListener2(Bitmap bmap) {
+	public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap) {
 		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
-		scenario.addImage(bmap);
+		scenario.addImage(bitmap);
 	}
 
 }

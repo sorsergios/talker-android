@@ -28,11 +28,11 @@ public class InsertImageDialogFragment extends DialogFragment {
 
 	public interface InsertImageDialogListener {
 		public void onDialogPositiveClickInsertImageDialogListener(Uri uri, Matrix matrix);
-		public void onDialogPositiveClickInsertImageDialogListener2(Bitmap bmap);
+		public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap);
 	}
-	static final String[] CATEGORIES = new String[] { 
-		"ANIMALES", "COMIDA","OBJETOS", "PATIO" };
-	
+
+	static final String[] CATEGORIES = new String[] { "ANIMAL", "COMIDA", "OBJETOS", "PATIO", "NUEVA" };
+
 	InsertImageDialogListener listener;
 
 	@Override
@@ -68,22 +68,21 @@ public class InsertImageDialogFragment extends DialogFragment {
 		View gridViewContainer = inflater.inflate(R.layout.insert_image_gridview, null);
 
 		GridView gridView = (GridView) gridViewContainer.findViewById(R.id.insert_image_gridview);
-		 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_list_item_1, CATEGORIES);
 		
 		gridView.setAdapter(new InsertImageCategoryAdapter(getActivity(), CATEGORIES));
  
 		gridView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-				int position, long id) {
-			   
-				ImageView imageView = (ImageView) v.findViewById(R.id.grid_item_image);
-
-				imageView.buildDrawingCache();
-				Bitmap bmap = imageView.getDrawingCache();
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				if (position == 4) {
+					Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+					startActivityForResult(i, RESULT_LOAD_IMAGE);
+				} else {
+					ImageView imageView = (ImageView) v.findViewById(R.id.grid_item_image);
+					imageView.buildDrawingCache();
+					Bitmap bmap = Bitmap.createBitmap(imageView.getDrawingCache());
+					listener.onDialogPositiveClickInsertImageDialogListener(bmap);
+				}
 				getDialog().dismiss();
-				listener.onDialogPositiveClickInsertImageDialogListener2(bmap);
 			}
 		});
 		
