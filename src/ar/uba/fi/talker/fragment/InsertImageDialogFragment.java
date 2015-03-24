@@ -6,14 +6,22 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.adapter.InsertImageCategoryAdapter;
 
 public class InsertImageDialogFragment extends DialogFragment {
 
@@ -21,8 +29,11 @@ public class InsertImageDialogFragment extends DialogFragment {
 
 	public interface InsertImageDialogListener {
 		public void onDialogPositiveClickInsertImageDialogListener(Uri uri, Matrix matrix);
+		public void onDialogPositiveClickInsertImageDialogListener2(Bitmap bmap);
 	}
-
+	static final String[] CATEGORIES = new String[] { 
+		"ANIMALES", "COMIDA","OBJETOS", "PATIO" };
+	
 	InsertImageDialogListener listener;
 
 	@Override
@@ -42,27 +53,40 @@ public class InsertImageDialogFragment extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		// TODO arranca codigo prueba
-		Button buttonLoadImage = new Button(getActivity());
-		buttonLoadImage.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
+//		Button buttonLoadImage = new Button(getActivity());
+//		buttonLoadImage.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//
+//				Intent i = new Intent(
+//						Intent.ACTION_PICK,
+//						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//				startActivityForResult(i, RESULT_LOAD_IMAGE);
+//			}
+//		});
 
-				Intent i = new Intent(
-						Intent.ACTION_PICK,
-						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				startActivityForResult(i, RESULT_LOAD_IMAGE);
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		View gridViewContainer = inflater.inflate(R.layout.insert_image_gridview, null);
+
+		GridView gridView = (GridView) gridViewContainer.findViewById(R.id.insert_image_gridview);
+		 
+		gridView.setAdapter(new InsertImageCategoryAdapter(getActivity(), CATEGORIES));
+ 
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				Toast.makeText(getActivity(), ((TextView) v.findViewById(R.id.grid_item_label)).getText(), Toast.LENGTH_SHORT).show();
+
+				ImageView imageView = (ImageView) v.findViewById(R.id.grid_item_image);
+
+				imageView.buildDrawingCache();
+				Bitmap bmap = imageView.getDrawingCache();
+				getDialog().dismiss();
+				listener.onDialogPositiveClickInsertImageDialogListener2(bmap);
 			}
 		});
-
+		
 		// termina codigo prueba
-		builder.setView(buttonLoadImage).setTitle(R.string.insert_image_title)
-		// .setPositiveButton(R.string.insert_image_accept,
-		// new DialogInterface.OnClickListener() {
-		// public void onClick(DialogInterface dialog, int id) {
-		// listener.onDialogPositiveClickInsertImageDialogListener(InsertImageDialogFragment.this);
-		// dialog.dismiss();
-		// }
-		// })
+		builder.setView(gridViewContainer).setTitle(R.string.insert_image_title)
 				.setNegativeButton(R.string.insert_image_cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {

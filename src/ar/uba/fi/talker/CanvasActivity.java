@@ -186,4 +186,10 @@ public class CanvasActivity extends ActionBarActivity implements
 		scenario.clear();
 	}
 
+	@Override
+	public void onDialogPositiveClickInsertImageDialogListener2(Bitmap bmap) {
+		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
+		scenario.addImage(bmap);
+	}
+
 }
