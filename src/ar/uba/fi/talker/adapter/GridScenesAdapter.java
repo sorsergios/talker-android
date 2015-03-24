@@ -141,4 +141,8 @@ public class GridScenesAdapter extends BaseAdapter {
 	public void removeItem(int location) {
 		items.remove(location);
 	}
+
+	public void addItem(GridItems gridItem) {
+		items.add(gridItem);
+	}
 }

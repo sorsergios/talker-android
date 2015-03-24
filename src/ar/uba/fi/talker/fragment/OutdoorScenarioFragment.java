@@ -119,6 +119,8 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 		galleryScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
+				gridView = sgf.getmGridView();
 				Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 				startActivityForResult(i, RESULT_LOAD_IMAGE);
 			}
@@ -170,6 +172,7 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 		super.onActivityResult(requestCode, resultCode, data);
 		//TODO acá esta configurado el codigo de empezar directo y guardarlo en la base
 		byte[] bytes = null;
+		ScenarioDAO scenario = null;
 		if (requestCode == RESULT_LOAD_IMAGE && null != data) {
 			Uri imageUri = data.getData();
 			String scenarioName = imageUri.getLastPathSegment(); 
@@ -180,7 +183,15 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 				Context ctx = newSceneActivity.getApplicationContext();
 				saveFileInternalStorage(scenarioName, bitmap, ctx);
 				File file = new File(ctx.getFilesDir(), scenarioName);
-				datasource.createScenario(file.getPath(), scenarioName);
+				scenario = datasource.createScenario(file.getPath(), scenarioName);
+				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
+				ScenarioView scenarioView = new ScenarioView(scenario.getId(),
+						scenario.getIdCode(), scenario.getPath(),
+						scenario.getName());
+				GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
+				gsa.addItem(gridItem);
+				gsa.notifyDataSetInvalidated();
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -207,11 +218,6 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 	}
 
 	private Bitmap getImageBitmap(Context context, String name) {
-		/*
-		 * try { FileInputStream fis = context.openFileInput(name); Bitmap b =
-		 * BitmapFactory.decodeStream(fis); fis.close(); return b; } catch
-		 * (Exception e) { } return null;
-		 */
 		try {
 			File f = new File(name);
 			Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
@@ -237,8 +243,13 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(
 			DialogFragment dialog) {
-		datasource.deleteScenario(GridScenesAdapter.getItemSelectedId());
-		
+		int imageViewId = GridScenesAdapter.getItemSelectedId().intValue();
+		ScenarioDAO scenarioDAO = datasource.getScenarioByID(imageViewId);
+		File file = new File(scenarioDAO.getPath());
+		boolean deleted = file.delete();
+		if (deleted){
+			datasource.deleteScenario(GridScenesAdapter.getItemSelectedId());
+		}
 		GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 		gsa.removeItem(position);
 		gsa.notifyDataSetInvalidated();
