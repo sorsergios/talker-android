@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import ar.uba.fi.talker.R;
@@ -75,7 +74,7 @@ public class InsertImageDialogFragment extends DialogFragment {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				if (position == 4) {
 					Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-					startActivityForResult(i, RESULT_LOAD_IMAGE);
+					getActivity().startActivityForResult(i, RESULT_LOAD_IMAGE);
 				} else {
 					ImageView imageView = (ImageView) v.findViewById(R.id.grid_item_image);
 					imageView.buildDrawingCache();
@@ -95,33 +94,6 @@ public class InsertImageDialogFragment extends DialogFragment {
 							}
 						});
 		return builder.create();
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == RESULT_LOAD_IMAGE
-				&& resultCode == Activity.RESULT_OK && null != data) {
-			Uri selectedImage = data.getData();
-            
-			String[] filePathColumn = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION};
-            
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
-			int orientation = -1;
-			if (cursor != null && cursor.moveToFirst()) {
-				orientation = cursor.getInt(cursor.getColumnIndex(filePathColumn[1]));
-			}  
-			Matrix matrix = new Matrix();
-			matrix.postRotate(orientation);
-			cursor.close();
-
-			getDialog().dismiss();
-			listener.onDialogPositiveClickInsertImageDialogListener(selectedImage, matrix);
-		}
-
 	}
 
 }
