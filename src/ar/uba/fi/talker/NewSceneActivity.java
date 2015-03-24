@@ -1,28 +1,16 @@
 package ar.uba.fi.talker;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import ar.uba.fi.talker.fragment.OutdoorScenarioFragment;
 
 public class NewSceneActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_scenes);
-		
-		FragmentManager fm = getFragmentManager();
-		OutdoorScenarioFragment fragmentOutdoor = (OutdoorScenarioFragment)fm.findFragmentById(R.id.fragmentOutdoors);
-        
-		FragmentTransaction tran = fm.beginTransaction();
-		tran.show(fragmentOutdoor);
-		tran.commit();
-
 	}
 
 	@Override
