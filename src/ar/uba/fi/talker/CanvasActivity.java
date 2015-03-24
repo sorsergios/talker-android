@@ -5,12 +5,16 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -40,6 +44,8 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	final String TAG = "CanvasActivity";
 
+	private static int RESULT_LOAD_IMAGE = 1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -192,4 +198,30 @@ public class CanvasActivity extends ActionBarActivity implements
 		scenario.addImage(bitmap);
 	}
 
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+			Uri selectedImage = data.getData();
+
+			String[] filePathColumn = { MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION };
+
+			Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+			int orientation = -1;
+			if (cursor != null && cursor.moveToFirst()) {
+				orientation = cursor.getInt(cursor.getColumnIndex(filePathColumn[1]));
+			}
+			Matrix matrix = new Matrix();
+			matrix.postRotate(orientation);
+			cursor.close();
+
+			this.onDialogPositiveClickInsertImageDialogListener(selectedImage, matrix);
+
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+		
+		
+		
 }
