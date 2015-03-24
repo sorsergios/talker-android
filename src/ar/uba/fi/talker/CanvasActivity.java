@@ -139,15 +139,18 @@ public class CanvasActivity extends ActionBarActivity implements
 	@Override
 	public void onDateSet(DatePicker view, int year, int monthOfYear,
 			int dayOfMonth) {
-		Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
-		
-		final Calendar calendar = Calendar.getInstance();
-		calendar.set(year, monthOfYear, dayOfMonth);
-		
-		SpannableStringBuilder date = new SpannableStringBuilder();
-		date.append(String.format("%1$tA %1$td/%1$tB/%1$tY", calendar));
-		
-		s.setText(date);
+		System.out.println(view.getId());
+		if (view.isShown()) {
+			Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
+
+			final Calendar calendar = Calendar.getInstance();
+			calendar.set(year, monthOfYear, dayOfMonth);
+
+			SpannableStringBuilder date = new SpannableStringBuilder();
+			date.append(String.format("%1$tA %1$td/%1$tB/%1$tY", calendar));
+
+			s.setText(date);
+		}
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
