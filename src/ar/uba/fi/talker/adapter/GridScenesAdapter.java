@@ -134,9 +134,11 @@ public class GridScenesAdapter extends BaseAdapter {
 		return pos;
 	}
 	
-	public View setItem(View gridItem,String text){
-		TextView textView = (TextView) gridItem.findViewById(R.id.text);
-	    textView.setText(text);        
-		return gridItem;
+	public void setItem(GridItems gridItem,String text, int location){
+		gridItem.getScenarioView().setName(text);
+	}
+
+	public void removeItem(int location) {
+		items.remove(location);
 	}
 }

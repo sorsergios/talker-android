@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.NewSceneActivity;
 import ar.uba.fi.talker.R;
@@ -37,6 +36,7 @@ import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioDAO;
 import ar.uba.fi.talker.fragment.ChangeNameDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
+import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 import ar.uba.fi.talker.utils.ScenarioView;
@@ -49,14 +49,11 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 	NewSceneActivity newSceneActivity;
 	private static int RESULT_LOAD_IMAGE = 1;
 	private GridView gridView = null;
-	private View view = null;
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerScenesAdapter pagerAdapter;
 	private ImageTalkerDataSource datasource = null;
-	private LayoutInflater inflater;
-	private ViewGroup container;
-	private View thisView=null;
+	private int position;
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -71,8 +68,6 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		this.inflater = inflater;
-		this.container = container;
 		View v = inflater.inflate(R.layout.layout_ext_scenes, container, false);
 		viewPager = (ViewPager) v.findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) v.findViewById(R.id.pagerIndicator);
@@ -137,11 +132,10 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 				final int numVisibleChildren = gridView.getChildCount();
 				final int firstVisiblePosition = gridView.getFirstVisiblePosition();
 
+				int positionIamLookingFor = (int) GridScenesAdapter.getPosition();
 				for (int i = 0; i < numVisibleChildren; i++) {
-					int positionOfView = firstVisiblePosition + i;
-					int positionIamLookingFor = (int) GridScenesAdapter.getPosition();
-					if (positionOfView == positionIamLookingFor) {
-						view = gridView.getChildAt(i);
+					if ((firstVisiblePosition + i) == positionIamLookingFor) {
+						position = i;
 					}
 				}
 				DialogFragment newFragment = new ChangeNameDialogFragment();
@@ -152,11 +146,22 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
+				gridView = sgf.getmGridView();
+				final int numVisibleChildren = gridView.getChildCount();
+				final int firstVisiblePosition = gridView.getFirstVisiblePosition();
+
+				int positionIamLookingFor = (int) GridScenesAdapter.getPosition();
+				for (int i = 0; i < numVisibleChildren; i++) {
+					if ((firstVisiblePosition + i) == positionIamLookingFor) {
+						position = i;
+					}
+				}
+				
 				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment();
 				newFragment.show(newSceneActivity.getSupportFragmentManager(), "delete_scenario");
 			}
 		});
-		thisView = v;
 		return v;
 	}	
 
@@ -223,24 +228,19 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
 		GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 		String newScenarioName = inputText.getText().toString();
-		gsa.setItem(view, newScenarioName);
+		((GridItems)gsa.getItem(position)).getScenarioView().setName(newScenarioName);
+		gsa.notifyDataSetInvalidated();
 		datasource.updateScenario(GridScenesAdapter.getItemSelectedId(), newScenarioName);
 
-		//TODO: falta refrescar la view
-		pagerAdapter.notifyDataSetChanged();
-	
-	    onCreateView(this.inflater,this.container, null);
-		
-		
-	/*	ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-		gridView = sgf.getmGridView();
-		gridView.invalidateViews();
-		gridView.refreshDrawableState();*/
 	}
 
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(
 			DialogFragment dialog) {
 		datasource.deleteScenario(GridScenesAdapter.getItemSelectedId());
+		
+		GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
+		gsa.removeItem(position);
+		gsa.notifyDataSetInvalidated();
 	}
 }
