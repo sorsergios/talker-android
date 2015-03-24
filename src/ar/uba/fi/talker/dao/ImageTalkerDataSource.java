@@ -31,7 +31,6 @@ public class ImageTalkerDataSource {
 
 	public ScenarioDAO createScenario(String path, String name) {
 		ContentValues values = new ContentValues();
-		System.out.println("Images added with id: " + path);
 		values.put(ImagesSQLiteHelper.COLUMN_PATH, path);
 		values.put(ImagesSQLiteHelper.COLUMN_NAME, name);
 		long insertId = database.insert(ImagesSQLiteHelper.TABLE_SCENARIO, null, values);
@@ -44,7 +43,6 @@ public class ImageTalkerDataSource {
 	}
 
 	public void deleteScenario(Long keyID) {
-		System.out.println("Images deleted with id: " + keyID);
 		database.delete(ImagesSQLiteHelper.TABLE_SCENARIO,
 				ImagesSQLiteHelper.COLUMN_ID + " = " + keyID, null);
 	}
@@ -75,7 +73,6 @@ public class ImageTalkerDataSource {
 	}
 	
 	public ScenarioDAO getScenarioByID(int keyId) {
-		System.out.println("Images select with id: " + keyId);
 		Cursor cursor = database.rawQuery("SELECT * FROM "
 				+ ImagesSQLiteHelper.TABLE_SCENARIO + " WHERE "
 				+ ImagesSQLiteHelper.COLUMN_ID + " = " + keyId, null);
@@ -86,7 +83,6 @@ public class ImageTalkerDataSource {
 	}
 	
 	public void updateScenario(Long keyID, String name) {
-		System.out.println("Images update with id: " + keyID+ " name: " + name);
 		ContentValues values = new ContentValues();
 		values.put(ImagesSQLiteHelper.COLUMN_NAME,name);
 		database.update(ImagesSQLiteHelper.TABLE_SCENARIO, values,
