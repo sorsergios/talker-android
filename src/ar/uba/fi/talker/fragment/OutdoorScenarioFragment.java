@@ -54,7 +54,7 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 	private PagerScenesAdapter pagerAdapter;
 	private ImageTalkerDataSource datasource = null;
 	private int position;
-	
+	private static final int HEIGHT = 200; // TODO Make it a parameter.
 	@Override
 	public void onAttach(Activity activity){
 	    super.onAttach(activity);
@@ -210,13 +210,26 @@ public class OutdoorScenarioFragment extends Fragment implements TextDialogListe
 		FileOutputStream out;
 		try {
 			out = context.openFileOutput(name, Context.MODE_PRIVATE);
+			b = setContent(b);
 			b.compress(Bitmap.CompressFormat.JPEG, 90, out);
 			out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public Bitmap setContent(Bitmap image) {
+		int bWidth = image.getWidth();
+        int bHeight = image.getHeight();
 
+        float parentRatio = (float) bHeight / bWidth;
+
+        int nHeight = HEIGHT; 
+        int nWidth = (int) (HEIGHT / parentRatio);
+        
+        return Bitmap.createScaledBitmap(image, nWidth, nHeight, true);
+	}
+	
 	private Bitmap getImageBitmap(Context context, String name) {
 		try {
 			File f = new File(name);
