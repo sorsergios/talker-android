@@ -4,8 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Activity;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -126,7 +126,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			}
 		});
 	}
-
+	
 	@Override
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
 		Dialog dialogView = dialog.getDialog();

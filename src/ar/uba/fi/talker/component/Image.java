@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.os.Bundle;
+import android.os.Parcelable;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
 
@@ -12,6 +14,8 @@ public class Image extends DragComponent {
 
 	private static final int HEIGHT = 200; // TODO Make it a parameter.
 	private Paint paint;
+	private String label;
+	private Bitmap mImage;
 	
 	public Image(Context arg0) {
 		super(arg0);
@@ -19,8 +23,28 @@ public class Image extends DragComponent {
 		// TODO Calcular donde aparece el texto.
 	}
 
-	private String label;
-	private Bitmap mImage;
+	@Override
+	protected Parcelable onSaveInstanceState() {
+
+		Bundle bundle = new Bundle();
+	    bundle.putParcelable("instanceState", super.onSaveInstanceState());
+	    bundle.putParcelable("image", this.mImage);
+	    bundle.putString("label", this.label);
+	    return bundle;
+		
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
+		 if (state instanceof Bundle) {
+			Bundle bundle = (Bundle) state;
+		    mImage = bundle.getParcelable("image");
+		    label = bundle.getString("label");
+			
+			state = bundle.getParcelable("instanceState");
+		}
+		super.onRestoreInstanceState(state);
+	}
 	
 	public String getLabel() {
 		return label;
@@ -58,4 +82,5 @@ public class Image extends DragComponent {
         
         mImage =  Bitmap.createScaledBitmap(image, nWidth, nHeight, true);
 	}
+	
 }
