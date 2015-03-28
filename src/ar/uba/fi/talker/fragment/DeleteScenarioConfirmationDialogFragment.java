@@ -3,7 +3,6 @@ package ar.uba.fi.talker.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -22,9 +21,7 @@ public class DeleteScenarioConfirmationDialogFragment extends DialogFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			FragmentManager fm = activity.getFragmentManager();
-			OutdoorScenarioFragment fragmentOutdoor = (OutdoorScenarioFragment)fm.findFragmentById(R.id.fragmentOutdoors);
-			listener = (DeleteScenarioDialogListener) fragmentOutdoor;
+			listener = (DeleteScenarioDialogListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement DeleteScenarioDialogListener");

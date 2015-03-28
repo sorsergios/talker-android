@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.fragment.OutdoorScenarioFragment;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.ScenarioView;
 
@@ -34,7 +33,7 @@ public class GridScenesAdapter extends BaseAdapter {
     private static Long itemSelectedId;
     private static int pos;
 
-	public GridScenesAdapter(Context context, List<GridItems> gridItems, OutdoorScenarioFragment parent) {
+	public GridScenesAdapter(Context context, List<GridItems> gridItems) {
 
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
