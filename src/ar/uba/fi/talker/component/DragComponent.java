@@ -2,6 +2,8 @@ package ar.uba.fi.talker.component;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MotionEvent;
 
 public abstract class DragComponent extends Component {
@@ -19,7 +21,33 @@ public abstract class DragComponent extends Component {
 		deltaPoint = new Point(0, 0);
 		downPoint = new Point(0, 0);
 	}
+	
+	@Override
+	protected Parcelable onSaveInstanceState() {
+	    
+		Bundle bundle = new Bundle();
+	    bundle.putParcelable("instanceState", super.onSaveInstanceState());
+	    bundle.putParcelable("point", this.point);
+	    bundle.putParcelable("deltaPoint", this.deltaPoint);
+	    bundle.putParcelable("downPoint", this.downPoint);
+	    return bundle;
+		
+	}
 
+	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
+		 if (state instanceof Bundle) {
+			Bundle bundle = (Bundle) state;
+			this.point = bundle.getParcelable("point");
+			this.deltaPoint = bundle.getParcelable("deltaPoint");
+			this.downPoint = bundle.getParcelable("downPoint");
+			
+			state = bundle.getParcelable("instanceState");
+		}
+		super.onRestoreInstanceState(state);
+
+	}
+	
 	@Override
 	public boolean performClick() {
 		return super.performClick() || true;
@@ -51,4 +79,5 @@ public abstract class DragComponent extends Component {
 		this.invalidate();
 		return this.performClick();
 	}
+	
 }

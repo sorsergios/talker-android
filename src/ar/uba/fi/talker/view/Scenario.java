@@ -2,6 +2,7 @@ package ar.uba.fi.talker.view;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,6 +12,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -25,6 +28,8 @@ import ar.uba.fi.talker.paint.PaintType;
 
 public class Scenario extends FrameLayout {
 
+	private static final String CHILD_LABEL = "Child_";
+	
 	private ComponentType activeComponentType;
 
 	private Component activeComponent;
@@ -32,6 +37,8 @@ public class Scenario extends FrameLayout {
 	private List<Component> draggableComponents;
 	
 	private Bitmap mImage = null;
+	
+	private int viewIdIncremental = new Random().nextInt();
 
 	public Scenario(Context context) {
 		super(context);
@@ -53,6 +60,40 @@ public class Scenario extends FrameLayout {
 		draggableComponents = new LinkedList<Component>(); 
 	}
 
+	@Override
+	protected Parcelable onSaveInstanceState() {
+	    
+		int childCount = this.getChildCount();
+		
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("instanceState", super.onSaveInstanceState());
+	    bundle.putInt("childCount", childCount);
+	    
+	    
+	    for (int index = 0; childCount > 0; index++, childCount--) {
+			Component child = (Component) this.getChildAt(0);
+			this.removeView(child);
+			bundle.putParcelable(CHILD_LABEL + index, child);
+		}
+	    
+	    return bundle;
+		
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
+		 if (state instanceof Bundle) {
+			Bundle bundle = (Bundle) state;
+			int childCount = bundle.getInt("childCount");
+		    for (int index = 0; index < childCount; index++) {
+				Component child = bundle.getParcelable(CHILD_LABEL + index);
+				this.addView(child);
+		    }
+			state = bundle.getParcelable("instanceState");
+		}
+		super.onRestoreInstanceState(state);
+	}
+	
 	@Override
 	public boolean performClick() {
 		return super.performClick() || true;
@@ -78,12 +119,14 @@ public class Scenario extends FrameLayout {
 			if (!foundElement) {
 				activeComponent = ComponentFactory.createComponent(
 						activeComponentType, getContext());
-				android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
 				
-				layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-				layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-				
-				this.addView(activeComponent, layoutParams);
+				this.addView(activeComponent, 
+						android.view.ViewGroup.LayoutParams.MATCH_PARENT, 
+						android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+
+				activeComponent.setId(viewIdIncremental++);
+				activeComponent.setSaveEnabled(true);
+				activeComponent.setSaveFromParentEnabled(true);
 			}
 
 		}
