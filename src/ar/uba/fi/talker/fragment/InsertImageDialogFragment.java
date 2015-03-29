@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
@@ -24,19 +25,22 @@ public class InsertImageDialogFragment extends DialogFragment {
 
 	private static int RESULT_LOAD_IMAGE = 1;
 
+	private ViewFlipper flipper;
+	
+	private AlertDialog alert;
+	
 	public interface InsertImageDialogListener {
 		public void onDialogPositiveClickInsertImageDialogListener(Uri uri,
 				Matrix matrix);
-
 		public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap);
 	}
 
-	static final String[] CATEGORIES = new String[] { "ANIMAL", "COMIDA",
+	private static final String[] CATEGORIES = new String[] { "ANIMAL", "COMIDA",
 			"OBJETOS", "PATIO", "NUEVA" };
-	static final String[] INNER_CATEGORIES = new String[] { "IMAGEN 1",
+	private static final String[] INNER_CATEGORIES = new String[] { "IMAGEN 1",
 			"IMAGEN 2", "IMAGEN 3", "IMAGEN 4", "NUEVA" };
 
-	InsertImageDialogListener listener;
+	private InsertImageDialogListener listener;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -54,25 +58,13 @@ public class InsertImageDialogFragment extends DialogFragment {
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-		// TODO arranca codigo prueba
-		// Button buttonLoadImage = new Button(getActivity());
-		// buttonLoadImage.setOnClickListener(new View.OnClickListener() {
-		// @Override
-		// public void onClick(View arg0) {
-		//
-		// Intent i = new Intent(
-		// Intent.ACTION_PICK,
-		// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		// startActivityForResult(i, RESULT_LOAD_IMAGE);
-		// }
-		// });
-
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View gridViewContainer = inflater.inflate(
 				R.layout.insert_image_gridview, null);
 
-		final ViewFlipper flipper = (ViewFlipper) gridViewContainer
+		this.flipper = (ViewFlipper) gridViewContainer
 				.findViewById(R.id.vfImages);
+		
 		GridView gridView = (GridView) gridViewContainer
 				.findViewById(R.id.insert_cat_gridview);
 		GridView gridViewImages = (GridView) gridViewContainer
@@ -93,6 +85,8 @@ public class InsertImageDialogFragment extends DialogFragment {
 					// RESULT_LOAD_IMAGE);
 				} else {
 					flipper.showNext();
+					Button buttonNo = alert.getButton(AlertDialog.BUTTON_NEUTRAL);
+					buttonNo.setEnabled(true);
 				}
 			}
 		});
@@ -117,22 +111,37 @@ public class InsertImageDialogFragment extends DialogFragment {
 			}
 		});
 
-		// termina codigo prueba
 		builder.setView(gridViewContainer)
 				.setTitle(R.string.insert_image_title)
-				.setNeutralButton("Volver",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								//flipper.showPrevious();
-							}
-						})
+				.setNeutralButton(R.string.insert_image_back, null)
 				.setNegativeButton(R.string.insert_image_cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								//dialog.dismiss();
+								dialog.dismiss();
 							}
 						});
-		return builder.create();
+		
+		alert = builder.create();
+		return alert; 
 	}
 
+	
+	@Override
+	public void onStart() {
+		super.onStart(); // super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after
+							// this point
+		AlertDialog d = (AlertDialog) getDialog();
+		if (d != null) {
+			final Button neutralButton = (Button) d.getButton(Dialog.BUTTON_NEUTRAL);
+			neutralButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					flipper.showPrevious();
+					neutralButton.setEnabled(false);
+				}
+			});
+			neutralButton.setEnabled(false);
+		}
+	}
+	
 }

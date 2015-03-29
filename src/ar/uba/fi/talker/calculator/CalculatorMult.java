@@ -2,24 +2,27 @@ package ar.uba.fi.talker.calculator;
 
 import android.widget.TextView;
 
-public class CalculatorMult extends CalculatorOpetation {
+public class CalculatorMult extends CalculatorOperation {
 	
 	public CalculatorMult(CalculatorExpression expresion) {
 		super(expresion);
 	}
 
 	@Override
-	public int getValue() {
-		return exp1.getValue() * exp2.getValue();
+	public double getValue() {
+		if (exp1 != null && exp1 != null) {
+			return exp1.getValue() * exp2.getValue();
+		}
+		return 0;
 	}
 
 	@Override
-	public void excecute(TextView text) {
+	public void execute(TextView text) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void addValue(int value) {
+	public void addValue(double value) {
 		// TODO Auto-generated method stub
 		
 	}

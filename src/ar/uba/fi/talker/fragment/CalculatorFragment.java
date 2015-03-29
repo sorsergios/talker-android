@@ -1,5 +1,6 @@
 package ar.uba.fi.talker.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -15,7 +16,7 @@ import ar.uba.fi.talker.calculator.CalculatorDiv;
 import ar.uba.fi.talker.calculator.CalculatorExpression;
 import ar.uba.fi.talker.calculator.CalculatorMinus;
 import ar.uba.fi.talker.calculator.CalculatorMult;
-import ar.uba.fi.talker.calculator.CalculatorOpetation;
+import ar.uba.fi.talker.calculator.CalculatorOperation;
 import ar.uba.fi.talker.calculator.CalculatorPlus;
 import ar.uba.fi.talker.calculator.CalculatorValue;
 
@@ -25,8 +26,25 @@ public class CalculatorFragment extends DialogFragment implements OnClickListene
 	private SparseArray<CalculatorExpression> buttons;
 	private TextView text;
 	private CalculatorValue currentValue;
-	private CalculatorOpetation calculatorExpression;
+	private CalculatorOperation calculatorExpression;
 
+	public interface CalculatorDialogListener {
+		public void onDialogPositiveClickCalculatorDialogListener(
+				CalculatorFragment calculatorFragment);
+
+	}
+	CalculatorDialogListener listener;
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			listener = (CalculatorDialogListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement CalculatorDialogListener");
+		}
+	}
+	
 	public CalculatorFragment() {
 				
 		currentValue = new CalculatorValue(0);
@@ -69,6 +87,13 @@ public class CalculatorFragment extends DialogFragment implements OnClickListene
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.dismiss();
 					}
+				})
+				.setPositiveButton(R.string.login_accept,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						listener.onDialogPositiveClickCalculatorDialogListener(CalculatorFragment.this);
+						dialog.dismiss();
+					}
 				});
 		return builder.create();
 	}
@@ -93,13 +118,13 @@ public class CalculatorFragment extends DialogFragment implements OnClickListene
 			break;
 		case R.id.buttonClear:
 			newValue = false;
-			int prevValue = currentValue.getValue() / 10;
+			double prevValue = currentValue.getValue() / 10;
 			currentValue = new CalculatorValue(prevValue);
 			break;
 		case R.id.buttonResult:
 			result = true;
 			newValue = false;
-			int resultValue = calculatorExpression.getValue();
+			double resultValue = calculatorExpression.getValue();
 			currentValue = new CalculatorValue(resultValue);
 			calculatorExpression = null;
 			break;

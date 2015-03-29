@@ -1,34 +1,37 @@
 package ar.uba.fi.talker.calculator;
 
+import java.text.DecimalFormat;
+
 import android.widget.TextView;
 
 public class CalculatorValue extends CalculatorExpression {
 
-	private int value;
+	private double value;
 	
-	public CalculatorValue(int initValue) {
-		this.value = initValue;
+	public CalculatorValue(double d) {
+		this.value = d;
 	}
 
 	@Override
-	public void excecute(TextView text) {
+	public void execute(TextView text) {
 		CharSequence innetText = text.getText();
 		text.setText(innetText.toString() + getValue());
 	}
 
 	@Override
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}
 
 	@Override
-	public void addValue(int value) {
+	public void addValue(double d) {
 		this.value *= 10;
-		this.value += value;
+		this.value += d;
 	}
 	
 	@Override
 	public String toString() {
-		return value > 0 ? String.valueOf(value) : "";
+		DecimalFormat df = new DecimalFormat("0.##");
+		return String.valueOf(df.format(value));
 	}
 }
