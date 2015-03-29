@@ -29,7 +29,7 @@ public abstract class CalculatorOperation extends CalculatorExpression {
 			string.append(df.format(value1));
 		}
 		string.append(this.getOpp());
-		if (exp2 != null && !exp2.toString().equals("")){
+		if (exp2 != null && !exp2.toString().equals("") && !exp2.toString().equals("0")){
 			value2 = Double.parseDouble(exp2.toString());
 			string.append(df.format(value2));
 		}

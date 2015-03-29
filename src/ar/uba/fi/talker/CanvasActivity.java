@@ -124,7 +124,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			@Override
 			public void onClick(View v) {
 				DialogFragment newFragment = new DatePickerFragment();
-				newFragment.show(getSupportFragmentManager(), "calculator");
+				newFragment.show(getSupportFragmentManager(), "calendar");
 			}
 		});
 	}
