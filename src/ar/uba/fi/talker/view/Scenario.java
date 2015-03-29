@@ -29,16 +29,18 @@ import ar.uba.fi.talker.paint.PaintType;
 public class Scenario extends FrameLayout {
 
 	private static final String CHILD_LABEL = "Child_";
-	
+
 	private ComponentType activeComponentType;
 
 	private Component activeComponent;
-	
+
 	private List<Component> draggableComponents;
-	
+
 	private Bitmap mImage = null;
-	
+
 	private int viewIdIncremental = new Random().nextInt();
+
+	private Bundle bundle = null;
 
 	public Scenario(Context context) {
 		super(context);
@@ -57,51 +59,52 @@ public class Scenario extends FrameLayout {
 
 	private void init() {
 		this.setActiveComponentType(ComponentType.PENCIL);
-		draggableComponents = new LinkedList<Component>(); 
+		draggableComponents = new LinkedList<Component>();
 	}
 
 	@Override
 	protected Parcelable onSaveInstanceState() {
-	    
 		int childCount = this.getChildCount();
-		
-		Bundle bundle = new Bundle();
-		bundle.putParcelable("instanceState", super.onSaveInstanceState());
-	    bundle.putInt("childCount", childCount);
-	    
-	    
-	    for (int index = 0; childCount > 0; index++, childCount--) {
-			Component child = (Component) this.getChildAt(0);
-			this.removeView(child);
-			bundle.putParcelable(CHILD_LABEL + index, child);
+		if (bundle == null) {
+			bundle = new Bundle();
 		}
-	    
-	    return bundle;
 		
+		bundle.putParcelable("instanceState", super.onSaveInstanceState());
+		if (childCount > 0) {
+			bundle.putInt("childCount", childCount);
+			
+			for (int index = 0; childCount > 0; index++, childCount--) {
+				Component child = (Component) this.getChildAt(0);
+				this.removeView(child);
+				bundle.putParcelable(CHILD_LABEL + index, child);
+			}
+		}
+		
+		return bundle;
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Parcelable state) {
-		 if (state instanceof Bundle) {
+		if (state instanceof Bundle) {
 			Bundle bundle = (Bundle) state;
 			int childCount = bundle.getInt("childCount");
-		    for (int index = 0; index < childCount; index++) {
+			for (int index = 0; index < childCount; index++) {
 				Component child = bundle.getParcelable(CHILD_LABEL + index);
 				this.addView(child);
-		    }
+			}
 			state = bundle.getParcelable("instanceState");
 		}
 		super.onRestoreInstanceState(state);
 	}
-	
+
 	@Override
 	public boolean performClick() {
 		return super.performClick() || true;
 	}
-	
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		
+
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			boolean foundElement = false;
 			int eventX = (int) event.getAxisValue(MotionEvent.AXIS_X);
@@ -115,13 +118,13 @@ public class Scenario extends FrameLayout {
 					activeComponent.toggleActive();
 				}
 			}
-			
+
 			if (!foundElement) {
 				activeComponent = ComponentFactory.createComponent(
 						activeComponentType, getContext());
-				
-				this.addView(activeComponent, 
-						android.view.ViewGroup.LayoutParams.MATCH_PARENT, 
+
+				this.addView(activeComponent,
+						android.view.ViewGroup.LayoutParams.MATCH_PARENT,
 						android.view.ViewGroup.LayoutParams.MATCH_PARENT);
 
 				activeComponent.setId(viewIdIncremental++);
@@ -133,49 +136,49 @@ public class Scenario extends FrameLayout {
 		activeComponent.onTouchEvent(event);
 		return this.performClick();
 	}
-	
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if (mImage != null) {
 			int width = this.getWidth();
 			int height = this.getHeight();
-			Bitmap resized = Bitmap.createScaledBitmap(mImage, width , height, true);
-			BitmapShader fillBMPshader = new BitmapShader(
-					resized, 
-					Shader.TileMode.REPEAT, 
-					Shader.TileMode.REPEAT
-					);  
-			
+			Bitmap resized = Bitmap.createScaledBitmap(mImage, width, height,
+					true);
+			BitmapShader fillBMPshader = new BitmapShader(resized,
+					Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+
 			Paint fillPaint = PaintManager.getPaint(PaintType.ERASE);
 			fillPaint.setShader(fillBMPshader);
 			mImage = null;
 		}
-		
+
 		super.onDraw(canvas);
 	}
-	
+
 	public void setBackgroundImage(Bitmap image) {
 		mImage = image;
-		
-        BitmapDrawable background = new BitmapDrawable(getResources(), image);
+
+		BitmapDrawable background = new BitmapDrawable(getResources(), image);
 		this.setBackground(background);
 	}
 
 	public void clear() {
 		this.removeAllViews();
 	}
-	
+
 	public void setActiveComponentType(ComponentType type) {
 		this.activeComponentType = type;
 	}
 
 	public void setText(Editable text) {
-		Component alterComponent = ComponentFactory.createComponent(ComponentType.TEXT, getContext());
-	
-		android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
+		Component alterComponent = ComponentFactory.createComponent(
+				ComponentType.TEXT, getContext());
+
+		android.view.ViewGroup.LayoutParams layoutParams = this
+				.getLayoutParams();
 		layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-		
+
 		this.addView(alterComponent, layoutParams);
 		((Text) alterComponent).setValue(text);
 		alterComponent.toggleActive();
@@ -183,17 +186,25 @@ public class Scenario extends FrameLayout {
 	}
 
 	public void addImage(Bitmap image) {
-		Component alterComponent = ComponentFactory.createComponent(ComponentType.IMAGE, getContext());
-	
-		android.view.ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
+		Component alterComponent = ComponentFactory.createComponent(
+				ComponentType.IMAGE, getContext());
+
+		android.view.ViewGroup.LayoutParams layoutParams = this
+				.getLayoutParams();
 		layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-		
+
 		this.addView(alterComponent, layoutParams);
-		
+
 		((Image) alterComponent).setContent(image);
 		alterComponent.toggleActive();
 		draggableComponents.add(alterComponent);
+	}
+
+	public void restore() {
+		if (bundle != null) {
+			this.onRestoreInstanceState(bundle);
+		}
 	}
 
 }
