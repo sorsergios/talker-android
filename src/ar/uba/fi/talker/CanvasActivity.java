@@ -44,6 +44,8 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	final String TAG = "CanvasActivity";
 
+	private Scenario scenario;
+
 	private static int RESULT_LOAD_IMAGE = 1;
 	
 	@Override
@@ -51,7 +53,8 @@ public class CanvasActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.canvas_default);
-		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
+
+		scenario = (Scenario) this.findViewById(R.id.gestureOverlayView1);
 		if(getIntent().hasExtra("BMP")) {
 		    Bundle extras = getIntent().getExtras();
 		    byte[] bytes = extras.getByteArray("BMP");
@@ -128,18 +131,22 @@ public class CanvasActivity extends ActionBarActivity implements
 	}
 	
 	@Override
+	protected void onRestart() {
+		scenario.restore();
+		super.onRestart();
+	}
+	
+	@Override
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
 		Dialog dialogView = dialog.getDialog();
 		EditText inputText = (EditText) dialogView
 				.findViewById(R.id.insert_text_input);
-		Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
-		s.setText(inputText.getText());
+		scenario.setText(inputText.getText());
 	}
 	
 	@Override
 	public void onDateSet(DatePicker view, int year, int monthOfYear,
 			int dayOfMonth) {
-		Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
 		
 		final Calendar calendar = Calendar.getInstance();
 		calendar.set(year, monthOfYear, dayOfMonth);
@@ -147,7 +154,7 @@ public class CanvasActivity extends ActionBarActivity implements
 		SpannableStringBuilder date = new SpannableStringBuilder();
 		date.append(String.format("%1$tA %1$td/%1$tB/%1$tY", calendar));
 		
-		s.setText(date);
+		scenario.setText(date);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -170,8 +177,6 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	@Override
 	public void onDialogPositiveClickInsertImageDialogListener(Uri uri, Matrix matrix) {
-
-		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
 		
 		try {
 			Bitmap ima1 = Media.getBitmap(this.getContentResolver(), uri);
@@ -188,13 +193,11 @@ public class CanvasActivity extends ActionBarActivity implements
 	@Override
 	public void onDialogPositiveClickEraseAllConfirmationListener(
 			DialogFragment dialog) {
-		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
 		scenario.clear();
 	}
 
 	@Override
 	public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap) {
-		final Scenario scenario = (Scenario) findViewById(R.id.gestureOverlayView1);
 		scenario.addImage(bitmap);
 	}
 

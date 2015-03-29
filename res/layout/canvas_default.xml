@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/canvas_default" >
+    android:id="@+id/canvas_default"
+    android:saveEnabled="true" 
+    android:keepScreenOn="true">
 
     <ar.uba.fi.talker.view.Scenario
         android:id="@+id/gestureOverlayView1"
@@ -10,6 +12,7 @@
         android:layout_height="fill_parent"
         android:layout_above="@+id/bottom"
         android:layout_alignParentLeft="true"
+        android:saveEnabled="true"
         android:layout_below="@+id/pencilOption" >
 
     </ar.uba.fi.talker.view.Scenario>
