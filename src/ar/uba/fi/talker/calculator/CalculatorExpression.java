@@ -4,11 +4,11 @@ import android.widget.TextView;
 
 public abstract class CalculatorExpression {
 	
-	public abstract int getValue();
+	public abstract double getValue();
 	
-	public abstract void excecute(TextView text);
+	public abstract void execute(TextView text);
 
-	public abstract void addValue(int value);
+	public abstract void addValue(double value);
 	
 	public abstract String toString();
 	

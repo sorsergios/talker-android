@@ -27,9 +27,11 @@ import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
+import ar.uba.fi.talker.fragment.CalculatorFragment.CalculatorDialogListener;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
@@ -40,7 +42,7 @@ import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.view.Scenario;
 
 public class CanvasActivity extends ActionBarActivity implements
-		TextDialogListener, InsertImageDialogListener, EraseAllConfirmationDialogListener, OnDateSetListener {
+		TextDialogListener, InsertImageDialogListener, EraseAllConfirmationDialogListener, OnDateSetListener, CalculatorDialogListener {
 
 	final String TAG = "CanvasActivity";
 
@@ -223,7 +225,17 @@ public class CanvasActivity extends ActionBarActivity implements
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-		
-		
-		
+
+	@Override
+	public void onDialogPositiveClickCalculatorDialogListener(
+			CalculatorFragment calculatorFragment) {
+		Dialog dialogView = calculatorFragment.getDialog();
+		TextView inputText = (TextView) dialogView.findViewById(R.id.calc_text);
+		Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
+		if (inputText != null){
+			EditText edit = new EditText(dialogView.getContext());
+			edit.setText(inputText.getText());
+			s.setText(edit.getText());
+		}
+	}
 }
