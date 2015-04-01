@@ -13,12 +13,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import ar.uba.fi.talker.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
-import ar.uba.fi.talker.InsertImageDialogFragment.InsertImageDialogListener;
 import ar.uba.fi.talker.action.userlog.TextDialogFragment;
 import ar.uba.fi.talker.action.userlog.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.command.ActivityCommand;
+import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
+import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
+import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
+import ar.uba.fi.talker.fragment.InsertImageDialogFragment.InsertImageDialogListener;
 import ar.uba.fi.talker.view.Scenario;
 
 public class CanvasActivity extends ActionBarActivity implements

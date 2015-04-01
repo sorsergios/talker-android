@@ -17,98 +17,34 @@ public final class GridUtils {
 
 		List<GridFragment> gridFragments = new ArrayList<GridFragment>();
 
-		int i = 0;
+		ArrayList<GridItems> itmLst = new ArrayList<GridItems>();
 		while (it.hasNext()) {
-			ArrayList<GridItems> itmLst = new ArrayList<GridItems>();
 
-			GridItems itm = new GridItems(0, it.next());
-			itmLst.add(itm);
-			i = i + 1;
-
-			if (it.hasNext()) {
-				GridItems itm1 = new GridItems(1, it.next());
-				itmLst.add(itm1);
-				i = i + 1;
-			}
-
-			if (it.hasNext()) {
-				GridItems itm2 = new GridItems(2, it.next());
-				itmLst.add(itm2);
-				i = i + 1;
-			}
-
-			if (it.hasNext()) {
-				GridItems itm3 = new GridItems(3, it.next());
-				itmLst.add(itm3);
-				i = i + 1;
-			}
-
-			if (it.hasNext()) {
-				GridItems itm4 = new GridItems(4, it.next());
-				itmLst.add(itm4);
-				i = i + 1;
-			}
-
-			if (it.hasNext()) {
-				GridItems itm5 = new GridItems(5, it.next());
-				itmLst.add(itm5);
-				i = i + 1;
+			for (int i = 0; i < 6 && it.hasNext(); i++) {
+				GridItems itm = new GridItems(i, it.next());
+				itmLst.add(itm);
 			}
 			
-			GridItems[] gp = {};
-			GridItems[] gridPage = itmLst.toArray(gp);
+			GridItems[] gridPage = itmLst.toArray(new GridItems[]{});
+			itmLst.clear();
 			gridFragments.add(new GridFragment(gridPage, activity));
 		}
 		return gridFragments;
 	}
 	
-	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, ArrayList<Category> a, OutdoorScenarioDialogFragment parent) {
+	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, ArrayList<Category> categories, OutdoorScenarioDialogFragment parent) {
 
-		Iterator<Category> it = a.iterator();
+		Iterator<Category> it = categories.iterator();
 
 		List<ScenesGridFragment> gridFragments = new ArrayList<ScenesGridFragment>();
 
-		int i = 0;
 		while (it.hasNext()) {
 			ArrayList<GridItems> itmLst = new ArrayList<GridItems>();
-
-			GridItems itm = new GridItems(0, it.next());
-			itmLst.add(itm);
-			i = i + 1;
-
-			if (it.hasNext()) {
-				GridItems itm1 = new GridItems(1, it.next());
-				itmLst.add(itm1);
-				i = i + 1;
+			for (int i = 0; i < 6 && it.hasNext(); i++) {
+				GridItems itm = new GridItems(i, it.next());
+				itmLst.add(itm);
 			}
-
-			if (it.hasNext()) {
-				GridItems itm2 = new GridItems(2, it.next());
-				itmLst.add(itm2);
-				i = i + 1;
-			}
-
-			if (it.hasNext()) {
-				GridItems itm3 = new GridItems(3, it.next());
-				itmLst.add(itm3);
-				i = i + 1;
-			}
-
-			if (it.hasNext()) {
-				GridItems itm4 = new GridItems(4, it.next());
-				itmLst.add(itm4);
-				i = i + 1;
-			}
-
-			if (it.hasNext()) {
-				GridItems itm5 = new GridItems(5, it.next());
-				itmLst.add(itm5);
-				i = i + 1;
-			}
-			
-			GridItems[] gp = {};
-			GridItems[] gridPage = itmLst.toArray(gp);
-			gridFragments.add(new ScenesGridFragment(gridPage, activity, parent));
+			gridFragments.add(new ScenesGridFragment(itmLst, activity, parent));
 		}
 		return gridFragments;
 	}

@@ -1,4 +1,4 @@
-package ar.uba.fi.talker.adapter;
+package ar.uba.fi.talker.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +11,6 @@ import android.text.InputType;
 import android.widget.EditText;
 import ar.uba.fi.talker.NewSceneActivity;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.fragment.OutdoorScenarioDialogFragment;
 
 public class ChangeNameDialogFragment extends DialogFragment {
 

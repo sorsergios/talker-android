@@ -1,5 +1,7 @@
 package ar.uba.fi.talker.fragment;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,11 +21,11 @@ public class ScenesGridFragment extends Fragment {
 
 	private GridView mGridView;
 	private GridScenesAdapter mGridAdapter;
-	GridItems[] gridItems = {};
+	List<GridItems> gridItems;
 	private Activity activity;
 	private OutdoorScenarioDialogFragment parent;
 
-	public ScenesGridFragment(GridItems[] gridItems, Activity activity, OutdoorScenarioDialogFragment parent) {
+	public ScenesGridFragment(List<GridItems> gridItems, Activity activity, OutdoorScenarioDialogFragment parent) {
 		this.gridItems = gridItems;
 		this.activity = activity;
 		this.parent = parent;
@@ -67,7 +69,7 @@ public class ScenesGridFragment extends Fragment {
 		Toast.makeText(
 				activity,
 				"Position Clicked: - " + position + " & " + "Text is: - "
-						+ gridItems[position].getCategory().getName(), Toast.LENGTH_LONG).show();
+						+ gridItems.get(position).getCategory().getName(), Toast.LENGTH_LONG).show();
 		Log.e("TAG", "POSITION CLICKED " + position);
 	}
 	

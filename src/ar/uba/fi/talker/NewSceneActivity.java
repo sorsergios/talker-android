@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import ar.uba.fi.talker.fragment.OutdoorScenarioDialogFragment;
-import ar.uba.fi.talker.fragment.InnerScenarioDialogFragment;
 
 public class NewSceneActivity extends ActionBarActivity {
 
@@ -19,11 +18,9 @@ public class NewSceneActivity extends ActionBarActivity {
 		
 		FragmentManager fm = getFragmentManager();
 		OutdoorScenarioDialogFragment fragmentOutdoor = (OutdoorScenarioDialogFragment)fm.findFragmentById(R.id.fragmentOutdoors);
-		InnerScenarioDialogFragment fragmentInner = (InnerScenarioDialogFragment)fm.findFragmentById(R.id.fragmentInner);
         
 		FragmentTransaction tran = fm.beginTransaction();
 		tran.show(fragmentOutdoor);
-		tran.hide(fragmentInner);
 		tran.commit();
 
 	}
