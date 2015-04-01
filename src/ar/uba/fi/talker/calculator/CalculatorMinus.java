@@ -3,7 +3,11 @@ package ar.uba.fi.talker.calculator;
 import android.widget.TextView;
 
 public class CalculatorMinus extends CalculatorOperation {
-	
+
+	public CalculatorMinus() {
+		super(null);
+	}
+
 	public CalculatorMinus(CalculatorExpression expresion) {
 		super(expresion);
 	}
@@ -20,13 +24,13 @@ public class CalculatorMinus extends CalculatorOperation {
 	public void execute(TextView text) {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void addValue(double value) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	protected String getOpp() {
 		return " - ";

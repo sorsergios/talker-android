@@ -18,6 +18,7 @@ import ar.uba.fi.talker.calculator.CalculatorMinus;
 import ar.uba.fi.talker.calculator.CalculatorMult;
 import ar.uba.fi.talker.calculator.CalculatorOperation;
 import ar.uba.fi.talker.calculator.CalculatorPlus;
+import ar.uba.fi.talker.calculator.CalculatorState;
 import ar.uba.fi.talker.calculator.CalculatorValue;
 
 public class CalculatorFragment extends DialogFragment implements OnClickListener {
@@ -33,6 +34,7 @@ public class CalculatorFragment extends DialogFragment implements OnClickListene
 				CalculatorFragment calculatorFragment);
 
 	}
+	
 	CalculatorDialogListener listener;
 	@Override
 	public void onAttach(Activity activity) {
@@ -51,36 +53,47 @@ public class CalculatorFragment extends DialogFragment implements OnClickListene
 		
 		buttons = new SparseArray<CalculatorExpression>();
 		
-		buttons.put(R.id.button1, new CalculatorValue(1));
-		buttons.put(R.id.button2, new CalculatorValue(2));
-		buttons.put(R.id.button3, new CalculatorValue(3));
-		buttons.put(R.id.button4, new CalculatorValue(4));
-		buttons.put(R.id.button5, new CalculatorValue(5));
-		buttons.put(R.id.button6, new CalculatorValue(6));
-		buttons.put(R.id.button7, new CalculatorValue(7));
-		buttons.put(R.id.button8, new CalculatorValue(8));
-		buttons.put(R.id.button9, new CalculatorValue(9));
-		buttons.put(R.id.button0, new CalculatorValue(0));
-		buttons.put(R.id.buttonPlus, null);
-		buttons.put(R.id.buttonMinus, null);
-		buttons.put(R.id.buttonMult, null);
-		buttons.put(R.id.buttonDiv, null);
-		buttons.put(R.id.buttonClear, null);
-		buttons.put(R.id.buttonResult, null);
+		buttons.put(R.id.button1, new CalculatorValue());
+		buttons.put(R.id.button2, new CalculatorValue());
+		buttons.put(R.id.button3, new CalculatorValue());
+		buttons.put(R.id.button4, new CalculatorValue());
+		buttons.put(R.id.button5, new CalculatorValue());
+		buttons.put(R.id.button6, new CalculatorValue());
+		buttons.put(R.id.button7, new CalculatorValue());
+		buttons.put(R.id.button8, new CalculatorValue());
+		buttons.put(R.id.button9, new CalculatorValue());
+		buttons.put(R.id.button0, new CalculatorValue());
+		buttons.put(R.id.buttonPlus, new CalculatorPlus());
+		buttons.put(R.id.buttonMinus, new CalculatorMinus());
+		buttons.put(R.id.buttonMult, new CalculatorMult());
+		buttons.put(R.id.buttonDiv, new CalculatorDiv());
+		buttons.put(R.id.buttonDot, new CalculatorValue());
+		buttons.put(R.id.buttonClear, new CalculatorValue());
+		buttons.put(R.id.buttonClearAll, new CalculatorValue());
+		buttons.put(R.id.buttonResult, new CalculatorValue());
+		
+
+		int state = CalculatorState.NUMBER;
+		int state2 = CalculatorState.DOTTED;
+		System.out.println(state);
+		System.out.println(state2);
+		System.out.println(state | state2);
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-		View calculator = getActivity().getLayoutInflater().inflate(
-				R.layout.calculator, null);
+		
+		View calculator = View.inflate(getActivity(), R.layout.calculator, null);
 
 		text = (TextView) calculator.findViewById(R.id.calc_text);
 		for (int i = 0; i < this.buttons.size(); i++) {
 			Button button = (Button) calculator.findViewById(this.buttons.keyAt(i));
-			button.setOnClickListener((OnClickListener) this);
+			
+			CalculatorExpression expression = this.buttons.valueAt(i);
+			expression.setSecuence(text);
+			button.setOnClickListener(expression);
 		}
 		builder.setView(calculator).setNegativeButton(R.string.close_modal,
 				new DialogInterface.OnClickListener() {

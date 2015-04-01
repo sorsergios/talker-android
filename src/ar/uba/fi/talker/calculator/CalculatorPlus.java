@@ -3,6 +3,10 @@ package ar.uba.fi.talker.calculator;
 import android.widget.TextView;
 
 public class CalculatorPlus extends CalculatorOperation {
+		
+	public CalculatorPlus() {
+		super(null);
+	}
 	
 	public CalculatorPlus(CalculatorExpression expresion) {
 		super(expresion);

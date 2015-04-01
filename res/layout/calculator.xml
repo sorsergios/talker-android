@@ -24,8 +24,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnCount="4"
-        android:rowCount="4" >
+        android:rowCount="4"
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/button_open"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_open" />
+        
+        <Button
+            android:id="@+id/button_close"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_close" />
+
+        <Button
+            android:id="@+id/buttonClear"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_clear" />
+        
+        <Button
+            android:id="@+id/buttonClearAll"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_clear_all" />
+        
         <Button
             android:id="@+id/button1"
             style="?android:attr/buttonStyleSmall"
@@ -80,7 +109,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/calc_minus" />
+            android:text="@string/calc_minus"/>
 
         <Button
             android:id="@+id/button7"
@@ -118,18 +147,18 @@
             android:text="@integer/calc_0" />
 
         <Button
-            android:id="@+id/buttonClear"
+            android:id="@+id/buttonDot"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/calc_clear" />
+            android:text="@string/calc_dot" />
 
         <Button
             android:id="@+id/buttonResult"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/calc_equal" />
+            android:text="@string/calc_equal"/>
 
         <Button
             android:id="@+id/buttonDiv"

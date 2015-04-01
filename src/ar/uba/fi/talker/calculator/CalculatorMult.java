@@ -4,6 +4,10 @@ import android.widget.TextView;
 
 public class CalculatorMult extends CalculatorOperation {
 	
+	public CalculatorMult() {
+		super(null);
+	}
+
 	public CalculatorMult(CalculatorExpression expresion) {
 		super(expresion);
 	}
