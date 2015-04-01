@@ -10,9 +10,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
 import ar.uba.fi.talker.adapter.PagerAdapter;
-import ar.uba.fi.talker.dao.ImagesDao;
+import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dao.ScenarioDAO;
 import ar.uba.fi.talker.fragment.GridFragment;
-import ar.uba.fi.talker.utils.Category;
+import ar.uba.fi.talker.utils.ScenarioView;
 import ar.uba.fi.talker.utils.GridUtils;
 
 import com.viewpagerindicator.PageIndicator;
@@ -20,6 +21,7 @@ import com.viewpagerindicator.PageIndicator;
 public class HistoricalActivity extends ActionBarActivity implements
 		ActionBar.TabListener {
 
+    private ImageTalkerDataSource datasource;
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerAdapter pagerAdapter;
@@ -31,13 +33,15 @@ public class HistoricalActivity extends ActionBarActivity implements
 		
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) findViewById(R.id.pagerIndicator);
-		ArrayList<Category> a = new ArrayList<Category>();
+		ArrayList<ScenarioView> a = new ArrayList<ScenarioView>();
 
-		Category m = null;
-		for (int i = 0; i < ImagesDao.getScenarioSize(); i++) {
-			m = new Category();
-			m.setName(this.getResources().getString(ImagesDao.getScenarioNameByPos(i)));
-			m.setId(ImagesDao.getScenarioImageByPos(i));
+		ScenarioView m = null;
+		datasource = new ImageTalkerDataSource(this);
+	    datasource.open();
+		List<ScenarioDAO> allImages = datasource.getAllImages();
+		for (int i = 0; i < allImages.size(); i++) {
+			ScenarioDAO scenarioDAO = (ScenarioDAO) allImages.get(i);
+			m = new ScenarioView(scenarioDAO.getId(), scenarioDAO.getIdCode(), scenarioDAO.getPath(), scenarioDAO.getName());
 			a.add(m);
 		}
 		

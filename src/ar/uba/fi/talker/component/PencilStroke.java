@@ -1,36 +1,53 @@
 package ar.uba.fi.talker.component;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.MotionEvent;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
 
 public class PencilStroke extends Component {
-		
-	private List<PencilPoint> points;
+
+	private ArrayList<PencilPoint> points;
 	private Path path;
-	private Paint paint;
 	
 	public PencilStroke(Context context) {
 		super(context);
 		points = new ArrayList<PencilPoint>();
-		paint = PaintManager.getPaint(PaintType.REGULAR);
 		path = new Path();
 	}
+		
+	@Override
+	protected Parcelable onSaveInstanceState() {
+		Bundle bundle = new Bundle();
+	    bundle.putParcelable("instanceState", super.onSaveInstanceState());
+		bundle.putParcelableArrayList("points", this.points);
+		return bundle;
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
 
-	protected void setPaint(Paint paint) {
-		this.paint = paint;
+		 if (state instanceof Bundle) {
+			Bundle bundle = (Bundle) state;
+			this.points = bundle.getParcelableArrayList("points");
+
+			state = bundle.getParcelable("instanceState");
+		}
+		super.onRestoreInstanceState(state);
 	}
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
+		Paint paint = this.getPaint(); 
 		path.reset();
 		for (PencilPoint point : points) {
 			if (point.initial) {
@@ -51,6 +68,10 @@ public class PencilStroke extends Component {
 	public boolean performClick() {
 		return super.performClick();
 	}
+
+	public Paint getPaint() {
+		return PaintManager.getPaint(PaintType.REGULAR);
+	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -68,17 +89,41 @@ public class PencilStroke extends Component {
 			point.end = true;
 			point.x = (int) eventX;
 			point.y = (int) eventY;
+			this.toggleActive();
 		}
-		dimension.evalPoint(point);
 		points.add(point);
 		
 		this.invalidate();
 		return this.performClick();
 	}
 
-	private class PencilPoint extends Point {
+	public class PencilPoint extends Point {
 		public boolean initial = false;
 		public boolean end = false;
+		
+		public PencilPoint() {
+			super();
+		}
+		
+		public PencilPoint(Parcel source) {
+			super();
+			readFromParcel(source);
+		}
+
+		@Override
+		public void writeToParcel(Parcel out, int flags) {
+			super.writeToParcel(out, flags);
+			out.writeBooleanArray(new boolean[]{initial, end});
+		}
+		
+		@Override
+		public void readFromParcel(Parcel in) {
+			super.readFromParcel(in);
+			boolean[] temp = new boolean[2];
+		    in.readBooleanArray(temp);
+		    initial = temp[0];
+		    end = temp[1];
+		}
 	}
-	
+
 }

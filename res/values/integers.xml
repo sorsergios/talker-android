@@ -2,5 +2,16 @@
 <resources>
 	
      <integer name="alpha">100</integer>
+     
+     <integer name="calc_1">1</integer>
+     <integer name="calc_2">2</integer>
+     <integer name="calc_3">3</integer>
+     <integer name="calc_4">4</integer>
+     <integer name="calc_5">5</integer>
+     <integer name="calc_6">6</integer>
+     <integer name="calc_7">7</integer>
+     <integer name="calc_8">8</integer>
+     <integer name="calc_9">9</integer>
+     <integer name="calc_0">0</integer>
     
 </resources>

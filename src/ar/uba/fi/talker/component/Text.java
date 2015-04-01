@@ -4,56 +4,65 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
-import android.view.MotionEvent;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
 
-public class Text extends Component {
+public class Text extends DragComponent {
 
 	private String value;
-	private Point point;
-	private Paint paint;
 
 	public Text(Context context) {
 		super(context);
-		point = new Point();
-		paint = PaintManager.getPaint(PaintType.TEXT);
 		value = "";
 	}
 
 	@Override
-	protected void onDraw(Canvas canvas) {
-		canvas.drawText(value, point.x, point.y, paint);
+	protected Parcelable onSaveInstanceState() {
 
-	}
-	
-	@Override
-	public boolean performClick() {
-		return super.performClick() || true;
-	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		float eventX = event.getAxisValue(MotionEvent.AXIS_X);
-		float eventY = event.getAxisValue(MotionEvent.AXIS_Y);
-
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-		case MotionEvent.ACTION_MOVE:
-			point.x = (int) eventX;
-			point.y = (int) eventY;
-			break;
-		}
+		Bundle bundle = new Bundle();
+	    bundle.putParcelable("instanceState", super.onSaveInstanceState());
+	    bundle.putString("label", this.value);
+	    return bundle;
 		
-		this.invalidate();
-		return this.performClick();
 	}
 
 	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
+		 if (state instanceof Bundle) {
+			Bundle bundle = (Bundle) state;
+		    value = bundle.getString("value");
+			
+			state = bundle.getParcelable("instanceState");
+		}
+		super.onRestoreInstanceState(state);
+	}
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		Paint paint = PaintManager.getPaint(PaintType.TEXT);
+		canvas.drawText(value, point.x+deltaPoint.x, point.y+deltaPoint.y, paint);
+	}
+	
 	public void setValue(Editable text) {
 		this.value = text.toString();
+		Paint paint = PaintManager.getPaint(PaintType.TEXT);
+		paint.getTextBounds(this.value, 0, this.value.length(), this.getBounds());
 		this.invalidate();
 	}
-
+	
+	@Override
+	public boolean isPointInnerBounds(Point outerPoint) {
+		Rect bounds = this.getBounds();
+		
+		return (point.x < outerPoint.x 
+				&& point.y > outerPoint.y
+				&& point.x + bounds.right > outerPoint.x
+				&& point.y + bounds.top < outerPoint.y
+		);
+			
+	}
 }

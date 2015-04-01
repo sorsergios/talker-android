@@ -7,9 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.R.string;
-import ar.uba.fi.talker.action.userlog.TextDialogFragment.TextDialogListener;
-
 public class EraseAllConfirmationDialogFragment extends DialogFragment {
 
 	public interface EraseAllConfirmationDialogListener {

@@ -3,7 +3,8 @@ package ar.uba.fi.talker.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.fragment.OutdoorScenarioDialogFragment;
 import ar.uba.fi.talker.utils.GridItems;
+import ar.uba.fi.talker.utils.ScenarioView;
 
 public class GridScenesAdapter extends BaseAdapter {
 
@@ -29,17 +30,14 @@ public class GridScenesAdapter extends BaseAdapter {
 
 	private List<GridItems> items;
 	private LayoutInflater mInflater;
-	private OutdoorScenarioDialogFragment parentFragment;
     private static Long itemSelectedId;
     private static int pos;
-    private static int RESULT_LOAD_IMAGE = 1;
 
-	public GridScenesAdapter(Context context, List<GridItems> gridItems, OutdoorScenarioDialogFragment parent) {
+	public GridScenesAdapter(Context context, List<GridItems> gridItems) {
 
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
 		items = gridItems;
-		parentFragment = parent;
 	}
 
 	public List<GridItems> getItems() {
@@ -70,7 +68,7 @@ public class GridScenesAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		if (items != null && position >= 0 && position < getCount()) {
-			return items.get(position).getCategory().getId();
+			return items.get(position).getScenarioView().getId();
 		}
 		return 0;
 	}
@@ -80,66 +78,70 @@ public class GridScenesAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, final ViewGroup parent) {
 
-		View view = convertView;
+		final View view = convertView != null ? convertView : mInflater.inflate(R.layout.row_grid, parent, false);
 
-		ViewHolder viewHolder = new ViewHolder();
-		if (view == null) {
+		LinearLayout viewHolder = (LinearLayout) view.findViewById(R.id.grid_element);
 
-			view = mInflater.inflate(R.layout.row_grid, parent, false);
-			viewHolder = new ViewHolder();
-			viewHolder.imageView = (ImageView) view.findViewById(R.id.image);
-			viewHolder.textTitle = (TextView) view.findViewById(R.id.text);
-			view.setTag(viewHolder);
-		} else {
-			viewHolder = (ViewHolder) view.getTag();
-		}
-	
-		viewHolder.imageView.setOnClickListener(new OnClickListener() {
-		  
+		viewHolder.setOnClickListener(new OnClickListener() {
 
-		@Override
-		  public void onClick(View v) {
-				Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
-				
-				if (position == 5) {
-					Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-					parentFragment.startActivityForResult(i, RESULT_LOAD_IMAGE);						
+			@Override
+			public void onClick(View v) {
+				ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+						.findViewById(R.id.new_scene_start);
+				startScenarioBttn.setEnabled(true);
+				startScenarioBttn.setVisibility(View.VISIBLE);
+				ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+						.findViewById(R.id.new_scene_edit_scenario_name);
+				editNameScenarioBttn.setEnabled(true);
+				editNameScenarioBttn.setVisibility(View.VISIBLE);
+				ImageButton deleteScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+						.findViewById(R.id.new_scene_delete_scenario_name);
+				deleteScenarioBttn.setVisibility(View.VISIBLE);
+				for (int i = 0; i < parent.getChildCount(); i++) {
+					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
 				}
-				else{
-					ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context).findViewById(R.id.new_scene_start);
-					startScenarioBttn.setEnabled(true);
-					ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) context).findViewById(R.id.new_scene_edit_scenario_name);
-					editNameScenarioBttn.setEnabled(true);
-					v.setSelected(true);
-					itemSelectedId = getItemId(position);
-					pos = position;
-				}					
+				view.setBackgroundColor(Color.CYAN);
+				itemSelectedId = getItemId(position);
+				pos = position;
 			}
 		});
 
 		GridItems gridItems = items.get(position);
-		setCatImage(gridItems.getCategory().getId(), viewHolder, gridItems.getCategory().getName());
+		this.setCatImage(viewHolder, gridItems.getScenarioView());
 		return view;
 	}
+
+	private void setCatImage(LinearLayout viewHolder, ScenarioView scenarioView) {
+		ImageView imageView = (ImageView) viewHolder.findViewById(R.id.image);
+		if (scenarioView.getIdCode() != 0){
+			imageView.setImageResource(scenarioView.getIdCode());
+		} else {
+			Uri uri = Uri.parse(scenarioView.getPath());
+			imageView.setImageURI(uri);
+		}
+		TextView textTitle = (TextView) viewHolder.findViewById(R.id.text);
+		textTitle .setText(scenarioView.getName());
+	}
+
 	public static Long getItemSelectedId() {
 		return itemSelectedId;
 	}
+	
 	public static long getPosition() {
 		return pos;
 	}
-	private void setCatImage(Integer catImage, ViewHolder viewHolder, String catTitle) {
-		viewHolder.imageView.setImageResource(catImage);
-		viewHolder.textTitle.setText(catTitle);
-	}
-	public void setParentFragment(OutdoorScenarioDialogFragment outdoorScenarioDialogFragment) {
-		this.parentFragment = outdoorScenarioDialogFragment;
+	
+	public void setItem(GridItems gridItem,String text, int location){
+		gridItem.getScenarioView().setName(text);
 	}
 
-	public View setItem(View gridItem,String text){
-		TextView textView = (TextView) gridItem.findViewById(R.id.text);
-	    textView.setText(text);        
-		return gridItem;
+	public void removeItem(int location) {
+		items.remove(location);
+	}
+
+	public void addItem(GridItems gridItem) {
+		items.add(gridItem);
 	}
 }

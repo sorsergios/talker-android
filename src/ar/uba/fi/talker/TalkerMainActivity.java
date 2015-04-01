@@ -9,11 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 
 public class TalkerMainActivity extends ActionBarActivity {
 
     private static Context context;
-
+    private ImageTalkerDataSource datasource;
+    
     public static Context getAppContext() {
         return TalkerMainActivity.context;
     }
@@ -66,6 +68,8 @@ public class TalkerMainActivity extends ActionBarActivity {
 				startActivity(i);
 			}
 		});	
+		datasource = new ImageTalkerDataSource(this);
+	    datasource.open();	
 	}
 
 	@Override
@@ -85,5 +89,17 @@ public class TalkerMainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onResume() {
+		datasource.open();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		datasource.close();
+		super.onPause();
 	}
 }

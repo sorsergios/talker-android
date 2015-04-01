@@ -1,84 +1,79 @@
 package ar.uba.fi.talker.component;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
-import android.text.Editable;
+import android.graphics.Rect;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.MotionEvent;
 import android.view.View;
-import ar.uba.fi.talker.paint.PaintManager;
-import ar.uba.fi.talker.paint.PaintType;
 
-public abstract class Component extends View {
-	
-	protected Dimension dimension;
+public abstract class Component extends View implements Parcelable {
+
 	private boolean active = true;
-	private static int TOLERANCE = 10;
-	
+	private Rect bounds;
+
 	public Component(Context context) {
 		super(context);
-		dimension = new Dimension();
+		bounds = new Rect();
+	}
+	
+	public Component(Parcelable source) {
+		super(null);
 	}
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
-		
 		return active && super.dispatchTouchEvent(event);
+	}
+
+	protected Rect getBounds() {
+		return bounds;
+	}
+
+	public boolean isPointInnerBounds(Point point) {
+		return false;
 	}
 
 	@Override
 	public boolean performClick() {
 		return active && super.performClick();
 	}
-	
-	public boolean isInDimensions(Point erasePoint) {
-		return erasePoint != null 
-				&& dimension.x1-Component.TOLERANCE <= erasePoint.x 
-				&& dimension.y1-Component.TOLERANCE <= erasePoint.y 
-				&& dimension.x2+Component.TOLERANCE >= erasePoint.x 
-				&& dimension.y2+Component.TOLERANCE >= erasePoint.y;
-	}
 
-	public void drawDimension(Canvas canvas) {
-		Path path = new Path();
-		Paint paint = PaintManager.getPaint(PaintType.ERASE);
-		path.moveTo(dimension.x1, dimension.y1);
-		path.lineTo(dimension.x2, dimension.y1);
-		path.lineTo(dimension.x2, dimension.y2);
-		path.lineTo(dimension.x1, dimension.y2);
-		path.lineTo(dimension.x1, dimension.y1);
-		canvas.drawPath(path, paint);
-	}
-	
-	class Dimension {
-		public int x1 = -1, y1 = -1, x2, y2;
-		
-		public void evalPoint(Point point) {
-			if (x1 == -1 || point.x < x1) {
-				x1 = point.x - Component.TOLERANCE;
-			}
-			if (point.x > x2) {
-				x2 = point.x + Component.TOLERANCE;
-			}
-			
-			if (y1 == -1 || point.y < y1) {
-				y1 = point.y - Component.TOLERANCE;
-			}
-			if (point.y > y2) {
-				y2 = point.y + Component.TOLERANCE;
-			}
-		}
-	}
-	
 	public void toggleActive() {
 		active = !active;
+		this.bringToFront();
+	}
+	
+	@Override
+	protected Parcelable onSaveInstanceState() {
+	    
+		Bundle bundle = new Bundle();
+	    bundle.putParcelable("instanceState", super.onSaveInstanceState());
+	    bundle.putParcelable("bounds", this.getBounds());
+	    return bundle;
+		
 	}
 
-	public void setValue(Editable text) {
-		// anything to do;
+	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
+		 if (state instanceof Bundle) {
+			Bundle bundle = (Bundle) state;
+			this.bounds = bundle.getParcelable("bounds");
+
+			state = bundle.getParcelable("instanceState");
+		}
+		super.onRestoreInstanceState(state);
 	}
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeParcelable(this.onSaveInstanceState(), flags);
+	}
 }
-

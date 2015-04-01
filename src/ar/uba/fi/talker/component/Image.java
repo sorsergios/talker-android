@@ -5,27 +5,46 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.widget.ImageView;
+import android.os.Bundle;
+import android.os.Parcelable;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
 
-public class Image extends Component {
+public class Image extends DragComponent {
 
+	private static final int HEIGHT = 200; // TODO Make it a parameter.
 	private Paint paint;
-	private Point point;
+	private String label;
+	private Bitmap mImage;
 	
 	public Image(Context arg0) {
 		super(arg0);
 		paint = PaintManager.getPaint(PaintType.REGULAR);
-		point = new Point(0, 0);
+		// TODO Calcular donde aparece el texto.
 	}
 
-	private String label;
-	private ImageView mImage;
+	@Override
+	protected Parcelable onSaveInstanceState() {
 
+		Bundle bundle = new Bundle();
+	    bundle.putParcelable("instanceState", super.onSaveInstanceState());
+	    bundle.putParcelable("image", this.mImage);
+	    bundle.putString("label", this.label);
+	    return bundle;
+		
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
+		 if (state instanceof Bundle) {
+			Bundle bundle = (Bundle) state;
+		    mImage = bundle.getParcelable("image");
+		    label = bundle.getString("label");
+			
+			state = bundle.getParcelable("instanceState");
+		}
+		super.onRestoreInstanceState(state);
+	}
 	
 	public String getLabel() {
 		return label;
@@ -38,34 +57,30 @@ public class Image extends Component {
 	@Override
 	public void onDraw(Canvas canvas) {
 		if (mImage != null) {
-			Bitmap bitmap = ((BitmapDrawable) mImage.getDrawable()).getBitmap();
-			canvas.drawBitmap(bitmap, point.x, point.y, paint);
+			canvas.drawBitmap(mImage, point.x+deltaPoint.x, point.y+deltaPoint.y, paint);
 		}
 	}
-
+	
 	@Override
-	public boolean performClick() {
-		return super.performClick() || true;
+	public boolean isPointInnerBounds(Point outerPoint) {
+		return (mImage != null
+				&& point.x < outerPoint.x 
+				&& point.y < outerPoint.y
+				&& point.x + mImage.getWidth() > outerPoint.x
+				&& point.y + mImage.getHeight() > outerPoint.y
+		);
 	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		Log.i("IMAGE", " evento " + event.getAction());
-		float eventX = event.getAxisValue(MotionEvent.AXIS_X);
-		float eventY = event.getAxisValue(MotionEvent.AXIS_Y);
-		
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-		case MotionEvent.ACTION_MOVE:
-			point.x = (int) eventX;
-			point.y = (int) eventY;
-			break;
-		}
-		this.invalidate();
-		return this.performClick();
-	}
+	public void setContent(Bitmap image) {
+		int bWidth = image.getWidth();
+        int bHeight = image.getHeight();
 
-	public void setContent(ImageView image) {
-		mImage = image;
+        float parentRatio = (float) bHeight / bWidth;
+
+        int nHeight = HEIGHT; 
+        int nWidth = (int) (HEIGHT / parentRatio);
+        
+        mImage =  Bitmap.createScaledBitmap(image, nWidth, nHeight, true);
 	}
+	
 }

@@ -26,5 +26,4 @@ public final class ImageUtils {
 		byte[] bytes = stream.toByteArray();
 		return bytes;
 	}
-	
 }

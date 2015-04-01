@@ -1,5 +1,6 @@
 package ar.uba.fi.talker.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -23,14 +24,16 @@ public class ScenesGridFragment extends Fragment {
 	private GridScenesAdapter mGridAdapter;
 	List<GridItems> gridItems;
 	private Activity activity;
-	private OutdoorScenarioDialogFragment parent;
 
-	public ScenesGridFragment(List<GridItems> gridItems, Activity activity, OutdoorScenarioDialogFragment parent) {
-		this.gridItems = gridItems;
-		this.activity = activity;
-		this.parent = parent;
+	public ScenesGridFragment() {
+		this.gridItems = new ArrayList<GridItems>();
 	}
 
+	public ScenesGridFragment(List<GridItems> gridItems, Activity activity) {
+		this.gridItems = gridItems;
+		this.activity = activity;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -40,17 +43,13 @@ public class ScenesGridFragment extends Fragment {
 		return view;
 	}
 	
-	public void setParent(OutdoorScenarioDialogFragment parent) {
-		this.parent = parent;
-	}
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
 		if (activity != null) {
 
-			mGridAdapter = new GridScenesAdapter(activity, gridItems, parent);
+			mGridAdapter = new GridScenesAdapter(activity, gridItems);
 			if (mGridView != null) {
 				mGridView.setAdapter(mGridAdapter);
 			}
@@ -69,7 +68,7 @@ public class ScenesGridFragment extends Fragment {
 		Toast.makeText(
 				activity,
 				"Position Clicked: - " + position + " & " + "Text is: - "
-						+ gridItems.get(position).getCategory().getName(), Toast.LENGTH_LONG).show();
+						+ gridItems.get(position).getScenarioView().getName(), Toast.LENGTH_LONG).show();
 		Log.e("TAG", "POSITION CLICKED " + position);
 	}
 	

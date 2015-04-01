@@ -6,14 +6,13 @@ import java.util.List;
 
 import android.app.Activity;
 import ar.uba.fi.talker.fragment.GridFragment;
-import ar.uba.fi.talker.fragment.OutdoorScenarioDialogFragment;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 
 public final class GridUtils {
 
-	public static List<GridFragment> setGridFragments(Activity activity, ArrayList<Category> a) {
+	public static List<GridFragment> setGridFragments(Activity activity, ArrayList<ScenarioView> a) {
 
-		Iterator<Category> it = a.iterator();
+		Iterator<ScenarioView> it = a.iterator();
 
 		List<GridFragment> gridFragments = new ArrayList<GridFragment>();
 
@@ -32,9 +31,9 @@ public final class GridUtils {
 		return gridFragments;
 	}
 	
-	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, ArrayList<Category> categories, OutdoorScenarioDialogFragment parent) {
+	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, ArrayList<ScenarioView> scenarioViews) {
 
-		Iterator<Category> it = categories.iterator();
+		Iterator<ScenarioView> it = scenarioViews.iterator();
 
 		List<ScenesGridFragment> gridFragments = new ArrayList<ScenesGridFragment>();
 
@@ -44,7 +43,7 @@ public final class GridUtils {
 				GridItems itm = new GridItems(i, it.next());
 				itmLst.add(itm);
 			}
-			gridFragments.add(new ScenesGridFragment(itmLst, activity, parent));
+			gridFragments.add(new ScenesGridFragment(itmLst, activity));
 		}
 		return gridFragments;
 	}
