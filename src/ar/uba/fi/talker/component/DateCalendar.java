@@ -3,7 +3,6 @@ package ar.uba.fi.talker.component;
 import java.util.Calendar;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -17,7 +16,6 @@ import ar.uba.fi.talker.paint.PaintType;
 
 public class DateCalendar extends DragComponent {
 
-	private static final int HEIGHT = 200; // TODO Make it a parameter.
 	private Paint paint;
 	private Bitmap mImage;
 	
@@ -119,6 +117,5 @@ public class DateCalendar extends DragComponent {
 		} catch (Exception e) {
 			return null;
 		}
-
 	}
 }

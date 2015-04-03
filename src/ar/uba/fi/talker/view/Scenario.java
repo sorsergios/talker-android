@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -17,7 +16,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -219,6 +217,7 @@ public class Scenario extends FrameLayout {
 		alterComponent.toggleActive();
 		draggableComponents.add(alterComponent);
 	}
+	
 	public void restore() {
 		if (bundle != null) {
 			this.onRestoreInstanceState(bundle);
