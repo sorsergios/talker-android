@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Intent;
@@ -33,6 +34,7 @@ import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.CalculatorFragment.CalculatorDialogListener;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
+import ar.uba.fi.talker.fragment.DatePickerFragment.DatePickerDialogListener;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
@@ -42,7 +44,9 @@ import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.view.Scenario;
 
 public class CanvasActivity extends ActionBarActivity implements
-		TextDialogListener, InsertImageDialogListener, EraseAllConfirmationDialogListener, OnDateSetListener, CalculatorDialogListener {
+		TextDialogListener, InsertImageDialogListener,
+		EraseAllConfirmationDialogListener, OnDateSetListener,
+		CalculatorDialogListener, DatePickerDialogListener {
 
 	final String TAG = "CanvasActivity";
 
@@ -240,4 +244,20 @@ public class CanvasActivity extends ActionBarActivity implements
 			scenario.setText(edit.getText());
 		}
 	}
+	
+	@Override
+	public void onDialogPositiveClickDatePickerDialogListener(
+			DatePickerFragment datePickerFragment) {
+		DatePickerDialog dialogView = (DatePickerDialog) datePickerFragment.getDialog();
+		DatePicker datePicker = dialogView.getDatePicker();
+        int   day  = datePicker.getDayOfMonth();
+        int   month= datePicker.getMonth() + 1;
+        int   year = datePicker.getYear();
+		Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
+		EditText edit = new EditText(dialogView.getContext());
+		edit.setText(day + "/" + month + "/" + year);
+		s.setText(edit.getText());
+		
+	}
+
 }
