@@ -61,26 +61,7 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 		final NewSceneActivity self = this;
 		setContentView(R.layout.layout_ext_scenes);
 
-		viewPager = (ViewPager) this.findViewById(R.id.pager);
-		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-		ArrayList<ScenarioView> scenarios = new ArrayList<ScenarioView>();
-
-		ScenarioView scenario = null;
-		if (datasource == null ) {
-			datasource = new ImageTalkerDataSource(this.getApplicationContext());
-		}
-	    datasource.open();
-		List<ScenarioDAO> allImages = datasource.getAllImages();
-		for (int i = 0; i < allImages.size(); i++) {
-			ScenarioDAO scenarioDAO = (ScenarioDAO) allImages.get(i);
-			scenario = new ScenarioView(scenarioDAO.getId(), scenarioDAO.getIdCode(), scenarioDAO.getPath(), scenarioDAO.getName());
-			scenarios.add(scenario);
-		}
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios);
-
-		pagerAdapter = new PagerScenesAdapter(this.getSupportFragmentManager(), gridFragments);
-		viewPager.setAdapter(pagerAdapter);
-		pageIndicator.setViewPager(viewPager);
+		scenesPagerSetting();
 		
 		ImageButton startScenarioBttn = (ImageButton) this.findViewById(R.id.new_scene_start);
 		ImageButton editNameScenarioBttn = (ImageButton) this.findViewById(R.id.new_scene_edit_scenario_name);
@@ -160,6 +141,29 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 		});
 	
 	}
+
+	private void scenesPagerSetting() {
+		viewPager = (ViewPager) this.findViewById(R.id.pager);
+		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
+		ArrayList<ScenarioView> scenarios = new ArrayList<ScenarioView>();
+
+		ScenarioView scenario = null;
+		if (datasource == null ) {
+			datasource = new ImageTalkerDataSource(this.getApplicationContext());
+		}
+	    datasource.open();
+		List<ScenarioDAO> allImages = datasource.getAllImages();
+		for (int i = 0; i < allImages.size(); i++) {
+			ScenarioDAO scenarioDAO = (ScenarioDAO) allImages.get(i);
+			scenario = new ScenarioView(scenarioDAO.getId(), scenarioDAO.getIdCode(), scenarioDAO.getPath(), scenarioDAO.getName());
+			scenarios.add(scenario);
+		}
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios);
+
+		pagerAdapter = new PagerScenesAdapter(this.getSupportFragmentManager(), gridFragments);
+		viewPager.setAdapter(pagerAdapter);
+		pageIndicator.setViewPager(viewPager);
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -205,7 +209,7 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 				GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
 				gsa.addItem(gridItem);
 				gsa.notifyDataSetInvalidated();
-				
+				scenesPagerSetting();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -264,7 +268,6 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 		((GridItems)gsa.getItem(position)).getScenarioView().setName(newScenarioName);
 		gsa.notifyDataSetInvalidated();
 		datasource.updateScenario(GridScenesAdapter.getItemSelectedId(), newScenarioName);
-
 	}
 
 	@Override
@@ -284,6 +287,7 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 		GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 		gsa.removeItem(position);
 		gsa.notifyDataSetInvalidated();
+		scenesPagerSetting();
 	}
 
 }
