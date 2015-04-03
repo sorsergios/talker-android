@@ -150,21 +150,6 @@ public class CanvasActivity extends ActionBarActivity implements
 		scenario.setText(inputText.getText());
 	}
 	
-	@Override
-	public void onDateSet(DatePicker view, int year, int monthOfYear,
-			int dayOfMonth) {
-		if (view.isShown()) {
-
-			final Calendar calendar = Calendar.getInstance();
-			calendar.set(year, monthOfYear, dayOfMonth);
-
-			SpannableStringBuilder date = new SpannableStringBuilder();
-			date.append(String.format("%1$tA %1$td/%1$tB/%1$tY", calendar));
-
-			scenario.setText(date);
-		}
-	}
-	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.settings, menu);
@@ -244,20 +229,34 @@ public class CanvasActivity extends ActionBarActivity implements
 			scenario.setText(edit.getText());
 		}
 	}
+
+	@Override
+	public void onDateSet(DatePicker view, int year, int monthOfYear,
+			int dayOfMonth) {
+		if (view.isShown()) {
+
+			final Calendar calendar = Calendar.getInstance();
+			calendar.set(year, monthOfYear, dayOfMonth);
+
+			SpannableStringBuilder date = new SpannableStringBuilder();
+			date.append(String.format("%1$tA %1$td/%1$tB/%1$tY", calendar));
+
+			scenario.setText(date);
+		}
+	}
 	
 	@Override
 	public void onDialogPositiveClickDatePickerDialogListener(
 			DatePickerFragment datePickerFragment) {
 		DatePickerDialog dialogView = (DatePickerDialog) datePickerFragment.getDialog();
 		DatePicker datePicker = dialogView.getDatePicker();
-        int   day  = datePicker.getDayOfMonth();
-        int   month= datePicker.getMonth() + 1;
-        int   year = datePicker.getYear();
-		Scenario s = (Scenario) findViewById(R.id.gestureOverlayView1);
-		EditText edit = new EditText(dialogView.getContext());
-		edit.setText(day + "/" + month + "/" + year);
-		s.setText(edit.getText());
-		
+		int dayOfMonth = datePicker.getDayOfMonth();
+		int monthOfYear = datePicker.getMonth();
+		int year = datePicker.getYear();
+		final Calendar calendar = Calendar.getInstance();
+		calendar.set(year, monthOfYear, dayOfMonth);
+
+		scenario.addCalendar(calendar, R.drawable.blanco);
 	}
 
 }
