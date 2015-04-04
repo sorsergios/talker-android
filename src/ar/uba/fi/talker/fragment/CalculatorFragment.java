@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
@@ -23,7 +24,7 @@ import ar.uba.fi.talker.calculator.CalculatorState;
 import ar.uba.fi.talker.calculator.CalculatorValue;
 import ar.uba.fi.talker.view.Scenario;
 
-public class CalculatorFragment extends DialogFragment implements DialogInterface.OnClickListener {
+public class CalculatorFragment extends DialogFragment implements OnClickListener {
 
 	private SparseArray<CalculatorExpression> buttons;
 	private TextView text;
@@ -77,7 +78,6 @@ public class CalculatorFragment extends DialogFragment implements DialogInterfac
 		calculator = View.inflate(getActivity(), R.layout.calculator, null);
 
 		text = (TextView) calculator.findViewById(R.id.calc_text);
-		text.setText("5 * (2 + 3) - 2");
 		for (int i = 0; i < this.buttons.size(); i++) {
 			Button button = (Button) calculator.findViewById(this.buttons.keyAt(i));
 			
@@ -91,22 +91,30 @@ public class CalculatorFragment extends DialogFragment implements DialogInterfac
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.dismiss();
 			}
-		})
-		.setPositiveButton(R.string.login_accept, this);
+		}).setPositiveButton(R.string.login_accept, null);
 
-		// do something
-		// Button result = (Button) calculator.findViewById(R.id.buttonResult);
-		
 		return builder.create();
 	}
 	
 	@Override
-	public void onClick(DialogInterface dialog, int which) {
+	public void onClick(View v) {
+		Button button = (Button) calculator.findViewById(R.id.buttonResult);
+		button.callOnClick();
 		TextView inputText = (TextView) calculator.findViewById(R.id.calc_text);
-		if (inputText != null){
+		if (inputText != null && inputText.getEditableText() != null){
 			Scenario scenario = (Scenario) listener.findViewById(R.id.gestureOverlayView1);
 			scenario.setText(inputText.getEditableText());
+			getDialog().dismiss();
 		}
-		dialog.dismiss();
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart(); 
+		final AlertDialog dialog = (AlertDialog) getDialog();
+		if (dialog != null) {
+			final Button positiveButton = (Button) dialog.getButton(Dialog.BUTTON_POSITIVE);
+			positiveButton.setOnClickListener(this);
+		}
 	}
 }
