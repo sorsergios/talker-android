@@ -42,9 +42,9 @@ import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.view.Scenario;
 
 public class CanvasActivity extends ActionBarActivity implements
-				TextDialogListener, InsertImageDialogListener,
-		EraseAllConfirmationDialogListener, OnDateSetListener,
-		CalculatorDialogListener, DatePickerDialogListener {
+		TextDialogListener, InsertImageDialogListener,
+		EraseAllConfirmationDialogListener, OnDateSetListener, 
+		DatePickerDialogListener {
 
 	final String TAG = "CanvasActivity";
 
