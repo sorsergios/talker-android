@@ -83,9 +83,11 @@ public class CalculatorResolve extends CalculatorExpression {
 
 		for (int i = 0; i < expression.length(); i++) {
 			character = expression.charAt(i);
-			if (character == ' ' && numberBuilder.length() > 0) {
+			if (character == ' ') {
+				if(numberBuilder.length() > 0) {
 				postfix.offer(numberBuilder.toString());
 				numberBuilder.delete(0, numberBuilder.length());
+				}
 			} else if (Character.isDigit(character) || character == '.') {
 				numberBuilder.append(character);
 			} else if (stack.empty() || character == '('
