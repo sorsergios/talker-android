@@ -8,37 +8,34 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.SparseArray;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.calculator.CalculatorDiv;
+import ar.uba.fi.talker.calculator.CalculatorClear;
+import ar.uba.fi.talker.calculator.CalculatorClearAll;
+import ar.uba.fi.talker.calculator.CalculatorClose;
+import ar.uba.fi.talker.calculator.CalculatorDot;
 import ar.uba.fi.talker.calculator.CalculatorExpression;
-import ar.uba.fi.talker.calculator.CalculatorMinus;
-import ar.uba.fi.talker.calculator.CalculatorMult;
+import ar.uba.fi.talker.calculator.CalculatorOpen;
 import ar.uba.fi.talker.calculator.CalculatorOperation;
-import ar.uba.fi.talker.calculator.CalculatorPlus;
+import ar.uba.fi.talker.calculator.CalculatorResolve;
+import ar.uba.fi.talker.calculator.CalculatorState;
 import ar.uba.fi.talker.calculator.CalculatorValue;
+import ar.uba.fi.talker.view.Scenario;
 
-public class CalculatorFragment extends DialogFragment implements OnClickListener {
+public class CalculatorFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
-	private boolean result = false;
 	private SparseArray<CalculatorExpression> buttons;
 	private TextView text;
-	private CalculatorValue currentValue;
-	private CalculatorOperation calculatorExpression;
-
-	public interface CalculatorDialogListener {
-		public void onDialogPositiveClickCalculatorDialogListener(
-				CalculatorFragment calculatorFragment);
-
-	}
-	CalculatorDialogListener listener;
+	
+	Activity listener;
+	private View calculator;
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			listener = (CalculatorDialogListener) activity;
+			listener = activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement CalculatorDialogListener");
@@ -47,109 +44,69 @@ public class CalculatorFragment extends DialogFragment implements OnClickListene
 	
 	public CalculatorFragment() {
 				
-		currentValue = new CalculatorValue(0);
-		
 		buttons = new SparseArray<CalculatorExpression>();
+		CalculatorState state =new CalculatorState();
 		
-		buttons.put(R.id.button1, new CalculatorValue(1));
-		buttons.put(R.id.button2, new CalculatorValue(2));
-		buttons.put(R.id.button3, new CalculatorValue(3));
-		buttons.put(R.id.button4, new CalculatorValue(4));
-		buttons.put(R.id.button5, new CalculatorValue(5));
-		buttons.put(R.id.button6, new CalculatorValue(6));
-		buttons.put(R.id.button7, new CalculatorValue(7));
-		buttons.put(R.id.button8, new CalculatorValue(8));
-		buttons.put(R.id.button9, new CalculatorValue(9));
-		buttons.put(R.id.button0, new CalculatorValue(0));
-		buttons.put(R.id.buttonPlus, null);
-		buttons.put(R.id.buttonMinus, null);
-		buttons.put(R.id.buttonMult, null);
-		buttons.put(R.id.buttonDiv, null);
-		buttons.put(R.id.buttonClear, null);
-		buttons.put(R.id.buttonResult, null);
+		buttons.put(R.id.button1, new CalculatorValue(state));
+		buttons.put(R.id.button2, new CalculatorValue(state));
+		buttons.put(R.id.button3, new CalculatorValue(state));
+		buttons.put(R.id.button4, new CalculatorValue(state));
+		buttons.put(R.id.button5, new CalculatorValue(state));
+		buttons.put(R.id.button6, new CalculatorValue(state));
+		buttons.put(R.id.button7, new CalculatorValue(state));
+		buttons.put(R.id.button8, new CalculatorValue(state));
+		buttons.put(R.id.button9, new CalculatorValue(state));
+		buttons.put(R.id.button0, new CalculatorValue(state));
+		buttons.put(R.id.buttonPlus, new CalculatorOperation(state));
+		buttons.put(R.id.buttonMinus, new CalculatorOperation(state));
+		buttons.put(R.id.buttonMult, new CalculatorOperation(state));
+		buttons.put(R.id.buttonDiv, new CalculatorOperation(state));
+		buttons.put(R.id.buttonDot, new CalculatorDot(state));
+		buttons.put(R.id.buttonClear, new CalculatorClear(state));
+		buttons.put(R.id.buttonClearAll, new CalculatorClearAll(state));
+		buttons.put(R.id.buttonOpen, new CalculatorOpen(state));
+		buttons.put(R.id.buttonClose, new CalculatorClose(state));
+		buttons.put(R.id.buttonResult, new CalculatorResolve(state));
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-		View calculator = getActivity().getLayoutInflater().inflate(
-				R.layout.calculator, null);
+		
+		calculator = View.inflate(getActivity(), R.layout.calculator, null);
 
 		text = (TextView) calculator.findViewById(R.id.calc_text);
+		text.setText("5 * (2 + 3) - 2");
 		for (int i = 0; i < this.buttons.size(); i++) {
 			Button button = (Button) calculator.findViewById(this.buttons.keyAt(i));
-			button.setOnClickListener((OnClickListener) this);
+			
+			CalculatorExpression expression = this.buttons.valueAt(i);
+			expression.setTextView(text);
+			button.setOnClickListener(expression);
 		}
+		
 		builder.setView(calculator).setNegativeButton(R.string.close_modal,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.dismiss();
-					}
-				})
-				.setPositiveButton(R.string.login_accept,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						listener.onDialogPositiveClickCalculatorDialogListener(CalculatorFragment.this);
-						dialog.dismiss();
-					}
-				});
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+			}
+		})
+		.setPositiveButton(R.string.login_accept, this);
+
+		// do something
+		// Button result = (Button) calculator.findViewById(R.id.buttonResult);
+		
 		return builder.create();
 	}
-
+	
 	@Override
-	public void onClick(View v) {
-		
-		boolean newValue = true;
-		
-		switch (v.getId()) {
-		case R.id.buttonPlus:
-			calculatorExpression = new CalculatorPlus(currentValue);
-			break;
-		case R.id.buttonMinus:
-			calculatorExpression = new CalculatorMinus(currentValue);
-			break;
-		case R.id.buttonMult:
-			calculatorExpression = new CalculatorMult(currentValue);
-			break;
-		case R.id.buttonDiv:
-			calculatorExpression = new CalculatorDiv(currentValue);
-			break;
-		case R.id.buttonClear:
-			newValue = false;
-			double prevValue = currentValue.getValue() / 10;
-			currentValue = new CalculatorValue(prevValue);
-			break;
-		case R.id.buttonResult:
-			result = true;
-			newValue = false;
-			double resultValue = calculatorExpression.getValue();
-			currentValue = new CalculatorValue(resultValue);
-			calculatorExpression = null;
-			break;
-
-		default:
-			newValue = false;
-			if (result) {
-				currentValue = new CalculatorValue(this.buttons.get(v.getId()).getValue());
-				result = false;
-			} else {
-				currentValue.addValue(this.buttons.get(v.getId()).getValue());
-			}
-			
-			break;
+	public void onClick(DialogInterface dialog, int which) {
+		TextView inputText = (TextView) calculator.findViewById(R.id.calc_text);
+		if (inputText != null){
+			Scenario scenario = (Scenario) listener.findViewById(R.id.gestureOverlayView1);
+			scenario.setText(inputText.getEditableText());
 		}
-		
-		if (newValue) {
-			currentValue = new CalculatorValue(0);
-			calculatorExpression.addEpression(currentValue);
-		}
-		
-		if (calculatorExpression != null) {
-			text.setText(calculatorExpression.toString());
-		} else {
-			text.setText(currentValue.toString());
-		}
+		dialog.dismiss();
 	}
 }

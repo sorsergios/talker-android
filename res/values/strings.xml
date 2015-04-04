@@ -98,7 +98,10 @@
     <string name="calc_star">*</string>
     <string name="calc_slash">/</string>
     <string name="calc_dot">.</string>
+    <string name="calc_open">(</string>
+    <string name="calc_close">)</string>
     <string name="calc_clear">C</string>
+    <string name="calc_clear_all">CA</string>
     <string name="calc_equal">=</string>
     <string name="close_modal">CERRAR</string>
 

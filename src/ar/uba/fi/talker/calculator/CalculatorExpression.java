@@ -1,15 +1,35 @@
 package ar.uba.fi.talker.calculator;
 
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
-public abstract class CalculatorExpression {
+public abstract class CalculatorExpression implements OnClickListener {
 	
-	public abstract double getValue();
-	
-	public abstract void execute(TextView text);
+	private TextView textView;
+	private CalculatorState state;
 
-	public abstract void addValue(double value);
+	public CalculatorExpression(CalculatorState state) {
+		this.state = state;
+	}
 	
-	public abstract String toString();
+	@Override
+	public void onClick(View v) {
+		Button button = (Button) v;
+		CharSequence text = button.getText();
+		textView.append(text);
+	}
+
+	public void setTextView(TextView text) {
+		this.textView = text;
+	}
 	
+	protected TextView getTextView() {
+		return textView;
+	}
+	
+	protected CalculatorState getState() {
+		return state;
+	}
 }
