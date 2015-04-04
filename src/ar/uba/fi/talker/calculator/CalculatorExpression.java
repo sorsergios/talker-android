@@ -8,16 +8,10 @@ import android.widget.TextView;
 public abstract class CalculatorExpression implements OnClickListener {
 	
 	private TextView textView;
+	private CalculatorState state;
 
-	public abstract double getValue();
-	
-	public abstract void execute(TextView text);
-
-	public abstract void addValue(double value);
-	
-	public abstract String toString();
-
-	public void setSecuence(StringBuilder secuence) {
+	public CalculatorExpression(CalculatorState state) {
+		this.state = state;
 	}
 	
 	@Override
@@ -27,8 +21,15 @@ public abstract class CalculatorExpression implements OnClickListener {
 		textView.append(text);
 	}
 
-	public void setSecuence(TextView text) {
+	public void setTextView(TextView text) {
 		this.textView = text;
 	}
 	
+	protected TextView getTextView() {
+		return textView;
+	}
+	
+	protected CalculatorState getState() {
+		return state;
+	}
 }
