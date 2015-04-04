@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,12 @@ public class ScenesGridFragment extends Fragment {
 		View view;
 		view = inflater.inflate(R.layout.grid_inside_view_pager, container, false);
 		mGridView = (GridView) view.findViewById(R.id.gridView);
+		Display display = activity.getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		int maxImages = (width / 300);
+		mGridView.setNumColumns(maxImages);
 		return view;
 	}
 	

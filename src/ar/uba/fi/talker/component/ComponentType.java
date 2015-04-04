@@ -8,7 +8,8 @@ public enum ComponentType {
 	ERASER(EraserStroke.class),
 	TEXT(Text.class),
 	CONTACT(Contact.class),
-	IMAGE(Image.class);
+	IMAGE(Image.class),
+	DATECALENDAR(DateCalendar.class);
 
 	private Class<? extends Component> className;
 	

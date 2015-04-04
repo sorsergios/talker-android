@@ -1,5 +1,6 @@
 package ar.uba.fi.talker.view;
 
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -21,6 +22,7 @@ import android.widget.FrameLayout;
 import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
+import ar.uba.fi.talker.component.DateCalendar;
 import ar.uba.fi.talker.component.Image;
 import ar.uba.fi.talker.component.Text;
 import ar.uba.fi.talker.paint.PaintManager;
@@ -200,7 +202,22 @@ public class Scenario extends FrameLayout {
 		alterComponent.toggleActive();
 		draggableComponents.add(alterComponent);
 	}
+	
+	public void addCalendar(Calendar calendar, int idImage) {
+		Component alterComponent = ComponentFactory.createComponent(
+				ComponentType.DATECALENDAR, getContext());
 
+		android.view.ViewGroup.LayoutParams layoutParams = this
+				.getLayoutParams();
+		layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+		layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+		
+		this.addView(alterComponent, layoutParams);
+		((DateCalendar) alterComponent).setContent(calendar, idImage);
+		alterComponent.toggleActive();
+		draggableComponents.add(alterComponent);
+	}
+	
 	public void restore() {
 		if (bundle != null) {
 			this.onRestoreInstanceState(bundle);

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
+import ar.uba.fi.talker.fragment.DatePickerFragment.DatePickerDialogListener;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
@@ -40,7 +42,9 @@ import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.view.Scenario;
 
 public class CanvasActivity extends ActionBarActivity implements
-		TextDialogListener, InsertImageDialogListener, EraseAllConfirmationDialogListener, OnDateSetListener {
+				TextDialogListener, InsertImageDialogListener,
+		EraseAllConfirmationDialogListener, OnDateSetListener,
+		CalculatorDialogListener, DatePickerDialogListener {
 
 	final String TAG = "CanvasActivity";
 
@@ -125,7 +129,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			@Override
 			public void onClick(View v) {
 				DialogFragment newFragment = new DatePickerFragment();
-				newFragment.show(getSupportFragmentManager(), "calculator");
+				newFragment.show(getSupportFragmentManager(), "calendar");
 			}
 		});
 	}
@@ -142,21 +146,6 @@ public class CanvasActivity extends ActionBarActivity implements
 		EditText inputText = (EditText) dialogView
 				.findViewById(R.id.insert_text_input);
 		scenario.setText(inputText.getText());
-	}
-	
-	@Override
-	public void onDateSet(DatePicker view, int year, int monthOfYear,
-			int dayOfMonth) {
-		if (view.isShown()) {
-
-			final Calendar calendar = Calendar.getInstance();
-			calendar.set(year, monthOfYear, dayOfMonth);
-
-			SpannableStringBuilder date = new SpannableStringBuilder();
-			date.append(String.format("%1$tA %1$td/%1$tB/%1$tY", calendar));
-
-			scenario.setText(date);
-		}
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -225,6 +214,36 @@ public class CanvasActivity extends ActionBarActivity implements
 
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+
+	@Override
+	public void onDateSet(DatePicker view, int year, int monthOfYear,
+			int dayOfMonth) {
+		if (view.isShown()) {
+
+			final Calendar calendar = Calendar.getInstance();
+			calendar.set(year, monthOfYear, dayOfMonth);
+
+			SpannableStringBuilder date = new SpannableStringBuilder();
+			date.append(String.format("%1$tA %1$td/%1$tB/%1$tY", calendar));
+
+			scenario.setText(date);
+		}
+	}
+	
+	@Override
+	public void onDialogPositiveClickDatePickerDialogListener(
+			DatePickerFragment datePickerFragment) {
+		DatePickerDialog dialogView = (DatePickerDialog) datePickerFragment.getDialog();
+		DatePicker datePicker = dialogView.getDatePicker();
+		int dayOfMonth = datePicker.getDayOfMonth();
+		int monthOfYear = datePicker.getMonth();
+		int year = datePicker.getYear();
+		final Calendar calendar = Calendar.getInstance();
+		calendar.set(year, monthOfYear, dayOfMonth);
+
+		scenario.addCalendar(calendar, R.drawable.blanco);
 	}
 
 }
