@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
-import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
+import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.fragment.GridFragment;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 
@@ -52,23 +52,19 @@ public final class GridUtils {
 	}
 
 	private static int calculateImagesPerPage(Activity activity) {
-		Display display = activity.getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		int height = size.y;
-		float density = activity.getResources().getDisplayMetrics().density;
-		int maxImages = (int) ((height / (300*density)) * (width / (300*density)));
-		Log.d(""+density, "Densidad");
-        Log.d(""+width, "Ancho de la pantalla");
-        Log.d(""+height, "Alto de la pantalla");
-        Log.d(""+maxImages, "Cantidad de imagenes antes");
-        if (maxImages > 6 ){
-        	maxImages = 6;
-        } else if (maxImages < 2) {
-        	maxImages = 2;
-        }
-        Log.d(""+maxImages, "Cantidad de imagenes despues");
+		
+		float scenarioWidth = activity.getResources().getDimension(R.dimen.scenarioWidth);
+		float scenarioHeight = activity.getResources().getDimension(R.dimen.scenarioHeight);
+		
+		DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
+
+        float dpHeight = displayMetrics.heightPixels / (displayMetrics.densityDpi/160);
+        float dpWidth = displayMetrics.widthPixels / (displayMetrics.densityDpi/160);
+		
+		float maxImagesFloat =  Math.round(dpHeight/scenarioHeight) *  Math.round(dpWidth /scenarioWidth);
+		int maxImages = Math.round(maxImagesFloat);
+
+		Log.d(maxImagesFloat+":"+dpHeight+":"+dpWidth+ " width "+ scenarioWidth +" heig " +scenarioHeight, "Densidad");
 		return maxImages;
 	}
 }
