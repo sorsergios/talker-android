@@ -7,15 +7,11 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.Toast;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.utils.GridItems;
@@ -47,6 +43,11 @@ public class ScenesGridFragment extends Fragment {
 		display.getSize(size);
 		int width = size.x;
 		int maxImages = (width / 300);
+		if (maxImages > 3){
+			maxImages = 3;
+		} else if (maxImages < 2) {
+			maxImages = 2;
+		}
 		mGridView.setNumColumns(maxImages);
 		return view;
 	}
@@ -61,25 +62,9 @@ public class ScenesGridFragment extends Fragment {
 			if (mGridView != null) {
 				mGridView.setAdapter(mGridAdapter);
 			}
-
-			mGridView.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					onGridItemClick((GridView) parent, view, position, id);
-				}
-			});
 		}
 	}
 
-	public void onGridItemClick(GridView g, View v, int position, long id) {
-		Toast.makeText(
-				activity,
-				"Position Clicked: - " + position + " & " + "Text is: - "
-						+ gridItems.get(position).getScenarioView().getName(), Toast.LENGTH_LONG).show();
-		Log.e("TAG", "POSITION CLICKED " + position);
-	}
-	
 	public GridView getmGridView() {
 		return mGridView;
 	}
