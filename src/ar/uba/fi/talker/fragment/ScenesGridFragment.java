@@ -38,14 +38,19 @@ public class ScenesGridFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view;
 		view = inflater.inflate(R.layout.grid_inside_view_pager, container, false);
+		int maxColumns = calculateColumns(view);
+		
+		mGridView.setNumColumns(maxColumns);
+		return view;
+	}
+
+	private int calculateColumns(View view) {
 		float scenarioWidth = activity.getResources().getDimension(R.dimen.scenarioWidth);
 		DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
 		mGridView = (GridView) view.findViewById(R.id.gridView);
 		float dpWidth = displayMetrics.widthPixels / (displayMetrics.densityDpi/160);
-
 		int maxImages = Math.round(dpWidth /scenarioWidth);
-		mGridView.setNumColumns(maxImages);
-		return view;
+		return maxImages;
 	}
 	
 	@Override
