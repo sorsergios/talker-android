@@ -1,12 +1,10 @@
 package ar.uba.fi.talker.action.userlog;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
 import ar.uba.fi.talker.R;
 
 public class LogoutDialogFragment extends DialogFragment {

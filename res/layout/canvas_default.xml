@@ -25,7 +25,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="fitCenter"
-		android:adjustViewBounds="true"  />
+		android:adjustViewBounds="true"
+		android:contentDescription="@null"  />
 
     <ImageButton
         android:id="@+id/eraserOption"
@@ -35,7 +36,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="fitCenter"
-		android:adjustViewBounds="true"  />
+		android:adjustViewBounds="true"
+		android:contentDescription="@string/erase_all_accept"/>
     
 
     <ImageButton
@@ -47,7 +49,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="fitCenter"
-		android:adjustViewBounds="true"  />
+		android:adjustViewBounds="true"  
+		android:contentDescription="@string/insert_text_accept"/>
 	
 
     <ImageButton
@@ -56,7 +59,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/abc_ic_clear_normal" />
+        android:src="@drawable/abc_ic_clear_normal"
+        android:contentDescription="@null" />
 
     <ImageButton
         android:id="@+id/insertContactOption"
@@ -66,7 +70,8 @@
         android:layout_toRightOf="@+id/insertImageOption"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/contact_icon" />
+        android:src="@drawable/contact_icon"
+        android:contentDescription="@string/insert_image_accept" />
 
     <ImageButton
         android:id="@+id/calculatorOption"
@@ -76,7 +81,8 @@
         android:layout_toRightOf="@+id/insertContactOption"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/calculator_icon" />
+        android:src="@drawable/calculator_icon"
+        android:contentDescription="@string/calc_open"/>
 
     <ImageButton
         android:id="@+id/calendarOption"
@@ -86,7 +92,8 @@
         android:layout_toRightOf="@+id/calculatorOption"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/calendar_icon" />
+        android:src="@drawable/calendar_icon"
+        android:contentDescription="@null" />
 
     <ImageButton
         android:id="@+id/eraseAllOption"
@@ -96,7 +103,8 @@
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/erase_all" />
+        android:src="@drawable/erase_all"
+        android:contentDescription="@string/erase_all_accept" />
 
     <ImageButton
         android:id="@+id/insertImageOption"
@@ -107,6 +115,7 @@
         android:layout_toRightOf="@+id/textOption"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/image_icon" />
+        android:src="@drawable/image_icon"
+        android:contentDescription="@string/insert_image_accept" />
 
 </RelativeLayout>

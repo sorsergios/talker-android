@@ -8,53 +8,47 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ar.uba.fi.talker.TalkerMainActivity" >
 
-    <ImageView
-        android:id="@+id/app_icon"
-        android:layout_width="155dp"
-        android:layout_height="90dp"
-        android:layout_above="@+id/new_conversation_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="22dp"
-        android:src="@drawable/app_icon" />
-
     <Button
-        android:id="@+id/new_conversation_button"
+        android:id="@+id/exit_app_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/app_icon"
-        android:layout_centerVertical="true"
-        android:text="@string/new_conversation" />
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/manner_of_use_button"
+        android:drawableStart="@drawable/exit" />
 
     <Button
         android:id="@+id/manner_of_use_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/history_panel_button"
-        android:layout_below="@+id/history_panel_button"
-        android:text="@string/manner_of_use" />
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/action_settings_button"
+       	android:drawableStart="@drawable/manner_of_use" />
 
     <Button
-        android:id="@+id/exit_app_button"
+        android:id="@+id/new_conversation_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/action_settings_button"
-        android:layout_below="@+id/action_settings_button"
-        android:text="@string/exit" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:drawableTop="@drawable/app_icon"
+        android:gravity="center"
+        android:text="@string/new_conversation" />
 
     <Button
         android:id="@+id/action_settings_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/new_conversation_button"
-        android:text="@string/action_settings" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:drawableStart="@drawable/action_settings" />
 
     <Button
         android:id="@+id/history_panel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/exit_app_button"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:drawableTop="@drawable/history_panel"
         android:text="@string/history_panel" />
 
 </RelativeLayout>
