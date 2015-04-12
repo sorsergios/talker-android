@@ -28,8 +28,8 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
-import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioDAO;
+import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.fragment.ChangeNameDialogFragment;
 import ar.uba.fi.talker.fragment.ChangeNameDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment;
@@ -50,7 +50,7 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerScenesAdapter pagerAdapter;
-	private ImageTalkerDataSource datasource = null;
+	private ScenarioTalkerDataSource datasource = null;
 	private int position;
 	private static final int HEIGHT = 200; // TODO Make it a parameter.
 	
@@ -149,12 +149,12 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 
 		ScenarioView scenario = null;
 		if (datasource == null ) {
-			datasource = new ImageTalkerDataSource(this.getApplicationContext());
+			datasource = new ScenarioTalkerDataSource(this.getApplicationContext());
 		}
 	    datasource.open();
 		List<ScenarioDAO> allImages = datasource.getAllImages();
 		for (int i = 0; i < allImages.size(); i++) {
-			ScenarioDAO scenarioDAO = (ScenarioDAO) allImages.get(i);
+			ScenarioDAO scenarioDAO = allImages.get(i);
 			scenario = new ScenarioView(scenarioDAO.getId(), scenarioDAO.getIdCode(), scenarioDAO.getPath(), scenarioDAO.getName());
 			scenarios.add(scenario);
 		}

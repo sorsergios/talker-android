@@ -10,7 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
 import ar.uba.fi.talker.adapter.PagerAdapter;
-import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioDAO;
 import ar.uba.fi.talker.fragment.GridFragment;
 import ar.uba.fi.talker.utils.ScenarioView;
@@ -21,7 +21,7 @@ import com.viewpagerindicator.PageIndicator;
 public class HistoricalActivity extends ActionBarActivity implements
 		ActionBar.TabListener {
 
-    private ImageTalkerDataSource datasource;
+    private ScenarioTalkerDataSource datasource;
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerAdapter pagerAdapter;
@@ -36,7 +36,7 @@ public class HistoricalActivity extends ActionBarActivity implements
 		ArrayList<ScenarioView> a = new ArrayList<ScenarioView>();
 
 		ScenarioView m = null;
-		datasource = new ImageTalkerDataSource(this);
+		datasource = new ScenarioTalkerDataSource(this);
 	    datasource.open();
 		List<ScenarioDAO> allImages = datasource.getAllImages();
 		for (int i = 0; i < allImages.size(); i++) {

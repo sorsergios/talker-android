@@ -9,12 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
 
 public class TalkerMainActivity extends ActionBarActivity {
 
     private static Context context;
-    private ImageTalkerDataSource datasource;
+    private ScenarioTalkerDataSource datasource;
     
     public static Context getAppContext() {
         return TalkerMainActivity.context;
@@ -68,7 +68,7 @@ public class TalkerMainActivity extends ActionBarActivity {
 				startActivity(i);
 			}
 		});	
-		datasource = new ImageTalkerDataSource(this);
+		datasource = new ScenarioTalkerDataSource(this);
 	    datasource.open();	
 	}
 

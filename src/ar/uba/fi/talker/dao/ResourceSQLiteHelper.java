@@ -9,20 +9,38 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import ar.uba.fi.talker.R;
 
-public class ImagesSQLiteHelper extends SQLiteOpenHelper {
+public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 
 	//SQL sentence to create Images table
     
-	private Context context;
+	private final Context context;
 	private static final String DATABASE_NAME = "talker.db";
 	private static final int DATABASE_VERSION = 1;
-	public static final String TABLE_SCENARIO = "scenario";
-	public static final String COLUMN_ID = "id";
-	public static final String COLUMN_IDCODE = "idCode";
-	public static final String COLUMN_PATH = "path";
-	public static final String COLUMN_NAME = "name";
+	
+	//SCENARIO TABLE
+	public static final String SCENARIO_TABLE = "scenario";
+	public static final String SCENARIO_COLUMN_ID = "id";
+	public static final String SCENARIO_COLUMN_IDCODE = "id_code";
+	public static final String SCENARIO_COLUMN_PATH = "path";
+	public static final String SCENARIO_COLUMN_NAME = "name";
 
-	public ImagesSQLiteHelper(Context context) {
+	//CATEGORY TABLE
+	public static final String CATEGORY_TABLE = "category";
+	public static final String CATEGORY_COLUMN_ID = "id";
+	public static final String CATEGORY_COLUMN_NAME = "name";
+	
+	//IMAGE TABLE
+	public static final String IMAGE_TABLE = "image";
+	public static final String IMAGE_COLUMN_ID = "id";
+	public static final String IMAGE_COLUMN_IDCATEGORY = "id_category";
+	public static final String IMAGE_COLUMN_IDCODE = "id_code";
+	public static final String IMAGE_COLUMN_PATH = "path";
+	public static final String IMAGE_COLUMN_NAME = "name";
+	
+	//CONTACT TABLE
+	
+	
+	public ResourceSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
 	}
@@ -56,32 +74,49 @@ public class ImagesSQLiteHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// Execute SQL sentence to create table
 		if (checkDataBase()) {
-			if (!isTableExists(db, TABLE_SCENARIO)) {
-				db.execSQL("CREATE TABLE " + TABLE_SCENARIO + " ( "
-						+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-						+ COLUMN_IDCODE + " INTEGER, "
-						+ COLUMN_PATH + " TEXT, "
-						+ COLUMN_NAME + " TEXT)");
+			if (!isTableExists(db, SCENARIO_TABLE)) {
+				db.execSQL("CREATE TABLE " + SCENARIO_TABLE + " ( "
+						+ SCENARIO_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+						+ SCENARIO_COLUMN_IDCODE + " INTEGER, "
+						+ SCENARIO_COLUMN_PATH + " TEXT, "
+						+ SCENARIO_COLUMN_NAME + " TEXT)");
 				for (int i = 0; i < mThumbIdsScenario.length; i++) {
 					// Generate and insert default data
 					int idCode = mThumbIdsScenario[i];
 					String name = context.getResources().getString(mThumbTextsScenario[i]);
 
-					db.execSQL("INSERT INTO " + TABLE_SCENARIO + " ( "
-							+ COLUMN_IDCODE + " , " 
-							+ COLUMN_PATH + " , " + COLUMN_NAME + " ) "
+					db.execSQL("INSERT INTO " + SCENARIO_TABLE + " ( "
+							+ SCENARIO_COLUMN_IDCODE + " , " 
+							+ SCENARIO_COLUMN_PATH + " , " + SCENARIO_COLUMN_NAME + " ) "
 							+ " VALUES (" + idCode + ", " + "NULL" + ", '" + name + "')");
 				}
+			}
+			if (!isTableExists(db, CATEGORY_TABLE)) {
+				if (!isTableExists(db, CATEGORY_TABLE)) {
+					db.execSQL("CREATE TABLE " + CATEGORY_TABLE + " ( "
+							+ CATEGORY_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+							+ IMAGE_COLUMN_NAME + " TEXT)");
+					
+				}
+			}
+			if (!isTableExists(db, IMAGE_TABLE)) {
+				db.execSQL("CREATE TABLE " + IMAGE_TABLE + " ( "
+						+ IMAGE_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+						+ IMAGE_COLUMN_IDCODE + " INTEGER, "
+						+ IMAGE_COLUMN_PATH + " TEXT, "
+						+ IMAGE_COLUMN_NAME + " TEXT, "
+						+ IMAGE_COLUMN_IDCATEGORY + " INTEGER)");
+				
 			}
 		}
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.w(ImagesSQLiteHelper.class.getName(),
+		Log.w(ResourceSQLiteHelper.class.getName(),
 				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCENARIO);
+		db.execSQL("DROP TABLE IF EXISTS " + SCENARIO_TABLE);
 		onCreate(db);
 	}
 	

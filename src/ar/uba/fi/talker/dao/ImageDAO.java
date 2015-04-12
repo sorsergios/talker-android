@@ -1,22 +1,25 @@
 package ar.uba.fi.talker.dao;
 
 /**
- * @author earias
- *
+ * @author astamato
+ * 
  */
-public class ScenarioDAO {
+public class ImageDAO {
 
 	private int id;
 	private int idCode;
+	private int idCategory;
 	private String path;
 	private String name;
 
-	public ScenarioDAO() {
+	public ImageDAO() {
 	}
 
-	public ScenarioDAO(int keyId, int idCode, String path, String name) {
-		this.id = keyId;
+	public ImageDAO(int id, int idCode, int idCategory, String path, String name) {
+		super();
+		this.id = id;
 		this.idCode = idCode;
+		this.idCategory = idCategory;
 		this.path = path;
 		this.name = name;
 	}
@@ -53,5 +56,12 @@ public class ScenarioDAO {
 		this.name = name;
 	}
 
+	public int getIdCategory() {
+		return idCategory;
+	}
+
+	public void setIdCategory(int idCategory) {
+		this.idCategory = idCategory;
+	}
 
 }
