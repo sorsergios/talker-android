@@ -1,5 +1,8 @@
 package ar.uba.fi.talker.component;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -9,6 +12,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
+import ar.uba.fi.talker.utils.ImageUtils;
 
 public class Image extends DragComponent {
 
@@ -83,4 +87,29 @@ public class Image extends DragComponent {
         mImage =  Bitmap.createScaledBitmap(image, nWidth, nHeight, true);
 	}
 	
+	@Override
+	public JSONObject save() {
+		JSONObject jsonObject = new JSONObject();
+		try {
+			String bitmapEncoded = ImageUtils.convertBitmapToString(mImage);
+			jsonObject.put("image", bitmapEncoded);
+			jsonObject.put("label", label);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsonObject;
+	}
+
+	@Override
+	public void restore(JSONObject jsonObject) {
+		if (jsonObject != null) {
+			try {
+				String encodedBitmap = (String) jsonObject.get("image");
+				mImage = ImageUtils.convertStringToBitmap(encodedBitmap);
+				label = (String) jsonObject.getString("label");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}	
 }

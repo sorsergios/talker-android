@@ -3,7 +3,6 @@ package ar.uba.fi.talker;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +51,6 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 	private PagerScenesAdapter pagerAdapter;
 	private ScenarioTalkerDataSource datasource;
 	private int position;
-	private static final int HEIGHT = 200; // TODO Make it a parameter.
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +197,7 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 				bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				bytes = ImageUtils.transformImage(bitmap);
 				Context ctx = this.getApplicationContext();
-				saveFileInternalStorage(scenarioName, bitmap, ctx);
+				ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx);
 				File file = new File(ctx.getFilesDir(), scenarioName);
 				scenario = datasource.createScenario(file.getPath(), scenarioName);
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
@@ -221,33 +219,7 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 			startActivity(intent);
 		}		
 	}
-	
-	
-	private void saveFileInternalStorage(String name, Bitmap b, Context context) {
-
-		FileOutputStream out;
-		try {
-			out = context.openFileOutput(name, Context.MODE_PRIVATE);
-			b = setContent(b);
-			b.compress(Bitmap.CompressFormat.JPEG, 90, out);
-			out.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public Bitmap setContent(Bitmap image) {
-		int bWidth = image.getWidth();
-        int bHeight = image.getHeight();
-
-        float parentRatio = (float) bHeight / bWidth;
-
-        int nHeight = HEIGHT; 
-        int nWidth = (int) (HEIGHT / parentRatio);
-        
-        return Bitmap.createScaledBitmap(image, nWidth, nHeight, true);
-	}
-	
+		
 	private Bitmap getImageBitmap(Context context, String name) {
 		try {
 			File f = new File(name);

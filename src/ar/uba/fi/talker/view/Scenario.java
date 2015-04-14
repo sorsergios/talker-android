@@ -224,4 +224,8 @@ public class Scenario extends FrameLayout {
 		}
 	}
 
+	public List<Component> getDraggableComponents() {
+		return draggableComponents;
+	}
+	
 }

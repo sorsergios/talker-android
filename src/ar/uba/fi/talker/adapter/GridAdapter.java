@@ -1,13 +1,23 @@
 package ar.uba.fi.talker.adapter;
 
+import java.util.List;
+
 import android.content.Context;
+import android.graphics.Color;
+import android.net.Uri;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.utils.ConversationView;
+import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridItems;
 
 public class GridAdapter extends BaseAdapter {
@@ -18,31 +28,28 @@ public class GridAdapter extends BaseAdapter {
 		public ImageView imageView;
 		public TextView textTitle;
 	}
-
-	private GridItems[] items;
+	private List<GridConversationItems> items;
 	private LayoutInflater mInflater;
+    private static Long itemSelectedId;
+    private static int pos;
+	
 
-	public GridAdapter(Context context, GridItems[] locations) {
+	public GridAdapter(Context context, List<GridConversationItems> gridItems) {
 
-		mInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
-		items = locations;
+		items = gridItems;
 
 	}
 
-	public GridItems[] getItems() {
+	public List<GridConversationItems> getItems() {
 		return items;
-	}
-
-	public void setItems(GridItems[] items) {
-		this.items = items;
 	}
 
 	@Override
 	public int getCount() {
 		if (items != null) {
-			return items.length;
+			return items.size();
 		}
 		return 0;
 	}
@@ -55,7 +62,7 @@ public class GridAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		if (items != null && position >= 0 && position < getCount()) {
-			return items[position];
+			return items.get(position);
 		}
 		return null;
 	}
@@ -63,38 +70,75 @@ public class GridAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		if (items != null && position >= 0 && position < getCount()) {
-			return items[position].getId();
+			return items.get(position).getConversationView().getId();
 		}
 		return 0;
 	}
 
-	public void setItemsList(GridItems[] locations) {
+	public void setItemsList(List<GridConversationItems> locations) {
 		this.items = locations;
 	}
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, final ViewGroup parent) {
 
-		View view = convertView;
-		ViewHolder viewHolder;
-		if (view == null) {
+		final View view = convertView != null ? convertView : mInflater.inflate(R.layout.row_grid, parent, false);
 
-			view = mInflater.inflate(R.layout.row_grid, parent, false);
-			viewHolder = new ViewHolder();
-			viewHolder.imageView = (ImageView) view.findViewById(R.id.image);
-			viewHolder.textTitle = (TextView) view.findViewById(R.id.text);
-			view.setTag(viewHolder);
-		} else {
-			viewHolder = (ViewHolder) view.getTag();
-		}
+		LinearLayout viewHolder = (LinearLayout) view.findViewById(R.id.grid_element);
 
-		GridItems gridItems = items[position];
-		setCatImage(gridItems.getScenarioView().getIdCode(), viewHolder, gridItems.getScenarioView().getName());
+		viewHolder.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				/*ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+						.findViewById(R.id.new_scene_start);
+				startScenarioBttn.setEnabled(true);
+				startScenarioBttn.setVisibility(View.VISIBLE);
+				ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+						.findViewById(R.id.new_scene_edit_scenario_name);
+				editNameScenarioBttn.setEnabled(true);
+				editNameScenarioBttn.setVisibility(View.VISIBLE);
+				ImageButton deleteScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+						.findViewById(R.id.new_scene_delete_scenario_name);
+				deleteScenarioBttn.setVisibility(View.VISIBLE);*/
+				for (int i = 0; i < parent.getChildCount(); i++) {
+					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
+				}
+				view.setBackgroundColor(Color.CYAN);
+				itemSelectedId = getItemId(position);
+				pos = position;
+			}
+		});
+
+		GridConversationItems gridItems = items.get(position);
+		this.setCatImage(viewHolder, gridItems.getConversationView());
 		return view;
 	}
 
-	private void setCatImage(Integer catImage, ViewHolder viewHolder, String catTitle) {
-		viewHolder.imageView.setImageResource(catImage);
-		viewHolder.textTitle.setText(catTitle);
+	private void setCatImage(LinearLayout viewHolder, ConversationView conversationView) {
+		ImageView imageView = (ImageView) viewHolder.findViewById(R.id.image);
+		Uri uri = Uri.parse(conversationView.getPathSnapshot());
+		imageView.setImageURI(uri);
+		TextView textTitle = (TextView) viewHolder.findViewById(R.id.text);
+		textTitle .setText(conversationView.getName());
+	}
+
+	public static Long getItemSelectedId() {
+		return itemSelectedId;
+	}
+	
+	public static long getPosition() {
+		return pos;
+	}
+	
+	public void setItem(GridItems gridItem,String text, int location){
+		gridItem.getScenarioView().setName(text);
+	}
+
+	public void removeItem(int location) {
+		items.remove(location);
+	}
+
+	public void addItem(GridConversationItems gridItem) {
+		items.add(gridItem);
 	}
 }

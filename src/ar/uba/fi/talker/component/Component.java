@@ -9,7 +9,7 @@ import android.os.Parcelable;
 import android.view.MotionEvent;
 import android.view.View;
 
-public abstract class Component extends View implements Parcelable {
+public abstract class Component extends View implements Parcelable, Serializable {
 
 	private boolean active = true;
 	private Rect bounds;

@@ -10,10 +10,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
 import ar.uba.fi.talker.adapter.PagerAdapter;
-import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
-import ar.uba.fi.talker.dao.ScenarioDAO;
+import ar.uba.fi.talker.dao.ConversationDAO;
+import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.fragment.GridFragment;
-import ar.uba.fi.talker.utils.ScenarioView;
+import ar.uba.fi.talker.utils.ConversationView;
 import ar.uba.fi.talker.utils.GridUtils;
 
 import com.viewpagerindicator.PageIndicator;
@@ -21,7 +21,7 @@ import com.viewpagerindicator.PageIndicator;
 public class HistoricalActivity extends ActionBarActivity implements
 		ActionBar.TabListener {
 
-    private ScenarioTalkerDataSource datasource;
+    private ConversationTalkerDataSource datasource;
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerAdapter pagerAdapter;
@@ -33,19 +33,19 @@ public class HistoricalActivity extends ActionBarActivity implements
 		
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) findViewById(R.id.pagerIndicator);
-		ArrayList<ScenarioView> a = new ArrayList<ScenarioView>();
+		ArrayList<ConversationView> conversViews = new ArrayList<ConversationView>();
 
-		ScenarioView m = null;
-		datasource = new ScenarioTalkerDataSource(this);
+		ConversationView conversView = null;
+		datasource = new ConversationTalkerDataSource(this);
 	    datasource.open();
-		List<ScenarioDAO> allImages = datasource.getAllImages();
+		List<ConversationDAO> allImages = datasource.getAllConversations();
 		for (int i = 0; i < allImages.size(); i++) {
-			ScenarioDAO scenarioDAO = (ScenarioDAO) allImages.get(i);
-			m = new ScenarioView(scenarioDAO.getId(), scenarioDAO.getIdCode(), scenarioDAO.getPath(), scenarioDAO.getName());
-			a.add(m);
+			ConversationDAO conversationDAO = (ConversationDAO) allImages.get(i);
+			conversView = new ConversationView(conversationDAO.getId(), conversationDAO.getPath(), conversationDAO.getName(), conversationDAO.getPathSnapshot());
+			conversViews.add(conversView);
 		}
 		
-		List<GridFragment> gridFragments = GridUtils.setGridFragments(this, a);
+		List<GridFragment> gridFragments = GridUtils.setGridFragments(this, conversViews);
 
 		pagerAdapter = new PagerAdapter(getSupportFragmentManager(), gridFragments);
 		viewPager.setAdapter(pagerAdapter);

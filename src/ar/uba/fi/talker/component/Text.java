@@ -1,5 +1,8 @@
 package ar.uba.fi.talker.component;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -65,4 +68,26 @@ public class Text extends DragComponent {
 		);
 			
 	}
+	
+	@Override
+	public JSONObject save() {
+		JSONObject jsonObject = new JSONObject();
+		try {
+			jsonObject.put("label", value);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsonObject;
+	}
+
+	@Override
+	public void restore(JSONObject jsonObject) {
+		if (jsonObject != null) {
+			try {
+				value = (String) jsonObject.getString("label");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}	
 }

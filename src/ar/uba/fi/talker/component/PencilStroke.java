@@ -2,6 +2,10 @@ package ar.uba.fi.talker.component;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -126,4 +130,34 @@ public class PencilStroke extends Component {
 		}
 	}
 
+	@Override
+	public JSONObject save() {
+		JSONObject jsonObject = new JSONObject();
+		try {
+			JSONArray jsonArray = new JSONArray(points);
+			jsonObject.put("points", jsonArray);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsonObject;
+	}
+
+	@Override
+	public void restore(JSONObject jsonObject) {
+		if (jsonObject != null) {
+			try {
+				ArrayList<PencilPoint> pointList = new ArrayList<PencilStroke.PencilPoint>();     
+				JSONArray jsonArray = (JSONArray)jsonObject.getJSONArray("points"); 
+				if (jsonArray != null) { 
+				   int len = jsonArray.length();
+				   for (int i=0;i<len;i++){ 
+				    pointList.add((PencilPoint)jsonArray.get(i));
+				   } 
+				} 
+				points = pointList;
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}	
 }

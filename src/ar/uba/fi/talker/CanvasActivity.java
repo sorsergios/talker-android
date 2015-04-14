@@ -1,17 +1,31 @@
 package ar.uba.fi.talker;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,7 +43,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentType;
+import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment.DatePickerDialogListener;
@@ -37,19 +53,23 @@ import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment.InsertImageDialogListener;
+import ar.uba.fi.talker.fragment.SaveAllConfirmationDialogFragment;
+import ar.uba.fi.talker.fragment.SaveAllConfirmationDialogFragment.SaveAllConfirmationDialogListener;
 import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
+import ar.uba.fi.talker.utils.ImageUtils;
 import ar.uba.fi.talker.view.Scenario;
 
 public class CanvasActivity extends ActionBarActivity implements
 		TextDialogListener, InsertImageDialogListener,
 		EraseAllConfirmationDialogListener, OnDateSetListener, 
-		DatePickerDialogListener {
+		DatePickerDialogListener, SaveAllConfirmationDialogListener {
 
 	final String TAG = "CanvasActivity";
 
 	private Scenario scenario;
 
+	private ConversationTalkerDataSource datasourceConversation;
 	private static int RESULT_LOAD_IMAGE = 1;
 	
 	@Override
@@ -132,6 +152,15 @@ public class CanvasActivity extends ActionBarActivity implements
 				newFragment.show(getSupportFragmentManager(), "calendar");
 			}
 		});
+		
+		ImageButton saveOption = (ImageButton) findViewById(R.id.saveAll);
+		saveOption.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogFragment newFragment = new SaveAllConfirmationDialogFragment();
+				newFragment.show(getSupportFragmentManager(), "save_all");
+			}
+		});
 	}
 	
 	@Override
@@ -191,7 +220,6 @@ public class CanvasActivity extends ActionBarActivity implements
 	public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap) {
 		scenario.addImage(bitmap);
 	}
-
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -244,6 +272,65 @@ public class CanvasActivity extends ActionBarActivity implements
 		calendar.set(year, monthOfYear, dayOfMonth);
 
 		scenario.addCalendar(calendar, R.drawable.blanco);
+	}
+
+	@Override
+	public void onDialogPositiveClickSaveAllConfirmationListener(
+			DialogFragment dialog) {
+		List<Component> listComponents = scenario.getDraggableComponents();
+		Iterator<Component> it = listComponents.iterator();
+		JSONArray jsonArray = new JSONArray();
+		while (it.hasNext()) {
+			Component component = (Component) it.next();
+			JSONObject jsonObject = component.save();
+			jsonArray.put(jsonObject);
+
+		}
+		String filename = saveConversationOnFile(jsonArray);
+		
+		if (datasourceConversation == null ) {
+			datasourceConversation = new ConversationTalkerDataSource(this.getApplicationContext());
+		}
+		datasourceConversation.open();
+		if (filename != null) {
+			Context ctx = this.getApplicationContext();
+			generateSnapshot(filename, ctx);
+			File file = new File(ctx.getFilesDir(), filename);
+			datasourceConversation.createConversation(file.getPath() + ".json", filename, file.getPath());
+		}
+	}
+
+	public void generateSnapshot(String filename, Context ctx) {
+		Bitmap bitmap = screenShot(scenario);
+		ImageUtils.saveFileInternalStorage(filename, bitmap, ctx);		
+	}
+	
+	public Bitmap screenShot(View view) {
+	    Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),view.getHeight(), Config.ARGB_8888);
+	    Canvas canvas = new Canvas(bitmap);
+	    view.draw(canvas);
+	    return bitmap;
+	}
+	
+	private String saveConversationOnFile(JSONArray jsonArray) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+        Date date = new Date();
+        String filename = dateFormat.format(date);
+        FileOutputStream output;
+		try {
+			output = openFileOutput(filename + ".json", Context.MODE_PRIVATE);
+			OutputStreamWriter writer = new OutputStreamWriter(output);
+			writer.write(jsonArray.toString());
+			writer.flush();
+			writer.close();
+			return filename;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

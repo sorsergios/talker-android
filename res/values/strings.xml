@@ -92,6 +92,12 @@
     <string name="erase_all_accept">ACEPTAR</string>
     <string name="erase_all_cancel">CANCELAR</string>
     
+     <!-- save all -->
+    <string name="save_all_title">GUARDAR CONVERSACIÓN</string>
+    <string name="save_all_message">ESTA SEGURO QUE DESEA GUARDAR LA CONVERSACIÓN?</string>
+    <string name="save_all_accept">ACEPTAR</string>
+    <string name="save_all_cancel">CANCELAR</string>
+    
     <!-- Calculator values -->
     <string name="calc_plus">+</string>
     <string name="calc_minus">-</string>

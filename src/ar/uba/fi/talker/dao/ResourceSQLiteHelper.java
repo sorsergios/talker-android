@@ -39,7 +39,14 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	
 	//CONTACT TABLE
 	
+	//CONVERSATION TABLE
+	public static final String CONVERSATION_TABLE = "conversation";
+	public static final String CONVERSATION_COLUMN_ID = "id";
+	public static final String CONVERSATION_COLUMN_PATH = "path";
+	public static final String CONVERSATION_COLUMN_NAME = "name";
+	public static final String CONVERSATION_COLUMN_SNAPSHOT = "pathImage";
 	
+		
 	public ResourceSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
@@ -149,6 +156,14 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 				}
 
 			}
+			
+			if (!isTableExists(db, CONVERSATION_TABLE)) {
+				db.execSQL("CREATE TABLE " + CONVERSATION_TABLE + " ( "
+						+ CONVERSATION_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+						+ CONVERSATION_COLUMN_PATH + " TEXT, "
+						+ CONVERSATION_COLUMN_NAME + " TEXT, "
+						+ CONVERSATION_COLUMN_SNAPSHOT + " TEXT )");
+			}
 		}
 	}
 
@@ -160,6 +175,7 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + SCENARIO_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + IMAGE_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS " + CONVERSATION_TABLE);
 		onCreate(db);
 	}
 	

@@ -13,23 +13,19 @@ import ar.uba.fi.talker.fragment.ScenesGridFragment;
 
 public final class GridUtils {
 
-	public static List<GridFragment> setGridFragments(Activity activity, ArrayList<ScenarioView> a) {
+	public static List<GridFragment> setGridFragments(Activity activity, ArrayList<ConversationView> conversationsViews) {
 
-		Iterator<ScenarioView> it = a.iterator();
-
-		List<GridFragment> gridFragments = new ArrayList<GridFragment>();
+		Iterator<ConversationView> it = conversationsViews.iterator();
 		int maxImages = calculateImagesPerPage(activity);
-		ArrayList<GridItems> itmLst = new ArrayList<GridItems>();
-		while (it.hasNext()) {
+		List<GridFragment> gridFragments = new ArrayList<GridFragment>();
 
+		while (it.hasNext()) {
+			ArrayList<GridConversationItems> itmLst = new ArrayList<GridConversationItems>();
 			for (int i = 0; i < maxImages && it.hasNext(); i++) {
-				GridItems itm = new GridItems(i, it.next());
+				GridConversationItems itm = new GridConversationItems(i, it.next());
 				itmLst.add(itm);
 			}
-			
-			GridItems[] gridPage = itmLst.toArray(new GridItems[]{});
-			itmLst.clear();
-			gridFragments.add(new GridFragment(gridPage, activity));
+			gridFragments.add(new GridFragment(itmLst, activity));
 		}
 		return gridFragments;
 	}
