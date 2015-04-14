@@ -1,6 +1,8 @@
 package ar.uba.fi.talker.calculator;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -8,28 +10,109 @@ import android.view.View;
 
 public class CalculatorResolve extends CalculatorExpression {
 
+	// Associativity constants for operators
+	private static final int LEFT_ASSOC = 0;
+	private static final int RIGHT_ASSOC = 1;
+
+	// Supported operators
+	private static final Map<String, int[]> OPERATORS = new HashMap<String, int[]>();
+	static {
+		// Map<"token", []{precendence, associativity}>
+		OPERATORS.put("+", new int[] { 0, LEFT_ASSOC });
+		OPERATORS.put("-", new int[] { 0, LEFT_ASSOC });
+		OPERATORS.put("*", new int[] { 5, LEFT_ASSOC });
+		OPERATORS.put("/", new int[] { 5, LEFT_ASSOC });
+	}
+
 	public CalculatorResolve(CalculatorState state) {
 		super(state);
 	}
 
-	private int priority(char data) {
-		int priority = 0;
-		switch (data) {
-		case '+':
-		case '-':
-			priority = 1;
-			break;
-		case '*':
-		case '/':
-			priority = 2;
-			break;
+	/**
+	 * Test if a certain is an operator .
+	 * 
+	 * @param token
+	 *            The token to be tested .
+	 * @return True if token is an operator . Otherwise False .
+	 */
+	private static boolean isOperator(String token) {
+		return OPERATORS.containsKey(token);
+	}
 
-		default:
-			priority = -1;
-			break;
+	/**
+	 * Test the associativity of a certain operator token .
+	 * 
+	 * @param token
+	 *            The token to be tested (needs to operator).
+	 * @param type
+	 *            LEFT_ASSOC or RIGHT_ASSOC
+	 * @return True if the tokenType equals the input parameter type .
+	 */
+	private static boolean isAssociative(String token, int type) {
+		if (!isOperator(token)) {
+			throw new IllegalArgumentException("Invalid token: " + token);
 		}
+		if (OPERATORS.get(token)[1] == type) {
+			return true;
+		}
+		return false;
+	}
 
-		return priority;
+	/**
+	 * Compare precendece of two operators.
+	 * 
+	 * @param token1
+	 *            The first operator .
+	 * @param token2
+	 *            The second operator .
+	 * @return A negative number if token1 has a smaller precedence than token2,
+	 *         0 if the precendences of the two tokens are equal, a positive
+	 *         number otherwise.
+	 */
+	private static final int cmpPrecedence(String token1, String token2) {
+		if (!isOperator(token1) || !isOperator(token2)) {
+			throw new IllegalArgumentException("Invalied tokens: " + token1
+					+ " " + token2);
+		}
+		return OPERATORS.get(token1)[0] - OPERATORS.get(token2)[0];
+	}
+
+	public static Queue<String> infixToRPN(String[] inputTokens) {
+		Queue<String> out = new LinkedList<String>();
+		Stack<String> stack = new Stack<String>();
+		// For all the input tokens [S1] read the next token [S2]
+		for (String token : inputTokens) {
+			if (isOperator(token)) {
+				// If token is an operator (x) [S3]
+				while (!stack.empty() && isOperator(stack.peek())) {
+					// [S4]
+					if ((isAssociative(token, LEFT_ASSOC) && cmpPrecedence(
+							token, stack.peek()) <= 0)
+							|| (isAssociative(token, RIGHT_ASSOC) && cmpPrecedence(
+									token, stack.peek()) < 0)) {
+						out.add(stack.pop()); // [S5] [S6]
+						continue;
+					}
+					break;
+				}
+				// Push the new operator on the stack [S7]
+				stack.push(token);
+			} else if (token.equals("(")) {
+				stack.push(token); // [S8]
+			} else if (token.equals(")")) {
+				// [S9]
+				while (!stack.empty() && !stack.peek().equals("(")) {
+					out.add(stack.pop()); // [S10]
+				}
+				stack.pop(); // [S11]
+			} else {
+				out.add(token); // [S12]
+			}
+		}
+		while (!stack.empty()) {
+			out.add(stack.pop()); // [S13]
+		}
+		return out;
 	}
 
 	private boolean isDouble(String str) {
@@ -40,7 +123,7 @@ public class CalculatorResolve extends CalculatorExpression {
 			return false;
 		}
 	}
-
+	
 	private double resuelve(Queue<String> postfix) {
 		Stack<Double> stack = new Stack<Double>();
 		double a, b;
@@ -67,75 +150,33 @@ public class CalculatorResolve extends CalculatorExpression {
 		return stack.pop();
 	}
 
+	private String expand(String string) {
+		StringBuilder expanded = new StringBuilder();
+		
+		for (int i = 0; i < string.length(); i++) {
+			char c = string.charAt(i);
+			if (c == ')') {
+				expanded.append(' ');
+			}
+			expanded.append(c);
+			if (c == '(') {
+				expanded.append(' ');
+			}
+		}
+		
+		return expanded.toString();
+	}
 	@Override
 	public void onClick(View v) {
-		// String uno="(5+3)*(2+3)";
-		if (getState().isSolved()) return;
 		
-		CharSequence expression = getTextView().getText();
+		if (getState().isSolved()) return;
+		String expression = getTextView().getText().toString();
+		
+		String[] input = expression.split(" ");
+		Queue<String> output = infixToRPN(input);
 
-		char character;
-		Character x;
-		StringBuilder numberBuilder = new StringBuilder();
-
-		Queue<String> postfix = new LinkedList<String>();
-		Stack<Character> stack = new Stack<Character>();
-
-		for (int i = 0; i < expression.length(); i++) {
-			character = expression.charAt(i);
-			if (character == ' ') {
-				if(numberBuilder.length() > 0) {
-				postfix.offer(numberBuilder.toString());
-				numberBuilder.delete(0, numberBuilder.length());
-				}
-			} else if (Character.isDigit(character) || character == '.') {
-				numberBuilder.append(character);
-			} else if (stack.empty() || character == '('
-					|| priority(character) > priority(stack.peek())) {
-
-				stack.push(character);
-			} else {
-				if (priority(character) == priority(stack.peek())) {
-					x = stack.peek();
-					if (x == character) {
-						stack.push(character);
-					} else {
-						x = stack.pop();
-						postfix.offer(x.toString());
-						stack.push(character);
-					}
-				}
-				if (character != ' ') {
-					if (numberBuilder.length() > 0) {
-						postfix.offer(numberBuilder.toString());
-						numberBuilder.delete(0, numberBuilder.length());
-					}
-					while (!stack.isEmpty() && stack.peek() != '(') {
-						x = stack.pop();
-						postfix.offer(x.toString());
-					}
-					if (!stack.isEmpty()) {
-						stack.pop();
-					}
-					if (character != ')') {
-						stack.push(character);
-					}
-				}
-			}
-		}
-
-		if (numberBuilder.length() > 0) {
-			postfix.offer(numberBuilder.toString());
-			numberBuilder.delete(0, numberBuilder.length());
-		}
-		while (!stack.empty()) {
-			Character rest = stack.pop();
-			if (!rest.equals('(')) {
-				postfix.offer(rest.toString());
-			}
-		}
-
-		String aString = Double.toString(resuelve(postfix));
+		String aString = Double.toString(resuelve(output));
 		getTextView().append(" = " + aString);
 	}
+
 }
