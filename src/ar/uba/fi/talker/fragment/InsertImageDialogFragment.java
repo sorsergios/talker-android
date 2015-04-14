@@ -1,5 +1,7 @@
 package ar.uba.fi.talker.fragment;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,7 +21,12 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.adapter.InsertImageAdapter;
 import ar.uba.fi.talker.adapter.InsertImageCategoryAdapter;
+import ar.uba.fi.talker.dao.CategoryDAO;
+import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
+import ar.uba.fi.talker.dao.ImageDAO;
+import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 
 public class InsertImageDialogFragment extends DialogFragment {
 
@@ -29,22 +36,35 @@ public class InsertImageDialogFragment extends DialogFragment {
 	
 	private AlertDialog alert;
 	
+	private CategoryTalkerDataSource categoryTalkerDataSource;
+	private ImageTalkerDataSource imageTalkerDataSource;
+	
 	public interface InsertImageDialogListener {
 		public void onDialogPositiveClickInsertImageDialogListener(Uri uri,
 				Matrix matrix);
 		public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap);
 	}
 
-	private static final String[] CATEGORIES = new String[] { "ANIMAL", "COMIDA",
-			"OBJETOS", "PATIO", "NUEVA" };
-	private static final String[] INNER_CATEGORIES = new String[] { "IMAGEN 1",
-			"IMAGEN 2", "IMAGEN 3", "IMAGEN 4", "NUEVA" };
+//	private static final String[] CATEGORIES = new String[] { "ANIMAL", "COMIDA",
+//			"OBJETOS", "PATIO", "NUEVA" };
+//	private static final String[] INNER_CATEGORIES = new String[] { "IMAGEN 1",
+//			"IMAGEN 2", "IMAGEN 3", "IMAGEN 4", "NUEVA" };
 
 	private InsertImageDialogListener listener;
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		
+		if (categoryTalkerDataSource == null ) {
+			categoryTalkerDataSource = new CategoryTalkerDataSource(getActivity());
+		}
+		categoryTalkerDataSource.open();
+		if (imageTalkerDataSource == null ) {
+			imageTalkerDataSource = new ImageTalkerDataSource(getActivity());
+		}
+		imageTalkerDataSource.open();
+	    
 		try {
 			listener = (InsertImageDialogListener) activity;
 		} catch (ClassCastException e) {
@@ -67,15 +87,15 @@ public class InsertImageDialogFragment extends DialogFragment {
 		
 		GridView gridView = (GridView) gridViewContainer
 				.findViewById(R.id.insert_cat_gridview);
-		GridView gridViewImages = (GridView) gridViewContainer
+		
+		final GridView gridViewImages = (GridView) gridViewContainer
 				.findViewById(R.id.insert_image_gridview);
-
-		gridView.setAdapter(new InsertImageCategoryAdapter(getActivity(),
-				CATEGORIES));
-		gridViewImages.setAdapter(new InsertImageCategoryAdapter(getActivity(),
-				INNER_CATEGORIES));
+		
+		List <CategoryDAO> categories = categoryTalkerDataSource.getAllCategories();
+		gridView.setAdapter(new InsertImageCategoryAdapter(getActivity(),categories));
 
 		gridView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				if (position == 4) {
@@ -84,6 +104,10 @@ public class InsertImageDialogFragment extends DialogFragment {
 					// getActivity().startActivityForResult(i,
 					// RESULT_LOAD_IMAGE);
 				} else {
+					int categId = InsertImageCategoryAdapter.getItemSelectedId().intValue();
+					List<ImageDAO> innnerImages = imageTalkerDataSource.getImagesForCategory(categId);
+					gridViewImages.setAdapter(new InsertImageAdapter(getActivity(),
+							innnerImages));
 					flipper.showNext();
 					Button buttonNo = alert.getButton(AlertDialog.BUTTON_NEUTRAL);
 					buttonNo.setEnabled(true);
@@ -92,6 +116,7 @@ public class InsertImageDialogFragment extends DialogFragment {
 		});
 
 		gridViewImages.setOnItemClickListener(new OnItemClickListener() {
+			@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				if (position == 4) {
@@ -116,6 +141,7 @@ public class InsertImageDialogFragment extends DialogFragment {
 				.setNeutralButton(R.string.insert_image_back, null)
 				.setNegativeButton(R.string.insert_image_cancel,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
 							}
@@ -132,7 +158,7 @@ public class InsertImageDialogFragment extends DialogFragment {
 							// this point
 		AlertDialog d = (AlertDialog) getDialog();
 		if (d != null) {
-			final Button neutralButton = (Button) d.getButton(Dialog.BUTTON_NEUTRAL);
+			final Button neutralButton = d.getButton(Dialog.BUTTON_NEUTRAL);
 			neutralButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {

@@ -64,4 +64,15 @@ public class CategoryTalkerDataSource {
 		return category;
 	}
 	
+	
+	public CategoryDAO getCategoryByID(int keyId) {
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.CATEGORY_TABLE + " WHERE "
+				+ ResourceSQLiteHelper.CATEGORY_COLUMN_ID + " = " + keyId, null);
+		cursor.moveToFirst();
+		CategoryDAO category = cursorToCategory(cursor);
+		cursor.close();
+		return category;
+	}
+	
 }

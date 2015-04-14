@@ -10,19 +10,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.dao.CategoryDAO;
+import ar.uba.fi.talker.dao.ImageDAO;
 
-public class InsertImageCategoryAdapter extends BaseAdapter {
+public class InsertImageAdapter extends BaseAdapter {
 	private final Context context;
-	private final List<CategoryDAO> categories;
+	private final List<ImageDAO> categoryImages;
 	private final LayoutInflater mInflater;
-	
-    private static Long itemSelectedId;
 
-	public InsertImageCategoryAdapter(Context context, List<CategoryDAO> categories) {
+	public InsertImageAdapter(Context context, List<ImageDAO> categoryImages) {
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
-		this.categories = categories;
+		this.categoryImages = categoryImages;
 	}
 	
 	@Override
@@ -36,19 +34,17 @@ public class InsertImageCategoryAdapter extends BaseAdapter {
 			// get layout from mobile.xml
 			gridViewItem = mInflater.inflate(R.layout.insert_image_grid_item, null);
 
-			String categoryName = categories.get(position).getName();
-			
 			// set value into textview
 			TextView textView = (TextView) gridViewItem.findViewById(R.id.grid_item_label);
-			textView.setText(categoryName);
+			textView.setText(categoryImages.get(position).getName());
 
 			// set image based on selected text
 			ImageView imageView = (ImageView) gridViewItem.findViewById(R.id.grid_item_image);
 
-			//FIXME acá viene la lógica de elegir imagen representativa de la categoría o construir un mosaico del interior de la categoría
+			String categoryName = categoryImages.get(position).getName();
+
 			imageView.setImageResource(R.drawable.ic_launcher);
 			
-			itemSelectedId = getItemId(position); 
 
 		} else {
 			gridViewItem = convertView;
@@ -59,21 +55,17 @@ public class InsertImageCategoryAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return categories.size();
+		return categoryImages.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return null;
+		return categoryImages.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return categories.get(position).getId();
-	}
-
-	public static Long getItemSelectedId() {
-		return itemSelectedId;
+		return categoryImages.get(position).getId();
 	}
 
 }

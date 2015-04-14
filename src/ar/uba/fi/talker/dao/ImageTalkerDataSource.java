@@ -42,7 +42,7 @@ public class ImageTalkerDataSource {
 		return newImage;
 	}
 
-	public void deleteScenario(Long keyID) {
+	public void deleteImage(Long keyID) {
 		database.delete(ResourceSQLiteHelper.IMAGE_TABLE,
 				ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + keyID, null);
 	}
@@ -64,30 +64,38 @@ public class ImageTalkerDataSource {
 	}
 
 	private ImageDAO cursorToImages(Cursor cursor) {
-		ImageDAO scenario = new ImageDAO();
-		scenario.setId(cursor.getInt(0));
-		scenario.setIdCode(cursor.getInt(1));
-		scenario.setPath(cursor.getString(2));
-		scenario.setName(cursor.getString(3));
-		scenario.setIdCategory(cursor.getInt(4));
-		return scenario;
+		ImageDAO image = new ImageDAO();
+		image.setId(cursor.getInt(0));
+		image.setIdCode(cursor.getInt(1));
+		image.setPath(cursor.getString(2));
+		image.setName(cursor.getString(3));
+		image.setIdCategory(cursor.getInt(4));
+		return image;
 	}
 	
-	public ImageDAO getScenarioByID(int keyId) {
+	public ImageDAO getImageByID(int keyId) {
 		Cursor cursor = database.rawQuery("SELECT * FROM "
 				+ ResourceSQLiteHelper.IMAGE_TABLE + " WHERE "
 				+ ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + keyId, null);
 		cursor.moveToFirst();
-		ImageDAO scenario = cursorToImages(cursor);
+		ImageDAO image = cursorToImages(cursor);
 		cursor.close();
-		return scenario;
+		return image;
 	}
 	
-	public void updateScenario(Long keyID, String name) {
-		ContentValues values = new ContentValues();
-		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_NAME,name);
-		database.update(ResourceSQLiteHelper.IMAGE_TABLE, values,
-				ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + keyID, null);
+	public List<ImageDAO> getImagesForCategory(int keyId) {
+		List<ImageDAO> images = new ArrayList<ImageDAO>();
+		
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.IMAGE_TABLE + " WHERE "
+				+ ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY + " = " + keyId, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			ImageDAO image = cursorToImages(cursor);
+			images.add(image);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return images;
 	}
-	
 }

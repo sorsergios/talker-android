@@ -50,7 +50,7 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerScenesAdapter pagerAdapter;
-	private ScenarioTalkerDataSource datasource = null;
+	private ScenarioTalkerDataSource datasource;
 	private int position;
 	private static final int HEIGHT = 200; // TODO Make it a parameter.
 	

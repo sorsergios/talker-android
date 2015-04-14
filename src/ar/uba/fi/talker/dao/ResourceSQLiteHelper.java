@@ -54,20 +54,17 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 		return true;
 	}
 
-	boolean isTableExists(SQLiteDatabase db, String tableName)
-	{
-	    if (tableName == null || db == null || !db.isOpen())
-	    {
-	        return false;
-	    }
-	    Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM sqlite_master WHERE type = ? AND name = ?", new String[] {"table", tableName});
-	    if (!cursor.moveToFirst())
-	    {
-	        return false;
-	    }
-	    int count = cursor.getInt(0);
-	    cursor.close();
-	    return count > 0;
+	boolean isTableExists(SQLiteDatabase db, String tableName) {
+		if (tableName == null || db == null || !db.isOpen()) {
+			return false;
+		}
+		Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM sqlite_master WHERE type = ? AND name = ?", new String[] { "table", tableName });
+		if (!cursor.moveToFirst()) {
+			return false;
+		}
+		int count = cursor.getInt(0);
+		cursor.close();
+		return count > 0;
 	}
 	
 	@Override
@@ -91,14 +88,24 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 							+ " VALUES (" + idCode + ", " + "NULL" + ", '" + name + "')");
 				}
 			}
+			
 			if (!isTableExists(db, CATEGORY_TABLE)) {
 				if (!isTableExists(db, CATEGORY_TABLE)) {
 					db.execSQL("CREATE TABLE " + CATEGORY_TABLE + " ( "
 							+ CATEGORY_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 							+ IMAGE_COLUMN_NAME + " TEXT)");
-					
 				}
+				
+				
+				// "ANIMAL", "COMIDA", "OBJETOS", "PATIO", "NUEVA"
+				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
+						+ " VALUES (" + 1 + ",\"ANIMALES\")");
+				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
+						+ " VALUES (" + 2 + ",\"COMIDA\")");
+				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
+						+ " VALUES (" + 3 + ",\"OBJETOS\")");
 			}
+
 			if (!isTableExists(db, IMAGE_TABLE)) {
 				db.execSQL("CREATE TABLE " + IMAGE_TABLE + " ( "
 						+ IMAGE_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -107,6 +114,27 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 						+ IMAGE_COLUMN_NAME + " TEXT, "
 						+ IMAGE_COLUMN_IDCATEGORY + " INTEGER)");
 				
+				for (int i = 0; i < mThumbIdsImagesForCateg1.length; i++) {
+					// Generate and insert default data
+					int idCode = mThumbIdsScenario[i];
+					String name = context.getResources().getString(mThumbTextsImagesForCateg1[i]);
+
+					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
+							+ IMAGE_COLUMN_IDCODE + " , " 
+							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
+							+ " VALUES (" + idCode + ", " + 1 + ", '" + name + "')");
+				}
+				for (int i = 0; i < mThumbIdsImagesForCateg2.length; i++) {
+					// Generate and insert default data
+					int idCode = mThumbIdsScenario[i];
+					String name = context.getResources().getString(mThumbTextsImagesForCateg2[i]);
+
+					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
+							+ IMAGE_COLUMN_IDCODE + " , " 
+							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
+							+ " VALUES (" + idCode + ", " + 2 + ", '" + name + "')");
+				}
+
 			}
 		}
 	}
@@ -117,6 +145,8 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
 		db.execSQL("DROP TABLE IF EXISTS " + SCENARIO_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS " + IMAGE_TABLE);
 		onCreate(db);
 	}
 	
@@ -150,4 +180,30 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 			R.string.banio,
 			R.string.patio
 	};
+	
+	/*IMAGES OF SCENARIO*/
+	private static Integer[] mThumbIdsImagesForCateg1 = {
+			R.drawable.casa,
+	        R.drawable.oficina,
+	        R.drawable.colectivo
+	};
+	
+	/*IMAGES OF CATEGORIES*/
+	private static Integer[] mThumbTextsImagesForCateg1 = {
+		R.string.casa,
+		R.string.oficina,
+		R.string.colectivo
+	};
+	
+	private static Integer[] mThumbIdsImagesForCateg2 = {
+		R.drawable.casa,
+        R.drawable.oficina
+	};
+
+	/*IMAGES OF CATEGORIES*/
+	private static Integer[] mThumbTextsImagesForCateg2 = {
+		R.string.casa,
+		R.string.oficina
+	};
+	
 }
