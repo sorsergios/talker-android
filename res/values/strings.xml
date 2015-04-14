@@ -59,7 +59,7 @@
     <!-- Canvas texts -->
     <string name="canvas_done">HECHO</string>
 
-    <!-- imagenes -->
+    <!-- escenarios precargados -->
     <string name="casa">CASA</string>
     <string name="oficina">OFICINA</string>
     <string name="colectivo">COLECTIVO</string>
@@ -108,4 +108,19 @@
     <!-- historial -->
     <string name="conversation_history">HISTORIAL DE CONVERSACIONES</string>
 
+    
+    <!-- imagenes precargadas -->
+    <string name="ob_1">LAMPARA</string>
+    
+    <string name="an_1">PERRO</string>
+    <string name="an_2">ELEFANTE</string>
+    <string name="an_3">GATOO</string>
+    
+    <string name="food_1">PATY</string>
+    <string name="food_2">LECHUGA</string>
+    <string name="food_3">PIZZA</string>
+    
+    
+    
+    
 </resources>

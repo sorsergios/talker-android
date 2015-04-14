@@ -104,6 +104,8 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 						+ " VALUES (" + 2 + ",\"COMIDA\")");
 				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
 						+ " VALUES (" + 3 + ",\"OBJETOS\")");
+				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
+						+ " VALUES (" + 4 + ",\"PATIO\")");
 			}
 
 			if (!isTableExists(db, IMAGE_TABLE)) {
@@ -116,7 +118,7 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 				
 				for (int i = 0; i < mThumbIdsImagesForCateg1.length; i++) {
 					// Generate and insert default data
-					int idCode = mThumbIdsScenario[i];
+					int idCode = mThumbIdsImagesForCateg1[i];
 					String name = context.getResources().getString(mThumbTextsImagesForCateg1[i]);
 
 					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
@@ -126,13 +128,24 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 				}
 				for (int i = 0; i < mThumbIdsImagesForCateg2.length; i++) {
 					// Generate and insert default data
-					int idCode = mThumbIdsScenario[i];
+					int idCode = mThumbIdsImagesForCateg2[i];
 					String name = context.getResources().getString(mThumbTextsImagesForCateg2[i]);
 
 					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
 							+ IMAGE_COLUMN_IDCODE + " , " 
 							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
 							+ " VALUES (" + idCode + ", " + 2 + ", '" + name + "')");
+				}
+				
+				for (int i = 0; i < mThumbIdsImagesForCateg3.length; i++) {
+					// Generate and insert default data
+					int idCode = mThumbIdsImagesForCateg3[i];
+					String name = context.getResources().getString(mThumbTextsImagesForCateg3[i]);
+
+					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
+							+ IMAGE_COLUMN_IDCODE + " , " 
+							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
+							+ " VALUES (" + idCode + ", " + 3 + ", '" + name + "')");
 				}
 
 			}
@@ -152,58 +165,70 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	
 	/*IMAGES OF SCENARIO*/
 	private static Integer[] mThumbIdsScenario = {
-			R.drawable.blanco,    
-			R.drawable.casa,
-	        R.drawable.oficina,
-	        R.drawable.colectivo, 
-	        R.drawable.escuela,
-	        R.drawable.living,
-	        R.drawable.cocina,
-	        R.drawable.habitacion, 
-	        R.drawable.banio,
-	        R.drawable.aulaescuela,
-	        R.drawable.banioescuela,
-	        R.drawable.patioescuela
+		R.drawable.blanco,    
+		R.drawable.casa,
+		R.drawable.oficina,
+	    R.drawable.colectivo, 
+		R.drawable.escuela,
+		R.drawable.living,
+		R.drawable.cocina,
+		R.drawable.habitacion, 
+		R.drawable.banio,
+		R.drawable.aulaescuela,
+		R.drawable.banioescuela,
+		R.drawable.patioescuela
 	};
 	
 	private static Integer[] mThumbTextsScenario = {
-			R.string.blanco,
-			R.string.casa,
-			R.string.oficina,
-			R.string.colectivo,
-			R.string.escuela,
-			R.string.living,
-			R.string.cocina,
-			R.string.habitacion,
-			R.string.banio,
-			R.string.aula,
-			R.string.banio,
-			R.string.patio
+		R.string.blanco,
+		R.string.casa,
+		R.string.oficina,
+		R.string.colectivo,
+		R.string.escuela,
+		R.string.living,
+		R.string.cocina,
+		R.string.habitacion,
+		R.string.banio,
+		R.string.aula,
+		R.string.banio,
+		R.string.patio
 	};
 	
 	/*IMAGES OF SCENARIO*/
 	private static Integer[] mThumbIdsImagesForCateg1 = {
-			R.drawable.casa,
-	        R.drawable.oficina,
-	        R.drawable.colectivo
+		R.drawable.an_1,
+		R.drawable.an_2,
+		R.drawable.an_3
 	};
 	
 	/*IMAGES OF CATEGORIES*/
 	private static Integer[] mThumbTextsImagesForCateg1 = {
-		R.string.casa,
-		R.string.oficina,
-		R.string.colectivo
+		R.string.an_1,
+		R.string.an_2,
+		R.string.an_3
 	};
 	
 	private static Integer[] mThumbIdsImagesForCateg2 = {
-		R.drawable.casa,
-        R.drawable.oficina
+		R.drawable.food_1,
+        R.drawable.food_2,
+        R.drawable.food_3
 	};
 
 	/*IMAGES OF CATEGORIES*/
 	private static Integer[] mThumbTextsImagesForCateg2 = {
-		R.string.casa,
-		R.string.oficina
+		R.string.food_1,
+		R.string.food_2,
+		R.string.food_3
 	};
+	
+	private static Integer[] mThumbIdsImagesForCateg3 = {
+		R.drawable.ob_1
+	};
+
+	/*IMAGES OF CATEGORIES*/
+	private static Integer[] mThumbTextsImagesForCateg3 = {
+		R.string.ob_1
+	};
+	
 	
 }

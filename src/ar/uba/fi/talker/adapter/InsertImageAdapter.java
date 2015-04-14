@@ -14,13 +14,13 @@ import ar.uba.fi.talker.dao.ImageDAO;
 
 public class InsertImageAdapter extends BaseAdapter {
 	private final Context context;
-	private final List<ImageDAO> categoryImages;
+	private final List<ImageDAO> innerImages;
 	private final LayoutInflater mInflater;
 
 	public InsertImageAdapter(Context context, List<ImageDAO> categoryImages) {
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
-		this.categoryImages = categoryImages;
+		this.innerImages = categoryImages;
 	}
 	
 	@Override
@@ -34,7 +34,7 @@ public class InsertImageAdapter extends BaseAdapter {
 			// get layout from mobile.xml
 			gridViewItem = mInflater.inflate(R.layout.insert_image_grid_item, null);
 
-			String imageName = categoryImages.get(position).getName();
+			String imageName = innerImages.get(position).getName();
 			
 			// set value into textview
 			TextView textView = (TextView) gridViewItem.findViewById(R.id.grid_item_label);
@@ -43,7 +43,7 @@ public class InsertImageAdapter extends BaseAdapter {
 			// set image based on selected text
 			ImageView imageView = (ImageView) gridViewItem.findViewById(R.id.grid_item_image);
 
-			imageView.setImageResource(categoryImages.get(position).getIdCode());
+			imageView.setImageResource(innerImages.get(position).getIdCode());
 
 		} else {
 			gridViewItem = convertView;
@@ -54,17 +54,17 @@ public class InsertImageAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return categoryImages.size();
+		return innerImages.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return categoryImages.get(position);
+		return innerImages.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return categoryImages.get(position).getId();
+		return innerImages.get(position).getId();
 	}
 
 }

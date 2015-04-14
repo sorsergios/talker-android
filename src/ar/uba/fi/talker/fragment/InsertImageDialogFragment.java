@@ -92,7 +92,8 @@ public class InsertImageDialogFragment extends DialogFragment {
 				.findViewById(R.id.insert_image_gridview);
 		
 		List <CategoryDAO> categories = categoryTalkerDataSource.getAllCategories();
-		gridView.setAdapter(new InsertImageCategoryAdapter(getActivity(),categories));
+		final InsertImageCategoryAdapter insertImageCategoryAdapter = new InsertImageCategoryAdapter(getActivity(),categories);
+		gridView.setAdapter(insertImageCategoryAdapter);
 
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -104,7 +105,7 @@ public class InsertImageDialogFragment extends DialogFragment {
 					// getActivity().startActivityForResult(i,
 					// RESULT_LOAD_IMAGE);
 				} else {
-					int categId = InsertImageCategoryAdapter.getItemSelectedId().intValue();
+					long categId = insertImageCategoryAdapter.getItemId(position);
 					List<ImageDAO> innnerImages = imageTalkerDataSource.getImagesForCategory(categId);
 					gridViewImages.setAdapter(new InsertImageAdapter(getActivity(),
 							innnerImages));

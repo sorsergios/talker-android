@@ -16,8 +16,6 @@ public class InsertImageCategoryAdapter extends BaseAdapter {
 	private final Context context;
 	private final List<CategoryDAO> categories;
 	private final LayoutInflater mInflater;
-	
-    private static Long itemSelectedId;
 
 	public InsertImageCategoryAdapter(Context context, List<CategoryDAO> categories) {
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -26,7 +24,7 @@ public class InsertImageCategoryAdapter extends BaseAdapter {
 	}
 	
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		View gridViewItem;
 
@@ -48,8 +46,6 @@ public class InsertImageCategoryAdapter extends BaseAdapter {
 			//FIXME acá viene la lógica de elegir imagen representativa de la categoría o construir un mosaico del interior de la categoría
 			imageView.setImageResource(R.drawable.ic_launcher);
 			
-			itemSelectedId = getItemId(position); 
-
 		} else {
 			gridViewItem = convertView;
 		}
@@ -70,10 +66,6 @@ public class InsertImageCategoryAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		return categories.get(position).getId();
-	}
-
-	public static Long getItemSelectedId() {
-		return itemSelectedId;
 	}
 
 }

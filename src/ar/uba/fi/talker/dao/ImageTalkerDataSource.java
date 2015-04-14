@@ -83,7 +83,7 @@ public class ImageTalkerDataSource {
 		return image;
 	}
 	
-	public List<ImageDAO> getImagesForCategory(int keyId) {
+	public List<ImageDAO> getImagesForCategory(long keyId) {
 		List<ImageDAO> images = new ArrayList<ImageDAO>();
 		
 		Cursor cursor = database.rawQuery("SELECT * FROM "
