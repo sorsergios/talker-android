@@ -34,17 +34,16 @@ public class InsertImageAdapter extends BaseAdapter {
 			// get layout from mobile.xml
 			gridViewItem = mInflater.inflate(R.layout.insert_image_grid_item, null);
 
+			String imageName = categoryImages.get(position).getName();
+			
 			// set value into textview
 			TextView textView = (TextView) gridViewItem.findViewById(R.id.grid_item_label);
-			textView.setText(categoryImages.get(position).getName());
+			textView.setText(imageName);
 
 			// set image based on selected text
 			ImageView imageView = (ImageView) gridViewItem.findViewById(R.id.grid_item_image);
 
-			String categoryName = categoryImages.get(position).getName();
-
-			imageView.setImageResource(R.drawable.ic_launcher);
-			
+			imageView.setImageResource(categoryImages.get(position).getIdCode());
 
 		} else {
 			gridViewItem = convertView;
