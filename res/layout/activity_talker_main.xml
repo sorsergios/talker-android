@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:visibility="gone"
         android:drawableTop="@drawable/history_panel"
         android:text="@string/history_panel" />
 

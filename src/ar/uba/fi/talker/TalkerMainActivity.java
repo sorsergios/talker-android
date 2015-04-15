@@ -1,5 +1,7 @@
 package ar.uba.fi.talker;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import ar.uba.fi.talker.dao.ConversationDAO;
+import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment.ExitAplicationDialogListener;
 
@@ -22,6 +26,11 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
         return TalkerMainActivity.context;
     }
 	
+    private void init(){
+		Button historicalBttn = (Button) findViewById(R.id.history_panel_button);
+    	evaluateVisibilityButton(historicalBttn);
+    }
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,11 +38,13 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 		
 		TalkerMainActivity.context = getApplicationContext();
 
+		
 		Button exitBttn = (Button) findViewById(R.id.exit_app_button);
 		Button settingsBttn = (Button) findViewById(R.id.action_settings_button);
 		Button scenarioBttn = (Button) findViewById(R.id.new_conversation_button);
 		Button historicalBttn = (Button) findViewById(R.id.history_panel_button);
 		Button mannerOfUseBttn = (Button) findViewById(R.id.manner_of_use_button);
+		init();
 		
 		exitBttn.setOnClickListener(new OnClickListener() {
 
@@ -77,11 +88,18 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 
 			@Override
 			public void onClick(View v) {
-				DialogFragment newFragment = new ExitApplicationConfirmationDialogFragment();
-				newFragment.onAttach(self);
-				newFragment.show(self.getSupportFragmentManager(),"insert_text");
 			}
 		});
+	}
+
+	private void evaluateVisibilityButton(Button historicalBttn) {
+		ConversationTalkerDataSource datasource = new ConversationTalkerDataSource(this);
+		datasource.open();
+		List<ConversationDAO> conversations = datasource.getAllConversations();
+		if (!conversations.isEmpty()){
+			historicalBttn.setVisibility(View.VISIBLE);
+		}
+		datasource.close();
 	}
 
 	@Override
@@ -119,4 +137,22 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 		System.exit(0);
 	}
 
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		init();
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		init();
+	}
+	
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+		init();
+	}
 }
