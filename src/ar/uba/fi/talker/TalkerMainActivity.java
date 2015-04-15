@@ -3,19 +3,21 @@ package ar.uba.fi.talker;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
+import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment;
+import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment.ExitAplicationDialogListener;
 
-public class TalkerMainActivity extends ActionBarActivity {
+public class TalkerMainActivity extends ActionBarActivity implements ExitAplicationDialogListener {
 
     private static Context context;
-    private ScenarioTalkerDataSource datasource;
-    
+	final TalkerMainActivity self = this;
+
     public static Context getAppContext() {
         return TalkerMainActivity.context;
     }
@@ -36,8 +38,9 @@ public class TalkerMainActivity extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				finish();
-				System.exit(0);
+				DialogFragment newFragment = new ExitApplicationConfirmationDialogFragment();
+				newFragment.onAttach(self);
+				newFragment.show(self.getSupportFragmentManager(),"insert_text");
 			}
 		});
 		
@@ -68,8 +71,6 @@ public class TalkerMainActivity extends ActionBarActivity {
 				startActivity(i);
 			}
 		});	
-		datasource = new ScenarioTalkerDataSource(this);
-	    datasource.open();	
 	}
 
 	@Override
@@ -93,13 +94,18 @@ public class TalkerMainActivity extends ActionBarActivity {
 	
 	@Override
 	protected void onResume() {
-		datasource.open();
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		datasource.close();
 		super.onPause();
 	}
+	
+	@Override
+	public void onDialogPositiveClickExitApplicationDialogListener(DialogFragment dialog) {
+		finish();
+		System.exit(0);
+	}
+
 }

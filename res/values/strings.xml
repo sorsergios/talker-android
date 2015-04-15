@@ -116,16 +116,22 @@
 
     <!-- borrar conversacion historica -->
     <string name="delete_conversation_title">BORRAR CONVERSACIÓN</string>
-    <string name="delete_conversation_message">ESTA SEGURO QUE DESEA BORRAR LA CONVERSACIÓN?</string>
+    <string name="delete_conversation_message">ESTÁ SEGURO QUE DESEA BORRAR LA CONVERSACIÓN?</string>
     <string name="delete_conversation_accept">ACEPTAR</string>
     <string name="delete_conversation_cancel">CANCELAR</string>
     
+    <!-- salir conversador -->
+    <string name="exit_app_title">SALIR DEL CONVERSADOR</string>
+    <string name="exit_app_message">ESTÁ SEGURO QUE DESEA SALIR DEL CONVERSADOR?</string>
+    <string name="exit_app_accept">SI</string>
+    <string name="exit_app_cancel">NO</string>
+    
     <!-- imagenes precargadas -->
-    <string name="ob_1">LAMPARA</string>
+    <string name="ob_1">LÁMPARA</string>
     
     <string name="an_1">PERRO</string>
     <string name="an_2">ELEFANTE</string>
-    <string name="an_3">GATOO</string>
+    <string name="an_3">GATO</string>
     
     <string name="food_1">PATY</string>
     <string name="food_2">LECHUGA</string>
