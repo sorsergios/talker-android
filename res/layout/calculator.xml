@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/calc_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="25dp"
         android:layout_marginTop="5dp"
         android:focusable="false"
@@ -23,149 +23,209 @@
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="4"
+        android:columnCount="9"
         android:rowCount="4"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/buttonOpen"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/calc_open" />
-        
-        <Button
-            android:id="@+id/buttonClose"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/calc_close" />
-
-        <Button
-            android:id="@+id/buttonClear"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/calc_clear" />
-        
-        <Button
-            android:id="@+id/buttonClearAll"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/calc_clear_all" />
-        
         <Button
             android:id="@+id/button1"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@integer/calc_1" />
-        
+            android:text="@integer/calc_1"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:textSize="20dp"/>
+
         <Button
             android:id="@+id/button2"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@integer/calc_2" />
+            android:text="@integer/calc_2"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/button3"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@integer/calc_3" />
+            android:text="@integer/calc_3"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:textSize="20dp"/>
 
         <Button
-            android:id="@+id/buttonPlus"
+            android:id="@+id/buttonClear"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/calc_plus" />
+            android:text="@string/calc_clear"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:textSize="20dp"/>
+        
+        <Button
+            android:id="@+id/buttonClearAll"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_clear_all"
+            android:layout_row="0"
+            android:layout_column="4"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/button4"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@integer/calc_4" />
+            android:text="@integer/calc_4"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/button5"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@integer/calc_5" />
+            android:text="@integer/calc_5"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/button6"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@integer/calc_6" />
+            android:text="@integer/calc_6"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/buttonPlus"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_plus"
+            android:layout_row="1"
+            android:layout_column="3"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/buttonMinus"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/calc_minus"/>
+            android:text="@string/calc_minus"
+            android:layout_row="1"
+            android:layout_column="4"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/button7"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@integer/calc_7" />
+            android:text="@integer/calc_7"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/button8"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@integer/calc_8" />
+            android:text="@integer/calc_8"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/button9"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@integer/calc_9" />
+            android:text="@integer/calc_9"
+            android:layout_row="2"
+            android:layout_column="2"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/buttonMult"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/calc_star" />
-
-        <Button
-            android:id="@+id/button0"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@integer/calc_0" />
-
-        <Button
-            android:id="@+id/buttonDot"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/calc_dot" />
-
-        <Button
-            android:id="@+id/buttonResult"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/calc_equal"/>
+            android:text="@string/calc_star"
+            android:layout_row="2"
+            android:layout_column="3"
+            android:textSize="20dp"/>
 
         <Button
             android:id="@+id/buttonDiv"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/calc_slash" />
+            android:text="@string/calc_slash"
+            android:layout_row="2"
+            android:layout_column="4"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/button0"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@integer/calc_0"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/buttonDot"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_dot"
+            android:layout_row="3"
+            android:layout_column="1"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/buttonResult"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_equal"
+            android:layout_row="3"
+            android:layout_column="2"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/buttonOpen"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_open"
+            android:layout_row="3"
+            android:layout_column="3"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/buttonClose"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_close"
+            android:layout_row="3"
+            android:layout_column="4"
+            android:textSize="20dp"/>
 
     </GridLayout>
 
