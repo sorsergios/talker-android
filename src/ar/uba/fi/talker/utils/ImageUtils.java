@@ -1,6 +1,9 @@
 package ar.uba.fi.talker.utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import android.content.Context;
@@ -74,4 +77,15 @@ public final class ImageUtils {
         return Bitmap.createScaledBitmap(image, nWidth, nHeight, true);
 	}
 
+	
+	public static Bitmap getImageBitmap(Context context, String name) {
+		try {
+			File f = new File(name);
+			Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+			return b;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

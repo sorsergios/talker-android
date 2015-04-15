@@ -1,8 +1,6 @@
 package ar.uba.fi.talker;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +9,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -77,7 +74,8 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 					bytes = ImageUtils.transformImage(getResources(), imageDatasourceID); 
 				} else {
 					Context ctx = self.getApplicationContext();
-					bytes = ImageUtils.transformImage(getImageBitmap(ctx, scenariodao.getPath()));
+					Bitmap imageBitmap = ImageUtils.getImageBitmap(ctx, scenariodao.getPath());
+					bytes = ImageUtils.transformImage(imageBitmap);
 				}
 				Bundle extras = new Bundle();
 				extras.putByteArray("BMP",bytes);
@@ -218,17 +216,6 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 			intent.putExtras(extras);
 			startActivity(intent);
 		}		
-	}
-		
-	private Bitmap getImageBitmap(Context context, String name) {
-		try {
-			File f = new File(name);
-			Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-			return b;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
 	@Override

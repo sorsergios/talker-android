@@ -94,7 +94,7 @@
     
      <!-- save all -->
     <string name="save_all_title">GUARDAR CONVERSACIÓN</string>
-    <string name="save_all_message">ESTA SEGURO QUE DESEA GUARDAR LA CONVERSACIÓN?</string>
+    <string name="save_all_message">ESTÁ SEGURO QUE DESEA GUARDAR LA CONVERSACIÓN?</string>
     <string name="save_all_accept">ACEPTAR</string>
     <string name="save_all_cancel">CANCELAR</string>
     
@@ -114,6 +114,11 @@
     <!-- historial -->
     <string name="conversation_history">HISTORIAL DE CONVERSACIONES</string>
 
+    <!-- borrar conversacion historica -->
+    <string name="delete_conversation_title">BORRAR CONVERSACIÓN</string>
+    <string name="delete_conversation_message">ESTA SEGURO QUE DESEA BORRAR LA CONVERSACIÓN?</string>
+    <string name="delete_conversation_accept">ACEPTAR</string>
+    <string name="delete_conversation_cancel">CANCELAR</string>
     
     <!-- imagenes precargadas -->
     <string name="ob_1">LAMPARA</string>

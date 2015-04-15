@@ -74,7 +74,7 @@ public class ConversationTalkerDataSource {
 		return conversation;
 	}
 	
-	public ConversationDAO getImageByID(int keyId) {
+	public ConversationDAO getConversationByID(int keyId) {
 		Cursor cursor = database.rawQuery("SELECT * FROM "
 				+ ResourceSQLiteHelper.CONVERSATION_TABLE + " WHERE "
 				+ ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " = " + keyId, null);
@@ -83,5 +83,11 @@ public class ConversationTalkerDataSource {
 		cursor.close();
 		return conversationDAO;
 	}
-
+	
+	public void updateConversation(Long keyID, String name) {
+		ContentValues values = new ContentValues();
+		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_NAME,name);
+		database.update(ResourceSQLiteHelper.CONVERSATION_TABLE, values,
+				ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " = " + keyID, null);
+	}
 }

@@ -89,17 +89,17 @@ public class GridAdapter extends BaseAdapter {
 
 			@Override
 			public void onClick(View v) {
-				/*ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+				ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context)
 						.findViewById(R.id.new_scene_start);
 				startScenarioBttn.setEnabled(true);
 				startScenarioBttn.setVisibility(View.VISIBLE);
-				ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+				ImageButton editNameConversationBttn = (ImageButton) ((ActionBarActivity) context)
 						.findViewById(R.id.new_scene_edit_scenario_name);
-				editNameScenarioBttn.setEnabled(true);
-				editNameScenarioBttn.setVisibility(View.VISIBLE);
-				ImageButton deleteScenarioBttn = (ImageButton) ((ActionBarActivity) context)
+				editNameConversationBttn.setEnabled(true);
+				editNameConversationBttn.setVisibility(View.VISIBLE);
+				ImageButton deleteConversationBttn = (ImageButton) ((ActionBarActivity) context)
 						.findViewById(R.id.new_scene_delete_scenario_name);
-				deleteScenarioBttn.setVisibility(View.VISIBLE);*/
+				deleteConversationBttn.setVisibility(View.VISIBLE);
 				for (int i = 0; i < parent.getChildCount(); i++) {
 					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
 				}
