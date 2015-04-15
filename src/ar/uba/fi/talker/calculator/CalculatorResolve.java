@@ -1,5 +1,6 @@
 package ar.uba.fi.talker.calculator;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -177,16 +178,14 @@ public class CalculatorResolve extends CalculatorExpression {
 		
 		String[] input = this.expand(expression).split(" ");
 		Queue<String> output = infixToRPN(input);
-
-		double result = resuelve(output);
-		String aString = null;
-		if (result == (long) result) {
-			aString = String.format("%d", (long) result);
-		} else {
-			aString = String.format("%s", result);
+		try {
+			double result = resuelve(output);
+			DecimalFormat df = new DecimalFormat("#.##");
+			String aString = df.format(result);
+			getTextView().append(" = " + aString);
+		} catch (Exception e) {
+			getTextView().append(" = Error");
 		}
-		
-		getTextView().append(" = " + aString);
 	}
 
 }

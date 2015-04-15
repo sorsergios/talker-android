@@ -33,6 +33,7 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 		Button settingsBttn = (Button) findViewById(R.id.action_settings_button);
 		Button scenarioBttn = (Button) findViewById(R.id.new_conversation_button);
 		Button historicalBttn = (Button) findViewById(R.id.history_panel_button);
+		Button mannerOfUseBttn = (Button) findViewById(R.id.manner_of_use_button);
 		
 		exitBttn.setOnClickListener(new OnClickListener() {
 
@@ -40,7 +41,7 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 			public void onClick(View v) {
 				DialogFragment newFragment = new ExitApplicationConfirmationDialogFragment();
 				newFragment.onAttach(self);
-				newFragment.show(self.getSupportFragmentManager(),"insert_text");
+				newFragment.show(self.getSupportFragmentManager(),"exit");
 			}
 		});
 		
@@ -70,7 +71,17 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 						HistoricalActivity.class);
 				startActivity(i);
 			}
-		});	
+		});
+		
+		mannerOfUseBttn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				DialogFragment newFragment = new ExitApplicationConfirmationDialogFragment();
+				newFragment.onAttach(self);
+				newFragment.show(self.getSupportFragmentManager(),"insert_text");
+			}
+		});
 	}
 
 	@Override
