@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.utils.ConversationView;
+import ar.uba.fi.talker.dao.ConversationDAO;
 import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridItems;
 
@@ -70,7 +70,7 @@ public class GridAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		if (items != null && position >= 0 && position < getCount()) {
-			return items.get(position).getConversationView().getId();
+			return items.get(position).getConversationDAO().getId();
 		}
 		return 0;
 	}
@@ -110,11 +110,11 @@ public class GridAdapter extends BaseAdapter {
 		});
 
 		GridConversationItems gridItems = items.get(position);
-		this.setCatImage(viewHolder, gridItems.getConversationView());
+		this.setCatImage(viewHolder, gridItems.getConversationDAO());
 		return view;
 	}
 
-	private void setCatImage(LinearLayout viewHolder, ConversationView conversationView) {
+	private void setCatImage(LinearLayout viewHolder, ConversationDAO conversationView) {
 		ImageView imageView = (ImageView) viewHolder.findViewById(R.id.image);
 		Uri uri = Uri.parse(conversationView.getPathSnapshot());
 		imageView.setImageURI(uri);

@@ -1,16 +1,18 @@
 package ar.uba.fi.talker.utils;
 
+import ar.uba.fi.talker.dao.ConversationDAO;
+
 public class GridConversationItems {
 
 	private int id;
-	private ConversationView conversationView;
+	private ConversationDAO conversationView;
 
-	public GridConversationItems(int id, ConversationView conversationView) {
+	public GridConversationItems(int id, ConversationDAO conversationView) {
 		this.id = id;
 		this.conversationView = conversationView;
 	}
 
-	public ConversationView getConversationView() {
+	public ConversationDAO getConversationDAO() {
 		return conversationView;
 	}
 

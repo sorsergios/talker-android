@@ -2,9 +2,6 @@ package ar.uba.fi.talker.component;
 
 import java.util.Calendar;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +13,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
-import ar.uba.fi.talker.utils.ImageUtils;
 
 public class DateCalendar extends DragComponent {
 
@@ -123,27 +119,4 @@ public class DateCalendar extends DragComponent {
 		}
 	}
 
-	@Override
-	public JSONObject save() {
-		JSONObject jsonObject = new JSONObject();
-		try {
-			String bitmapEncoded = ImageUtils.convertBitmapToString(mImage);
-			jsonObject.put("imageCalendar", bitmapEncoded);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return jsonObject;
-	}
-
-	@Override
-	public void restore(JSONObject jsonObject) {
-		if (jsonObject != null) {
-			try {
-				String encodedBitmap = (String) jsonObject.get("imageCalendar");
-				mImage = ImageUtils.convertStringToBitmap(encodedBitmap);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }

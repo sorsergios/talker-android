@@ -8,14 +8,15 @@ import android.app.Activity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.dao.ConversationDAO;
 import ar.uba.fi.talker.fragment.GridFragment;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 
 public final class GridUtils {
 
-	public static List<GridFragment> setGridFragments(Activity activity, ArrayList<ConversationView> conversationsViews) {
+	public static List<GridFragment> setGridFragments(Activity activity, ArrayList<ConversationDAO> conversationsViews) {
 
-		Iterator<ConversationView> it = conversationsViews.iterator();
+		Iterator<ConversationDAO> it = conversationsViews.iterator();
 		int maxImages = calculateImagesPerPage(activity);
 		List<GridFragment> gridFragments = new ArrayList<GridFragment>();
 

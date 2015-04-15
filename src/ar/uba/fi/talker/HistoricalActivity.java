@@ -26,7 +26,6 @@ import ar.uba.fi.talker.fragment.ChangeNameConversationDialogFragment.TextDialog
 import ar.uba.fi.talker.fragment.DeleteConversationConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.DeleteConversationConfirmationDialogFragment.DeleteConversationDialogListener;
 import ar.uba.fi.talker.fragment.GridFragment;
-import ar.uba.fi.talker.utils.ConversationView;
 import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
@@ -119,15 +118,15 @@ public class HistoricalActivity extends ActionBarActivity implements TextDialogL
 	private void conversationPagerSetting() {
 		viewPager = (ViewPager) this.findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-		ArrayList<ConversationView> conversViews = new ArrayList<ConversationView>();
+		ArrayList<ConversationDAO> conversViews = new ArrayList<ConversationDAO>();
 
-		ConversationView conversView = null;
+		ConversationDAO conversView = null;
 		datasource = new ConversationTalkerDataSource(this);
 	    datasource.open();
 		List<ConversationDAO> allImages = datasource.getAllConversations();
 		for (int i = 0; i < allImages.size(); i++) {
 			ConversationDAO conversationDAO = (ConversationDAO) allImages.get(i);
-			conversView = new ConversationView(conversationDAO.getId(), conversationDAO.getPath(), conversationDAO.getName(), conversationDAO.getPathSnapshot());
+			conversView = new ConversationDAO(conversationDAO.getId(), conversationDAO.getPath(), conversationDAO.getName(), conversationDAO.getPathSnapshot());
 			conversViews.add(conversView);
 		}
 		List<GridFragment> gridFragments = GridUtils.setGridFragments(this, conversViews);
@@ -142,8 +141,8 @@ public class HistoricalActivity extends ActionBarActivity implements TextDialogL
 		int imageViewId = GridAdapter.getItemSelectedId().intValue();
 		ConversationDAO conversationDAO = datasource.getConversationByID(imageViewId);
 		boolean deleted = true;
-		if (conversationDAO.getPath() != null) {
-			File file = new File(conversationDAO.getPath());
+		if (conversationDAO.getPathSnapshot() != null) {
+			File file = new File(conversationDAO.getPathSnapshot());
 			deleted = file.delete();
 		}
 		if (deleted){
@@ -162,7 +161,7 @@ public class HistoricalActivity extends ActionBarActivity implements TextDialogL
 		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
 		GridAdapter gsa = (GridAdapter) gridView.getAdapter();
 		String newScenarioName = inputText.getText().toString();
-		((GridConversationItems)gsa.getItem(position)).getConversationView().setName(newScenarioName);
+		((GridConversationItems)gsa.getItem(position)).getConversationDAO().setName(newScenarioName);
 		gsa.notifyDataSetInvalidated();
 		datasource.updateConversation(GridAdapter.getItemSelectedId(), newScenarioName);
 	}

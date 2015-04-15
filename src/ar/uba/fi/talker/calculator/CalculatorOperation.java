@@ -28,7 +28,7 @@ public class CalculatorOperation extends CalculatorExpression {
 		TextView textView = this.getTextView();
 		CharSequence result = textView.getText();
 		int equal = result.toString().indexOf("=");
-		CharSequence subSequence = result.subSequence(equal+1, result.length());
+		CharSequence subSequence = result.subSequence(equal+2, result.length());
 		textView.setText(subSequence);
 	}
 }

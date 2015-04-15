@@ -2,18 +2,11 @@ package ar.uba.fi.talker;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -43,7 +36,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
@@ -277,16 +269,10 @@ public class CanvasActivity extends ActionBarActivity implements
 	@Override
 	public void onDialogPositiveClickSaveAllConfirmationListener(
 			DialogFragment dialog) {
-		List<Component> listComponents = scenario.getDraggableComponents();
-		Iterator<Component> it = listComponents.iterator();
-		JSONArray jsonArray = new JSONArray();
-		while (it.hasNext()) {
-			Component component = (Component) it.next();
-			JSONObject jsonObject = component.save();
-			jsonArray.put(jsonObject);
 
-		}
-		String filename = saveConversationOnFile(jsonArray);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+        Date date = new Date();
+        String filename = dateFormat.format(date);
 		
 		if (datasourceConversation == null ) {
 			datasourceConversation = new ConversationTalkerDataSource(this.getApplicationContext());
@@ -310,27 +296,6 @@ public class CanvasActivity extends ActionBarActivity implements
 	    Canvas canvas = new Canvas(bitmap);
 	    view.draw(canvas);
 	    return bitmap;
-	}
-	
-	private String saveConversationOnFile(JSONArray jsonArray) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
-        Date date = new Date();
-        String filename = dateFormat.format(date);
-        FileOutputStream output;
-		try {
-			output = openFileOutput(filename + ".json", Context.MODE_PRIVATE);
-			OutputStreamWriter writer = new OutputStreamWriter(output);
-			writer.write(jsonArray.toString());
-			writer.flush();
-			writer.close();
-			return filename;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 }
