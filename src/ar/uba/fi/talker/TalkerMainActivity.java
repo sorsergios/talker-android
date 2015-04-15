@@ -98,6 +98,8 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 		List<ConversationDAO> conversations = datasource.getAllConversations();
 		if (!conversations.isEmpty()){
 			historicalBttn.setVisibility(View.VISIBLE);
+		} else {
+			historicalBttn.setVisibility(View.GONE);
 		}
 		datasource.close();
 	}
@@ -136,22 +138,9 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 		finish();
 		System.exit(0);
 	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		init();
-	}
-	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		super.onBackPressed();
-		init();
-	}
 	
 	@Override
 	protected void onRestart() {
-		// TODO Auto-generated method stub
 		super.onRestart();
 		init();
 	}
