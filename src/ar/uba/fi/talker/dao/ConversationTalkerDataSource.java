@@ -53,7 +53,7 @@ public class ConversationTalkerDataSource {
 		List<ConversationDAO> conversations = new ArrayList<ConversationDAO>();
 
 		Cursor cursor = database.query(ResourceSQLiteHelper.CONVERSATION_TABLE,
-				allColumns, null, null, null, null, null);
+				allColumns, null, null, null, null, ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " DESC");
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {

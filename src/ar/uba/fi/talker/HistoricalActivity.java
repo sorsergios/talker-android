@@ -28,7 +28,6 @@ import ar.uba.fi.talker.fragment.DeleteConversationConfirmationDialogFragment.De
 import ar.uba.fi.talker.fragment.GridFragment;
 import ar.uba.fi.talker.utils.ConversationView;
 import ar.uba.fi.talker.utils.GridConversationItems;
-import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 
