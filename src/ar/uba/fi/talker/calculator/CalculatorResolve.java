@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 
 public class CalculatorResolve extends CalculatorExpression {
@@ -166,16 +167,25 @@ public class CalculatorResolve extends CalculatorExpression {
 		
 		return expanded.toString();
 	}
+	
+	@SuppressLint("DefaultLocale")
 	@Override
 	public void onClick(View v) {
 		
 		if (getState().isSolved()) return;
 		String expression = getTextView().getText().toString();
 		
-		String[] input = expression.split(" ");
+		String[] input = this.expand(expression).split(" ");
 		Queue<String> output = infixToRPN(input);
 
-		String aString = Double.toString(resuelve(output));
+		double result = resuelve(output);
+		String aString = null;
+		if (result == (long) result) {
+			aString = String.format("%d", (long) result);
+		} else {
+			aString = String.format("%s", result);
+		}
+		
 		getTextView().append(" = " + aString);
 	}
 

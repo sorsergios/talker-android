@@ -1,6 +1,5 @@
 package ar.uba.fi.talker.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -29,20 +28,8 @@ public class CalculatorFragment extends DialogFragment implements OnClickListene
 	private SparseArray<CalculatorExpression> buttons;
 	private TextView text;
 	
-	Activity listener;
 	private View calculator;
-	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			listener = activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement CalculatorDialogListener");
-		}
-	}
-	
+		
 	public CalculatorFragment() {
 				
 		buttons = new SparseArray<CalculatorExpression>();
@@ -102,7 +89,7 @@ public class CalculatorFragment extends DialogFragment implements OnClickListene
 		button.callOnClick();
 		TextView inputText = (TextView) calculator.findViewById(R.id.calc_text);
 		if (inputText != null && inputText.getEditableText() != null){
-			Scenario scenario = (Scenario) listener.findViewById(R.id.gestureOverlayView1);
+			Scenario scenario = (Scenario) getActivity().findViewById(R.id.gestureOverlayView1);
 			scenario.setText(inputText.getEditableText());
 			getDialog().dismiss();
 		}

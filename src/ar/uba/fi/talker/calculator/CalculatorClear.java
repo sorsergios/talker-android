@@ -13,14 +13,16 @@ public class CalculatorClear extends CalculatorExpression {
 	
 	@Override
 	public void onClick(View v) {
-		CharSequence text = this.getTextView().getText();
-		if (text.length() > 0) {
-			char lastChar = text.charAt(text.length()-1);
-			int cut = (lastChar == ' ' ? SIMBOL : NUMBER);
-			getState().setDotted();
-			text = text.subSequence(0, text.length()-cut);
-			
-			this.getTextView().setText(text);
+		if (!getState().isSolved()) {
+			CharSequence text = this.getTextView().getText();
+			if (text.length() > 0) {
+				getState().stateBack();
+				char lastChar = text.charAt(text.length()-1);
+				int cut = (lastChar == ' ' ? SIMBOL : NUMBER);
+				text = text.subSequence(0, text.length()-cut);
+				
+				this.getTextView().setText(text);
+			}
 		}
 	}
 }
