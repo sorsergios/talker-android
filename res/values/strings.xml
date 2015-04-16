@@ -24,6 +24,13 @@
     <string name="settings_logout">SALIR</string>
     <string name="settings_element_text">USAR ETIQUETAS EN ELEMENTOS?</string>
 
+     <!-- pantalla keys -->
+     
+    <string name="settings_pencil_color_key">settings_pencil_color_key</string>
+    <string name="settings_pencil_size_key">settings_pencil_size</string>
+    <string name="settings_image_tag_key">settings_image_tag_key</string>
+    <string name="settings_contact_tag_key">settings_contact_tag_key</string>
+         
     <!-- pantalla login -->
     <string name="login_title">ENTRAR</string>
     <string name="login_user">INGRESE USUARIO</string>

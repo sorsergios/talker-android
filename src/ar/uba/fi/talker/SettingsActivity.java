@@ -14,10 +14,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import ar.uba.fi.talker.action.userlog.LogoutDialogFragment;
+import ar.uba.fi.talker.component.Setting;
 
 public class SettingsActivity extends ActionBarActivity {
 	
-	Settings settings;
+	Setting settings;
 	
 	
 	@Override

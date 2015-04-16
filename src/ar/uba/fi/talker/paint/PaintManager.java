@@ -7,16 +7,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.graphics.Paint;
+import ar.uba.fi.talker.component.Setting;
 
 /**
- * @author sergio
+ * @author ssoria
  *
  */
 public final class PaintManager {
 
-	private Map<PaintType, Paint> paints;
+	private final Map<PaintType, Paint> paints;
 	
 	private static PaintManager instance;
+	
+	private static Setting settings;
 	
 	private PaintManager() {
 		paints = new HashMap<PaintType, Paint>();
@@ -32,10 +35,19 @@ public final class PaintManager {
 	
 	public static Paint getPaint(PaintType type) {
 		if (!getInstance().paints.containsKey(type)) {
-			Paint paint = PaintFactory.createPaint(type);
+			Paint paint = PaintFactory.createPaint(type, settings);
 			getInstance().paints.put(type, paint);
 		}
 		
 		return getInstance().paints.get(type);
 	}
+
+	public static Setting getSettings() {
+		return settings;
+	}
+
+	public static void setSettings(Setting settings) {
+		PaintManager.settings = settings;
+	}
+	
 }
