@@ -60,7 +60,7 @@ public class ChangeNameConversationDialogFragment extends TalkerDialogFragment {
 			}
 		});
 		builder.setView(input)
-				.setTitle(R.string.insert_text_title)
+				.setTitle(R.string.change_conversation_title)
 				.setPositiveButton(R.string.delete_conversation_accept,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
