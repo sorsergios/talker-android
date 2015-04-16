@@ -5,14 +5,15 @@ package ar.uba.fi.talker.paint;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import ar.uba.fi.talker.component.Setting;
 
 /**
- * @author sergio
+ * @author ssoria
  *
  */
 public final class PaintFactory {
 	
-	public static Paint createPaint(PaintType type) {
+	public static Paint createPaint(PaintType type, Setting setting) {
 		
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		switch (type) {
@@ -20,7 +21,6 @@ public final class PaintFactory {
 				paint.setStyle(Paint.Style.STROKE);
 				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
 				paint.setStrokeWidth(30); // size
-				
 				break;
 			case TEXT:
 				paint.setStyle(Paint.Style.STROKE);
@@ -34,8 +34,8 @@ public final class PaintFactory {
 			default:
 				paint.setStyle(Paint.Style.STROKE);
 				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
-				paint.setStrokeWidth(20); // size
-				paint.setColor(Color.BLUE);
+				paint.setStrokeWidth(setting.getPencilSize()); // size
+				paint.setColor(setting.getPencilColor());
 				break;
 		}
 

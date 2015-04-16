@@ -37,7 +37,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
+import ar.uba.fi.talker.component.Setting;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
+import ar.uba.fi.talker.dao.SettingTalkerDataSource;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment.DatePickerDialogListener;
@@ -49,6 +51,7 @@ import ar.uba.fi.talker.fragment.SaveAllConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.SaveAllConfirmationDialogFragment.SaveAllConfirmationDialogListener;
 import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
+import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.utils.ImageUtils;
 import ar.uba.fi.talker.view.Scenario;
 
@@ -60,6 +63,8 @@ public class CanvasActivity extends ActionBarActivity implements
 	final String TAG = "CanvasActivity";
 
 	private Scenario scenario;
+	
+	private SettingTalkerDataSource datasource;
 
 	private ConversationTalkerDataSource datasourceConversation;
 	private static int RESULT_LOAD_IMAGE = 1;
@@ -70,6 +75,11 @@ public class CanvasActivity extends ActionBarActivity implements
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.canvas_default);
 
+		//seteo de configuracion
+		datasource = new SettingTalkerDataSource(this);
+		Setting settings = datasource.getSettings();
+		PaintManager.setSettings(settings);
+		
 		scenario = (Scenario) this.findViewById(R.id.gestureOverlayView1);
 		if(getIntent().hasExtra("BMP")) {
 		    Bundle extras = getIntent().getExtras();
@@ -100,6 +110,7 @@ public class CanvasActivity extends ActionBarActivity implements
 
 		ImageButton eraseAllOp = (ImageButton) findViewById(R.id.eraseAllOption);
 		eraseAllOp.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				DialogFragment newFragment = new EraseAllConfirmationDialogFragment();
 				newFragment.show(getSupportFragmentManager(), "erase_all");
@@ -169,6 +180,7 @@ public class CanvasActivity extends ActionBarActivity implements
 		scenario.setText(inputText.getText());
 	}
 	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.settings, menu);

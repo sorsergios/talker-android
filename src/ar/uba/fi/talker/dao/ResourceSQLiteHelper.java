@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.util.Log;
 import ar.uba.fi.talker.R;
 
@@ -46,12 +47,17 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	public static final String CONVERSATION_COLUMN_NAME = "name";
 	public static final String CONVERSATION_COLUMN_SNAPSHOT = "pathImage";
 	
-		
+	//SETTINGS TABLE
+	public static final String SETTING_TABLE = "setting";
+	public static final String SETTING_COLUMN_KEY = "key";
+	public static final String SETTING_COLUMN_VALUE = "value";
+	
+	
 	public ResourceSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
 	}
-
+	
 	public boolean checkDataBase() {
 		File database = context.getDatabasePath(DATABASE_NAME);
 
@@ -102,9 +108,6 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 							+ CATEGORY_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 							+ IMAGE_COLUMN_NAME + " TEXT)");
 				}
-				
-				
-				// "ANIMAL", "COMIDA", "OBJETOS", "PATIO", "NUEVA"
 				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
 						+ " VALUES (" + 1 + ",\"ANIMALES\")");
 				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
@@ -163,6 +166,30 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 						+ CONVERSATION_COLUMN_PATH + " TEXT, "
 						+ CONVERSATION_COLUMN_NAME + " TEXT, "
 						+ CONVERSATION_COLUMN_SNAPSHOT + " TEXT )");
+			}
+			
+			if (!isTableExists(db, SETTING_TABLE)) {
+				db.execSQL("CREATE TABLE " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " TEXT PRIMARY KEY, "
+						+ SETTING_COLUMN_VALUE + " TEXT )");
+				
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_pencil_color_key + ", " + Integer.toString(Color.BLUE) + ")");
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_pencil_size_key + ", " + "'20'" + ")");
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_image_tag_key + ", " + "'f'" + ")");
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_contact_tag_key + ", " + "'f'" + ")");
+
 			}
 		}
 	}
