@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.R;
 
-public class ChangeNameConversationDialogFragment extends DialogFragment {
+public class ChangeNameConversationDialogFragment extends TalkerDialogFragment {
 
 	public interface TextDialogListener {
 		public void onDialogPositiveClickTextDialogListener(
@@ -61,12 +61,20 @@ public class ChangeNameConversationDialogFragment extends DialogFragment {
 		});
 		builder.setView(input)
 				.setTitle(R.string.insert_text_title)
+				.setPositiveButton(R.string.delete_conversation_accept,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								listener.onDialogPositiveClickTextDialogListener(ChangeNameConversationDialogFragment.this);
+								dialog.dismiss();
+							}
+						})
 				.setNegativeButton(R.string.insert_text_cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
 							}
 						});
+		
 		return builder.create();
 	}
 

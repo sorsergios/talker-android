@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.R;
 
-public class TextDialogFragment extends DialogFragment {
+public class TextDialogFragment extends TalkerDialogFragment {
 
 	public interface TextDialogListener {
 		public void onDialogPositiveClickTextDialogListener(

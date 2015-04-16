@@ -8,10 +8,9 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import ar.uba.fi.talker.R;
 
-public class DatePickerFragment extends DialogFragment {
+public class DatePickerFragment extends TalkerDialogFragment {
 	
 	public interface DatePickerDialogListener {
 		public void onDialogPositiveClickDatePickerDialogListener(

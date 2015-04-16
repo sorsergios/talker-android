@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,7 +27,7 @@ import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 
-public class InsertImageDialogFragment extends DialogFragment {
+public class InsertImageDialogFragment extends TalkerDialogFragment {
 
 	private static int RESULT_LOAD_IMAGE = 1;
 
@@ -43,6 +42,8 @@ public class InsertImageDialogFragment extends DialogFragment {
 		public void onDialogPositiveClickInsertImageDialogListener(Uri uri,
 				Matrix matrix);
 		public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap);
+		public void onDialogPositiveClickInsertImageDialogListener(
+				InsertImageDialogFragment insertImageDialogFragment);
 	}
 
 //	private static final String[] CATEGORIES = new String[] { "ANIMAL", "COMIDA",
@@ -139,7 +140,13 @@ public class InsertImageDialogFragment extends DialogFragment {
 
 		builder.setView(gridViewContainer)
 				.setTitle(R.string.insert_image_title)
-				.setNeutralButton(R.string.insert_image_back, null)
+				.setPositiveButton(R.string.delete_conversation_accept,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								listener.onDialogPositiveClickInsertImageDialogListener(InsertImageDialogFragment.this);
+								dialog.dismiss();
+							}
+						})
 				.setNegativeButton(R.string.insert_image_cancel,
 						new DialogInterface.OnClickListener() {
 							@Override

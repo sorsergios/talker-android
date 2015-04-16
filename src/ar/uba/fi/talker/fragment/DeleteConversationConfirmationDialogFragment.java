@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import ar.uba.fi.talker.R;
 
-public class DeleteConversationConfirmationDialogFragment extends DialogFragment {
+public class DeleteConversationConfirmationDialogFragment extends TalkerDialogFragment {
 
 	public interface DeleteConversationDialogListener {
 		public void onDialogPositiveClickDeleteConversationDialogListener(
