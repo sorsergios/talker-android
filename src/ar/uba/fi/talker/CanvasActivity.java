@@ -315,8 +315,8 @@ public class CanvasActivity extends ActionBarActivity implements
 	@Override
 	public void onDialogPositiveClickInsertImageDialogListener(
 			InsertImageDialogFragment insertImageDialogFragment) {
-		// TODO Auto-generated method stub
-		
+		Toast.makeText(this, "Seleccione una imagen.",	Toast.LENGTH_SHORT).show();
+		//TODO: ver porque cierra el dialog
 	}
 
 }

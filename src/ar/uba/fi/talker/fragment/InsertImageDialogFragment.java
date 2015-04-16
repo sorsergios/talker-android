@@ -6,8 +6,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +34,7 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 	private ViewFlipper flipper;
 	
 	private AlertDialog alert;
+	private View viewSelected;
 	
 	private CategoryTalkerDataSource categoryTalkerDataSource;
 	private ImageTalkerDataSource imageTalkerDataSource;
@@ -45,11 +46,6 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 		public void onDialogPositiveClickInsertImageDialogListener(
 				InsertImageDialogFragment insertImageDialogFragment);
 	}
-
-//	private static final String[] CATEGORIES = new String[] { "ANIMAL", "COMIDA",
-//			"OBJETOS", "PATIO", "NUEVA" };
-//	private static final String[] INNER_CATEGORIES = new String[] { "IMAGEN 1",
-//			"IMAGEN 2", "IMAGEN 3", "IMAGEN 4", "NUEVA" };
 
 	private InsertImageDialogListener listener;
 
@@ -100,51 +96,48 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
-				if (position == 4) {
-					// Intent i = new Intent(Intent.ACTION_PICK,
-					// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-					// getActivity().startActivityForResult(i,
-					// RESULT_LOAD_IMAGE);
-				} else {
-					long categId = insertImageCategoryAdapter.getItemId(position);
-					List<ImageDAO> innnerImages = imageTalkerDataSource.getImagesForCategory(categId);
-					gridViewImages.setAdapter(new InsertImageAdapter(getActivity(),
-							innnerImages));
-					flipper.showNext();
-					Button buttonNo = alert.getButton(AlertDialog.BUTTON_NEUTRAL);
-					buttonNo.setEnabled(true);
-				}
+
+				long categId = insertImageCategoryAdapter.getItemId(position);
+				List<ImageDAO> innnerImages = imageTalkerDataSource.getImagesForCategory(categId);
+				gridViewImages.setAdapter(new InsertImageAdapter(getActivity(),innnerImages));
+				flipper.showNext();
 			}
 		});
 
 		gridViewImages.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-				if (position == 4) {
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				for (int i = 0; i < parent.getChildCount(); i++) {
+					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
+				}
+				v.setBackgroundColor(Color.CYAN);
+				viewSelected = v;
+	/*			if (position == 4) {
 					Intent i = new Intent(
 							Intent.ACTION_PICK,
 							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 					getActivity().startActivityForResult(i, RESULT_LOAD_IMAGE);
-				} else {
-					ImageView imageView = (ImageView) v
-							.findViewById(R.id.grid_item_image);
-					imageView.buildDrawingCache();
-					Bitmap bmap = Bitmap.createBitmap(imageView
-							.getDrawingCache());
-					listener.onDialogPositiveClickInsertImageDialogListener(bmap);
 				}
-				getDialog().dismiss();
+				*/
 			}
 		});
 
 		builder.setView(gridViewContainer)
 				.setTitle(R.string.insert_image_title)
-				.setPositiveButton(R.string.delete_conversation_accept,
+				.setPositiveButton("ACEPTAR",
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
-								listener.onDialogPositiveClickInsertImageDialogListener(InsertImageDialogFragment.this);
-								dialog.dismiss();
+								if (viewSelected != null){
+									ImageView imageView = (ImageView) viewSelected.findViewById(R.id.grid_item_image);
+									imageView.buildDrawingCache();
+									Bitmap bmap = Bitmap.createBitmap(imageView.getDrawingCache());
+									listener.onDialogPositiveClickInsertImageDialogListener(bmap);								
+									dialog.dismiss();
+								} else {
+									listener.onDialogPositiveClickInsertImageDialogListener(InsertImageDialogFragment.this);
+								}
 							}
 						})
 				.setNegativeButton(R.string.insert_image_cancel,
@@ -164,18 +157,21 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 	public void onStart() {
 		super.onStart(); // super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after
 							// this point
-		AlertDialog d = (AlertDialog) getDialog();
+		final AlertDialog d = (AlertDialog) getDialog();
 		if (d != null) {
-			final Button neutralButton = d.getButton(Dialog.BUTTON_NEUTRAL);
-			neutralButton.setOnClickListener(new View.OnClickListener() {
+			Button negativeButton = d.getButton(Dialog.BUTTON_NEGATIVE);
+			negativeButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					flipper.showPrevious();
-					neutralButton.setEnabled(false);
+					if (flipper.getCurrentView().equals(flipper.getChildAt(1))){
+						flipper.showPrevious();
+				/*		Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
+						positiveButton.setEnabled(false);*/
+					} else {
+						d.dismiss();
+					}
 				}
 			});
-			neutralButton.setEnabled(false);
 		}
 	}
-	
 }
