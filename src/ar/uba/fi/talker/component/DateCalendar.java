@@ -9,8 +9,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
 
@@ -76,8 +78,23 @@ public class DateCalendar extends DragComponent {
 
 	public Bitmap drawTextToBitmap(int resourceId, String dayOfWeek, String numberDay, String month, String year) {
 		try {
+			float widthProportion = 0.12f;
+			float heightProportion = 0.875f;
+			float textProportion = 0.19f;
+			float bigTextProportion = 0.286f;
+			
+			DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+			
+			int width = (int) (displayMetrics.widthPixels * widthProportion);
+			width = width < 120 ? 120 : width;
+			int heigth = (int) (width * heightProportion);
+			int smallTextSize = (int) (heigth * textProportion);
+			int bigTextSize = (int) (heigth * bigTextProportion);
+			int whiteSpaces = (heigth - ((3 * smallTextSize) + bigTextSize))/4;
+			int nextLinePos = smallTextSize+(whiteSpaces/2);
+			
 			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), resourceId);
-			bitmap =  Bitmap.createScaledBitmap(bitmap, 120, 105, true);
+			bitmap =  Bitmap.createScaledBitmap(bitmap, width, heigth, true);
 			android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
 			// set default bitmap config if none
 			if (bitmapConfig == null) {
@@ -90,29 +107,40 @@ public class DateCalendar extends DragComponent {
 
 			Paint paintMonth = new Paint();
 			paintMonth.setColor(Color.BLACK);
-			paintMonth.setTextSize(20);
-			int widthMonth = 60 - ((month.length()*9)/2);  
-			canvas.drawText(month, widthMonth, 20, paintMonth);
-						
+			paintMonth.setTextSize(smallTextSize);
+			Rect bounds = new Rect();
+			paintMonth.getTextBounds(month, 0, month.length(), bounds);
+			int widthMonth = (bitmap.getWidth() - bounds.width())/2;
+			canvas.drawText(month, widthMonth, nextLinePos, paintMonth);
+			nextLinePos += bigTextSize+whiteSpaces;
 			
 			Paint paintNumberDay = new Paint();
 			paintNumberDay.setColor(Color.RED);
-			paintNumberDay.setTextSize(30);
-			int widthNumberDay = 60 - ((numberDay.length()*14)/2);
-			canvas.drawText(numberDay, widthNumberDay, 50, paintNumberDay);
+			paintNumberDay.setTextSize(bigTextSize);
+			Rect boundsNumberDay = new Rect();
+			paintNumberDay.getTextBounds(numberDay, 0, numberDay.length(), boundsNumberDay);
+			int widthNumberDay = (bitmap.getWidth() - boundsNumberDay.width())/2;
+			canvas.drawText(numberDay, widthNumberDay, nextLinePos, paintNumberDay);
+			nextLinePos += smallTextSize+whiteSpaces;
 			
 			Paint paintDayOfWeek = new Paint();
 			paintDayOfWeek.setColor(Color.BLACK);
-			paintDayOfWeek.setTextSize(20);
-			int widthDayOfWeek = 60 - ((dayOfWeek.length()*9)/2);
-			canvas.drawText(dayOfWeek, widthDayOfWeek, 75, paintDayOfWeek);
+			paintDayOfWeek.setTextSize(smallTextSize);
+			Rect boundsDayOfWeek = new Rect();
+			paintDayOfWeek.getTextBounds(dayOfWeek, 0, dayOfWeek.length(), boundsDayOfWeek);
+			int widthDayOfWeek = (bitmap.getWidth() - boundsDayOfWeek.width())/2;
+			canvas.drawText(dayOfWeek, widthDayOfWeek, nextLinePos, paintDayOfWeek);
+			nextLinePos += smallTextSize+whiteSpaces;
 			
 			Paint paintYear = new Paint();
 			paintYear.setColor(Color.BLACK);
-			paintYear.setTextSize(20);
-			int widthYear = 60 - ((year.length()*9)/2);
-			canvas.drawText(year, widthYear, 100, paintYear);
+			paintYear.setTextSize(smallTextSize);
+			Rect boundsYear = new Rect();
+			paintYear.getTextBounds(year, 0, year.length(), boundsYear);
+			int widthYear = (bitmap.getWidth() - boundsYear.width())/2;
+			canvas.drawText(year, widthYear, nextLinePos, paintYear);
 			
+			bitmap.setDensity(Bitmap.DENSITY_NONE);
 			return bitmap;
 		} catch (Exception e) {
 			return null;
