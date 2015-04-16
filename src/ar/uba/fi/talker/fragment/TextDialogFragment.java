@@ -60,6 +60,13 @@ public class TextDialogFragment extends TalkerDialogFragment {
 		});
 		builder.setView(input)
 				.setTitle(R.string.insert_text_title)
+				.setPositiveButton(R.string.delete_conversation_accept,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								listener.onDialogPositiveClickTextDialogListener(TextDialogFragment.this);
+								dialog.dismiss();
+							}
+						})
 				.setNegativeButton(R.string.insert_text_cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
