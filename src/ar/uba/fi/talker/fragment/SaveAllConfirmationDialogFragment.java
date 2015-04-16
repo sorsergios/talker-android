@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import ar.uba.fi.talker.R;
 
-public class SaveAllConfirmationDialogFragment extends DialogFragment {
+public class SaveAllConfirmationDialogFragment extends TalkerDialogFragment {
 
 	public interface SaveAllConfirmationDialogListener {
 		public void onDialogPositiveClickSaveAllConfirmationListener(

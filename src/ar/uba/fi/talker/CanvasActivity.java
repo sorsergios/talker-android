@@ -312,4 +312,11 @@ public class CanvasActivity extends ActionBarActivity implements
 	    return bitmap;
 	}
 
+	@Override
+	public void onDialogPositiveClickInsertImageDialogListener(
+			InsertImageDialogFragment insertImageDialogFragment) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

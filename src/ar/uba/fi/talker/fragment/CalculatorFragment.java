@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +22,7 @@ import ar.uba.fi.talker.calculator.CalculatorState;
 import ar.uba.fi.talker.calculator.CalculatorValue;
 import ar.uba.fi.talker.view.Scenario;
 
-public class CalculatorFragment extends DialogFragment implements OnClickListener {
+public class CalculatorFragment extends TalkerDialogFragment implements OnClickListener {
 
 	private SparseArray<CalculatorExpression> buttons;
 	private TextView text;
