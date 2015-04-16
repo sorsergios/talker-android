@@ -26,8 +26,10 @@
 
      <!-- pantalla keys -->
      
+    <string name="settings_text_color_key">settings_text_color_key</string>
     <string name="settings_pencil_color_key">settings_pencil_color_key</string>
     <string name="settings_pencil_size_key">settings_pencil_size</string>
+    <string name="settings_eraser_size_key">settings_eraser_size</string>
     <string name="settings_image_tag_key">settings_image_tag_key</string>
     <string name="settings_contact_tag_key">settings_contact_tag_key</string>
          

@@ -170,7 +170,7 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 			
 			if (!isTableExists(db, SETTING_TABLE)) {
 				db.execSQL("CREATE TABLE " + SETTING_TABLE + " ( "
-						+ SETTING_COLUMN_KEY + " TEXT PRIMARY KEY, "
+						+ SETTING_COLUMN_KEY + " INTEGER PRIMARY KEY, "
 						+ SETTING_COLUMN_VALUE + " TEXT )");
 				
 				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "

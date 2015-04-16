@@ -77,6 +77,8 @@ public class CanvasActivity extends ActionBarActivity implements
 
 		//seteo de configuracion
 		datasource = new SettingTalkerDataSource(this);
+		datasource.open();
+		
 		Setting settings = datasource.getSettings();
 		PaintManager.setSettings(settings);
 		
