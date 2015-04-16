@@ -55,12 +55,15 @@ public final class GridUtils {
 		
 		DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
 
-        float dpHeight = displayMetrics.heightPixels / (displayMetrics.densityDpi/160);
-        float dpWidth = displayMetrics.widthPixels / (displayMetrics.densityDpi/160);
+        float dpHeight = displayMetrics.heightPixels;
+        float dpWidth = displayMetrics.widthPixels;
 		
 		float maxImagesFloat =  Math.round(dpHeight/scenarioHeight) *  Math.round(dpWidth /scenarioWidth);
 		int maxImages = Math.round(maxImagesFloat);
-
+		
+		if (maxImages < 1 ){
+			maxImages = 1;
+		}
 		Log.d(maxImagesFloat+":"+dpHeight+":"+dpWidth+ " width "+ scenarioWidth +" heig " +scenarioHeight, "Densidad");
 		return maxImages;
 	}

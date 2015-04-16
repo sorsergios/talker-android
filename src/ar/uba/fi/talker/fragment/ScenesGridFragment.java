@@ -46,8 +46,7 @@ public class ScenesGridFragment extends Fragment {
 		float scenarioWidth = activity.getResources().getDimension(R.dimen.scenarioWidth);
 		DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
 		mGridView = (GridView) view.findViewById(R.id.gridView);
-		float dpWidth = displayMetrics.widthPixels / (displayMetrics.densityDpi/160);
-		int maxImages = Math.round(dpWidth /scenarioWidth);
+		int maxImages = Math.round(displayMetrics.widthPixels /scenarioWidth);
 		return maxImages;
 	}
 	
