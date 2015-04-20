@@ -2,15 +2,10 @@ package ar.uba.fi.talker.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.DialogFragment;
-import android.view.Gravity;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 import ar.uba.fi.talker.R;
 
 public class TalkerDialogFragment extends DialogFragment {
@@ -30,8 +25,9 @@ public class TalkerDialogFragment extends DialogFragment {
 	    /*LayoutParams posParams = (LayoutParams) positiveButton.getLayoutParams();
         posParams.gravity = Gravity.CENTER;
         positiveButton.setLayoutParams(posParams);*/
+        Log.d(positiveButton.getGravity()+"", "ANCHO");
         positiveButton.setCompoundDrawables(drawablePositive, null, null, null);
-        
+        positiveButton.setBackgroundColor(getResources().getColor(R.color.greenok));
 	    Button negativeButton =  ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEGATIVE);
 	    negativeButton.setText("");
 	    Drawable drawableNegative = getActivity().getResources().getDrawable(R.drawable.cancel_back);
@@ -44,6 +40,7 @@ public class TalkerDialogFragment extends DialogFragment {
         negParams.gravity = Gravity.CENTER;
         negativeButton.setLayoutParams(negParams);*/
         negativeButton.setCompoundDrawables(drawableNegative, null, null, null);
+        negativeButton.setBackgroundColor(getResources().getColor(R.color.redcancel));
 
 	}
 	

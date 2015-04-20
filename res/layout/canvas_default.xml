@@ -22,8 +22,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/pencil"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:scaleType="fitCenter"
 		android:adjustViewBounds="true"
 		android:contentDescription="@null"  />
@@ -33,8 +33,8 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/pencilOption"
         android:src="@drawable/eraser"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:scaleType="fitCenter"
 		android:adjustViewBounds="true"
 		android:contentDescription="@string/erase_all_accept"/>
@@ -46,8 +46,8 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/eraserOption"
         android:src="@drawable/insert_text"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:scaleType="fitCenter"
 		android:adjustViewBounds="true"  
 		android:contentDescription="@string/insert_text_accept"/>
@@ -59,24 +59,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/abc_ic_clear_normal"
+        android:src="@drawable/sign_add"
         android:contentDescription="@null" />
 
     <ImageButton
-        android:id="@+id/insertContactOption"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_above="@+id/gestureOverlayView1"
-        android:layout_toRightOf="@+id/insertImageOption"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/contact_icon"
-        android:contentDescription="@string/insert_image_accept" />
-
-    <ImageButton
         android:id="@+id/calculatorOption"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/gestureOverlayView1"
         android:layout_toRightOf="@+id/insertContactOption"
         android:adjustViewBounds="true"
@@ -86,8 +75,8 @@
 
     <ImageButton
         android:id="@+id/calendarOption"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/gestureOverlayView1"
         android:layout_toRightOf="@+id/calculatorOption"
         android:adjustViewBounds="true"
@@ -96,37 +85,48 @@
         android:contentDescription="@null" />
 
     <ImageButton
+        android:id="@+id/insertContactOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_toRightOf="@+id/insertImageOption"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/insert_image_accept"
+        android:scaleType="fitCenter"
+        android:src="@drawable/contact_icon" />
+
+    <ImageButton
         android:id="@+id/eraseAllOption"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/erase_all_accept"
         android:scaleType="fitCenter"
-        android:src="@drawable/erase_all"
-        android:contentDescription="@string/erase_all_accept" />
-
-    <ImageButton
-        android:id="@+id/insertImageOption"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="48dp"
-        android:layout_toRightOf="@+id/textOption"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/image_icon"
-        android:contentDescription="@string/insert_image_accept" />
+        android:src="@drawable/erase_all" />
 
     <ImageButton
         android:id="@+id/saveAll"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/eraseAllOption"
         android:adjustViewBounds="true"
         android:contentDescription="@string/new_conversation"
         android:scaleType="fitCenter"
         android:src="@drawable/save_all" />
+
+    <ImageButton
+        android:id="@+id/insertImageOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_marginLeft="196dp"
+        android:layout_toRightOf="@+id/textOption"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/insert_image_accept"
+        android:scaleType="fitCenter"
+        android:src="@drawable/image_icon" />
 
 </RelativeLayout>
