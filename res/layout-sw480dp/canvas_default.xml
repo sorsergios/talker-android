@@ -8,12 +8,12 @@
 
     <ar.uba.fi.talker.view.Scenario
         android:id="@+id/gestureOverlayView1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/bottom"
         android:layout_alignParentLeft="true"
-        android:saveEnabled="true"
-        android:layout_below="@+id/pencilOption" >
+        android:layout_below="@+id/pencilOption"
+        android:saveEnabled="true" >
 
     </ar.uba.fi.talker.view.Scenario>
 
@@ -44,7 +44,7 @@
         android:id="@+id/textOption"
         android:layout_above="@+id/gestureOverlayView1"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/eraserOption"
+        android:layout_toLeftOf="@+id/insertImageOption"
         android:src="@drawable/insert_text"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -55,8 +55,8 @@
 
     <ImageButton
         android:id="@+id/bottom"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:src="@drawable/sign_add"
@@ -89,7 +89,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_above="@+id/gestureOverlayView1"
-        android:layout_toRightOf="@+id/insertImageOption"
+        android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
         android:contentDescription="@string/insert_image_accept"
         android:scaleType="fitCenter"
@@ -122,8 +122,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_above="@+id/gestureOverlayView1"
-        android:layout_marginLeft="44dp"
-        android:layout_toRightOf="@+id/textOption"
+        android:layout_toLeftOf="@+id/insertContactOption"
         android:adjustViewBounds="true"
         android:contentDescription="@string/insert_image_accept"
         android:scaleType="fitCenter"
