@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +21,13 @@ public class GridFragment extends Fragment {
 	private GridView mGridView;
 	private GridAdapter mGridAdapter;
 	List<GridConversationItems> gridItems;
-	private Activity activity;
+	private ActionBarActivity activity;
 
 	public GridFragment() {
 		this.gridItems = new ArrayList<GridConversationItems>();
 	}
 
-	public GridFragment(List<GridConversationItems> gridItems, Activity activity) {
+	public GridFragment(List<GridConversationItems> gridItems, ActionBarActivity activity) {
 		this.gridItems = gridItems;
 		this.activity = activity;
 	}

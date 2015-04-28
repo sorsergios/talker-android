@@ -18,7 +18,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -26,9 +25,7 @@ import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ScenarioDAO;
 import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
-import ar.uba.fi.talker.fragment.ChangeNameDialogFragment;
 import ar.uba.fi.talker.fragment.ChangeNameDialogFragment.TextDialogListener;
-import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.utils.GridItems;
@@ -42,12 +39,10 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 
 	// Use this instance of the interface to deliver action events
 	private static int RESULT_LOAD_IMAGE = 1;
-	private GridView gridView = null;
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerScenesAdapter pagerAdapter;
 	private ScenarioTalkerDataSource datasource;
-	private int position;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,81 +53,12 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 
 		scenesPagerSetting();
 		
-		ImageButton startScenarioBttn = (ImageButton) this.findViewById(R.id.new_scene_start);
-		ImageButton editNameScenarioBttn = (ImageButton) this.findViewById(R.id.new_scene_edit_scenario_name);
-		ImageButton deleteScenarioBttn = (ImageButton) this.findViewById(R.id.new_scene_delete_scenario_name);
 		ImageButton galleryScenarioBttn = (ImageButton) this.findViewById(R.id.new_scene_gallery);
-		
-		startScenarioBttn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				int imageViewId = GridScenesAdapter.getItemSelectedId().intValue();
-				ScenarioDAO scenariodao = datasource.getScenarioByID(imageViewId);
-				long imageDatasourceID = scenariodao.getIdCode();
-				byte[] bytes = null;
-				if (imageDatasourceID != 0){
-					bytes = ImageUtils.transformImage(getResources(), imageDatasourceID); 
-				} else {
-					Context ctx = self.getApplicationContext();
-					Bitmap imageBitmap = ImageUtils.getImageBitmap(ctx, scenariodao.getPath());
-					bytes = ImageUtils.transformImage(imageBitmap);
-				}
-				Bundle extras = new Bundle();
-				extras.putByteArray("BMP",bytes);
-				Intent intent = new Intent(self.getApplicationContext(), CanvasActivity.class);
-				intent.putExtras(extras);
-				startActivity(intent);				
-			}
-		});
-		
 		galleryScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-				gridView = sgf.getmGridView();
 				Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 				self.startActivityForResult(i, RESULT_LOAD_IMAGE);
-			}
-		});
-		
-		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-				gridView = sgf.getmGridView();
-				final int numVisibleChildren = gridView.getChildCount();
-				final int firstVisiblePosition = gridView.getFirstVisiblePosition();
-
-				int positionIamLookingFor = (int) GridScenesAdapter.getPosition();
-				for (int i = 0; i < numVisibleChildren; i++) {
-					if ((firstVisiblePosition + i) == positionIamLookingFor) {
-						position = i;
-					}
-				}
-				DialogFragment newFragment = new ChangeNameDialogFragment();
-				newFragment.onAttach(self);
-				newFragment.show(self.getSupportFragmentManager(),"insert_text");
-			}
-		});
-		
-		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-				gridView = sgf.getmGridView();
-				final int numVisibleChildren = gridView.getChildCount();
-				final int firstVisiblePosition = gridView.getFirstVisiblePosition();
-
-				int positionIamLookingFor = (int) GridScenesAdapter.getPosition();
-				for (int i = 0; i < numVisibleChildren; i++) {
-					if ((firstVisiblePosition + i) == positionIamLookingFor) {
-						position = i;
-					}
-				}
-				
-				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment();
-				newFragment.onAttach(self);
-				newFragment.show(self.getSupportFragmentManager(), "delete_scenario");
 			}
 		});
 	
@@ -198,7 +124,9 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 				ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx);
 				File file = new File(ctx.getFilesDir(), scenarioName);
 				scenario = datasource.createScenario(file.getPath(), scenarioName);
-				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
+				
+				ScenesGridFragment sgf = pagerAdapter.getItem(data.getIntExtra("position", 0));
+				GridScenesAdapter gsa = (GridScenesAdapter) sgf.getmGridView().getAdapter();
 				ScenarioView scenarioView = new ScenarioView(scenario.getId(),
 						scenario.getIdCode(), scenario.getPath(),
 						scenario.getName());
@@ -219,10 +147,11 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 	}
 	
 	@Override
-	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
+	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog, int position) {
 		Dialog dialogView = dialog.getDialog();
 		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
-		GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
+		ScenesGridFragment sgf = pagerAdapter.getItem(position);
+		GridScenesAdapter gsa = (GridScenesAdapter) sgf.getmGridView().getAdapter();
 		String newScenarioName = inputText.getText().toString();
 		((GridItems)gsa.getItem(position)).getScenarioView().setName(newScenarioName);
 		gsa.notifyDataSetInvalidated();
@@ -231,7 +160,7 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(
-			DialogFragment dialog) {
+			DialogFragment dialog, int position) {
 		int imageViewId = GridScenesAdapter.getItemSelectedId().intValue();
 		ScenarioDAO scenarioDAO = datasource.getScenarioByID(imageViewId);
 		boolean deleted = true;
@@ -242,8 +171,9 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 		if (deleted){
 			datasource.deleteScenario(GridScenesAdapter.getItemSelectedId());
 		} // TODO informar error al usuario?
-		
-		GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
+
+		ScenesGridFragment sgf = pagerAdapter.getItem(position);
+		GridScenesAdapter gsa = (GridScenesAdapter) sgf.getmGridView().getAdapter();
 		gsa.removeItem(position);
 		gsa.notifyDataSetInvalidated();
 		scenesPagerSetting();

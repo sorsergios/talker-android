@@ -3,9 +3,9 @@ package ar.uba.fi.talker.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +20,17 @@ public class ScenesGridFragment extends Fragment {
 	private GridView mGridView;
 	private GridScenesAdapter mGridAdapter;
 	List<GridItems> gridItems;
-	private Activity activity;
+	private ActionBarActivity activity;
+	private int myPosition;
 
 	public ScenesGridFragment() {
 		this.gridItems = new ArrayList<GridItems>();
 	}
 
-	public ScenesGridFragment(List<GridItems> gridItems, Activity activity) {
+	public ScenesGridFragment(int myPosition, List<GridItems> gridItems, ActionBarActivity activity) {
 		this.gridItems = gridItems;
 		this.activity = activity;
+		this.myPosition = myPosition;
 	}
 	
 	@Override
@@ -56,7 +58,7 @@ public class ScenesGridFragment extends Fragment {
 
 		if (activity != null) {
 
-			mGridAdapter = new GridScenesAdapter(activity, gridItems);
+			mGridAdapter = new GridScenesAdapter(activity, gridItems, myPosition);
 			if (mGridView != null) {
 				mGridView.setAdapter(mGridAdapter);
 			}

@@ -11,17 +11,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.fragment.SceneActionFragment;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.ScenarioView;
 
 public class GridScenesAdapter extends BaseAdapter {
 
-	Context context;
+	ActionBarActivity context;
 	
 	public class ViewHolder {
 		public ImageView imageView;
@@ -30,14 +30,16 @@ public class GridScenesAdapter extends BaseAdapter {
 
 	private List<GridItems> items;
 	private LayoutInflater mInflater;
+	private int myPosition;
     private static Long itemSelectedId;
     private static int pos;
 
-	public GridScenesAdapter(Context context, List<GridItems> gridItems) {
+	public GridScenesAdapter(ActionBarActivity context, List<GridItems> gridItems, int myPosition) {
 
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
 		items = gridItems;
+		this.myPosition = myPosition * gridItems.size();
 	}
 
 	public List<GridItems> getItems() {
@@ -88,23 +90,16 @@ public class GridScenesAdapter extends BaseAdapter {
 
 			@Override
 			public void onClick(View v) {
-				ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context)
-						.findViewById(R.id.new_scene_start);
-				startScenarioBttn.setEnabled(true);
-				startScenarioBttn.setVisibility(View.VISIBLE);
-				ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) context)
-						.findViewById(R.id.new_scene_edit_scenario_name);
-				editNameScenarioBttn.setEnabled(true);
-				editNameScenarioBttn.setVisibility(View.VISIBLE);
-				ImageButton deleteScenarioBttn = (ImageButton) ((ActionBarActivity) context)
-						.findViewById(R.id.new_scene_delete_scenario_name);
-				deleteScenarioBttn.setVisibility(View.VISIBLE);
 				for (int i = 0; i < parent.getChildCount(); i++) {
 					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
 				}
 				view.setBackgroundColor(Color.CYAN);
 				itemSelectedId = getItemId(position);
 				pos = position;
+				
+				SceneActionFragment fragment = new SceneActionFragment(position + myPosition);
+				fragment.onAttach(context);
+				fragment.show(context.getSupportFragmentManager(), "action-scene");
 			}
 		});
 
