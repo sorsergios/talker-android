@@ -1,36 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:layout_gravity="center_horizontal" >
 
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <TableRow>
+
             <Button
                 android:id="@+id/settings_pencil_size"
-                android:layout_height="31dp"
                 android:text="@string/settings_pencil_size" />
         </TableRow>
-        
+
         <TableRow>
+
             <Button
                 android:id="@+id/settings_pencil_color"
-                android:layout_height="31dp"
                 android:text="@string/settings_pencil_color" />
         </TableRow>
 
         <TableRow>
+
+            <Button
+                android:id="@+id/settings_text_size"
+                android:text="@string/settings_text_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/settings_text_color"
+                android:text="@string/settings_text_color" />
+        </TableRow>
+
+        <TableRow>
+
             <Button
                 android:id="@+id/settings_scenery"
-                android:layout_height="31dp"
                 android:text="@string/settings_scenery" />
         </TableRow>
 
         <TableRow>
+
             <Button
                 android:id="@+id/settings_elements"
-                android:layout_height="31dp"
                 android:text="@string/settings_elements" />
         </TableRow>
 
@@ -49,40 +65,34 @@
         </TableRow>
 
         <TableRow>
+
             <Button
                 android:id="@+id/settings_people"
-                android:layout_height="31dp"
-                android:text="@string/settings_people"
-                android:textSize="12sp" />
+                android:text="@string/settings_people" />
         </TableRow>
 
         <TableRow>
+
             <Button
                 android:id="@+id/settings_user"
-                android:layout_height="31dp"
                 android:clickable="false"
-                android:text="@string/settings_user" 
-                />
+                android:text="@string/settings_user" />
 
             <Button
                 android:id="@+id/settings_login"
-                android:layout_height="31dp"
-                android:text="@string/settings_login"
-                android:textSize="12sp"  
-                />
+                android:text="@string/settings_login" />
 
             <Button
                 android:id="@+id/settings_logout"
-                android:layout_height="31dp"
-                android:text="@string/settings_logout"  
-               />
+                android:text="@string/settings_logout" />
         </TableRow>
 
-        <Button
+        <ImageButton
             android:id="@+id/settings_back_button"
             android:layout_width="wrap_content"
-            android:layout_height="31dp"
-            android:text="@string/settings_back" />
+            android:background="#04aeda"
+            android:src="@drawable/cancel_back2"
+             />
     </TableLayout>
 
 </ScrollView>
