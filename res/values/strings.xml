@@ -27,6 +27,8 @@
      <!-- pantalla keys -->
      
     <string name="settings_text_color_key">settings_text_color_key</string>
+    <string name="settings_text_size_key">settings_text_size_key</string>
+    <string name="settings_text_width_key">settings_text_width_key</string>
     <string name="settings_pencil_color_key">settings_pencil_color_key</string>
     <string name="settings_pencil_size_key">settings_pencil_size</string>
     <string name="settings_eraser_size_key">settings_eraser_size</string>

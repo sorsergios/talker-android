@@ -38,22 +38,26 @@ public class SettingTalkerDataSource {
 		return value;
 	}
 
+	//same concept as SHARED PREFERENCES
 	public Setting getSettings() {
 		Setting setting = new Setting();
-		int[] keys = { R.string.settings_text_color_key, 
-				R.string.settings_pencil_color_key, 
-				R.string.settings_pencil_size_key,
-				R.string.settings_eraser_size_key, 
-				R.string.settings_image_tag_key, 
-				R.string.settings_contact_tag_key };
-
+		
+		String textColor = getSettingValueByKey(R.string.settings_text_color_key);
+		setting.setTextColor(Integer.parseInt(textColor));
+		String textSize = getSettingValueByKey(R.string.settings_text_size_key);
+		setting.setTextSize(Integer.parseInt(textSize));
+		String textWidth = getSettingValueByKey(R.string.settings_text_width_key);
+		setting.setTextWidth(Integer.parseInt(textWidth));
 		String pencilColor = getSettingValueByKey(R.string.settings_pencil_color_key);
 		setting.setPencilColor(Integer.parseInt(pencilColor));
-		
 		String pencilSize = getSettingValueByKey(R.string.settings_pencil_size_key);
-		setting.setPencilSize( Float.parseFloat(pencilSize));
-		
-		//FIXME faltan otras configs
+		setting.setPencilSize(Float.parseFloat(pencilSize));
+		String eraserSize = getSettingValueByKey(R.string.settings_eraser_size_key);
+		setting.setEraserSize(Float.parseFloat(eraserSize));
+		String isEnabledLabelImage = getSettingValueByKey(R.string.settings_image_tag_key);
+		setting.setIsEnabledLabelImage("f".equals(isEnabledLabelImage) ? false : true);
+		String isEnabledLabelContact = getSettingValueByKey(R.string.settings_contact_tag_key);
+		setting.setIsEnabledLabelImage("f".equals(isEnabledLabelContact) ? false : true);
 		
 		return setting;
 	}
