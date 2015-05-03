@@ -176,11 +176,27 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
 						+ SETTING_COLUMN_KEY + " , " 
 						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_text_color_key + ", " + Integer.toString(Color.BLACK) + ")");
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_text_size_key + ", " + "'100'" + ")");
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_text_width_key + ", " + "'10'" + ")");
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
 						+ " VALUES (" + R.string.settings_pencil_color_key + ", " + Integer.toString(Color.BLUE) + ")");
 				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
 						+ SETTING_COLUMN_KEY + " , " 
 						+ SETTING_COLUMN_VALUE + " ) "
 						+ " VALUES (" + R.string.settings_pencil_size_key + ", " + "'20'" + ")");
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_eraser_size_key + ", " + "'30'" + ")");
 				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
 						+ SETTING_COLUMN_KEY + " , " 
 						+ SETTING_COLUMN_VALUE + " ) "
