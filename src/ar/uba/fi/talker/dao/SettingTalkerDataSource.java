@@ -45,9 +45,9 @@ public class SettingTalkerDataSource {
 		String textColor = getSettingValueByKey(R.string.settings_text_color_key);
 		setting.setTextColor(Integer.parseInt(textColor));
 		String textSize = getSettingValueByKey(R.string.settings_text_size_key);
-		setting.setTextSize(Integer.parseInt(textSize));
+		setting.setTextSize(Float.parseFloat(textSize));
 		String textWidth = getSettingValueByKey(R.string.settings_text_width_key);
-		setting.setTextWidth(Integer.parseInt(textWidth));
+		setting.setTextWidth(Float.parseFloat(textWidth));
 		String pencilColor = getSettingValueByKey(R.string.settings_pencil_color_key);
 		setting.setPencilColor(Integer.parseInt(pencilColor));
 		String pencilSize = getSettingValueByKey(R.string.settings_pencil_size_key);
