@@ -75,4 +75,37 @@ public class CategoryTalkerDataSource {
 		return category;
 	}
 	
+	public List<CategoryDAO> getContactCategories() {
+		List<CategoryDAO> categories = new ArrayList<CategoryDAO>();
+
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.CATEGORY_TABLE + " WHERE "
+				+ ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT + " = " + ResourceSQLiteHelper.TRUE, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			CategoryDAO category = cursorToCategory(cursor);
+			categories.add(category);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return categories;
+	}
+	
+	public List<CategoryDAO> getImageCategories() {
+		List<CategoryDAO> categories = new ArrayList<CategoryDAO>();
+
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.CATEGORY_TABLE + " WHERE "
+				+ ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT + " = " + ResourceSQLiteHelper.FALSE, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			CategoryDAO category = cursorToCategory(cursor);
+			categories.add(category);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return categories;
+	}
+	
+	
 }
