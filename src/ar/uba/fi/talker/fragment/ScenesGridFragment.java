@@ -21,16 +21,14 @@ public class ScenesGridFragment extends Fragment {
 	private GridScenesAdapter mGridAdapter;
 	List<GridItems> gridItems;
 	private ActionBarActivity activity;
-	private int myPosition;
 
 	public ScenesGridFragment() {
 		this.gridItems = new ArrayList<GridItems>();
 	}
 
-	public ScenesGridFragment(int myPosition, List<GridItems> gridItems, ActionBarActivity activity) {
+	public ScenesGridFragment(List<GridItems> gridItems, ActionBarActivity activity) {
 		this.gridItems = gridItems;
 		this.activity = activity;
-		this.myPosition = myPosition;
 	}
 	
 	@Override
@@ -58,7 +56,7 @@ public class ScenesGridFragment extends Fragment {
 
 		if (activity != null) {
 
-			mGridAdapter = new GridScenesAdapter(activity, gridItems, myPosition);
+			mGridAdapter = new GridScenesAdapter(activity, R.id.grid_element, gridItems);
 			if (mGridView != null) {
 				mGridView.setAdapter(mGridAdapter);
 			}

@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
@@ -69,16 +68,15 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
 		ArrayList<ScenarioView> scenarios = new ArrayList<ScenarioView>();
 
-		ScenarioView scenario = null;
 		if (datasource == null ) {
 			datasource = new ScenarioTalkerDataSource(this.getApplicationContext());
 		}
 	    datasource.open();
 		List<ScenarioDAO> allImages = datasource.getAllImages();
+		datasource.close();
 		for (int i = 0; i < allImages.size(); i++) {
 			ScenarioDAO scenarioDAO = allImages.get(i);
-			scenario = new ScenarioView(scenarioDAO.getId(), scenarioDAO.getIdCode(), scenarioDAO.getPath(), scenarioDAO.getName());
-			scenarios.add(scenario);
+			scenarios.add(new ScenarioView(scenarioDAO));
 		}
 		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios);
 
@@ -127,12 +125,9 @@ public class NewSceneActivity extends ActionBarActivity implements TextDialogLis
 				
 				ScenesGridFragment sgf = pagerAdapter.getItem(data.getIntExtra("position", 0));
 				GridScenesAdapter gsa = (GridScenesAdapter) sgf.getmGridView().getAdapter();
-				ScenarioView scenarioView = new ScenarioView(scenario.getId(),
-						scenario.getIdCode(), scenario.getPath(),
-						scenario.getName());
+				ScenarioView scenarioView = new ScenarioView(scenario);
 				GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
-				gsa.addItem(gridItem);
-				gsa.notifyDataSetInvalidated();
+				//gsa.addItem(gridItem);
 				scenesPagerSetting();
 			} catch (IOException e) {
 				e.printStackTrace();

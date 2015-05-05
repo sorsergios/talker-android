@@ -3,21 +3,30 @@ package ar.uba.fi.talker.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.utils.ScenarioView;
 
 public class SceneActionFragment extends DialogFragment implements OnClickListener {
 
-	private int position;
-
-	public SceneActionFragment(int position) {
-		this.position = position;
+	private View view;
+	private ScenarioView scenarioView;
+	
+	public SceneActionFragment(View view, ScenarioView scenarioView) {
+		this.view = view;
+		this.scenarioView = scenarioView;
 	}
 
+	@Override
+	public void dismiss() {
+		super.dismiss();
+		view.setBackgroundColor(Color.WHITE);
+	}
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {		
 		View actions = View.inflate(getActivity(), R.layout.scenario_actions, null);
@@ -28,7 +37,7 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment newFragment = new ChangeNameDialogFragment(position);
+				DialogFragment newFragment = new ChangeNameDialogFragment(scenarioView.getId());
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(),"insert_text");
 				SceneActionFragment.this.dismiss();
@@ -42,7 +51,7 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 			public void onClick(View v) {
 				
 				Bundle extras = new Bundle();
-				extras.putInt("position", position);
+				extras.putInt("position", scenarioView.getId());
 				Intent intent = new Intent(getActivity().getApplicationContext(), CanvasActivity.class);
 				intent.putExtras(extras);
 				startActivity(intent);
@@ -54,7 +63,7 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {				
-				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(position);
+				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(scenarioView.getId());
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "delete_scenario");
 				SceneActionFragment.this.dismiss();

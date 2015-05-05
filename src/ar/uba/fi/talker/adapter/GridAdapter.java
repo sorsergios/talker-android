@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dao.ConversationDAO;
-import ar.uba.fi.talker.fragment.SceneActionFragment;
 import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridItems;
 
@@ -96,9 +95,12 @@ public class GridAdapter extends BaseAdapter {
 				itemSelectedId = getItemId(position);
 				pos = position;
 				
-				SceneActionFragment fragment = new SceneActionFragment(position);
-				fragment.onAttach(context);
-				fragment.show(context.getSupportFragmentManager(), "action-scene");
+				// TODO Comentado para solucionar primero GridSceneAdapter, 
+				// una vez funcionando hago funcionar esto.
+				
+//				SceneActionFragment fragment = new SceneActionFragment(position);
+//				fragment.onAttach(context);
+//				fragment.show(context.getSupportFragmentManager(), "action-scene");
 			}
 		});
 

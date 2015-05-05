@@ -41,10 +41,10 @@ public final class GridUtils {
 		while (it.hasNext()) {
 			ArrayList<GridItems> itmLst = new ArrayList<GridItems>();
 			for (int i = 0; i < maxImages && it.hasNext(); i++) {
-				GridItems itm = new GridItems(i, it.next());
+				GridItems itm = new GridItems(pos++, it.next());
 				itmLst.add(itm);
 			}
-			gridFragments.add(new ScenesGridFragment(pos++, itmLst, activity));
+			gridFragments.add(new ScenesGridFragment(itmLst, activity));
 		}
 		return gridFragments;
 	}
