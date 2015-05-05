@@ -15,6 +15,8 @@
     <string name="settings_back">ATRAS</string>
     <string name="settings_pencil_size">TAMAÑO DE LÁPIZ</string>
     <string name="settings_pencil_color">COLOR DE LÁPIZ</string>
+	<string name="settings_text_size">TAMAÑO DE TEXTO</string>
+    <string name="settings_text_color">COLOR DE TEXTO</string>
     <string name="settings_eraser_size">TAMAÑO GOMA</string>
     <string name="settings_scenery">ESCENARIOS</string>
     <string name="settings_elements">ELEMENTOS</string>
@@ -27,6 +29,8 @@
      <!-- pantalla keys -->
      
     <string name="settings_text_color_key">settings_text_color_key</string>
+    <string name="settings_text_size_key">settings_text_size_key</string>
+    <string name="settings_text_width_key">settings_text_width_key</string>
     <string name="settings_pencil_color_key">settings_pencil_color_key</string>
     <string name="settings_pencil_size_key">settings_pencil_size</string>
     <string name="settings_eraser_size_key">settings_eraser_size</string>
@@ -96,6 +100,9 @@
     <string name="insert_image_cancel">CANCELAR</string>
     <string name="insert_image_back">VOLVER</string>
 
+     <!-- fragment insert contact -->
+    <string name="insert_contact_title">INSERTAR CONTACTO</string>
+    
     <!-- erase all -->
     <string name="erase_all_title">BORRAR TODO</string>
     <string name="erase_all_message">ESTA SEGURO QUE DESEA BORRAR TODO?</string>
@@ -149,6 +156,7 @@
     <string name="food_2">LECHUGA</string>
     <string name="food_3">PIZZA</string>
     
+    <string name="con_1">MARIANA GARCÍA</string>
     
     
     

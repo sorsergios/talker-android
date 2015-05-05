@@ -158,6 +158,17 @@ public class CanvasActivity extends ActionBarActivity implements
 			}
 		});
 
+		ImageButton contactOption = (ImageButton) findViewById(R.id.insertContactOption);
+		contactOption.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				scenario.setActiveComponentType(ComponentType.CONTACT);
+				DialogFragment newFragment = new InsertImageDialogFragment(Boolean.TRUE);
+				newFragment.show(getSupportFragmentManager(), "insert_image");
+				scenario.invalidate();
+			}
+		});
+
 		ImageButton calcOption = (ImageButton) findViewById(R.id.calculatorOption);
 		calcOption.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -333,8 +344,18 @@ public class CanvasActivity extends ActionBarActivity implements
 	@Override
 	public void onDialogPositiveClickInsertImageDialogListener(
 			InsertImageDialogFragment insertImageDialogFragment) {
-		Toast.makeText(this, "Seleccione una imagen.",	Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "SELECCIONE UNA IMAGEN", Toast.LENGTH_LONG).show();
 		//TODO: ver porque cierra el dialog
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		datasource.close();
+		if (datasourceConversation != null ) {
+			datasourceConversation.close();
+		}
 	}
 
 }
+

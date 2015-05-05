@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import ar.uba.fi.talker.action.userlog.LogoutDialogFragment;
 import ar.uba.fi.talker.component.Setting;
 
@@ -26,7 +27,8 @@ public class SettingsActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
 		
-		Button backBttn = (Button) findViewById(R.id.settings_back_button);
+		ImageButton backBttn = (ImageButton) findViewById(R.id.settings_back_button);
+		Button pencilColorBttn = (Button) findViewById(R.id.settings_pencil_color);
 		Button loginBttn = (Button) findViewById(R.id.settings_login);
 		Button logoutBttn = (Button) findViewById(R.id.settings_logout);
 		
@@ -55,6 +57,7 @@ public class SettingsActivity extends ActionBarActivity {
 				
 				dialog.setPositiveButton(R.string.login_accept,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
 								Log.i("Talker", "corriendo login");
@@ -63,6 +66,7 @@ public class SettingsActivity extends ActionBarActivity {
 
 				dialog.setNegativeButton(R.string.login_cancel,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
 								dialog.dismiss();
@@ -71,6 +75,7 @@ public class SettingsActivity extends ActionBarActivity {
 				
 				dialog.setNeutralButton(R.string.login_logup,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
 								//FIXME CREAR CUENTA??

@@ -35,6 +35,7 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 	
 	private AlertDialog alert;
 	private View viewSelected;
+	private Boolean isContactSearch = false;
 	
 	private CategoryTalkerDataSource categoryTalkerDataSource;
 	private ImageTalkerDataSource imageTalkerDataSource;
@@ -48,6 +49,15 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 	}
 
 	private InsertImageDialogListener listener;
+
+	public InsertImageDialogFragment(Boolean isContactSearch) {
+		super();
+		this.isContactSearch = true;
+	}
+
+	public InsertImageDialogFragment() {
+		super();
+	}
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -88,8 +98,14 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 		final GridView gridViewImages = (GridView) gridViewContainer
 				.findViewById(R.id.insert_image_gridview);
 		
-		List <CategoryDAO> categories = categoryTalkerDataSource.getAllCategories();
-		final InsertImageCategoryAdapter insertImageCategoryAdapter = new InsertImageCategoryAdapter(getActivity(),categories);
+		List<CategoryDAO> categories;
+		if (isContactSearch) {
+			categories = categoryTalkerDataSource.getContactCategories();
+		} else {
+			categories = categoryTalkerDataSource.getImageCategories();
+		}
+		
+		final InsertImageCategoryAdapter insertImageCategoryAdapter = new InsertImageCategoryAdapter(getActivity(), categories);
 		gridView.setAdapter(insertImageCategoryAdapter);
 
 		gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -124,7 +140,7 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 		});
 
 		builder.setView(gridViewContainer)
-				.setTitle(R.string.insert_image_title)
+				.setTitle(this.isContactSearch == Boolean.TRUE ? R.string.insert_contact_title : R.string.insert_image_title)
 				.setPositiveButton("ACEPTAR",
 						new DialogInterface.OnClickListener() {
 							@Override
@@ -157,9 +173,9 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 	public void onStart() {
 		super.onStart(); // super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after
 							// this point
-		final AlertDialog d = (AlertDialog) getDialog();
-		if (d != null) {
-			Button negativeButton = d.getButton(Dialog.BUTTON_NEGATIVE);
+		final AlertDialog dialog = (AlertDialog) getDialog();
+		if (dialog != null) {
+			Button negativeButton = dialog.getButton(Dialog.BUTTON_NEGATIVE);
 			negativeButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -168,7 +184,7 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 				/*		Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
 						positiveButton.setEnabled(false);*/
 					} else {
-						d.dismiss();
+						dialog.dismiss();
 					}
 				}
 			});

@@ -3,7 +3,6 @@
  */
 package ar.uba.fi.talker.paint;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 import ar.uba.fi.talker.component.Setting;
 
@@ -20,14 +19,14 @@ public final class PaintFactory {
 			case ERASE:
 				paint.setStyle(Paint.Style.STROKE);
 				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
-				paint.setStrokeWidth(30); // size
+				paint.setStrokeWidth(setting.getEraserSize()); // size
 				break;
 			case TEXT:
 				paint.setStyle(Paint.Style.STROKE);
 				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
-				paint.setTextSize(100);
-				paint.setStrokeWidth(10);
-				paint.setColor(Color.BLACK);
+				paint.setTextSize(setting.getTextSize()); //size
+				paint.setStrokeWidth(setting.getTextWidth()); //width
+				paint.setColor(setting.getTextColor());
 				
 				break;
 			case REGULAR:

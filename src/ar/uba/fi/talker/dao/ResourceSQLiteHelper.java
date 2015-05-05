@@ -18,6 +18,12 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "talker.db";
 	private static final int DATABASE_VERSION = 1;
 	
+	//SQLite does not have a separate Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
+	public static int FALSE = 0;
+	public static int TRUE = 1;
+	
+	private static int CATEGORY_ID = 1;
+	
 	//SCENARIO TABLE
 	public static final String SCENARIO_TABLE = "scenario";
 	public static final String SCENARIO_COLUMN_ID = "id";
@@ -29,6 +35,7 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	public static final String CATEGORY_TABLE = "category";
 	public static final String CATEGORY_COLUMN_ID = "id";
 	public static final String CATEGORY_COLUMN_NAME = "name";
+	public static final String CATEGORY_COLUMN_IS_CONTACT = "is_contact_category";
 	
 	//IMAGE TABLE
 	public static final String IMAGE_TABLE = "image";
@@ -37,21 +44,26 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	public static final String IMAGE_COLUMN_IDCODE = "id_code";
 	public static final String IMAGE_COLUMN_PATH = "path";
 	public static final String IMAGE_COLUMN_NAME = "name";
-	
-	//CONTACT TABLE
+	public static final String IMAGE_COLUMN_IS_CONTACT = "is_contact";
 	
 	//CONVERSATION TABLE
 	public static final String CONVERSATION_TABLE = "conversation";
 	public static final String CONVERSATION_COLUMN_ID = "id";
 	public static final String CONVERSATION_COLUMN_PATH = "path";
 	public static final String CONVERSATION_COLUMN_NAME = "name";
-	public static final String CONVERSATION_COLUMN_SNAPSHOT = "pathImage";
+	public static final String CONVERSATION_COLUMN_SNAPSHOT = "path_snapshot";
 	
 	//SETTINGS TABLE
 	public static final String SETTING_TABLE = "setting";
 	public static final String SETTING_COLUMN_KEY = "key";
 	public static final String SETTING_COLUMN_VALUE = "value";
 	
+	//CONTACT TABLE
+	public static final String CONTACT_TABLE = "contact";
+	public static final String CONTACT_COLUMN_ID = "id";
+	public static final String CONTACT_COLUMN_IMAGE_ID = "id_image";
+	public static final String CONTACT_COLUMN_ADDRESS = "address";
+	public static final String CONTACT_COLUMN_PHONE = "phone";
 	
 	public ResourceSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -106,16 +118,19 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 				if (!isTableExists(db, CATEGORY_TABLE)) {
 					db.execSQL("CREATE TABLE " + CATEGORY_TABLE + " ( "
 							+ CATEGORY_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-							+ IMAGE_COLUMN_NAME + " TEXT)");
+							+ IMAGE_COLUMN_NAME + " TEXT, "
+							+ CATEGORY_COLUMN_IS_CONTACT + " INTEGER DEFAULT 0)");
 				}
 				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
-						+ " VALUES (" + 1 + ",\"ANIMALES\")");
+						+ " VALUES (" + CATEGORY_ID++ + ",\"ANIMALES\")");
 				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
-						+ " VALUES (" + 2 + ",\"COMIDA\")");
+						+ " VALUES (" + CATEGORY_ID++ + ",\"COMIDA\")");
 				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
-						+ " VALUES (" + 3 + ",\"OBJETOS\")");
+						+ " VALUES (" + CATEGORY_ID++ + ",\"OBJETOS\")");
 				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
-						+ " VALUES (" + 4 + ",\"PATIO\")");
+						+ " VALUES (" + CATEGORY_ID++ + ",\"PATIO\")");
+				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " , " + CATEGORY_COLUMN_IS_CONTACT + " ) "
+						+ " VALUES (" + CATEGORY_ID++ + ",\"FUNDACION\", "+ TRUE +")");
 			}
 
 			if (!isTableExists(db, IMAGE_TABLE)) {
@@ -157,7 +172,6 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
 							+ " VALUES (" + idCode + ", " + 3 + ", '" + name + "')");
 				}
-
 			}
 			
 			if (!isTableExists(db, CONVERSATION_TABLE)) {
@@ -167,12 +181,23 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 						+ CONVERSATION_COLUMN_NAME + " TEXT, "
 						+ CONVERSATION_COLUMN_SNAPSHOT + " TEXT )");
 			}
-			
+
 			if (!isTableExists(db, SETTING_TABLE)) {
 				db.execSQL("CREATE TABLE " + SETTING_TABLE + " ( "
 						+ SETTING_COLUMN_KEY + " INTEGER PRIMARY KEY, "
 						+ SETTING_COLUMN_VALUE + " TEXT )");
-				
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_text_color_key + ", " + Integer.toString(Color.BLACK) + ")");
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_text_size_key + ", " + "'100'" + ")");
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_text_width_key + ", " + "'10'" + ")");
 				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
 						+ SETTING_COLUMN_KEY + " , " 
 						+ SETTING_COLUMN_VALUE + " ) "
@@ -184,12 +209,34 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
 						+ SETTING_COLUMN_KEY + " , " 
 						+ SETTING_COLUMN_VALUE + " ) "
+						+ " VALUES (" + R.string.settings_eraser_size_key + ", " + "'30'" + ")");
+				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
+						+ SETTING_COLUMN_KEY + " , " 
+						+ SETTING_COLUMN_VALUE + " ) "
 						+ " VALUES (" + R.string.settings_image_tag_key + ", " + "'f'" + ")");
 				db.execSQL("INSERT INTO " + SETTING_TABLE + " ( "
 						+ SETTING_COLUMN_KEY + " , " 
 						+ SETTING_COLUMN_VALUE + " ) "
 						+ " VALUES (" + R.string.settings_contact_tag_key + ", " + "'f'" + ")");
+			}
+			
+			if (!isTableExists(db, CONTACT_TABLE)) {
+				db.execSQL("CREATE TABLE " + CONTACT_TABLE + " ( "
+						+ CONTACT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+						+ CONTACT_COLUMN_IMAGE_ID + " INTEGER , " //FIXME no se como poner foreign key
+						+ CONTACT_COLUMN_PHONE + " TEXT, "
+						+ CONTACT_COLUMN_ADDRESS + " TEXT )");
+			
+				for (int i = 0; i < mThumbIdsImagesForCateg5.length; i++) {
+					// Generate and insert default data
+					int idCode = mThumbIdsImagesForCateg5[i];
+					String name = context.getResources().getString(mThumbTextsImagesForCateg5[i]);
 
+					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
+							+ IMAGE_COLUMN_IDCODE + " , " 
+							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
+							+ " VALUES (" + idCode + ", " + 5 + ", '" + name + "')");
+				}
 			}
 		}
 	}
@@ -203,6 +250,7 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + IMAGE_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + CONVERSATION_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS " + CONTACT_TABLE);
 		onCreate(db);
 	}
 	
@@ -237,41 +285,40 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 		R.string.patio
 	};
 	
-	/*IMAGES OF SCENARIO*/
+	/*IMAGES OF IMAGE CATEGORIES*/
 	private static Integer[] mThumbIdsImagesForCateg1 = {
 		R.drawable.an_1,
 		R.drawable.an_2,
 		R.drawable.an_3
 	};
-	
-	/*IMAGES OF CATEGORIES*/
 	private static Integer[] mThumbTextsImagesForCateg1 = {
 		R.string.an_1,
 		R.string.an_2,
 		R.string.an_3
 	};
-	
 	private static Integer[] mThumbIdsImagesForCateg2 = {
 		R.drawable.food_1,
         R.drawable.food_2,
         R.drawable.food_3
 	};
-
-	/*IMAGES OF CATEGORIES*/
 	private static Integer[] mThumbTextsImagesForCateg2 = {
 		R.string.food_1,
 		R.string.food_2,
 		R.string.food_3
 	};
-	
 	private static Integer[] mThumbIdsImagesForCateg3 = {
 		R.drawable.ob_1
 	};
-
-	/*IMAGES OF CATEGORIES*/
 	private static Integer[] mThumbTextsImagesForCateg3 = {
 		R.string.ob_1
 	};
 	
+	/*IMAGES OF CONTACT CATEGORIES*/
+	private static Integer[] mThumbIdsImagesForCateg5 = {
+		R.drawable.con_1
+	};
+	private static Integer[] mThumbTextsImagesForCateg5 = {
+		R.string.con_1
+	};
 	
 }

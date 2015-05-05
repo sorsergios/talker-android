@@ -3,6 +3,8 @@ package ar.uba.fi.talker.component;
 public class Setting {
 
 	private int textColor;
+	private float textSize;
+	private float textWidth;
 	private int pencilColor;
 	private float pencilSize;
 	private float eraserSize;
@@ -57,4 +59,20 @@ public class Setting {
 		this.eraserSize = eraserSize;
 	}
 
+	public float getTextSize() {
+		return textSize;
+	}
+
+	public void setTextSize(float textSize) {
+		this.textSize = textSize;
+	}
+
+	public float getTextWidth() {
+		return textWidth;
+	}
+
+	public void setTextWidth(float textWidth) {
+		this.textWidth = textWidth;
+	}
+	
 }
