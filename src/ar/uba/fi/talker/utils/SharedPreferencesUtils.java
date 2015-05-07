@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
-public class Utils {
+public class SharedPreferencesUtils {
 	public static void savePreferences(Activity activity, String key1,
             int value1) {
         SharedPreferences sp = PreferenceManager

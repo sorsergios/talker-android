@@ -11,8 +11,7 @@ public class UserSettingActivity extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 
 		// Display the fragment as the main content.
-		getFragmentManager().beginTransaction()
-				.replace(android.R.id.content, new PrefsFragment()).commit();
+		getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefsFragment()).commit();
 
 	}
 

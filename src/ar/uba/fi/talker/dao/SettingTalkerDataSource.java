@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.component.Setting;
-import ar.uba.fi.talker.utils.Utils;
+import ar.uba.fi.talker.utils.SharedPreferencesUtils;
 
 public class SettingTalkerDataSource {
 	
@@ -49,7 +49,7 @@ public class SettingTalkerDataSource {
 
 		Setting setting = new Setting();
 		sharedPref.getAll();
-		int textColor = Utils.readPreferences(canvasActivity, canvasActivity.getResources().getString(R.string.settings_text_color_key),  -16777216);
+		int textColor = SharedPreferencesUtils.readPreferences(canvasActivity, canvasActivity.getResources().getString(R.string.settings_text_color_key),  -16777216);
 				//sharedPref.getInt(getSettingValueByKey(R.string.settings_text_color_key), -16777216);
 		setting.setTextColor(textColor);
 		String textSize = sharedPref.getString(canvasActivity.getResources().getString(R.string.settings_text_size_key),"100");

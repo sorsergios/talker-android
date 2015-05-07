@@ -25,9 +25,9 @@
         <item name="white">@color/white</item>
     </string-array>
     <string-array name="textSizeEntries">
-        <item name="8">Chico</item>
-        <item name="10">Mediano</item>
-        <item name="12">Grande</item>
+        <item name="8">CHICO</item>
+        <item name="10">MEDIANO</item>
+        <item name="12">GRANDE</item>
     </string-array>
     <string-array name="textSizeValues">
         <item name="8">8</item>
@@ -49,9 +49,9 @@
         <item name="white">@color/white</item>
     </string-array>
     <string-array name="textWidthEntries">
-        <item name="8">Chico</item>
-        <item name="10">Mediano</item>
-        <item name="12">Grande</item>
+        <item name="8">FINO</item>
+        <item name="10">NORMAL</item>
+        <item name="12">GRUESO</item>
     </string-array>
     <string-array name="textWidthValues">
         <item name="8">8</item>
@@ -59,9 +59,9 @@
         <item name="14">14</item>
     </string-array>
     <string-array name="eraserSizeEntries">
-        <item name="8">Chico</item>
-        <item name="10">Mediano</item>
-        <item name="12">Grande</item>
+        <item name="8">CHICO</item>
+        <item name="10">MEDIANO</item>
+        <item name="12">GRANDE</item>
     </string-array>
     <string-array name="eraserSizeValues">
         <item name="8">8</item>

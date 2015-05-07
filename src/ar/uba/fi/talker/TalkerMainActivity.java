@@ -88,6 +88,7 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 
 			@Override
 			public void onClick(View v) {
+				//TODO tutorial o explicacion
 			}
 		});
 	}
@@ -118,6 +119,9 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			Intent i = new Intent(getApplicationContext(),
+					UserSettingActivity.class);
+			startActivity(i);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
