@@ -29,11 +29,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:screenOrientation="landscape" >
-        </activity>
-        <activity
             android:name=".NewSceneActivity"
             android:label="@string/title_activity_new_scene"
             android:screenOrientation="landscape" >
@@ -52,7 +47,11 @@
             android:name=".TalkerAndroidDataBase"
             android:screenOrientation="landscape" >
         </activity>
-        
+        <activity
+            android:name=".UserSettingActivity"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="landscape" >
+        </activity>
     </application>
 
 </manifest>
