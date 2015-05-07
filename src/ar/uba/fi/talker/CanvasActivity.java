@@ -14,6 +14,7 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -79,8 +80,10 @@ public class CanvasActivity extends ActionBarActivity implements
 		datasource = new SettingTalkerDataSource(this);
 		datasource.open();
 		
-		Setting settings = datasource.getSettings();
+		Setting settings = datasource.getSettings(this);
 		PaintManager.setSettings(settings);
+		Log.d("Settings",settings.getEraserSize()+":"+settings.getPencilColor()+":"+settings.getPencilSize()+":"+settings.getTextColor()+":"+settings.getTextWidth()+":"+settings.getIsEnabledLabelContact());
+		System.out.println("Settings:"+settings.getEraserSize()+":"+settings.getPencilColor()+":"+settings.getPencilSize()+":"+settings.getTextColor()+":"+settings.getTextWidth()+":"+settings.getIsEnabledLabelContact());
 		
 		scenario = (Scenario) this.findViewById(R.id.gestureOverlayView1);
 		if(getIntent().hasExtra("BMP")) {

@@ -13,14 +13,26 @@
     <!-- pantalla configuración -->
     <string name="title_activity_settings">CONFIGURACIÓN</string>
     <string name="settings_back">ATRAS</string>
+    <string name="settings_pencil">LÁPIZ</string>
     <string name="settings_pencil_size">TAMAÑO DE LÁPIZ</string>
+    <string name="settings_pencil_size_explain">SELECCIONE UN TAMAÑO PARA EL LÁPIZ</string>
     <string name="settings_pencil_color">COLOR DE LÁPIZ</string>
+    <string name="settings_pencil_color_explain">SELECCIONE UN COLOR PARA EL LÁPIZ</string>
+    <string name="settings_text">TEXTO</string>
 	<string name="settings_text_size">TAMAÑO DE TEXTO</string>
+	<string name="settings_text_size_explain">SELECCIONE UN TAMAÑO PARA EL TEXTO</string>
     <string name="settings_text_color">COLOR DE TEXTO</string>
+    <string name="settings_text_color_explain">SELECCIONE UN COLOR PARA EL TEXTO</string>
+    <string name="settings_text_width">ANCHO DEL TEXTO</string>
+    <string name="settings_text_width_explain">SELECCIONE UN ANCHO PARA EL TEXTO</string>
+    <string name="settings_eraser">GOMA</string>    
     <string name="settings_eraser_size">TAMAÑO GOMA</string>
+    <string name="settings_eraser_size_explain">SELECCIONE UN TAMAÑO PARA LA GOMA</string>
     <string name="settings_scenery">ESCENARIOS</string>
     <string name="settings_elements">ELEMENTOS</string>
+    <string name="settings_elements_explain">SELECCIONE PARA VER LAS ETIQUETAS AL INSERTAR ELEMENTOS</string>
     <string name="settings_people">PERSONAS</string>
+    <string name="settings_people_explain">SELECCIONE PARA VER LAS ETIQUETAS AL INSERTAR PERSONAS</string>
     <string name="settings_user">USUARIO</string>
     <string name="settings_login">ENTRAR</string>
     <string name="settings_logout">SALIR</string>
