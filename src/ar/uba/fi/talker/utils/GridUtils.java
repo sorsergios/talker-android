@@ -37,7 +37,6 @@ public final class GridUtils {
 		Iterator<ScenarioView> it = scenarioViews.iterator();
 		int maxImages = calculateImagesPerPage(activity);
 		List<ScenesGridFragment> gridFragments = new ArrayList<ScenesGridFragment>();
-		int pos = 0;
 		while (it.hasNext()) {
 			List<GridItems> itmLst = new ArrayList<GridItems>();
 			for (int i = 0; i < maxImages && it.hasNext(); i++) {

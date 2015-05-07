@@ -28,6 +28,7 @@ public class GridScenesAdapter extends BaseAdapter {
 	private Context context;
 	private List<GridItems> items;
     private static Long itemSelectedId;
+    private static int pos;
 
 	public GridScenesAdapter(Context context, List<GridItems> gridItems) {
 		this.context = context;
@@ -65,6 +66,10 @@ public class GridScenesAdapter extends BaseAdapter {
 			return items.get(position).getScenarioView().getId();
 		}
 		return 0;
+	}
+
+	public void setItemsList(List<GridItems> locations) {
+		this.items = locations;
 	}
 
 	@Override
@@ -113,8 +118,20 @@ public class GridScenesAdapter extends BaseAdapter {
 	public static Long getItemSelectedId() {
 		return itemSelectedId;
 	}
+	
+	public static long getPosition() {
+		return pos;
+	}
+	
+	public void setItem(GridItems gridItem,String text, int location){
+		gridItem.getScenarioView().setName(text);
+	}
 
-	public void removeItem(int position) {
-		this.removeItem(position);
+	public void removeItem(int location) {
+		items.remove(location);
+	}
+
+	public void addItem(GridItems gridItem) {
+		items.add(gridItem);
 	}
 }

@@ -54,6 +54,8 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 		galleryScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
+				gridView = sgf.getmGridView();
 				Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 				self.startActivityForResult(i, RESULT_LOAD_IMAGE);
 			}

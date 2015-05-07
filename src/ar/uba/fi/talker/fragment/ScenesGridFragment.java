@@ -3,9 +3,9 @@ package ar.uba.fi.talker.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +19,13 @@ public class ScenesGridFragment extends Fragment {
 
 	private GridView mGridView;
 	List<GridItems> gridItems;
-	private ActionBarActivity activity;
+	private Activity activity;
 
 	public ScenesGridFragment() {
 		this.gridItems = new ArrayList<GridItems>();
 	}
 
-	public ScenesGridFragment(List<GridItems> gridItems, ActionBarActivity activity) {
+	public ScenesGridFragment(List<GridItems> gridItems, Activity activity) {
 		this.gridItems = gridItems;
 		this.activity = activity;
 	}
