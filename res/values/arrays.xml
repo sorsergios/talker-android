@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="pencilSizeEntries">
-        <item name="8">Chico</item>
-        <item name="10">Mediano</item>
-        <item name="12">Grande</item>
+        <item name="8">CHICO</item>
+        <item name="10">MEDIANO</item>
+        <item name="12">GRANDE</item>
     </string-array>
     <string-array name="pencilSizeValues">
         <item name="8">8</item>

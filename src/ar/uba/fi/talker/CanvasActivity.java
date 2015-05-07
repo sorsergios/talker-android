@@ -38,7 +38,7 @@ import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.Setting;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
-import ar.uba.fi.talker.dao.SettingTalkerDataSource;
+import ar.uba.fi.talker.dao.TalkerSettingManager;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment.DatePickerDialogListener;
@@ -63,8 +63,6 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	private Scenario scenario;
 	
-	private SettingTalkerDataSource datasource;
-
 	private ConversationTalkerDataSource datasourceConversation;
 	private static int RESULT_LOAD_IMAGE = 1;
 	
@@ -75,10 +73,7 @@ public class CanvasActivity extends ActionBarActivity implements
 		setContentView(R.layout.canvas_default);
 
 		//seteo de configuracion
-		datasource = new SettingTalkerDataSource(this);
-		datasource.open();
-		
-		Setting settings = datasource.getSettings(this);
+		Setting settings = TalkerSettingManager.getSettings(this);
 		PaintManager.setSettings(settings);
 		Log.d("Settings",settings.getEraserSize()+":"+settings.getPencilColor()+":"+settings.getPencilSize()+":"+settings.getTextColor()+":"+settings.getTextWidth()+":"+settings.getIsEnabledLabelContact());
 		System.out.println("Settings:"+settings.getEraserSize()+":"+settings.getPencilColor()+":"+settings.getPencilSize()+":"+settings.getTextColor()+":"+settings.getTextWidth()+":"+settings.getIsEnabledLabelContact());
@@ -324,7 +319,6 @@ public class CanvasActivity extends ActionBarActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		datasource.close();
 		if (datasourceConversation != null ) {
 			datasourceConversation.close();
 		}
