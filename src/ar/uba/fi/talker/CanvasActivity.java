@@ -28,8 +28,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.DatePicker;
@@ -39,9 +38,7 @@ import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.Setting;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
-import ar.uba.fi.talker.dao.ScenarioDAO;
-import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
-import ar.uba.fi.talker.dao.SettingTalkerDataSource;
+import ar.uba.fi.talker.dao.TalkerSettingManager;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment.DatePickerDialogListener;
@@ -66,7 +63,6 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	private Scenario scenario;
 	
-	private SettingTalkerDataSource settingDatasource;
 	private ConversationTalkerDataSource datasourceConversation;
 	private ScenarioTalkerDataSource datasource;
 	
@@ -79,11 +75,10 @@ public class CanvasActivity extends ActionBarActivity implements
 		setContentView(R.layout.canvas_default);
 		
 		//seteo de configuracion
-		settingDatasource = new SettingTalkerDataSource(this);
-		settingDatasource.open();
-		
-		Setting settings = settingDatasource.getSettings();
+		Setting settings = TalkerSettingManager.getSettings(this);
 		PaintManager.setSettings(settings);
+		Log.d("Settings",settings.getEraserSize()+":"+settings.getPencilColor()+":"+settings.getPencilSize()+":"+settings.getTextColor()+":"+settings.getTextWidth()+":"+settings.getIsEnabledLabelContact());
+		System.out.println("Settings:"+settings.getEraserSize()+":"+settings.getPencilColor()+":"+settings.getPencilSize()+":"+settings.getTextColor()+":"+settings.getTextWidth()+":"+settings.getIsEnabledLabelContact());
 		
 		scenario = (Scenario) this.findViewById(R.id.gestureOverlayView1);
 		if(getIntent().hasExtra("BMP")) {
@@ -211,24 +206,6 @@ public class CanvasActivity extends ActionBarActivity implements
 		scenario.setText(inputText.getText());
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.settings, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 
 	@Override
 	public void onDialogPositiveClickInsertImageDialogListener(Uri uri, Matrix matrix) {
@@ -349,13 +326,20 @@ public class CanvasActivity extends ActionBarActivity implements
 	}
 	
 	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if ( keyCode == KeyEvent.KEYCODE_MENU ) {
+	        return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}  
+	
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		datasource.close();
 		if (datasourceConversation != null ) {
 			datasourceConversation.close();
 		}
 	}
-
+	
 }
 
