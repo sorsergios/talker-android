@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import ar.uba.fi.talker.fragment.SceneActionFragment;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.ScenarioView;
 
-public class GridScenesAdapter extends ArrayAdapter<GridItems> {
+public class GridScenesAdapter extends BaseAdapter {
 
 	private class ViewHolder {
 		public ImageView imageView;
@@ -27,7 +28,6 @@ public class GridScenesAdapter extends ArrayAdapter<GridItems> {
 	private Context context;
 	private List<GridItems> items;
     private static Long itemSelectedId;
-    private static int pos;
 
 	public GridScenesAdapter(Context context, List<GridItems> gridItems) {
 		this.context = context;
@@ -65,10 +65,6 @@ public class GridScenesAdapter extends ArrayAdapter<GridItems> {
 			return items.get(position).getScenarioView().getId();
 		}
 		return 0;
-	}
-
-	public GridScenesAdapter(Context context, int resource, List<GridItems> gridItems) {
-    	super(context, resource, gridItems);
 	}
 
 	@Override

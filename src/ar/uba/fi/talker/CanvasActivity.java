@@ -64,7 +64,6 @@ public class CanvasActivity extends ActionBarActivity implements
 	private Scenario scenario;
 	
 	private ConversationTalkerDataSource datasourceConversation;
-	private ScenarioTalkerDataSource datasource;
 	
 	private static int RESULT_LOAD_IMAGE = 1;
 	

@@ -121,11 +121,9 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 				scenario = datasource.createScenario(file.getPath(), scenarioName);
 				datasource.close();
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
-				ScenarioView scenarioView = new ScenarioView(scenario.getId(),
-						scenario.getIdCode(), scenario.getPath(),
-						scenario.getName());
+				ScenarioView scenarioView = new ScenarioView(scenario);
 				GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
-				//gsa.addItem(gridItem);
+				gsa.addItem(gridItem);
 				scenesPagerSetting();
 			} catch (IOException e) {
 				e.printStackTrace();
