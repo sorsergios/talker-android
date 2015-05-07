@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
-import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.View;
 
 public class CalculatorResolve extends CalculatorExpression {
@@ -169,12 +169,12 @@ public class CalculatorResolve extends CalculatorExpression {
 		return expanded.toString();
 	}
 	
-	@SuppressLint("DefaultLocale")
 	@Override
 	public void onClick(View v) {
 		
 		if (getState().isSolved()) return;
 		String expression = getTextView().getText().toString();
+		
 		if (!expression.isEmpty()) {
 			String[] input = this.expand(expression).split(" ");
 			Queue<String> output = infixToRPN(input);
@@ -184,7 +184,7 @@ public class CalculatorResolve extends CalculatorExpression {
 				String aString = df.format(result);
 				getTextView().append(" = " + aString);
 			} catch (Exception e) {
-				getTextView().append(" = Error");
+				Log.e("CALCULATOR", "Ocurrió un error en el calculo", e);
 			}
 		}
 	}

@@ -8,25 +8,30 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.BaseAdapter;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.ScenarioView;
 
 public class SceneActionFragment extends DialogFragment implements OnClickListener {
 
+	private GridItems gridItem;
 	private View view;
-	private ScenarioView scenarioView;
-	
-	public SceneActionFragment(View view, ScenarioView scenarioView) {
-		this.view = view;
-		this.scenarioView = scenarioView;
-	}
+	private BaseAdapter adapter;
 
+	public SceneActionFragment(GridItems gridItems, View view, BaseAdapter adapter) {
+		this.gridItem = gridItems;
+		this.view = view;
+		this.adapter = adapter;
+	}
+	
 	@Override
 	public void dismiss() {
+		this.view.setBackgroundColor(Color.WHITE);
 		super.dismiss();
-		view.setBackgroundColor(Color.WHITE);
 	}
+	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {		
 		View actions = View.inflate(getActivity(), R.layout.scenario_actions, null);
@@ -37,9 +42,9 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment newFragment = new ChangeNameDialogFragment(scenarioView.getId());
+				DialogFragment newFragment = new ChangeNameDialogFragment(gridItem.getScenarioView(), adapter);
 				newFragment.onAttach(getActivity());
-				newFragment.show(getActivity().getSupportFragmentManager(),"insert_text");
+				newFragment.show(getActivity().getSupportFragmentManager(), "insert_text");
 				SceneActionFragment.this.dismiss();
 			}
 		});
@@ -51,7 +56,12 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 			public void onClick(View v) {
 				
 				Bundle extras = new Bundle();
-				extras.putInt("position", scenarioView.getId());
+				ScenarioView scenarioView = gridItem.getScenarioView();
+				if (scenarioView.getIdCode() == 0) {
+					extras.putString("path", scenarioView.getPath());
+				} else {
+					extras.putInt("code", scenarioView.getIdCode());
+				}
 				Intent intent = new Intent(getActivity().getApplicationContext(), CanvasActivity.class);
 				intent.putExtras(extras);
 				startActivity(intent);
@@ -62,8 +72,8 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		View deleteScenarioBttn = actions.findViewById(R.id.new_scene_delete_scenario_name);
 		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {				
-				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(scenarioView.getId());
+			public void onClick(View v) {
+				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(gridItem.getScenarioView());
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "delete_scenario");
 				SceneActionFragment.this.dismiss();

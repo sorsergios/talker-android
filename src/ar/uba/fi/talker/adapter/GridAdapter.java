@@ -23,10 +23,6 @@ public class GridAdapter extends BaseAdapter {
 
 	ActionBarActivity context;
 	
-	public class ViewHolder {
-		public ImageView imageView;
-		public TextView textTitle;
-	}
 	private List<GridConversationItems> items;
 	private LayoutInflater mInflater;
     private static Long itemSelectedId;

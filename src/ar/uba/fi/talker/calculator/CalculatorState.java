@@ -7,7 +7,7 @@ import java.util.Stack;
 
 /**
  * @author sergio
- *
+ * 
  */
 public class CalculatorState {
 
@@ -20,34 +20,34 @@ public class CalculatorState {
 		NO_DOT,
 		SOLVED
 	}
-	
+
 	private Stack<CalcStatus> states;
 	private int sections;
-	
+
 	public CalculatorState() {
 		states = new Stack<CalcStatus>();
 		this.clearStates();
 	}
-	
+
 	public void clearStates() {
 		states.clear();
 		states.add(CalcStatus.ONLY_NUMBER);
 		sections = 0;
 	}
-	
+
 	public void setValue() {
 		CalcStatus state = states.peek();
 		switch (state) {
-			case SOLVED:
-				break;
-			case ONLY_DECIMAL:
-				states.add(CalcStatus.NO_DOT);
-			case NO_DOT:
-				break;
-			case ONLY_NUMBER:
-				states.add(CalcStatus.ANY_SIMBOL);
-			default:
-				break;
+		case SOLVED:
+			break;
+		case ONLY_DECIMAL:
+			states.add(CalcStatus.NO_DOT);
+		case NO_DOT:
+			break;
+		case ONLY_NUMBER:
+			states.add(CalcStatus.ANY_SIMBOL);
+		default:
+			break;
 		}
 	}
 
@@ -60,14 +60,14 @@ public class CalculatorState {
 		return CalcStatus.ANY_SIMBOL.equals(state)
 				&& !CalcStatus.SOLVED.equals(state);
 	}
-	
+
 	public void setOperation() {
 		states.add(CalcStatus.ONLY_NUMBER);
 	}
 
 	public boolean operationEnabled() {
 		CalcStatus state = states.peek();
-		return CalcStatus.ANY_SIMBOL.equals(state) 
+		return CalcStatus.ANY_SIMBOL.equals(state)
 				|| CalcStatus.NO_DOT.equals(state)
 				|| CalcStatus.SOLVED.equals(state);
 	}
@@ -84,7 +84,6 @@ public class CalculatorState {
 				&& !CalcStatus.SOLVED.equals(state);
 	}
 
-
 	public void setClose() {
 		states.add(CalcStatus.CLOSE);
 		states.add(CalcStatus.ONLY_NUMBER);
@@ -92,8 +91,7 @@ public class CalculatorState {
 	}
 
 	public boolean closeEnabled() {
-		return sections > 0
-				&& this.operationEnabled()
+		return sections > 0 && this.operationEnabled()
 				&& !CalcStatus.SOLVED.equals(states.peek());
 	}
 
@@ -111,7 +109,7 @@ public class CalculatorState {
 			if (CalcStatus.OPEN.equals(states.peek())) {
 				states.pop();
 				sections--;
-			}else if (CalcStatus.CLOSE.equals(states.peek())) {
+			} else if (CalcStatus.CLOSE.equals(states.peek())) {
 				states.pop();
 				sections++;
 			}

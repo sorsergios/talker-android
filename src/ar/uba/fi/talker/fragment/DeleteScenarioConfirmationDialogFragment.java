@@ -5,21 +5,21 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.utils.ScenarioView;
 
-public class DeleteScenarioConfirmationDialogFragment extends TalkerDialogFragment {
+public class DeleteScenarioConfirmationDialogFragment extends TalkerDialogFragment implements DialogInterface.OnClickListener {
 
 	public interface DeleteScenarioDialogListener {
-		void onDialogPositiveClickDeleteScenarioDialogListener(
-				DialogFragment dialog, int position);
+		public void onDialogPositiveClickDeleteScenarioDialogListener(
+				ScenarioView scenarioView);
 	}
 
 	DeleteScenarioDialogListener listener;
-	private int position;
+	private ScenarioView scenarioView;
 
-	public DeleteScenarioConfirmationDialogFragment(int position) {
-		this.position = position;
+	public DeleteScenarioConfirmationDialogFragment(ScenarioView scenarioView) {
+		this.scenarioView = scenarioView;
 	}
 
 	@Override
@@ -39,21 +39,18 @@ public class DeleteScenarioConfirmationDialogFragment extends TalkerDialogFragme
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 		builder.setTitle(R.string.delete_scenario_title)
-				.setMessage(R.string.delete_scenario_message)
-				.setPositiveButton(R.string.delete_scenario_accept,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								listener.onDialogPositiveClickDeleteScenarioDialogListener(DeleteScenarioConfirmationDialogFragment.this, position);
-								dialog.dismiss();
-							}
-						})
-				.setNegativeButton(R.string.delete_scenario_cancel,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.dismiss();
-							}
-						});
+			.setMessage(R.string.delete_scenario_message)
+			.setPositiveButton(R.string.delete_scenario_accept, this)
+			.setNegativeButton(R.string.delete_scenario_cancel, this);
 		return builder.create();
+	}
+
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		if (which == AlertDialog.BUTTON_POSITIVE) {
+			listener.onDialogPositiveClickDeleteScenarioDialogListener(this.scenarioView);
+		}
+		dialog.dismiss();
 	}
 
 }

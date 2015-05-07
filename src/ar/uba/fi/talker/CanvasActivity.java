@@ -81,29 +81,7 @@ public class CanvasActivity extends ActionBarActivity implements
 		System.out.println("Settings:"+settings.getEraserSize()+":"+settings.getPencilColor()+":"+settings.getPencilSize()+":"+settings.getTextColor()+":"+settings.getTextWidth()+":"+settings.getIsEnabledLabelContact());
 		
 		scenario = (Scenario) this.findViewById(R.id.gestureOverlayView1);
-		if(getIntent().hasExtra("BMP")) {
-		    Bundle extras = getIntent().getExtras();
-		    byte[] bytes = extras.getByteArray("BMP");
-		    Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-		    
-		    scenario.setBackgroundImage(image);
-		} else if (getIntent().hasExtra("position")) {
-			int imageViewId = getIntent().getExtras().getInt("position");
-			datasource = new ScenarioTalkerDataSource(this.getApplicationContext());
-			datasource.open();
-			ScenarioDAO scenariodao = datasource.getScenarioByID(imageViewId);
-			datasource.close();
-			long imageDatasourceID = scenariodao.getIdCode();
-			byte[] bytes = null;
-			Bitmap image = null;
-			if (imageDatasourceID != 0){
-				bytes = ImageUtils.transformImage(getResources(), imageDatasourceID); 
-			    image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-			} else {
-				image = ImageUtils.getImageBitmap(this, scenariodao.getPath());
-			}
-		    scenario.setBackgroundImage(image);
-		}
+		this.setBackground();
 
 		ImageButton pencilOp = (ImageButton) findViewById(R.id.pencilOption);
 		pencilOp.setOnClickListener(new View.OnClickListener() {
@@ -190,6 +168,27 @@ public class CanvasActivity extends ActionBarActivity implements
 				newFragment.show(getSupportFragmentManager(), "save_all");
 			}
 		});
+	}
+
+	private void setBackground() {
+		Intent intent = getIntent();
+		if(intent.hasExtra("BMP")) {
+		    Bundle extras = intent.getExtras();
+		    byte[] bytes = extras.getByteArray("BMP");
+		    Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		    
+		    scenario.setBackgroundImage(image);
+		} else if (intent.hasExtra("code")) {
+		    Bundle extras = intent.getExtras();
+		    int code = extras.getInt("code");
+		    Bitmap image = BitmapFactory.decodeResource(getResources(), code);
+		    scenario.setBackgroundImage(image);
+		} else if (intent.hasExtra("path")) {
+		    Bundle extras = intent.getExtras();
+		    String path = extras.getString("path");
+		    Bitmap image = BitmapFactory.decodeFile(path);
+		    scenario.setBackgroundImage(image);
+		}
 	}
 	
 	@Override
