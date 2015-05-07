@@ -31,17 +31,16 @@ public final class GridUtils {
 		return gridFragments;
 	}
 	
-	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, ArrayList<ScenarioView> scenarioViews) {
+	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, List<ScenarioView> scenarioViews) {
 
 		Iterator<ScenarioView> it = scenarioViews.iterator();
 		int maxImages = calculateImagesPerPage(activity);
 		List<ScenesGridFragment> gridFragments = new ArrayList<ScenesGridFragment>();
 
 		while (it.hasNext()) {
-			ArrayList<GridItems> itmLst = new ArrayList<GridItems>();
+			List<GridItems> itmLst = new ArrayList<GridItems>();
 			for (int i = 0; i < maxImages && it.hasNext(); i++) {
-				GridItems itm = new GridItems(i, it.next());
-				itmLst.add(itm);
+				itmLst.add(new GridItems(i, it.next()));
 			}
 			gridFragments.add(new ScenesGridFragment(itmLst, activity));
 		}

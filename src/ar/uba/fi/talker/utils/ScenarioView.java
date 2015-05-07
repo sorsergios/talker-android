@@ -1,8 +1,10 @@
 package ar.uba.fi.talker.utils;
 
+import ar.uba.fi.talker.dao.ScenarioDAO;
+
 public class ScenarioView {
 	
-	private int id;
+	private long id;
 	private int idCode;
 	private String path;
 	private String name;
@@ -14,7 +16,14 @@ public class ScenarioView {
 		this.name = name;
 	}
 	
-	public int getId() {
+	public ScenarioView(ScenarioDAO scenarioDAO) {
+		this.id = scenarioDAO.getId();
+		this.idCode = scenarioDAO.getIdCode();
+		this.path = scenarioDAO.getPath();
+		this.name = scenarioDAO.getName();
+	}
+
+	public long getId() {
 		return id;
 	}
 	
