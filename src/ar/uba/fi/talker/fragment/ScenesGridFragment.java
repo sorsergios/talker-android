@@ -18,7 +18,6 @@ import ar.uba.fi.talker.utils.GridItems;
 public class ScenesGridFragment extends Fragment {
 
 	private GridView mGridView;
-	private GridScenesAdapter mGridAdapter;
 	List<GridItems> gridItems;
 	private Activity activity;
 
@@ -34,10 +33,10 @@ public class ScenesGridFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view;
-		view = inflater.inflate(R.layout.grid_inside_view_pager, container, false);
-		int maxColumns = calculateColumns(view);
-		
+		View view = inflater.inflate(R.layout.grid_inside_view_pager, container, false);
+		mGridView = (GridView) view.findViewById(R.id.gridView);
+
+		int maxColumns = this.calculateColumns(view);
 		mGridView.setNumColumns(maxColumns);
 		return view;
 	}
@@ -45,9 +44,8 @@ public class ScenesGridFragment extends Fragment {
 	private int calculateColumns(View view) {
 		float scenarioWidth = activity.getResources().getDimension(R.dimen.scenarioWidth);
 		DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
-		mGridView = (GridView) view.findViewById(R.id.gridView);
-		int maxImages = Math.round(displayMetrics.widthPixels /scenarioWidth);
-		return maxImages;
+		
+		return Math.round(displayMetrics.widthPixels /scenarioWidth);
 	}
 	
 	@Override
@@ -56,7 +54,7 @@ public class ScenesGridFragment extends Fragment {
 
 		if (activity != null) {
 
-			mGridAdapter = new GridScenesAdapter(activity, gridItems);
+			GridScenesAdapter mGridAdapter = new GridScenesAdapter(activity, gridItems);
 			if (mGridView != null) {
 				mGridView.setAdapter(mGridAdapter);
 			}

@@ -11,31 +11,26 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.fragment.SceneActionFragment;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.ScenarioView;
 
 public class GridScenesAdapter extends BaseAdapter {
 
-	Context context;
-	
-	public class ViewHolder {
+	private class ViewHolder {
 		public ImageView imageView;
 		public TextView textTitle;
 	}
-
+	
+	private Context context;
 	private List<GridItems> items;
-	private LayoutInflater mInflater;
     private static Long itemSelectedId;
     private static int pos;
 
 	public GridScenesAdapter(Context context, List<GridItems> gridItems) {
-
-		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.context = context;
 		items = gridItems;
 	}
@@ -80,49 +75,44 @@ public class GridScenesAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, final ViewGroup parent) {
 
-		final View view = convertView != null ? convertView : mInflater.inflate(R.layout.row_grid, parent, false);
+		ViewHolder mViewHolder = new ViewHolder();
+		final GridItems gridItem = items.get(position);
+		if (convertView == null) {
+			LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = mInflater.inflate(R.layout.row_grid, parent, false);
+			
+			mViewHolder.imageView = (ImageView) convertView.findViewById(R.id.image);
+			mViewHolder.textTitle = (TextView) convertView.findViewById(R.id.text);
 
-		LinearLayout viewHolder = (LinearLayout) view.findViewById(R.id.grid_element);
-
-		viewHolder.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				ImageButton startScenarioBttn = (ImageButton) ((ActionBarActivity) context)
-						.findViewById(R.id.new_scene_start);
-				startScenarioBttn.setEnabled(true);
-				startScenarioBttn.setVisibility(View.VISIBLE);
-				ImageButton editNameScenarioBttn = (ImageButton) ((ActionBarActivity) context)
-						.findViewById(R.id.new_scene_edit_scenario_name);
-				editNameScenarioBttn.setEnabled(true);
-				editNameScenarioBttn.setVisibility(View.VISIBLE);
-				ImageButton deleteScenarioBttn = (ImageButton) ((ActionBarActivity) context)
-						.findViewById(R.id.new_scene_delete_scenario_name);
-				deleteScenarioBttn.setVisibility(View.VISIBLE);
-				for (int i = 0; i < parent.getChildCount(); i++) {
-					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
-				}
-				view.setBackgroundColor(Color.CYAN);
-				itemSelectedId = getItemId(position);
-				pos = position;
-			}
-		});
-
-		GridItems gridItems = items.get(position);
-		this.setCatImage(viewHolder, gridItems.getScenarioView());
-		return view;
+		    convertView.setTag(mViewHolder);
+		    convertView.setOnClickListener(new OnClickListener() {
+		    	@Override
+		    	public void onClick(View view) {
+		    		view.setBackgroundColor(Color.CYAN);
+		    		
+		    		ActionBarActivity activity = (ActionBarActivity) context;
+		    		SceneActionFragment fragment = new SceneActionFragment(gridItem, view, GridScenesAdapter.this);
+		    		fragment.onAttach(activity);
+		    		fragment.show(activity.getSupportFragmentManager(), "action-scene");
+		    	}
+		    });
+		} else {
+			mViewHolder = (ViewHolder) convertView.getTag();
+		}
+		
+		this.setViewItemContent(mViewHolder, gridItem.getScenarioView());
+	
+		return convertView;
 	}
 
-	private void setCatImage(LinearLayout viewHolder, ScenarioView scenarioView) {
-		ImageView imageView = (ImageView) viewHolder.findViewById(R.id.image);
+	private void setViewItemContent(ViewHolder viewHolder, ScenarioView scenarioView) {
 		if (scenarioView.getIdCode() != 0){
-			imageView.setImageResource(scenarioView.getIdCode());
+			viewHolder.imageView.setImageResource(scenarioView.getIdCode());
 		} else {
 			Uri uri = Uri.parse(scenarioView.getPath());
-			imageView.setImageURI(uri);
+			viewHolder.imageView.setImageURI(uri);
 		}
-		TextView textTitle = (TextView) viewHolder.findViewById(R.id.text);
-		textTitle .setText(scenarioView.getName());
+		viewHolder.textTitle.setText(scenarioView.getName());
 	}
 
 	public static Long getItemSelectedId() {
