@@ -21,6 +21,8 @@ import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment.ExitA
 
 public class TalkerMainActivity extends ActionBarActivity implements ExitAplicationDialogListener {
 
+	private static final int RESULT_SETTINGS = 200;
+	
     private static Context context;
 	final TalkerMainActivity self = this;
 
@@ -79,7 +81,7 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 			public void onClick(View v) {
 				Intent i = new Intent(getApplicationContext(),
 						UserSettingActivity.class);
-				startActivityForResult(i, 200);
+				startActivityForResult(i, RESULT_SETTINGS);
 			}
 		});
 		

@@ -122,7 +122,7 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 				for (int i = 0; i < parent.getChildCount(); i++) {
 					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
 				}
-				v.setBackgroundColor(Color.CYAN);
+				v.setBackgroundColor(getActivity().getResources().getColor(R.color.selectionViolet));
 				viewSelected = v;
 	/*			if (position == 4) {
 					Intent i = new Intent(

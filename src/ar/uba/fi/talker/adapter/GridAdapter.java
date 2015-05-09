@@ -24,7 +24,7 @@ public class GridAdapter extends BaseAdapter {
 	ActionBarActivity context;
 	
 	private List<GridConversationItems> items;
-	private LayoutInflater mInflater;
+	private final LayoutInflater mInflater;
     private static Long itemSelectedId;
     private static int pos;
 	
@@ -74,6 +74,7 @@ public class GridAdapter extends BaseAdapter {
 		this.items = locations;
 	}
 
+	@Override
 	public View getView(final int position, View convertView, final ViewGroup parent) {
 
 		final View view = convertView != null ? convertView : mInflater.inflate(R.layout.row_grid, parent, false);
@@ -87,7 +88,7 @@ public class GridAdapter extends BaseAdapter {
 				for (int i = 0; i < parent.getChildCount(); i++) {
 					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
 				}
-				view.setBackgroundColor(Color.CYAN);
+				view.setBackgroundColor(context.getResources().getColor(R.color.selectionViolet));
 				itemSelectedId = getItemId(position);
 				pos = position;
 				

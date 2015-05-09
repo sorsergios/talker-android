@@ -3,7 +3,6 @@ package ar.uba.fi.talker.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -25,7 +24,7 @@ public class GridScenesAdapter extends BaseAdapter {
 		public TextView textTitle;
 	}
 	
-	private Context context;
+	private final Context context;
 	private List<GridItems> items;
     private static Long itemSelectedId;
     private static int pos;
@@ -88,7 +87,7 @@ public class GridScenesAdapter extends BaseAdapter {
 		    convertView.setOnClickListener(new OnClickListener() {
 		    	@Override
 		    	public void onClick(View view) {
-		    		view.setBackgroundColor(Color.CYAN);
+		    		view.setBackgroundColor(context.getResources().getColor(R.color.selectionViolet));
 		    		
 		    		ActionBarActivity activity = (ActionBarActivity) context;
 		    		SceneActionFragment fragment = new SceneActionFragment(gridItem, view, GridScenesAdapter.this);

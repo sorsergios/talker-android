@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="blue">#00abea</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -7,5 +8,6 @@
     <color name="redcancel">#e74c3c</color>
     <color name="greenok">#2ecc71</color>
     <color name="lightblueback">#04aeda</color>
-    
+    <color name="selectionViolet">#8b8bc8</color>
+
 </resources>
