@@ -2,19 +2,19 @@ package ar.uba.fi.talker.dao;
 
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.component.Setting;
 
 public class TalkerSettingManager {
 
-	public static Setting getSettings(CanvasActivity canvasActivity) {
+	public static Setting getSettings(Activity activity) {
 
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(canvasActivity);
-		Resources resources = canvasActivity.getResources();
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+		Resources resources = activity.getResources();
 
 		Setting setting = new Setting();
 		Map<String, ?> settings = sharedPref.getAll();
