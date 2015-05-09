@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
     
-    <PreferenceCategory android:title="@string/settings_pencil" >
+    <PreferenceCategory 
+        android:title="@string/settings_pencil">
         <ListPreference
             android:dialogTitle="@string/settings_pencil"
-            android:entries="@array/pencilColorEntries"
-            android:entryValues="@array/pencilColorOptionValues"
+            android:entries="@array/colorEntries"
+            android:entryValues="@array/colorOptionValues"
             android:key="@string/settings_pencil_color_key"
             android:summary="@string/settings_pencil_color_explain"
             android:title="@string/settings_pencil_color" />
         <ListPreference
             android:dialogTitle="@string/settings_pencil_size"
-            android:entries="@array/pencilSizeEntries"
-            android:entryValues="@array/pencilSizeValues"
+            android:entries="@array/sizeEntries"
+            android:entryValues="@array/sizeValues"
             android:key="@string/settings_pencil_size_key"
             android:summary="@string/settings_pencil_size_explain"
             android:title="@string/settings_pencil_size" />
@@ -21,32 +22,25 @@
     <PreferenceCategory android:title="@string/settings_text" >
         <ListPreference
             android:dialogTitle="@string/settings_text"
-            android:entries="@array/textColorEntries"
-            android:entryValues="@array/textColorOptionValues"
+            android:entries="@array/colorEntries"
+            android:entryValues="@array/colorOptionValues"
             android:key="@string/settings_text_color_key"
             android:summary="@string/settings_text_color_explain"
             android:title="@string/settings_text_color" />
         <ListPreference
             android:dialogTitle="@string/settings_text_size"
-            android:entries="@array/textSizeEntries"
+            android:entries="@array/sizeEntries"
             android:entryValues="@array/textSizeValues"
             android:key="@string/settings_text_size_key"
             android:summary="@string/settings_text_size_explain"
             android:title="@string/settings_text_size" />
-        <ListPreference
-            android:dialogTitle="@string/settings_text_width"
-            android:entries="@array/textWidthEntries"
-            android:entryValues="@array/textWidthValues"
-            android:key="@string/settings_text_width_key"
-            android:summary="@string/settings_text_width_explain"
-            android:title="@string/settings_text_width" />
-    </PreferenceCategory>
+	</PreferenceCategory>
     
     <PreferenceCategory android:title="@string/settings_eraser" >
         <ListPreference
             android:dialogTitle="@string/settings_eraser_size"
-            android:entries="@array/eraserSizeEntries"
-            android:entryValues="@array/eraserSizeValues"
+            android:entries="@array/sizeEntries"
+            android:entryValues="@array/sizeValues"
             android:key="@string/settings_eraser_size_key"
             android:summary="@string/settings_eraser_size_explain"
             android:title="@string/settings_eraser_size" />

@@ -3,6 +3,7 @@
  */
 package ar.uba.fi.talker.paint;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import ar.uba.fi.talker.component.Setting;
 
@@ -12,32 +13,43 @@ import ar.uba.fi.talker.component.Setting;
  */
 public final class PaintFactory {
 	
-	public static Paint createPaint(PaintType type, Setting setting) {
+	public static Paint createPaint(PaintType type) {
 		
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		switch (type) {
 			case ERASE:
 				paint.setStyle(Paint.Style.STROKE);
 				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
-				paint.setStrokeWidth(setting.getEraserSize()); // size
 				break;
 			case TEXT:
 				paint.setStyle(Paint.Style.STROKE);
 				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
-				paint.setTextSize(setting.getTextSize()); //size
-				paint.setStrokeWidth(setting.getTextWidth()); //width
-				paint.setColor(setting.getTextColor());
 				
 				break;
 			case REGULAR:
 			default:
 				paint.setStyle(Paint.Style.STROKE);
 				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
-				paint.setStrokeWidth(setting.getPencilSize()); // size
-				paint.setColor(setting.getPencilColor());
 				break;
 		}
 
 		return paint;
+	}
+
+	public static void definePaint(Paint paint, PaintType type, Setting settings) {
+		switch (type) {
+			case ERASE:
+				paint.setStrokeWidth(settings.getEraserSize());
+				break;
+			case TEXT:
+				paint.setTextSize(settings.getTextSize());
+				paint.setColor(Color.parseColor(settings.getTextColor()));
+				break;
+			case REGULAR:
+			default:
+				paint.setStrokeWidth(settings.getPencilSize());
+				paint.setColor(Color.parseColor(settings.getPencilColor()));
+				break;
+		}
 	}
 }

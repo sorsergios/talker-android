@@ -1,72 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="pencilSizeEntries">
-        <item name="8">CHICO</item>
-        <item name="10">MEDIANO</item>
-        <item name="12">GRANDE</item>
+    <string-array name="sizeEntries">
+        <item name="small">CHICO</item>
+        <item name="medium">MEDIANO</item>
+        <item name="big">GRANDE</item>
     </string-array>
-    <string-array name="pencilSizeValues">
-        <item name="8">8</item>
-        <item name="10">10</item>
-        <item name="12">12</item>
-    </string-array>
-    <string-array name="pencilColorEntries">
-        <item name="red">ROJO</item>
-        <item name="blue">AZUL</item>
-        <item name="green">VERDE</item>
-        <item name="black">NEGRO</item>
-        <item name="white">BLANCO</item>
-    </string-array>
-    <string-array name="pencilColorOptionValues">
-        <item name="red">@color/redcancel</item>
-        <item name="blue">@color/blue</item>
-        <item name="green">@color/greenok</item>
-        <item name="black">@color/black</item>
-        <item name="white">@color/white</item>
-    </string-array>
-    <string-array name="textSizeEntries">
-        <item name="8">CHICO</item>
-        <item name="10">MEDIANO</item>
-        <item name="12">GRANDE</item>
+    <string-array name="sizeValues">
+        <item name="small">10</item>
+        <item name="medium">20</item>
+        <item name="big">30</item>
     </string-array>
     <string-array name="textSizeValues">
-        <item name="8">8</item>
-        <item name="10">10</item>
-        <item name="12">12</item>
+        <item name="small">50</item>
+        <item name="medium">100</item>
+        <item name="big">150</item>
     </string-array>
-    <string-array name="textColorEntries">
+    <string-array name="colorEntries">
         <item name="red">ROJO</item>
         <item name="blue">AZUL</item>
         <item name="green">VERDE</item>
         <item name="black">NEGRO</item>
         <item name="white">BLANCO</item>
     </string-array>
-    <string-array name="textColorOptionValues">
-        <item name="red">@color/redcancel</item>
-        <item name="blue">@color/blue</item>
-        <item name="green">@color/greenok</item>
-        <item name="black">@color/black</item>
-        <item name="white">@color/white</item>
+    <string-array name="colorOptionValues">
+	    <item name="red">#e74c3c</item>
+	    <item name="blue">#00abea</item>
+	    <item name="green">#2ecc71</item>
+	    <item name="black">#000000</item>
+	    <item name="white">#ffffff</item>
     </string-array>
-    <string-array name="textWidthEntries">
-        <item name="8">FINO</item>
-        <item name="10">NORMAL</item>
-        <item name="12">GRUESO</item>
-    </string-array>
-    <string-array name="textWidthValues">
-        <item name="8">8</item>
-        <item name="10">10</item>
-        <item name="14">14</item>
-    </string-array>
-    <string-array name="eraserSizeEntries">
-        <item name="8">CHICO</item>
-        <item name="10">MEDIANO</item>
-        <item name="12">GRANDE</item>
-    </string-array>
-    <string-array name="eraserSizeValues">
-        <item name="8">8</item>
-        <item name="10">10</item>
-        <item name="12">12</item>
-    </string-array>
-
 </resources>

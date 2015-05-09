@@ -1,7 +1,9 @@
 package ar.uba.fi.talker.dao;
 
+import java.util.Map;
+
 import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.R;
@@ -12,26 +14,23 @@ public class TalkerSettingManager {
 	public static Setting getSettings(CanvasActivity canvasActivity) {
 
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(canvasActivity);
+		Resources resources = canvasActivity.getResources();
 
 		Setting setting = new Setting();
-		sharedPref.getAll();
-		int textColor = sharedPref.getInt(canvasActivity.getResources().getString(R.string.settings_text_color_key), Color.BLACK);
-		setting.setTextColor(textColor);
-		String textSize = sharedPref.getString(canvasActivity.getResources().getString(R.string.settings_text_size_key), "100");
+		Map<String, ?> settings = sharedPref.getAll();
+		
+		setting.setTextColor((String) settings.get(resources.getString(R.string.settings_text_color_key)));
+		String textSize = (String) settings.get(resources.getString(R.string.settings_text_size_key));
 		setting.setTextSize(Integer.parseInt(textSize));
-		String textWidth = sharedPref.getString(canvasActivity.getResources().getString(R.string.settings_text_width_key), "10");
-		setting.setTextWidth(Integer.parseInt(textWidth));
-		int pencilColor = sharedPref.getInt(canvasActivity.getResources().getString(R.string.settings_pencil_color_key), Color.BLUE);
-		setting.setPencilColor(pencilColor);
-		String pencilSize = sharedPref.getString(canvasActivity.getResources().getString(R.string.settings_pencil_size_key), "20");
+		setting.setPencilColor((String) settings.get(resources.getString(R.string.settings_pencil_color_key)));
+		
+		String pencilSize = (String) settings.get(resources.getString(R.string.settings_pencil_size_key));
 		setting.setPencilSize(Integer.parseInt(pencilSize));
-		String eraserSize = sharedPref.getString(canvasActivity.getResources().getString(R.string.settings_eraser_size_key), "30");
+		String eraserSize = (String) settings.get(resources.getString(R.string.settings_eraser_size_key));
 		setting.setEraserSize(Integer.parseInt(eraserSize));
-		Boolean isEnabledLabelImage = sharedPref.getBoolean(canvasActivity.getResources().getString(R.string.settings_image_tag_key),
-				Boolean.FALSE);
+		Boolean isEnabledLabelImage = (Boolean) settings.get(resources.getString(R.string.settings_image_tag_key));
 		setting.setIsEnabledLabelImage(isEnabledLabelImage);
-		Boolean isEnabledLabelContact = sharedPref.getBoolean(canvasActivity.getResources().getString(R.string.settings_contact_tag_key),
-				Boolean.FALSE);
+		Boolean isEnabledLabelContact = (Boolean) settings.get(resources.getString(R.string.settings_contact_tag_key));
 		setting.setIsEnabledLabelContact(isEnabledLabelContact);
 
 		return setting;
