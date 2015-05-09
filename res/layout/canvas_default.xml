@@ -52,15 +52,15 @@
 		android:adjustViewBounds="true"  
 		android:contentDescription="@string/insert_text_accept"/>
 	
-
     <ImageButton
         android:id="@+id/bottom"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/sign_add"
-        android:contentDescription="@null" />
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/sign_add" />
 
     <ImageButton
         android:id="@+id/calculatorOption"
@@ -127,5 +127,15 @@
         android:contentDescription="@string/insert_image_accept"
         android:scaleType="fitCenter"
         android:src="@drawable/image_icon" />
+
+    <ImageButton
+        android:id="@+id/button_settings"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/action_settings" />
 
 </RelativeLayout>
