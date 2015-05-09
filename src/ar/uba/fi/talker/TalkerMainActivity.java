@@ -79,7 +79,7 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 			public void onClick(View v) {
 				Intent i = new Intent(getApplicationContext(),
 						UserSettingActivity.class);
-				startActivity(i);
+				startActivityForResult(i, 200);
 			}
 		});
 		

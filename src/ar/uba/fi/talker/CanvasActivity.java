@@ -60,6 +60,8 @@ public class CanvasActivity extends ActionBarActivity implements
 		EraseAllConfirmationDialogListener, OnDateSetListener, 
 		DatePickerDialogListener, SaveAllConfirmationDialogListener {
 
+	private static final int RESULT_SETTINGS = 200;
+
 	final String TAG = "CanvasActivity";
 
 	private Scenario scenario;
@@ -90,6 +92,18 @@ public class CanvasActivity extends ActionBarActivity implements
 		scenario = (Scenario) this.findViewById(R.id.gestureOverlayView1);
 		this.setBackground();
 
+		View settings = findViewById(R.id.button_settings);
+		settings.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				Intent i = new Intent(getApplicationContext(),
+						UserSettingActivity.class);
+				startActivityForResult(i, RESULT_SETTINGS);
+			}
+		});
+		
 		ImageButton pencilOp = (ImageButton) findViewById(R.id.pencilOption);
 		pencilOp.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -267,6 +281,8 @@ public class CanvasActivity extends ActionBarActivity implements
 
 			this.onDialogPositiveClickInsertImageDialogListener(selectedImage, matrix);
 
+		} else if (requestCode == RESULT_SETTINGS && resultCode == Activity.RESULT_CANCELED) {
+			PaintManager.setSettings(TalkerSettingManager.getSettings(this));
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
