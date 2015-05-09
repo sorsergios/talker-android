@@ -343,7 +343,10 @@ public class CanvasActivity extends ActionBarActivity implements
 	}
 	
 	public Bitmap screenShot(View view) {
-	    Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),view.getHeight(), Config.ARGB_8888);
+		view.setDrawingCacheEnabled(true); 
+		Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()); 
+		view.setDrawingCacheEnabled(false);
+	  //  Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()Width(),view.getHeight(), Config.ARGB_8888);
 	    Canvas canvas = new Canvas(bitmap);
 	    view.draw(canvas);
 	    return bitmap;
