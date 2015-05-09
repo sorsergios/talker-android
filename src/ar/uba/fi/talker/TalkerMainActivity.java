@@ -4,11 +4,13 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -29,6 +31,21 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
     private void init(){
 		Button historicalBttn = (Button) findViewById(R.id.history_panel_button);
     	evaluateVisibilityButton(historicalBttn);
+    	
+    	SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		Resources resources = this.getResources();
+		
+		if (sharedPref.getAll().isEmpty()) {
+			Editor edit = sharedPref.edit();
+			edit.putString(resources.getString(R.string.settings_text_color_key), "#000000");
+			edit.putString(resources.getString(R.string.settings_text_size_key), "100");
+			edit.putString(resources.getString(R.string.settings_pencil_color_key), "#00abea");
+			edit.putString(resources.getString(R.string.settings_pencil_size_key), "20");
+			edit.putString(resources.getString(R.string.settings_eraser_size_key), "20");
+			edit.putBoolean(resources.getString(R.string.settings_image_tag_key), false);
+			edit.putBoolean(resources.getString(R.string.settings_contact_tag_key), false);
+			edit.apply();
+		}
     }
     
 	@Override
@@ -103,38 +120,6 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 			historicalBttn.setVisibility(View.GONE);
 		}
 		datasource.close();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.talker_main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			Intent i = new Intent(getApplicationContext(),
-					UserSettingActivity.class);
-			startActivity(i);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
 	}
 	
 	@Override

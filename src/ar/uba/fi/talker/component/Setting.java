@@ -2,10 +2,9 @@ package ar.uba.fi.talker.component;
 
 public class Setting {
 
-	private int textColor;
+	private String textColor;
 	private float textSize;
-	private float textWidth;
-	private int pencilColor;
+	private String pencilColor;
 	private float pencilSize;
 	private float eraserSize;
 	private Boolean isEnabledLabelImage;
@@ -19,11 +18,11 @@ public class Setting {
 		this.pencilSize = pencilSize;
 	}
 
-	public int getPencilColor() {
+	public String getPencilColor() {
 		return pencilColor;
 	}
 
-	public void setPencilColor(int pencilColor) {
+	public void setPencilColor(String pencilColor) {
 		this.pencilColor = pencilColor;
 	}
 
@@ -43,11 +42,11 @@ public class Setting {
 		this.isEnabledLabelContact = isEnabledLabelContact;
 	}
 
-	public int getTextColor() {
+	public String getTextColor() {
 		return textColor;
 	}
 
-	public void setTextColor(int textColor) {
+	public void setTextColor(String textColor) {
 		this.textColor = textColor;
 	}
 
@@ -65,14 +64,6 @@ public class Setting {
 
 	public void setTextSize(float textSize) {
 		this.textSize = textSize;
-	}
-
-	public float getTextWidth() {
-		return textWidth;
-	}
-
-	public void setTextWidth(float textWidth) {
-		this.textWidth = textWidth;
 	}
 	
 }

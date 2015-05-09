@@ -34,20 +34,17 @@ public final class PaintManager {
 	}
 	
 	public static Paint getPaint(PaintType type) {
-		if (!getInstance().paints.containsKey(type)) {
-			Paint paint = PaintFactory.createPaint(type, settings);
+		Paint paint = getInstance().paints.get(type);
+		if (paint == null) {
+			paint = PaintFactory.createPaint(type);
 			getInstance().paints.put(type, paint);
 		}
-		
-		return getInstance().paints.get(type);
+		PaintFactory.definePaint(paint, type, settings);
+		return paint;
 	}
 
-	public static Setting getSettings() {
-		return settings;
-	}
-
-	public static void setSettings(Setting settings) {
-		PaintManager.settings = settings;
+	public static void setSettings(Setting sharedPref) {
+		PaintManager.settings = sharedPref;
 	}
 	
 }

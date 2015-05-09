@@ -19,7 +19,9 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -36,7 +38,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
-import ar.uba.fi.talker.component.Setting;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.dao.TalkerSettingManager;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
@@ -64,9 +65,19 @@ public class CanvasActivity extends ActionBarActivity implements
 	private Scenario scenario;
 	
 	private ConversationTalkerDataSource datasourceConversation;
+
+	private View activeTool;
 	
 	private static int RESULT_LOAD_IMAGE = 1;
 	
+	private void setActiveTool(View view) {
+		if (activeTool != null) {
+			this.activeTool.getBackground().setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
+		}
+		this.activeTool = view;
+		this.activeTool.getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.MULTIPLY);
+	}
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,11 +85,8 @@ public class CanvasActivity extends ActionBarActivity implements
 		setContentView(R.layout.canvas_default);
 		
 		//seteo de configuracion
-		Setting settings = TalkerSettingManager.getSettings(this);
-		PaintManager.setSettings(settings);
-		Log.d("Settings",settings.getEraserSize()+":"+settings.getPencilColor()+":"+settings.getPencilSize()+":"+settings.getTextColor()+":"+settings.getTextWidth()+":"+settings.getIsEnabledLabelContact());
-		System.out.println("Settings:"+settings.getEraserSize()+":"+settings.getPencilColor()+":"+settings.getPencilSize()+":"+settings.getTextColor()+":"+settings.getTextWidth()+":"+settings.getIsEnabledLabelContact());
-		
+		PaintManager.setSettings(TalkerSettingManager.getSettings(this));
+
 		scenario = (Scenario) this.findViewById(R.id.gestureOverlayView1);
 		this.setBackground();
 
@@ -88,6 +96,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			public void onClick(View v) {
 				scenario.setActiveComponentType(ComponentType.PENCIL);
 				scenario.invalidate();
+				CanvasActivity.this.setActiveTool(v);
 			}
 		});
 
@@ -97,6 +106,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			public void onClick(View v) {
 				scenario.setActiveComponentType(ComponentType.ERASER);
 				scenario.invalidate();
+				CanvasActivity.this.setActiveTool(v);
 			}
 		});
 
@@ -107,6 +117,7 @@ public class CanvasActivity extends ActionBarActivity implements
 				DialogFragment newFragment = new EraseAllConfirmationDialogFragment();
 				newFragment.show(getSupportFragmentManager(), "erase_all");
 				scenario.invalidate();
+				CanvasActivity.this.setActiveTool(v);
 			}
 		});
 
@@ -116,6 +127,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			public void onClick(View v) {
 				DialogFragment newFragment = new TextDialogFragment();
 				newFragment.show(getSupportFragmentManager(), "insert_text");
+				CanvasActivity.this.setActiveTool(v);
 			}
 		});
 
@@ -127,6 +139,7 @@ public class CanvasActivity extends ActionBarActivity implements
 				DialogFragment newFragment = new InsertImageDialogFragment();
 				newFragment.show(getSupportFragmentManager(), "insert_image");
 				scenario.invalidate();
+				CanvasActivity.this.setActiveTool(v);
 			}
 		});
 
@@ -138,6 +151,7 @@ public class CanvasActivity extends ActionBarActivity implements
 				DialogFragment newFragment = new InsertImageDialogFragment(Boolean.TRUE);
 				newFragment.show(getSupportFragmentManager(), "insert_image");
 				scenario.invalidate();
+				CanvasActivity.this.setActiveTool(v);
 			}
 		});
 
@@ -147,6 +161,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			public void onClick(View v) {
 				DialogFragment newFragment = new CalculatorFragment();
 				newFragment.show(getSupportFragmentManager(), "calculator");
+				CanvasActivity.this.setActiveTool(v);
 			}
 		});
 
@@ -156,6 +171,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			public void onClick(View v) {
 				DialogFragment newFragment = new DatePickerFragment();
 				newFragment.show(getSupportFragmentManager(), "calendar");
+				CanvasActivity.this.setActiveTool(v);
 			}
 		});
 		
@@ -165,6 +181,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			public void onClick(View v) {
 				DialogFragment newFragment = new SaveAllConfirmationDialogFragment();
 				newFragment.show(getSupportFragmentManager(), "save_all");
+				CanvasActivity.this.setActiveTool(v);
 			}
 		});
 	}
