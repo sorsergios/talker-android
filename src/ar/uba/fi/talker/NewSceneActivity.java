@@ -6,12 +6,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.entity.BufferedHttpEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,11 +15,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ScenarioDAO;
@@ -114,14 +110,14 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		//TODO acá esta configurado el codigo de empezar directo y guardarlo en la base
+		/* Está configurado para de empezar la conversación directamente y guardar el escenario nuevo en la base */
 		byte[] bytes = null;
 		ScenarioDAO scenario = null;
 		if (requestCode == RESULT_LOAD_IMAGE && null != data) {
 			Uri imageUri = data.getData();
 			String scenarioName = imageUri.getLastPathSegment(); 
 	        Bitmap bitmap = null;
-			try {/*Este if sirve para cuando eligen una foto de google +*/
+			try {/*Entra al if cuando se elige una foto de google +*/
 				if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
 					InputStream is = getContentResolver().openInputStream(imageUri);
 					bitmap = BitmapFactory.decodeStream(is);
@@ -152,12 +148,6 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 			startActivity(intent);
 		}		
 	}
-	
-	private Bitmap getBitmapFromInputStream(InputStream is) {
-
-		Bitmap bmp = BitmapFactory.decodeStream(is);
-		return bmp;
-	}
 
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(ScenarioView scenarioView) {
@@ -170,8 +160,9 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 			datasource.open();
 			datasource.deleteScenario(scenarioView.getId());
 			datasource.close();
-		} // TODO informar error al usuario
-		
+		}
+		Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
+		Log.e("NewScene", "Unexpected error deleting imagen.");
 		scenesPagerSetting();
 	}
 
