@@ -5,5 +5,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 	<dimen name="scenarioWidth">300dp</dimen>
 	<dimen name="scenarioHeight">300dp</dimen>
+	<dimen name="thumbWidth">150dp</dimen>
+	<dimen name="thumbHeight">130dp</dimen>
 	
 </resources>

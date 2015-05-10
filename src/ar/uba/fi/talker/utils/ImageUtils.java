@@ -11,7 +11,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Base64;
 
 public final class ImageUtils {
 	
@@ -34,24 +33,11 @@ public final class ImageUtils {
 		int newHeight = (int) (image.getHeight() * (512.0 / image.getWidth()));
 		Bitmap scaled = Bitmap.createScaledBitmap(image, 512, newHeight, true);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		scaled.compress(Bitmap.CompressFormat.PNG, 70, stream);
+		scaled.compress(Bitmap.CompressFormat.PNG, 90, stream);
 		byte[] bytes = stream.toByteArray();
 		return bytes;
 	}
-	
-	public static String convertBitmapToString(Bitmap image) {
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();  
-		image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-		byte[] byteArray = byteArrayOutputStream .toByteArray();
-		String encodedBitmap = Base64.encodeToString(byteArray, Base64.DEFAULT);
-		return encodedBitmap;
-	}
 
-	public static Bitmap convertStringToBitmap(String encodedBitmap) {
-		 byte[] decodedByte = Base64.decode(encodedBitmap, 0);
-		 return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-	}
-	
 	public static void saveFileInternalStorage(String name, Bitmap b, Context context) {
 
 		FileOutputStream out;
