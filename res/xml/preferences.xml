@@ -45,16 +45,32 @@
             android:summary="@string/settings_eraser_size_explain"
             android:title="@string/settings_eraser_size" />
     </PreferenceCategory>
-  
-    <PreferenceCategory android:title="@string/settings_element_text" >
+      
+    <PreferenceCategory android:title="@string/settings_images" >
+        <CheckBoxPreference
+            android:key="@string/settings_image_tag_key"
+            android:summary="@string/settings_images_explain"
+            android:title="@string/settings_element_text" />        
+        <PreferenceScreen
+                android:title="@string/insert_image_title"
+                android:summary="@string/insert_image_title">
+ 
+            <intent android:action=".activities.NewImageActivity" />
+ 
+        </PreferenceScreen>       
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/settings_people" >
         <CheckBoxPreference
             android:key="@string/settings_contact_tag_key"
             android:summary="@string/settings_people_explain"
-            android:title="@string/settings_people" />
-        <CheckBoxPreference
-            android:key="@string/settings_image_tag_key"
-            android:summary="@string/settings_elements_explain"
-            android:title="@string/settings_elements" />        
+            android:title="@string/settings_element_text" />
+        <PreferenceScreen
+                android:title="@string/insert_contact_title"
+                android:summary="@string/insert_contact_title">
+ 
+            <intent android:action=".activities.NewContactActivity" />
+ 
+        </PreferenceScreen>       
     </PreferenceCategory>
-   
 </PreferenceScreen>

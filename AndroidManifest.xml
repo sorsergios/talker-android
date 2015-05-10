@@ -54,6 +54,26 @@
             android:name=".UserSettingActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="landscape" >
+        </activity> 
+        <activity
+            android:icon="@drawable/app_icon"
+            android:name=".NewContactActivity"
+            android:label="@string/insert_image_title"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+           		<action android:name=".activities.NewImageActivity" />
+           		<category android:name="android.intent.category.DEFAULT" />
+       		</intent-filter>
+        </activity>
+          <activity
+            android:icon="@drawable/app_icon"
+            android:name=".NewImageActivity"
+            android:label="@string/insert_contact_title"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+           		<action android:name=".activities.NewContactActivity" />
+           		<category android:name="android.intent.category.DEFAULT" />
+       		</intent-filter>
         </activity>
     </application>
 

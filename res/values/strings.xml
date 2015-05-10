@@ -29,8 +29,8 @@
     <string name="settings_eraser_size">TAMAÑO GOMA</string>
     <string name="settings_eraser_size_explain">SELECCIONE UN TAMAÑO PARA LA GOMA</string>
     <string name="settings_scenery">ESCENARIOS</string>
-    <string name="settings_elements">ELEMENTOS</string>
-    <string name="settings_elements_explain">SELECCIONE PARA VER LAS ETIQUETAS AL INSERTAR ELEMENTOS</string>
+    <string name="settings_images">IMAGENES</string>
+    <string name="settings_images_explain">SELECCIONE PARA VER LAS ETIQUETAS AL INSERTAR IMAGENES</string>
     <string name="settings_people">PERSONAS</string>
     <string name="settings_people_explain">SELECCIONE PARA VER LAS ETIQUETAS AL INSERTAR PERSONAS</string>
     <string name="settings_user">USUARIO</string>
