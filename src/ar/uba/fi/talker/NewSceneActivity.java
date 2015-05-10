@@ -2,12 +2,20 @@ package ar.uba.fi.talker;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -113,8 +121,14 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 			Uri imageUri = data.getData();
 			String scenarioName = imageUri.getLastPathSegment(); 
 	        Bitmap bitmap = null;
-			try {
-				bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+			try {/*Este if sirve para cuando eligen una foto de google +*/
+				if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
+					InputStream is = getContentResolver().openInputStream(imageUri);
+					bitmap = BitmapFactory.decodeStream(is);
+					scenarioName = scenarioName.substring(35);
+				} else {
+					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+				}
 				bytes = ImageUtils.transformImage(bitmap);
 				Context ctx = this.getApplicationContext();
 				ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx);
@@ -139,6 +153,12 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 		}		
 	}
 	
+	private Bitmap getBitmapFromInputStream(InputStream is) {
+
+		Bitmap bmp = BitmapFactory.decodeStream(is);
+		return bmp;
+	}
+
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(ScenarioView scenarioView) {
 		boolean deleted = true;
