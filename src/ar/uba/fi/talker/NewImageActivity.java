@@ -26,8 +26,6 @@ import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.CategoryDAO;
 import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
-import ar.uba.fi.talker.dao.ScenarioDAO;
-import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.utils.GridItems;
