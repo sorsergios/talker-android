@@ -105,7 +105,7 @@ public class GridScenesAdapter extends BaseAdapter {
 	}
 
 	private void setViewItemContent(ViewHolder viewHolder, ScenarioView scenarioView) {
-		if (scenarioView.getPath() != null && scenarioView.getPath().contains("/")){
+		if (scenarioView.getPath().contains("/")){
 			Uri uri = Uri.parse(scenarioView.getPath());
 			viewHolder.imageView.setImageURI(uri);
 		} else {

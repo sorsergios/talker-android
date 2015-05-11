@@ -7,7 +7,6 @@ package ar.uba.fi.talker.dao;
 public class ImageDAO {
 
 	private int id;
-	private int idCode;
 	private int idCategory;
 	private String path;
 	private String name;
@@ -15,10 +14,9 @@ public class ImageDAO {
 	public ImageDAO() {
 	}
 
-	public ImageDAO(int id, int idCode, int idCategory, String path, String name) {
+	public ImageDAO(int id, int idCategory, String path, String name) {
 		super();
 		this.id = id;
-		this.idCode = idCode;
 		this.idCategory = idCategory;
 		this.path = path;
 		this.name = name;
@@ -30,14 +28,6 @@ public class ImageDAO {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getIdCode() {
-		return idCode;
-	}
-
-	public void setIdCode(int idCode) {
-		this.idCode = idCode;
 	}
 
 	public String getPath() {

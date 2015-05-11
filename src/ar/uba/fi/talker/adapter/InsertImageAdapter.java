@@ -42,8 +42,8 @@ public class InsertImageAdapter extends BaseAdapter {
 
 			// set image based on selected text
 			ImageView imageView = (ImageView) gridViewItem.findViewById(R.id.grid_item_image);
-
-			imageView.setImageResource(innerImages.get(position).getIdCode());
+			int idCode = Integer.valueOf(innerImages.get(position).getPath());
+			imageView.setImageResource(idCode);
 
 		} else {
 			gridViewItem = convertView;

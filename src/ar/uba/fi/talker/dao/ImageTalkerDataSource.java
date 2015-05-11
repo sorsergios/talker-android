@@ -13,8 +13,7 @@ public class ImageTalkerDataSource {
 	
 	private SQLiteDatabase database;
 	private final ResourceSQLiteHelper dbHelper;
-	private final String[] allColumns = { ResourceSQLiteHelper.IMAGE_COLUMN_ID,
-			ResourceSQLiteHelper.IMAGE_COLUMN_IDCODE, ResourceSQLiteHelper.IMAGE_COLUMN_PATH,
+	private final String[] allColumns = { ResourceSQLiteHelper.IMAGE_COLUMN_ID, ResourceSQLiteHelper.IMAGE_COLUMN_PATH,
 			ResourceSQLiteHelper.IMAGE_COLUMN_NAME, ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY };
 
 	public ImageTalkerDataSource(Context context) {
@@ -66,10 +65,9 @@ public class ImageTalkerDataSource {
 	private ImageDAO cursorToImages(Cursor cursor) {
 		ImageDAO image = new ImageDAO();
 		image.setId(cursor.getInt(0));
-		image.setIdCode(cursor.getInt(1));
-		image.setPath(cursor.getString(2));
-		image.setName(cursor.getString(3));
-		image.setIdCategory(cursor.getInt(4));
+		image.setPath(cursor.getString(1));
+		image.setName(cursor.getString(2));
+		image.setIdCategory(cursor.getInt(3));
 		return image;
 	}
 	

@@ -39,7 +39,6 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	public static final String IMAGE_TABLE = "image";
 	public static final String IMAGE_COLUMN_ID = "id";
 	public static final String IMAGE_COLUMN_IDCATEGORY = "id_category";
-	public static final String IMAGE_COLUMN_IDCODE = "id_code";
 	public static final String IMAGE_COLUMN_PATH = "path";
 	public static final String IMAGE_COLUMN_NAME = "name";
 	public static final String IMAGE_COLUMN_IS_CONTACT = "is_contact";
@@ -127,7 +126,6 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 			if (!isTableExists(db, IMAGE_TABLE)) {
 				db.execSQL("CREATE TABLE " + IMAGE_TABLE + " ( "
 						+ IMAGE_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-						+ IMAGE_COLUMN_IDCODE + " INTEGER, "
 						+ IMAGE_COLUMN_PATH + " TEXT, "
 						+ IMAGE_COLUMN_NAME + " TEXT, "
 						+ IMAGE_COLUMN_IDCATEGORY + " INTEGER,"
@@ -141,7 +139,7 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 					String name = context.getResources().getString(mThumbTextsImagesForCateg1[i]);
 
 					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
-							+ IMAGE_COLUMN_IDCODE + " , " 
+							+ IMAGE_COLUMN_PATH + " , " 
 							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
 							+ " VALUES (" + idCode + ", " + 1 + ", '" + name + "')");
 				}
@@ -151,7 +149,7 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 					String name = context.getResources().getString(mThumbTextsImagesForCateg2[i]);
 
 					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
-							+ IMAGE_COLUMN_IDCODE + " , " 
+							+ IMAGE_COLUMN_PATH + " , " 
 							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
 							+ " VALUES (" + idCode + ", " + 2 + ", '" + name + "')");
 				}
@@ -162,7 +160,7 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 					String name = context.getResources().getString(mThumbTextsImagesForCateg3[i]);
 
 					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
-							+ IMAGE_COLUMN_IDCODE + " , " 
+							+ IMAGE_COLUMN_PATH + " , " 
 							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
 							+ " VALUES (" + idCode + ", " + 3 + ", '" + name + "')");
 				}
@@ -193,7 +191,7 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 					String name = context.getResources().getString(mThumbTextsImagesForCateg5[i]);
 
 					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
-							+ IMAGE_COLUMN_IDCODE + " , " 
+							+ IMAGE_COLUMN_PATH + " , " 
 							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
 							+ " VALUES (" + idCode + ", " + 5 + ", '" + name + "')");
 					db.execSQL("INSERT INTO " + CONTACT_TABLE + " ( "
