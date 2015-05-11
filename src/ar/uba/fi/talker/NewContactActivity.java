@@ -75,13 +75,14 @@ public class NewContactActivity extends ActionBarActivity implements DeleteScena
 			datasource = new CategoryTalkerDataSource(this.getApplicationContext());
 		}
 	    datasource.open();
-		List<CategoryDAO> allImages = datasource.getAllCategories();
+		List<CategoryDAO> allImages = datasource.getContactCategories();
 	    datasource.close();
 	    ScenarioView scenario = null;
 		for (CategoryDAO scenarioDAO : allImages) {
 			scenario = new ScenarioView();
 			scenario.setId(scenarioDAO.getId());
 			scenario.setName(scenarioDAO.getName());
+			scenario.setPath(getResources().getString(R.drawable.casa));
 			scenarios.add(scenario);
 		}
 		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios);
@@ -140,6 +141,7 @@ public class NewContactActivity extends ActionBarActivity implements DeleteScena
 				ScenarioView scenarioView = new ScenarioView();
 				scenarioView.setId(scenario.getId());
 				scenarioView.setName(scenario.getName());
+				scenarioView.setPath(getResources().getString(R.drawable.casa));
 				GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
 				gsa.addItem(gridItem);
 				scenesPagerSetting();

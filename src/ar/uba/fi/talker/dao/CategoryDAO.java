@@ -12,7 +12,7 @@ public class CategoryDAO {
 	public CategoryDAO() {
 	}
 
-	public CategoryDAO(int keyId, int idCode, String path, String name) {
+	public CategoryDAO(int keyId, String name) {
 		this.id = keyId;
 		this.name = name;
 	}
