@@ -5,15 +5,16 @@ import ar.uba.fi.talker.dao.ScenarioDAO;
 public class ScenarioView {
 	
 	private long id;
-	private int idCode;
 	private String path;
 	private String name;
 	
 	public ScenarioView(ScenarioDAO scenarioDAO) {
 		this.id = scenarioDAO.getId();
-		this.idCode = scenarioDAO.getIdCode();
 		this.path = scenarioDAO.getPath();
 		this.name = scenarioDAO.getName();
+	}
+
+	public ScenarioView() {
 	}
 
 	public long getId() {
@@ -22,14 +23,6 @@ public class ScenarioView {
 	
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getIdCode() {
-		return idCode;
-	}
-
-	public void setIdCode(int idCode) {
-		this.idCode = idCode;
 	}
 
 	public String getPath() {

@@ -106,6 +106,11 @@ public class CategoryTalkerDataSource {
 		cursor.close();
 		return categories;
 	}
+
+	public void deleteCategory(long keyID) {
+		database.delete(ResourceSQLiteHelper.CATEGORY_TABLE,
+			ResourceSQLiteHelper.CATEGORY_COLUMN_ID + " = " + keyID, null);
+	}
 	
 	
 }

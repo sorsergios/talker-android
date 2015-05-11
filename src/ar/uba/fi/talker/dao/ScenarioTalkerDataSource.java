@@ -14,7 +14,7 @@ public class ScenarioTalkerDataSource {
 	private SQLiteDatabase database;
 	private ResourceSQLiteHelper dbHelper;
 	private String[] allColumns = { ResourceSQLiteHelper.SCENARIO_COLUMN_ID,
-			ResourceSQLiteHelper.SCENARIO_COLUMN_IDCODE, ResourceSQLiteHelper.SCENARIO_COLUMN_PATH,
+			ResourceSQLiteHelper.SCENARIO_COLUMN_PATH,
 			ResourceSQLiteHelper.SCENARIO_COLUMN_NAME };
 
 	public ScenarioTalkerDataSource(Context context) {
@@ -66,9 +66,8 @@ public class ScenarioTalkerDataSource {
 	private ScenarioDAO cursorToImages(Cursor cursor) {
 		ScenarioDAO scenario = new ScenarioDAO();
 		scenario.setId(cursor.getInt(0));
-		scenario.setIdCode(cursor.getInt(1));
-		scenario.setPath(cursor.getString(2));
-		scenario.setName(cursor.getString(3));
+		scenario.setPath(cursor.getString(1));
+		scenario.setName(cursor.getString(2));
 		return scenario;
 	}
 	

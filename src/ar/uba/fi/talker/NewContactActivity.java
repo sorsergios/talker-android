@@ -24,6 +24,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
+import ar.uba.fi.talker.dao.CategoryDAO;
+import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioDAO;
 import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
@@ -44,7 +46,7 @@ public class NewContactActivity extends ActionBarActivity implements DeleteScena
 	private PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerScenesAdapter pagerAdapter;
-	private ScenarioTalkerDataSource datasource;
+	private CategoryTalkerDataSource datasource;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +74,17 @@ public class NewContactActivity extends ActionBarActivity implements DeleteScena
 		ArrayList<ScenarioView> scenarios = new ArrayList<ScenarioView>();
 
 		if (datasource == null ) {
-			datasource = new ScenarioTalkerDataSource(this.getApplicationContext());
+			datasource = new CategoryTalkerDataSource(this.getApplicationContext());
 		}
 	    datasource.open();
-		List<ScenarioDAO> allImages = datasource.getAllImages();
+		List<CategoryDAO> allImages = datasource.getAllCategories();
 	    datasource.close();
-		for (ScenarioDAO scenarioDAO: allImages) {
-			scenarios.add(new ScenarioView(scenarioDAO));
+	    ScenarioView scenario = null;
+		for (CategoryDAO scenarioDAO : allImages) {
+			scenario = new ScenarioView();
+			scenario.setId(scenarioDAO.getId());
+			scenario.setName(scenarioDAO.getName());
+			scenarios.add(scenario);
 		}
 		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios);
 
@@ -112,7 +118,7 @@ public class NewContactActivity extends ActionBarActivity implements DeleteScena
 		super.onActivityResult(requestCode, resultCode, data);
 		/* Está configurado para de empezar la conversación directamente y guardar el escenario nuevo en la base */
 		byte[] bytes = null;
-		ScenarioDAO scenario = null;
+		CategoryDAO scenario = null;
 		if (requestCode == RESULT_LOAD_IMAGE && null != data) {
 			Uri imageUri = data.getData();
 			String scenarioName = imageUri.getLastPathSegment(); 
@@ -130,10 +136,12 @@ public class NewContactActivity extends ActionBarActivity implements DeleteScena
 				ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx);
 				File file = new File(ctx.getFilesDir(), scenarioName);
 				datasource.open();
-				scenario = datasource.createScenario(file.getPath(), scenarioName);
+				scenario = datasource.createCategory(file.getPath(), scenarioName);
 				datasource.close();
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
-				ScenarioView scenarioView = new ScenarioView(scenario);
+				ScenarioView scenarioView = new ScenarioView();
+				scenarioView.setId(scenario.getId());
+				scenarioView.setName(scenario.getName());
 				GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
 				gsa.addItem(gridItem);
 				scenesPagerSetting();
@@ -152,17 +160,18 @@ public class NewContactActivity extends ActionBarActivity implements DeleteScena
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(ScenarioView scenarioView) {
 		boolean deleted = true;
-		if (scenarioView.getPath() != null) {
+		if (scenarioView.getPath().contains("/")) {
 			File file = new File(scenarioView.getPath());
 			deleted = file.delete();
 		}
 		if (deleted){
 			datasource.open();
-			datasource.deleteScenario(scenarioView.getId());
+			datasource.deleteCategory(scenarioView.getId());
 			datasource.close();
+		} else {
+			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
+			Log.e("NewScene", "Unexpected error deleting imagen.");
 		}
-		Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
-		Log.e("NewScene", "Unexpected error deleting imagen.");
 		scenesPagerSetting();
 	}
 

@@ -105,11 +105,12 @@ public class GridScenesAdapter extends BaseAdapter {
 	}
 
 	private void setViewItemContent(ViewHolder viewHolder, ScenarioView scenarioView) {
-		if (scenarioView.getIdCode() != 0){
-			viewHolder.imageView.setImageResource(scenarioView.getIdCode());
-		} else {
+		if (scenarioView.getPath() != null && scenarioView.getPath().contains("/")){
 			Uri uri = Uri.parse(scenarioView.getPath());
 			viewHolder.imageView.setImageURI(uri);
+		} else {
+			int idCode = Integer.valueOf(scenarioView.getPath());
+			viewHolder.imageView.setImageResource(idCode);
 		}
 		viewHolder.textTitle.setText(scenarioView.getName());
 	}

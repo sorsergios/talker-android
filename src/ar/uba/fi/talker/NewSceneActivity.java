@@ -152,7 +152,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(ScenarioView scenarioView) {
 		boolean deleted = true;
-		if (scenarioView.getPath() != null) {
+		if (scenarioView.getPath().contains("/")) {
 			File file = new File(scenarioView.getPath());
 			deleted = file.delete();
 		}
@@ -160,9 +160,10 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 			datasource.open();
 			datasource.deleteScenario(scenarioView.getId());
 			datasource.close();
+		} else {
+			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
+			Log.e("NewScene", "Unexpected error deleting imagen.");
 		}
-		Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
-		Log.e("NewScene", "Unexpected error deleting imagen.");
 		scenesPagerSetting();
 	}
 

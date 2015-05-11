@@ -26,7 +26,6 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	//SCENARIO TABLE
 	public static final String SCENARIO_TABLE = "scenario";
 	public static final String SCENARIO_COLUMN_ID = "id";
-	public static final String SCENARIO_COLUMN_IDCODE = "id_code";
 	public static final String SCENARIO_COLUMN_PATH = "path";
 	public static final String SCENARIO_COLUMN_NAME = "name";
 
@@ -93,7 +92,6 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 			if (!isTableExists(db, SCENARIO_TABLE)) {
 				db.execSQL("CREATE TABLE " + SCENARIO_TABLE + " ( "
 						+ SCENARIO_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-						+ SCENARIO_COLUMN_IDCODE + " INTEGER, "
 						+ SCENARIO_COLUMN_PATH + " TEXT, "
 						+ SCENARIO_COLUMN_NAME + " TEXT)");
 				for (int i = 0; i < mThumbIdsScenario.length; i++) {
@@ -102,9 +100,8 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 					String name = context.getResources().getString(mThumbTextsScenario[i]);
 
 					db.execSQL("INSERT INTO " + SCENARIO_TABLE + " ( "
-							+ SCENARIO_COLUMN_IDCODE + " , " 
 							+ SCENARIO_COLUMN_PATH + " , " + SCENARIO_COLUMN_NAME + " ) "
-							+ " VALUES (" + idCode + ", " + "NULL" + ", '" + name + "')");
+							+ " VALUES (" + idCode + ", '" + name + "')");
 				}
 			}
 			
@@ -133,7 +130,10 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 						+ IMAGE_COLUMN_IDCODE + " INTEGER, "
 						+ IMAGE_COLUMN_PATH + " TEXT, "
 						+ IMAGE_COLUMN_NAME + " TEXT, "
-						+ IMAGE_COLUMN_IDCATEGORY + " INTEGER)");
+						+ IMAGE_COLUMN_IDCATEGORY + " INTEGER,"
+						+ " FOREIGN KEY(" + IMAGE_COLUMN_IDCATEGORY
+						+ ") REFERENCES " + CATEGORY_TABLE + "("
+						+ CATEGORY_COLUMN_ID + ") ON DELETE CASCADE)");
 				
 				for (int i = 0; i < mThumbIdsImagesForCateg1.length; i++) {
 					// Generate and insert default data
@@ -179,10 +179,14 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 			if (!isTableExists(db, CONTACT_TABLE)) {
 				db.execSQL("CREATE TABLE " + CONTACT_TABLE + " ( "
 						+ CONTACT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-						+ CONTACT_COLUMN_IMAGE_ID + " INTEGER , " //FIXME no se como poner foreign key
+						+ CONTACT_COLUMN_IMAGE_ID + " INTEGER , "
 						+ CONTACT_COLUMN_PHONE + " TEXT, "
-						+ CONTACT_COLUMN_ADDRESS + " TEXT )");
-			
+						+ CONTACT_COLUMN_ADDRESS + " TEXT,"
+						+ " FOREIGN KEY("
+						+ CONTACT_COLUMN_IMAGE_ID + ") REFERENCES "
+						+ IMAGE_TABLE + "(" + IMAGE_COLUMN_ID
+						+ ") ON DELETE CASCADE)");
+
 				for (int i = 0; i < mThumbIdsImagesForCateg5.length; i++) {
 					// Generate and insert default data
 					int idCode = mThumbIdsImagesForCateg5[i];
@@ -192,6 +196,11 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 							+ IMAGE_COLUMN_IDCODE + " , " 
 							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
 							+ " VALUES (" + idCode + ", " + 5 + ", '" + name + "')");
+					db.execSQL("INSERT INTO " + CONTACT_TABLE + " ( "
+							+ CONTACT_COLUMN_IMAGE_ID + " , " 
+							+ CONTACT_COLUMN_ADDRESS + " , " 
+							+ CONTACT_COLUMN_PHONE + " ) "
+							+ " VALUES ("  + 1 + ", " + "'yerbal 2635'" + ", " + "1559285532" +")");
 				}
 			}
 		}
@@ -208,6 +217,12 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + CONVERSATION_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + CONTACT_TABLE);
 		onCreate(db);
+	}
+	
+	@Override
+	public void onOpen(SQLiteDatabase db) {
+		super.onOpen(db);
+		db.execSQL("PRAGMA foreign_keys=ON");
 	}
 	
 	/*IMAGES OF SCENARIO*/

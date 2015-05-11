@@ -57,10 +57,11 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 				
 				Bundle extras = new Bundle();
 				ScenarioView scenarioView = gridItem.getScenarioView();
-				if (scenarioView.getIdCode() == 0) {
+				if (scenarioView.getPath() != null && scenarioView.getPath().contains("/")){
 					extras.putString("path", scenarioView.getPath());
 				} else {
-					extras.putInt("code", scenarioView.getIdCode());
+					int idCode = Integer.valueOf(scenarioView.getPath());
+					extras.putInt("code", idCode);
 				}
 				Intent intent = new Intent(getActivity().getApplicationContext(), CanvasActivity.class);
 				intent.putExtras(extras);

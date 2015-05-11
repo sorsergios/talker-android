@@ -7,16 +7,14 @@ package ar.uba.fi.talker.dao;
 public class ScenarioDAO {
 
 	private int id;
-	private int idCode;
 	private String path;
 	private String name;
 
 	public ScenarioDAO() {
 	}
 
-	public ScenarioDAO(int keyId, int idCode, String path, String name) {
+	public ScenarioDAO(int keyId, String path, String name) {
 		this.id = keyId;
-		this.idCode = idCode;
 		this.path = path;
 		this.name = name;
 	}
@@ -27,14 +25,6 @@ public class ScenarioDAO {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getIdCode() {
-		return idCode;
-	}
-
-	public void setIdCode(int idCode) {
-		this.idCode = idCode;
 	}
 
 	public String getPath() {
@@ -52,6 +42,5 @@ public class ScenarioDAO {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 }

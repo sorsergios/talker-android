@@ -45,11 +45,12 @@ public class SceneAdapter extends BaseAdapter {
 
 		ImageView imageView = (ImageView) viewHolder.findViewById(R.id.image);
 		ScenarioView scenarioView = scenes.get(position);
-		if (scenarioView .getIdCode() != 0){
-			imageView.setImageResource(scenarioView.getIdCode());
-		} else {
+		if (scenarioView.getPath() != null && scenarioView.getPath().contains("/")){
 			Uri uri = Uri.parse(scenarioView.getPath());
 			imageView.setImageURI(uri);
+		} else {
+			int idCode = Integer.valueOf(scenarioView.getPath());
+			imageView.setImageResource(idCode);
 		}
 		TextView textTitle = (TextView) viewHolder.findViewById(R.id.text);
 		textTitle .setText(scenarioView.getName());
