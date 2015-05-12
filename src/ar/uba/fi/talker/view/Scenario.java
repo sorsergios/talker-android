@@ -187,7 +187,7 @@ public class Scenario extends FrameLayout {
 		draggableComponents.add(alterComponent);
 	}
 
-	public void addImage(Bitmap image) {
+	public void addImage(Bitmap image, String label) {
 		Component alterComponent = ComponentFactory.createComponent(
 				ComponentType.IMAGE, getContext());
 
@@ -198,7 +198,7 @@ public class Scenario extends FrameLayout {
 
 		this.addView(alterComponent, layoutParams);
 
-		((Image) alterComponent).setContent(image);
+		((Image) alterComponent).setContent(image, label);
 		alterComponent.toggleActive();
 		draggableComponents.add(alterComponent);
 	}

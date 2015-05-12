@@ -18,7 +18,7 @@ import ar.uba.fi.talker.paint.PaintType;
 
 public class DateCalendar extends DragComponent {
 
-	private Paint paint;
+	private final Paint paint;
 	private Bitmap mImage;
 	
 	public DateCalendar(Context arg0) {
@@ -100,7 +100,7 @@ public class DateCalendar extends DragComponent {
 			if (bitmapConfig == null) {
 				bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
 			}
-			// resource bitmaps are imutable, so we need to convert it to mutable one
+			// resource bitmaps are immutable, so we need to convert it to mutable one
 			bitmap = bitmap.copy(bitmapConfig, true);
 
 			Canvas canvas = new Canvas(bitmap);

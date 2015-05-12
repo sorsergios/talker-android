@@ -13,25 +13,24 @@ import ar.uba.fi.talker.paint.PaintType;
 public class Image extends DragComponent {
 
 	private static final int HEIGHT = 200; // TODO Make it a parameter.
-	private Paint paint;
+	private final Paint regPaint;
+	private final Paint textPaint;
 	private String label;
 	private Bitmap mImage;
 	
 	public Image(Context arg0) {
 		super(arg0);
-		paint = PaintManager.getPaint(PaintType.REGULAR);
-		// TODO Calcular donde aparece el texto.
+		regPaint = PaintManager.getPaint(PaintType.REGULAR);
+		textPaint = PaintManager.getPaint(PaintType.TEXT);
 	}
 
 	@Override
 	protected Parcelable onSaveInstanceState() {
-
 		Bundle bundle = new Bundle();
 	    bundle.putParcelable("instanceState", super.onSaveInstanceState());
 	    bundle.putParcelable("image", this.mImage);
 	    bundle.putString("label", this.label);
 	    return bundle;
-		
 	}
 
 	@Override
@@ -57,7 +56,10 @@ public class Image extends DragComponent {
 	@Override
 	public void onDraw(Canvas canvas) {
 		if (mImage != null) {
-			canvas.drawBitmap(mImage, point.x+deltaPoint.x, point.y+deltaPoint.y, paint);
+			canvas.drawBitmap(mImage, point.x+deltaPoint.x, point.y+deltaPoint.y, regPaint);
+		}
+		if (label!=null){
+			canvas.drawText(label, point.x+deltaPoint.x, point.y+deltaPoint.y, textPaint);
 		}
 	}
 	
@@ -71,7 +73,7 @@ public class Image extends DragComponent {
 		);
 	}
 
-	public void setContent(Bitmap image) {
+	public void setContent(Bitmap image, String label) {
 		int bWidth = image.getWidth();
         int bHeight = image.getHeight();
 
@@ -81,6 +83,8 @@ public class Image extends DragComponent {
         int nWidth = (int) (HEIGHT / parentRatio);
         
         mImage =  Bitmap.createScaledBitmap(image, nWidth, nHeight, true);
+        this.label = label;
+        
 	}
 
 }

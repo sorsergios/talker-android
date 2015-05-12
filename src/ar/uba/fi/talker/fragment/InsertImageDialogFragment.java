@@ -17,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.adapter.InsertImageAdapter;
@@ -40,7 +41,7 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 	public interface InsertImageDialogListener {
 		public void onDialogPositiveClickInsertImageDialogListener(Uri uri,
 				Matrix matrix);
-		public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap);
+		public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap, String label);
 		public void onDialogPositiveClickInsertImageDialogListener(
 				InsertImageDialogFragment insertImageDialogFragment);
 	}
@@ -142,9 +143,10 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 							public void onClick(DialogInterface dialog, int id) {
 								if (viewSelected != null){
 									ImageView imageView = (ImageView) viewSelected.findViewById(R.id.grid_item_image);
+									TextView t = (TextView) viewSelected.findViewById(R.id.grid_item_label);
 									imageView.buildDrawingCache();
 									Bitmap bmap = Bitmap.createBitmap(imageView.getDrawingCache());
-									listener.onDialogPositiveClickInsertImageDialogListener(bmap);								
+									listener.onDialogPositiveClickInsertImageDialogListener(bmap, t.getText().toString());								
 									dialog.dismiss();
 								} else {
 									listener.onDialogPositiveClickInsertImageDialogListener(InsertImageDialogFragment.this);

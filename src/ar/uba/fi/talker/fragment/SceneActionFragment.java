@@ -16,9 +16,9 @@ import ar.uba.fi.talker.utils.ScenarioView;
 
 public class SceneActionFragment extends DialogFragment implements OnClickListener {
 
-	private GridItems gridItem;
-	private View view;
-	private BaseAdapter adapter;
+	private final GridItems gridItem;
+	private final View view;
+	private final BaseAdapter adapter;
 
 	public SceneActionFragment(GridItems gridItems, View view, BaseAdapter adapter) {
 		this.gridItem = gridItems;

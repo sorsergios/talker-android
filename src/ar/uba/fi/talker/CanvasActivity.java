@@ -240,7 +240,7 @@ public class CanvasActivity extends ActionBarActivity implements
 		
 		try {
 			Bitmap ima1 = Media.getBitmap(this.getContentResolver(), uri);
-			scenario.addImage(Bitmap.createBitmap(ima1, 0, 0, ima1.getWidth(), ima1.getHeight(), matrix, true));
+			scenario.addImage(Bitmap.createBitmap(ima1, 0, 0, ima1.getWidth(), ima1.getHeight(), matrix, true), null);
 		} catch (FileNotFoundException e) {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 			Log.e("CANVAS", "Unexpected error adding imagen.", e);
@@ -257,8 +257,8 @@ public class CanvasActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap) {
-		scenario.addImage(bitmap);
+	public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap, String label) {
+		scenario.addImage(bitmap, label);
 	}
 	
 	@Override
