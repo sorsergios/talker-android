@@ -36,6 +36,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.utils.BackgroundUtil;
 
 import java.util.ArrayList;
 
@@ -207,7 +208,7 @@ public class TitlePageIndicator extends View implements PageIndicator {
 
         Drawable background = a.getDrawable(R.styleable.TitlePageIndicator_android_background);
         if (background != null) {
-        	setBackground(background);
+        	BackgroundUtil.setBackground(this, background);
         }
 
         a.recycle();

@@ -33,6 +33,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.utils.BackgroundUtil;
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 import static android.widget.LinearLayout.HORIZONTAL;
 import static android.widget.LinearLayout.VERTICAL;
@@ -104,7 +105,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
 
         Drawable background = a.getDrawable(R.styleable.CirclePageIndicator_android_background);
         if (background != null) {
-          setBackground(background);
+        	BackgroundUtil.setBackground(this, background);
         }
 
         a.recycle();

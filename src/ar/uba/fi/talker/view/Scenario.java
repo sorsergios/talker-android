@@ -27,6 +27,7 @@ import ar.uba.fi.talker.component.Image;
 import ar.uba.fi.talker.component.Text;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
+import ar.uba.fi.talker.utils.BackgroundUtil;
 
 public class Scenario extends FrameLayout {
 
@@ -161,7 +162,7 @@ public class Scenario extends FrameLayout {
 		mImage = image;
 
 		BitmapDrawable background = new BitmapDrawable(getResources(), image);
-		this.setBackground(background);
+		BackgroundUtil.setBackground(this, background);
 	}
 
 	public void clear() {
