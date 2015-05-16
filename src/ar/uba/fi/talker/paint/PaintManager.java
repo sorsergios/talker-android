@@ -46,5 +46,9 @@ public final class PaintManager {
 	public static void setSettings(Setting sharedPref) {
 		PaintManager.settings = sharedPref;
 	}
+
+	public static Setting getSettings() {
+		return settings;
+	}
 	
 }
