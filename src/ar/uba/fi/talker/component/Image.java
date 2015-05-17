@@ -58,8 +58,8 @@ public class Image extends DragComponent {
 		if (mImage != null) {
 			canvas.drawBitmap(mImage, point.x+deltaPoint.x, point.y+deltaPoint.y, regPaint);
 		}
-		if (label!=null){
-			canvas.drawText(label, point.x+deltaPoint.x, point.y+deltaPoint.y, textPaint);
+		if (label != null) {
+			canvas.drawText(label, point.x + deltaPoint.x, point.y + deltaPoint.y, textPaint);
 		}
 	}
 	

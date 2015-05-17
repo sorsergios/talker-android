@@ -26,6 +26,7 @@ import ar.uba.fi.talker.dao.CategoryDAO;
 import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.paint.PaintManager;
 
 public class InsertImageDialogFragment extends TalkerDialogFragment {
 
@@ -42,6 +43,7 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 		public void onDialogPositiveClickInsertImageDialogListener(Uri uri,
 				Matrix matrix);
 		public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap, String label);
+		public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap);
 		public void onDialogPositiveClickInsertImageDialogListener(
 				InsertImageDialogFragment insertImageDialogFragment);
 	}
@@ -146,7 +148,14 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 									TextView t = (TextView) viewSelected.findViewById(R.id.grid_item_label);
 									imageView.buildDrawingCache();
 									Bitmap bmap = Bitmap.createBitmap(imageView.getDrawingCache());
-									listener.onDialogPositiveClickInsertImageDialogListener(bmap, t.getText().toString());								
+									String imagelabel = t.getText().toString();
+									boolean shouldShowLabel = isContactSearch == Boolean.TRUE ? 
+											PaintManager.getSettings().getIsEnabledLabelContact() : PaintManager.getSettings().getIsEnabledLabelImage();
+									if (shouldShowLabel){
+										listener.onDialogPositiveClickInsertImageDialogListener(bmap, imagelabel);								
+									}else{
+										listener.onDialogPositiveClickInsertImageDialogListener(bmap, null);								
+									}
 									dialog.dismiss();
 								} else {
 									listener.onDialogPositiveClickInsertImageDialogListener(InsertImageDialogFragment.this);

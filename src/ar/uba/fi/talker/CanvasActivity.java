@@ -262,6 +262,11 @@ public class CanvasActivity extends ActionBarActivity implements
 	}
 	
 	@Override
+	public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap) {
+		scenario.addImage(bitmap, null);
+	}
+	
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
