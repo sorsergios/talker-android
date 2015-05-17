@@ -9,14 +9,6 @@
     tools:context="ar.uba.fi.talker.TalkerMainActivity" >
 
     <Button
-        android:id="@+id/exit_app_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/manner_of_use_button"
-        android:drawableStart="@drawable/exit" />
-
-    <Button
         android:id="@+id/manner_of_use_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,5 +43,13 @@
         android:visibility="gone"
         android:drawableTop="@drawable/history_panel"
         android:text="@string/history_panel" />
+
+    <Button
+        android:id="@+id/exit_app_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:drawableStart="@drawable/exit" />
 
 </RelativeLayout>

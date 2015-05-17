@@ -32,6 +32,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.utils.BackgroundUtil;
 
 /**
  * Draws a line for each page. The current page line is colored differently
@@ -89,7 +90,7 @@ public class LinePageIndicator extends View implements PageIndicator {
 
         Drawable background = a.getDrawable(R.styleable.LinePageIndicator_android_background);
         if (background != null) {
-          setBackground(background);
+        	BackgroundUtil.setBackground(this, background);
         }
 
         a.recycle();

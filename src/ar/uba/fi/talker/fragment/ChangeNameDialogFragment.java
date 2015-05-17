@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.utils.ScenarioView;
 
@@ -59,13 +60,17 @@ public class ChangeNameDialogFragment extends TalkerDialogFragment implements Di
 		if (which == AlertDialog.BUTTON_POSITIVE && input.getText().length() != 0) {
 			String text = input.getText().toString();
 			scenarioView.setName(text);
-			new NameChanger().execute(scenarioView);
+			if (scenarioView.isScenario()) {
+				new ScenarioNameChanger().execute(scenarioView);				
+			} else {
+				new ConversationNameChanger().execute(scenarioView);
+			}
 			adapter.notifyDataSetChanged();
 		}
 		dialog.dismiss();
 	}
-	
-	private class NameChanger extends AsyncTask<ScenarioView, ProgressBar, Boolean> {
+
+	private class ScenarioNameChanger extends AsyncTask<ScenarioView, ProgressBar, Boolean> {
 
 		@Override
 		protected Boolean doInBackground(ScenarioView... params) {
@@ -73,6 +78,20 @@ public class ChangeNameDialogFragment extends TalkerDialogFragment implements Di
 			ScenarioView scenarioView = params[0];
 			datasource.open();
 			datasource.updateScenario(scenarioView.getId(), scenarioView.getName());
+			datasource.close();
+			return true;
+		}
+		
+	}
+	
+	private class ConversationNameChanger extends AsyncTask<ScenarioView, ProgressBar, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(ScenarioView... params) {
+			ConversationTalkerDataSource datasource = new ConversationTalkerDataSource(ChangeNameDialogFragment.this.getActivity().getApplicationContext());
+			ScenarioView scenarioView = params[0];
+			datasource.open();
+			datasource.updateConversation(scenarioView.getId(), scenarioView.getName());
 			datasource.close();
 			return true;
 		}
