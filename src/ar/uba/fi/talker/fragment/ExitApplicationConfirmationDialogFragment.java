@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import ar.uba.fi.talker.R;
 
-public class ExitApplicationConfirmationDialogFragment extends TalkerDialogFragment {
+public class ExitApplicationConfirmationDialogFragment extends ParentDialogFragment {
 
 	public interface ExitAplicationDialogListener {
 		public void onDialogPositiveClickExitApplicationDialogListener(

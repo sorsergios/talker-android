@@ -29,7 +29,7 @@ import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 import ar.uba.fi.talker.paint.PaintManager;
 
-public class InsertImageDialogFragment extends TalkerDialogFragment {
+public class InsertImageDialogFragment extends ParentDialogFragment {
 
 	private ViewFlipper flipper;
 	

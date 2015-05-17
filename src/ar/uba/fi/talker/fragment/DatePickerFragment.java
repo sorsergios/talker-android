@@ -10,7 +10,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import ar.uba.fi.talker.R;
 
-public class DatePickerFragment extends TalkerDialogFragment {
+public class DatePickerFragment extends ParentDialogFragment {
 	
 	public interface DatePickerDialogListener {
 		public void onDialogPositiveClickDatePickerDialogListener(

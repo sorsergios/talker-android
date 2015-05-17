@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.R;
 
-public class ChangeNameConversationDialogFragment extends TalkerDialogFragment {
+public class ChangeNameConversationDialogFragment extends ParentDialogFragment {
 
 	public interface TextDialogListener {
 		public void onDialogPositiveClickTextDialogListener(

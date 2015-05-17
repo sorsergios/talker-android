@@ -8,7 +8,7 @@ import android.os.Bundle;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.utils.ScenarioView;
 
-public class DeleteScenarioConfirmationDialogFragment extends TalkerDialogFragment implements DialogInterface.OnClickListener {
+public class DeleteScenarioConfirmationDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {
 
 	public interface DeleteScenarioDialogListener {
 		public void onDialogPositiveClickDeleteScenarioDialogListener(

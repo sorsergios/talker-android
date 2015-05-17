@@ -18,7 +18,7 @@ import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.utils.ScenarioView;
 
-public class ChangeNameDialogFragment extends TalkerDialogFragment implements DialogInterface.OnClickListener {
+public class ChangeNameDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {
 
 	private ScenarioView scenarioView;
 	private BaseAdapter adapter;

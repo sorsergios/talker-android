@@ -8,7 +8,7 @@ import android.view.Gravity;
 import android.widget.Button;
 import ar.uba.fi.talker.R;
 
-public class TalkerDialogFragment extends DialogFragment {
+public class ParentDialogFragment extends DialogFragment {
 
 	@Override
 	public void onStart() {
@@ -33,7 +33,7 @@ public class TalkerDialogFragment extends DialogFragment {
 		negativeButton.setBackgroundColor(getResources().getColor(R.color.redcancel));
 
 		Button neutralButton = ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL);
-		Drawable drawableNeutral = getActivity().getResources().getDrawable(R.drawable.gallery);
+		Drawable drawableNeutral = getActivity().getResources().getDrawable(R.drawable.sign_add);
 		neutralButton.setText("");
 		neutralButton.setTextSize(0);
 		neutralButton.setGravity(Gravity.CENTER);

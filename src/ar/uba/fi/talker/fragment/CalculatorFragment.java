@@ -22,7 +22,7 @@ import ar.uba.fi.talker.calculator.CalculatorState;
 import ar.uba.fi.talker.calculator.CalculatorValue;
 import ar.uba.fi.talker.view.Scenario;
 
-public class CalculatorFragment extends TalkerDialogFragment implements OnClickListener {
+public class CalculatorFragment extends ParentDialogFragment implements OnClickListener {
 
 	private SparseArray<CalculatorExpression> buttons;
 	private TextView text;
