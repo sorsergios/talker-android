@@ -32,6 +32,14 @@ public class TalkerDialogFragment extends DialogFragment {
 		negativeButton.setCompoundDrawables(null, drawableNegative, null, null);
 		negativeButton.setBackgroundColor(getResources().getColor(R.color.redcancel));
 
+		Button neutralButton = ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL);
+		Drawable drawableNeutral = getActivity().getResources().getDrawable(R.drawable.gallery);
+		neutralButton.setText("");
+		neutralButton.setTextSize(0);
+		neutralButton.setGravity(Gravity.CENTER);
+		drawableNeutral.setBounds(0, 0, drawableNeutral.getIntrinsicWidth(), drawableNeutral.getIntrinsicHeight());
+		neutralButton.setCompoundDrawables(null, drawableNeutral, null, null);
+		neutralButton.setBackgroundColor(getResources().getColor(R.color.blue));
 	}
 
 }

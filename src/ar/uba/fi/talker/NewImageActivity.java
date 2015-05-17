@@ -135,7 +135,8 @@ public class NewImageActivity extends ActionBarActivity implements DeleteScenari
 					ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx);
 					File file = new File(ctx.getFilesDir(), scenarioName);
 					datasource.open();
-					scenario = datasource.createCategory(file.getPath(), scenarioName);
+					/*FIXME: crear bien el id de categoria*/
+					scenario = datasource.createCategory(1, scenarioName);
 					datasource.close();
 					GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 					ScenarioView scenarioView = new ScenarioView();

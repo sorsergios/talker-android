@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -35,7 +36,8 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 	private AlertDialog alert;
 	private View viewSelected;
 	private Boolean isContactSearch = false;
-	
+	private int RESULT_INSERT_NEW_IMAGE = 100;
+	public static long categId = 0;
 	private CategoryTalkerDataSource categoryTalkerDataSource;
 	private ImageTalkerDataSource imageTalkerDataSource;
 	
@@ -111,7 +113,7 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 
-				long categId = insertImageCategoryAdapter.getItemId(position);
+				categId = insertImageCategoryAdapter.getItemId(position);
 				List<ImageDAO> innnerImages = imageTalkerDataSource.getImagesForCategory(categId);
 				gridViewImages.setAdapter(new InsertImageAdapter(getActivity(),innnerImages));
 				flipper.showNext();
@@ -127,13 +129,6 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 				}
 				v.setBackgroundColor(getActivity().getResources().getColor(R.color.selectionViolet));
 				viewSelected = v;
-	/*			if (position == 4) {
-					Intent i = new Intent(
-							Intent.ACTION_PICK,
-							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-					getActivity().startActivityForResult(i, RESULT_LOAD_IMAGE);
-				}
-				*/
 			}
 		});
 
@@ -166,6 +161,21 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int id) {
+								if (flipper.getCurrentView().equals(flipper.getChildAt(1))){
+									flipper.showPrevious();
+								}
+								dialog.dismiss();
+							}
+						})
+				.setNeutralButton(R.string.insert_image_cancel,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								Intent i = new Intent(
+										Intent.ACTION_PICK,
+										android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+								getActivity().startActivityForResult(i, RESULT_INSERT_NEW_IMAGE);
 								dialog.dismiss();
 							}
 						});
@@ -174,7 +184,6 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 		return alert; 
 	}
 
-	
 	@Override
 	public void onStart() {
 		super.onStart(); // super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after
@@ -187,8 +196,6 @@ public class InsertImageDialogFragment extends TalkerDialogFragment {
 				public void onClick(View v) {
 					if (flipper.getCurrentView().equals(flipper.getChildAt(1))){
 						flipper.showPrevious();
-				/*		Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
-						positiveButton.setEnabled(false);*/
 					} else {
 						dialog.dismiss();
 					}

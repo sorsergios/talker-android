@@ -28,10 +28,11 @@ public class ImageTalkerDataSource {
 		dbHelper.close();
 	}
 
-	public ImageDAO createImage(String path, String name) {
+	public ImageDAO createImage(String path, String name, long categID) {
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_PATH, path);
 		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_NAME, name);
+		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY, categID);
 		long insertId = database.insert(ResourceSQLiteHelper.IMAGE_TABLE, null, values);
 		Cursor cursor = database.query(ResourceSQLiteHelper.IMAGE_TABLE, allColumns,
 				ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + insertId, null, null, null, null);

@@ -3,6 +3,7 @@ package ar.uba.fi.talker;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,7 +38,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
+import ar.uba.fi.talker.dao.CategoryDAO;
+import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
+import ar.uba.fi.talker.dao.ImageDAO;
+import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 import ar.uba.fi.talker.dao.TalkerSettingManager;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
@@ -68,8 +73,11 @@ public class CanvasActivity extends ActionBarActivity implements
 	private ConversationTalkerDataSource datasourceConversation;
 
 	private View activeTool;
+	private CategoryTalkerDataSource datasourceCategory;
+	private ImageTalkerDataSource datasourceImage;
 	
 	private static int RESULT_LOAD_IMAGE = 1;
+	private static int RESULT_INSERT_NEW_IMAGE = 100;
 	
 	private void setActiveTool(View view) {
 		if (activeTool != null) {
@@ -265,10 +273,10 @@ public class CanvasActivity extends ActionBarActivity implements
 	public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap) {
 		scenario.addImage(bitmap, null);
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+		if ((requestCode == RESULT_LOAD_IMAGE || requestCode == RESULT_INSERT_NEW_IMAGE) && resultCode == Activity.RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
 
 			String[] filePathColumn = { MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION };
@@ -282,13 +290,45 @@ public class CanvasActivity extends ActionBarActivity implements
 			Matrix matrix = new Matrix();
 			matrix.postRotate(orientation);
 			cursor.close();
-
+			if (requestCode == RESULT_INSERT_NEW_IMAGE){
+				saveNewImage(data, selectedImage);
+			}
 			this.onDialogPositiveClickInsertImageDialogListener(selectedImage, matrix);
 
 		} else if (requestCode == RESULT_SETTINGS && resultCode == Activity.RESULT_CANCELED) {
 			PaintManager.setSettings(TalkerSettingManager.getSettings(this));
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void saveNewImage(Intent data, Uri selectedImage) {
+		String imageName = selectedImage.getLastPathSegment(); 
+		Bitmap bitmap = null;
+		try {
+			if (selectedImage != null && selectedImage.getHost().contains("com.google.android.apps.photos.content")){
+				InputStream is = getContentResolver().openInputStream(selectedImage);
+				bitmap = BitmapFactory.decodeStream(is);
+				imageName = imageName.substring(35);
+			} else {
+				bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+			}
+			Context ctx = this.getApplicationContext();
+			ImageUtils.saveFileInternalStorage(imageName, bitmap, ctx);
+			File file = new File(ctx.getFilesDir(), imageName);
+			datasourceCategory = new CategoryTalkerDataSource(this);
+			datasourceImage = new ImageTalkerDataSource(this);
+			datasourceCategory.open();
+			datasourceImage.open();
+		    long categId = InsertImageDialogFragment.categId;
+		    if (categId == 0){
+		    	CategoryDAO category = datasourceCategory.createCategory(categId, imageName);
+		    }
+			ImageDAO image = datasourceImage.createImage(file.getPath(), imageName, categId);
+			datasourceCategory.close();
+			datasourceImage.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 

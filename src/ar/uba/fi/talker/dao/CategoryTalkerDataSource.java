@@ -28,9 +28,9 @@ public class CategoryTalkerDataSource {
 		dbHelper.close();
 	}
 
-	public CategoryDAO createCategory(String path, String name) {
+	public CategoryDAO createCategory(long keyId, String name) {
 		ContentValues values = new ContentValues();
-		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_ID, path);
+		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_ID, keyId);
 		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_NAME, name);
 		long insertId = database.insert(ResourceSQLiteHelper.CATEGORY_TABLE, null, values);
 		Cursor cursor = database.query(ResourceSQLiteHelper.CATEGORY_TABLE, allColumns,
@@ -65,7 +65,7 @@ public class CategoryTalkerDataSource {
 	}
 	
 	
-	public CategoryDAO getCategoryByID(int keyId) {
+	public CategoryDAO getCategoryByID(long keyId) {
 		Cursor cursor = database.rawQuery("SELECT * FROM "
 				+ ResourceSQLiteHelper.CATEGORY_TABLE + " WHERE "
 				+ ResourceSQLiteHelper.CATEGORY_COLUMN_ID + " = " + keyId, null);

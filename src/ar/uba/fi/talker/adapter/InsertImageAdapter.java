@@ -3,6 +3,7 @@ package ar.uba.fi.talker.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,13 @@ public class InsertImageAdapter extends BaseAdapter {
 
 			// set image based on selected text
 			ImageView imageView = (ImageView) gridViewItem.findViewById(R.id.grid_item_image);
-			int idCode = Integer.valueOf(innerImages.get(position).getPath());
-			imageView.setImageResource(idCode);
+			if (innerImages.get(position).getPath().contains("/")){
+				Uri uri = Uri.parse(innerImages.get(position).getPath());
+				imageView.setImageURI(uri);
+			} else {
+				int idCode = Integer.valueOf(innerImages.get(position).getPath());
+				imageView.setImageResource(idCode);
+			}
 
 		} else {
 			gridViewItem = convertView;
