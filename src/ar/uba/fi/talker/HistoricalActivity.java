@@ -17,7 +17,7 @@ import ar.uba.fi.talker.adapter.GridAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ConversationDAO;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
-import ar.uba.fi.talker.fragment.ChangeNameConversationDialogFragment.TextDialogListener;
+import ar.uba.fi.talker.fragment.ChangeNameConversationDialogFragment.ChangeNameDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.utils.GridConversationItems;
@@ -26,7 +26,7 @@ import ar.uba.fi.talker.utils.ScenarioView;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class HistoricalActivity extends ActionBarActivity implements TextDialogListener, DeleteScenarioDialogListener {
+public class HistoricalActivity extends ActionBarActivity implements ChangeNameDialogListener, DeleteScenarioDialogListener {
 
     private ConversationTalkerDataSource datasource;
 	private GridView gridView = null;
@@ -64,7 +64,7 @@ public class HistoricalActivity extends ActionBarActivity implements TextDialogL
 	}
 		
 	@Override
-	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
+	public void onDialogPositiveClickChangeNameDialogListener(DialogFragment dialog) {
 		Dialog dialogView = dialog.getDialog();
 		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
 		GridAdapter gsa = (GridAdapter) gridView.getAdapter();

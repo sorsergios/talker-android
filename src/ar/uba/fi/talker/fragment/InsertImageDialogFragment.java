@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -36,7 +37,7 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 	private AlertDialog alert;
 	private View viewSelected;
 	private Boolean isContactSearch = false;
-	private int RESULT_INSERT_NEW_IMAGE = 100;
+	private final int RESULT_INSERT_NEW_IMAGE = 100;
 	public static long categId = 0;
 	private CategoryTalkerDataSource categoryTalkerDataSource;
 	private ImageTalkerDataSource imageTalkerDataSource;
@@ -91,6 +92,19 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 
 		this.flipper = (ViewFlipper) gridViewContainer
 				.findViewById(R.id.vfImages);
+		
+		ImageButton addButton = (ImageButton) gridViewContainer
+				.findViewById(R.id.add_image);
+		addButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(
+						Intent.ACTION_PICK,
+						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				getActivity().startActivityForResult(i, RESULT_INSERT_NEW_IMAGE);
+				getDialog().dismiss();
+			}
+		});
 		
 		GridView gridView = (GridView) gridViewContainer
 				.findViewById(R.id.insert_cat_gridview);
@@ -166,18 +180,7 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 								}
 								dialog.dismiss();
 							}
-						})
-				.setNeutralButton(R.string.insert_image_cancel,
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int id) {
-								Intent i = new Intent(
-										Intent.ACTION_PICK,
-										android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-								getActivity().startActivityForResult(i, RESULT_INSERT_NEW_IMAGE);
-								dialog.dismiss();
-							}
+			
 						});
 		
 		alert = builder.create();

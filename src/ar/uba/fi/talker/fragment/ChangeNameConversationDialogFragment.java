@@ -16,13 +16,13 @@ import ar.uba.fi.talker.R;
 
 public class ChangeNameConversationDialogFragment extends ParentDialogFragment {
 
-	public interface TextDialogListener {
-		public void onDialogPositiveClickTextDialogListener(
+	public interface ChangeNameDialogListener {
+		public void onDialogPositiveClickChangeNameDialogListener(
 				DialogFragment dialog);
 
 	}
 
-	TextDialogListener listener;
+	ChangeNameDialogListener listener;
 	
 	// Use this instance of the interface to deliver action events
 
@@ -30,7 +30,7 @@ public class ChangeNameConversationDialogFragment extends ParentDialogFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			listener = (TextDialogListener) activity;
+			listener = (ChangeNameDialogListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement TextDialogListener");
@@ -52,7 +52,7 @@ public class ChangeNameConversationDialogFragment extends ParentDialogFragment {
 					KeyEvent event) {
 
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
-					listener.onDialogPositiveClickTextDialogListener(ChangeNameConversationDialogFragment.this);
+					listener.onDialogPositiveClickChangeNameDialogListener(ChangeNameConversationDialogFragment.this);
 					ChangeNameConversationDialogFragment.this.dismiss();
 					return true;
 				}
@@ -64,7 +64,7 @@ public class ChangeNameConversationDialogFragment extends ParentDialogFragment {
 				.setPositiveButton(R.string.delete_conversation_accept,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								listener.onDialogPositiveClickTextDialogListener(ChangeNameConversationDialogFragment.this);
+								listener.onDialogPositiveClickChangeNameDialogListener(ChangeNameConversationDialogFragment.this);
 								dialog.dismiss();
 							}
 						})
