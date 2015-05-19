@@ -136,7 +136,7 @@ public class NewContactActivity extends ActionBarActivity implements DeleteScena
 				File file = new File(ctx.getFilesDir(), scenarioName);
 				datasource.open();
 				//*FIXME: setear bien el id de categoria*/
-				scenario = datasource.createCategory(1, scenarioName);
+				scenario = datasource.createCategory(scenarioName);
 				datasource.close();
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 				ScenarioView scenarioView = new ScenarioView();

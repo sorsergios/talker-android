@@ -38,8 +38,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
-import ar.uba.fi.talker.dao.CategoryDAO;
-import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
@@ -73,7 +71,6 @@ public class CanvasActivity extends ActionBarActivity implements
 	private ConversationTalkerDataSource datasourceConversation;
 
 	private View activeTool;
-	private CategoryTalkerDataSource datasourceCategory;
 	private ImageTalkerDataSource datasourceImage;
 	
 	private static int RESULT_LOAD_IMAGE = 1;
@@ -315,16 +312,9 @@ public class CanvasActivity extends ActionBarActivity implements
 			Context ctx = this.getApplicationContext();
 			ImageUtils.saveFileInternalStorage(imageName, bitmap, ctx);
 			File file = new File(ctx.getFilesDir(), imageName);
-			datasourceCategory = new CategoryTalkerDataSource(this);
 			datasourceImage = new ImageTalkerDataSource(this);
-			datasourceCategory.open();
 			datasourceImage.open();
-		    long categId = InsertImageDialogFragment.categId;
-		    if (categId == 0){
-		    	CategoryDAO category = datasourceCategory.createCategory(categId, imageName);
-		    }
-			ImageDAO image = datasourceImage.createImage(file.getPath(), imageName, categId);
-			datasourceCategory.close();
+		    ImageDAO image = datasourceImage.createImage(file.getPath(), imageName, InsertImageDialogFragment.categId);
 			datasourceImage.close();
 		} catch (IOException e) {
 			e.printStackTrace();

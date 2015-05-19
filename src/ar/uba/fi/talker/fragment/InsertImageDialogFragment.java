@@ -33,7 +33,8 @@ import ar.uba.fi.talker.paint.PaintManager;
 public class InsertImageDialogFragment extends ParentDialogFragment {
 
 	private ViewFlipper flipper;
-	
+	private View gridViewContainer;
+	private ImageButton addButton;
 	private AlertDialog alert;
 	private View viewSelected;
 	private Boolean isContactSearch = false;
@@ -88,12 +89,12 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		
-		View gridViewContainer = View.inflate(getActivity(), R.layout.insert_image_gridview, null);
+		gridViewContainer = View.inflate(getActivity(), R.layout.insert_image_gridview, null);
 
 		this.flipper = (ViewFlipper) gridViewContainer
 				.findViewById(R.id.vfImages);
 		
-		ImageButton addButton = (ImageButton) gridViewContainer
+		addButton = (ImageButton) gridViewContainer
 				.findViewById(R.id.add_image);
 		addButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -130,6 +131,8 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 				categId = insertImageCategoryAdapter.getItemId(position);
 				List<ImageDAO> innnerImages = imageTalkerDataSource.getImagesForCategory(categId);
 				gridViewImages.setAdapter(new InsertImageAdapter(getActivity(),innnerImages));
+				addButton = (ImageButton)gridViewContainer.findViewById(R.id.add_image);
+				addButton.setVisibility(View.VISIBLE);
 				flipper.showNext();
 			}
 		});
@@ -189,8 +192,11 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 
 	@Override
 	public void onStart() {
-		super.onStart(); // super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after
-							// this point
+		super.onStart(); 
+		//oculto el botón inicialmente, despues veo si estoy en categoria o en las imagenes
+		addButton = (ImageButton)gridViewContainer.findViewById(R.id.add_image);
+		addButton.setVisibility(View.INVISIBLE);
+		
 		final AlertDialog dialog = (AlertDialog) getDialog();
 		if (dialog != null) {
 			Button negativeButton = dialog.getButton(Dialog.BUTTON_NEGATIVE);
@@ -198,8 +204,12 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 				@Override
 				public void onClick(View v) {
 					if (flipper.getCurrentView().equals(flipper.getChildAt(1))){
+						addButton = (ImageButton)gridViewContainer.findViewById(R.id.add_image);
+						addButton.setVisibility(View.INVISIBLE);
 						flipper.showPrevious();
 					} else {
+						addButton = (ImageButton)gridViewContainer.findViewById(R.id.add_image);
+						addButton.setVisibility(View.VISIBLE);
 						dialog.dismiss();
 					}
 				}
