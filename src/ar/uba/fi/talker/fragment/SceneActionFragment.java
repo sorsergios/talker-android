@@ -1,5 +1,6 @@
 package ar.uba.fi.talker.fragment;
 
+import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.R;
@@ -24,6 +26,13 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		this.gridItem = gridItems;
 		this.view = view;
 		this.adapter = adapter;
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		Window window = getDialog().getWindow();
+		window.setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	}
 	
 	@Override
