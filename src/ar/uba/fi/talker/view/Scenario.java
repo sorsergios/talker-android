@@ -159,9 +159,8 @@ public class Scenario extends FrameLayout {
 	}
 
 	public void setBackgroundImage(Bitmap image) {
-		mImage = image;
-
-		BitmapDrawable background = new BitmapDrawable(getResources(), image);
+		mImage = BackgroundUtil.toGrayscale(image);
+		BitmapDrawable background = new BitmapDrawable(getResources(), mImage);
 		BackgroundUtil.setBackground(this, background);
 	}
 

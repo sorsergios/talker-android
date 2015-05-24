@@ -22,8 +22,11 @@ public final class PaintFactory {
 				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
 				break;
 			case TEXT:
-				paint.setStyle(Paint.Style.STROKE);
+				paint.setStyle(Paint.Style.FILL_AND_STROKE);
 				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
+				paint.setStrokeJoin(Paint.Join.MITER);
+				paint.setFakeBoldText(true);
+				paint.setShadowLayer(10, 0, 0, Color.DKGRAY);
 				
 				break;
 			case REGULAR:
