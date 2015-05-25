@@ -195,7 +195,6 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 		super.onStart(); 
 		//oculto el botón inicialmente, despues veo si estoy en categoria o en las imagenes
 		addButton = (ImageButton)gridViewContainer.findViewById(R.id.add_image);
-		addButton.setVisibility(View.INVISIBLE);
 		
 		final AlertDialog dialog = (AlertDialog) getDialog();
 		if (dialog != null) {
@@ -205,7 +204,7 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 				public void onClick(View v) {
 					if (flipper.getCurrentView().equals(flipper.getChildAt(1))){
 						addButton = (ImageButton)gridViewContainer.findViewById(R.id.add_image);
-						addButton.setVisibility(View.INVISIBLE);
+						addButton.setVisibility(View.GONE);
 						flipper.showPrevious();
 					} else {
 						addButton = (ImageButton)gridViewContainer.findViewById(R.id.add_image);
