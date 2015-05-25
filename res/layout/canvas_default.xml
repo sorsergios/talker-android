@@ -10,7 +10,7 @@
         android:id="@+id/gestureOverlayView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/pencilOption"
         android:saveEnabled="true" >
@@ -53,7 +53,7 @@
 		android:contentDescription="@string/insert_text_accept"/>
 	
     <ImageButton
-        android:id="@+id/bottom"
+        android:id="@+id/signAdd"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -61,7 +61,8 @@
         android:contentDescription="@null"
         android:scaleType="fitCenter"
 		android:adjustViewBounds="true"  
-        android:src="@drawable/sign_add" />
+        android:src="@drawable/sign_add"
+        android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/calculatorOption"
