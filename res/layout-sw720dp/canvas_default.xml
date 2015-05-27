@@ -10,11 +10,9 @@
         android:id="@+id/gestureOverlayView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/bottom"
         android:layout_alignParentLeft="true"
         android:saveEnabled="true"
         android:layout_below="@+id/pencilOption" >
-
     </ar.uba.fi.talker.view.Scenario>
 
     <ImageButton
@@ -119,14 +117,16 @@
         android:src="@drawable/image_icon" />
 
     <ImageButton
-        android:id="@+id/bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/signAdd"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/eraserOption"
+        android:layout_alignParentLeft="true"
         android:contentDescription="@null"
-        android:scaleType="fitXY"
-        android:src="@drawable/sign_add" />
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  
+        android:src="@drawable/sign_add"
+        android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/button_settings"

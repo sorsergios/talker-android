@@ -73,7 +73,7 @@ public class DateCalendar extends DragComponent {
 		String month = dayParams[2];
 		String year = dayParams[3];
    		
-		mImage = drawTextToBitmap(idImage, dayOfWeek, numberDay, month, year);
+		mImage = drawTextToBitmap(idImage, dayOfWeek.toUpperCase(), numberDay, month.toUpperCase(), year);
 	}
 
 	public Bitmap drawTextToBitmap(int resourceId, String dayOfWeek, String numberDay, String month, String year) {

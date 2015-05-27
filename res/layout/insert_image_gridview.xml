@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
     <ViewFlipper
         android:id="@+id/vfImages"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/add_image"
         android:animateLayoutChanges="true" >
 
         <GridView
@@ -30,19 +31,16 @@
         </GridView>
     </ViewFlipper>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <ImageButton
-            android:id="@+id/add_image"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/lightblueback"
-            android:contentDescription="@string/calc_open"
-            android:scaleType="fitCenter"
-            android:src="@drawable/sign_add" />
-    </RelativeLayout>
-
-</FrameLayout>
+    <ImageButton
+        android:id="@+id/add_image"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/lightblueback"
+        android:contentDescription="@string/calc_open"
+        android:scaleType="fitCenter"
+        android:src="@drawable/sign_add"
+        android:visibility="gone">
+    </ImageButton>
+  
+</RelativeLayout>

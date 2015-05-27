@@ -202,6 +202,10 @@ public class CanvasActivity extends ActionBarActivity implements
 				CanvasActivity.this.setActiveTool(v);
 			}
 		});
+		
+		//set pencil active 
+		scenario.setActiveComponentType(ComponentType.PENCIL);
+		CanvasActivity.this.setActiveTool(pencilOp);
 	}
 
 	private void setBackground() {
