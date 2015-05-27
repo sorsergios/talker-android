@@ -48,8 +48,6 @@ public final class PaintFactory {
 			int textColor = Color.parseColor(settings.getTextColor());
 			paint.setColor(textColor);
 			int shadowColor = PaintFactory.getComplimentColor(textColor);
-			System.out.println("colores " + textColor + ", sombra"
-					+ shadowColor);
 			paint.setShadowLayer(5, 0, 0, shadowColor);
 			break;
 		case REGULAR:
