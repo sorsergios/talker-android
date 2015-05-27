@@ -9,31 +9,30 @@ import ar.uba.fi.talker.component.Setting;
 
 /**
  * @author ssoria
- *
+ * 
  */
 public final class PaintFactory {
-	
+
 	public static Paint createPaint(PaintType type) {
-		
+
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		switch (type) {
-			case ERASE:
-				paint.setStyle(Paint.Style.STROKE);
-				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
-				break;
-			case TEXT:
-				paint.setStyle(Paint.Style.FILL_AND_STROKE);
-				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
-				paint.setStrokeJoin(Paint.Join.MITER);
-				paint.setFakeBoldText(true);
-				paint.setShadowLayer(10, 0, 0, Color.DKGRAY);
-				
-				break;
-			case REGULAR:
-			default:
-				paint.setStyle(Paint.Style.STROKE);
-				paint.setFlags(Paint.LINEAR_TEXT_FLAG);
-				break;
+		case ERASE:
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setFlags(Paint.LINEAR_TEXT_FLAG);
+			break;
+		case TEXT:
+			paint.setStyle(Paint.Style.FILL_AND_STROKE);
+			paint.setFlags(Paint.LINEAR_TEXT_FLAG);
+			paint.setStrokeJoin(Paint.Join.MITER);
+			paint.setFakeBoldText(true);
+
+			break;
+		case REGULAR:
+		default:
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setFlags(Paint.LINEAR_TEXT_FLAG);
+			break;
 		}
 
 		return paint;
@@ -41,18 +40,44 @@ public final class PaintFactory {
 
 	public static void definePaint(Paint paint, PaintType type, Setting settings) {
 		switch (type) {
-			case ERASE:
-				paint.setStrokeWidth(settings.getEraserSize());
-				break;
-			case TEXT:
-				paint.setTextSize(settings.getTextSize());
-				paint.setColor(Color.parseColor(settings.getTextColor()));
-				break;
-			case REGULAR:
-			default:
-				paint.setStrokeWidth(settings.getPencilSize());
-				paint.setColor(Color.parseColor(settings.getPencilColor()));
-				break;
+		case ERASE:
+			paint.setStrokeWidth(settings.getEraserSize());
+			break;
+		case TEXT:
+			paint.setTextSize(settings.getTextSize());
+			int textColor = Color.parseColor(settings.getTextColor());
+			paint.setColor(textColor);
+			int shadowColor = PaintFactory.getComplimentColor(textColor);
+			System.out.println("colores " + textColor + ", sombra"
+					+ shadowColor);
+			paint.setShadowLayer(5, 0, 0, shadowColor);
+			break;
+		case REGULAR:
+		default:
+			paint.setStrokeWidth(settings.getPencilSize());
+			paint.setColor(Color.parseColor(settings.getPencilColor()));
+			break;
 		}
+	}
+
+	/**
+	 * Returns the opposite color.
+	 * 
+	 * @param color
+	 * @return int color
+	 */
+	private static int getComplimentColor(int color) {
+		// get existing colors
+		int alpha = Color.alpha(color);
+		int red = Color.red(color);
+		int blue = Color.blue(color);
+		int green = Color.green(color);
+
+		// find compliments
+		red = (~red) & 0xff;
+		blue = (~blue) & 0xff;
+		green = (~green) & 0xff;
+
+		return Color.argb(alpha, red, green, blue);
 	}
 }
