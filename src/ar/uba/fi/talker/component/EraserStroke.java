@@ -7,11 +7,13 @@ import ar.uba.fi.talker.paint.PaintType;
 
 public class EraserStroke extends PencilStroke {
 	
+	public static boolean enabled = true;
+
 	public EraserStroke(Context context) {
 		super(context);
 		
 	}
-	
+		
 	@Override
 	public Paint getPaint() {
 		return PaintManager.getPaint(PaintType.ERASE);

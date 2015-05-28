@@ -1,10 +1,13 @@
 package ar.uba.fi.talker.component;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.MotionEvent;
+import ar.uba.fi.talker.R;
 
 public abstract class DragComponent extends Component {
 
@@ -13,10 +16,12 @@ public abstract class DragComponent extends Component {
 	protected Point point;
 	protected Point deltaPoint;
 	protected Point downPoint;
+
+	protected Bitmap eraseBitmap;
 	
 	public DragComponent(Context context) {
 		super(context);
-		
+		eraseBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.delete_icon);
 		point = new Point(INIT, INIT);
 		deltaPoint = new Point(0, 0);
 		downPoint = new Point(0, 0);
