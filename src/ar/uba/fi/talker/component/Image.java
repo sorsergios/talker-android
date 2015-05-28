@@ -55,11 +55,19 @@ public class Image extends DragComponent {
 
 	@Override
 	public void onDraw(Canvas canvas) {
+		int left = point.x + deltaPoint.x;
+		int top = point.y + deltaPoint.y;
 		if (mImage != null) {
-			canvas.drawBitmap(mImage, point.x+deltaPoint.x, point.y+deltaPoint.y, regPaint);
+			canvas.drawBitmap(mImage, left, top, regPaint);
 		}
 		if (label != null) {
-			canvas.drawText(label, point.x + deltaPoint.x, point.y + deltaPoint.y, textPaint);
+			canvas.drawText(label, left, top, textPaint);
+		}
+		
+		if (EraserStroke.enabled) {
+			left = left + mImage.getWidth() - (eraseBitmap.getWidth() / 2);
+			top = top - (eraseBitmap.getHeight() / 2);
+			canvas.drawBitmap(eraseBitmap, left, top, regPaint);
 		}
 	}
 	
@@ -67,12 +75,21 @@ public class Image extends DragComponent {
 	public boolean isPointInnerBounds(Point outerPoint) {
 		return (mImage != null
 				&& point.x < outerPoint.x 
-				&& point.y < outerPoint.y
-				&& point.x + mImage.getWidth() > outerPoint.x
+				&& point.y - eraseBitmap.getHeight() < outerPoint.y
+				&& point.x + mImage.getWidth() + eraseBitmap.getWidth() > outerPoint.x
 				&& point.y + mImage.getHeight() > outerPoint.y
 		);
 	}
 
+	public boolean isPointInnerEraseBounds(Point outerPoint) {
+		return (EraserStroke.enabled
+				&& point.x + mImage.getWidth() - (eraseBitmap.getWidth() / 2) < outerPoint.x 
+				&& point.y - eraseBitmap.getHeight() / 2 < outerPoint.y
+				&& point.x + mImage.getWidth() + (eraseBitmap.getWidth() / 2) > outerPoint.x
+				&& point.y + eraseBitmap.getHeight() / 2 > outerPoint.y
+		);
+	}
+	
 	public void setContent(Bitmap image, String label) {
 		int bWidth = image.getWidth();
         int bHeight = image.getHeight();
