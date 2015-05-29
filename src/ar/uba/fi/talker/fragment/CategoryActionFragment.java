@@ -16,13 +16,13 @@ import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.ScenarioView;
 
-public class SceneActionFragment extends DialogFragment implements OnClickListener {
+public class CategoryActionFragment extends DialogFragment implements OnClickListener {
 
 	private final GridItems gridItem;
 	private final View view;
 	private final BaseAdapter adapter;
 
-	public SceneActionFragment(GridItems gridItems, View view, BaseAdapter adapter) {
+	public CategoryActionFragment(GridItems gridItems, View view, BaseAdapter adapter) {
 		this.gridItem = gridItems;
 		this.view = view;
 		this.adapter = adapter;
@@ -54,7 +54,7 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 				DialogFragment newFragment = new ChangeNameDialogFragment(gridItem.getScenarioView(), adapter);
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "insert_text");
-				SceneActionFragment.this.dismiss();
+				CategoryActionFragment.this.dismiss();
 			}
 		});
 
@@ -75,7 +75,7 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 				Intent intent = new Intent(getActivity().getApplicationContext(), CanvasActivity.class);
 				intent.putExtras(extras);
 				startActivity(intent);
-				SceneActionFragment.this.dismiss();
+				CategoryActionFragment.this.dismiss();
 			}
 		});
 		
@@ -86,21 +86,10 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(gridItem.getScenarioView());
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "delete_scenario");
-				SceneActionFragment.this.dismiss();
+				CategoryActionFragment.this.dismiss();
 			}
 		});
-		
-		View galleryScenarioBttn = actions.findViewById(R.id.new_scene_gallery);
-		galleryScenarioBttn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				DialogFragment newFragment = new InsertImageDialogFragment();
-				newFragment.onAttach(getActivity());
-				newFragment.show(getActivity().getSupportFragmentManager(), "insert_text");
-				SceneActionFragment.this.dismiss();
-			}
-		});
-		galleryScenarioBttn.setVisibility(View.GONE);
+
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setView(actions);

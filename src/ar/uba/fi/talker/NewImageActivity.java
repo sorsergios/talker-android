@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,12 +14,14 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -26,8 +29,12 @@ import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.CategoryDAO;
 import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
+import ar.uba.fi.talker.dao.ImageDAO;
+import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
+import ar.uba.fi.talker.fragment.TextDialogFragment;
+import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
@@ -35,57 +42,63 @@ import ar.uba.fi.talker.utils.ScenarioView;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class NewImageActivity extends ActionBarActivity implements DeleteScenarioDialogListener {
+public class NewImageActivity extends ActionBarActivity implements DeleteScenarioDialogListener, TextDialogListener {
 
-	// Use this instance of the interface to deliver action events
 		private static int RESULT_LOAD_IMAGE = 1;
 		
 		private GridView gridView = null;
 		private PageIndicator pageIndicator;
 		private ViewPager viewPager;
 		private PagerScenesAdapter pagerAdapter;
-		private CategoryTalkerDataSource datasource;
+		private CategoryTalkerDataSource categoryDatasource;
+		private ImageTalkerDataSource imageDatasource;
+		
 		
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			
-			final NewImageActivity self = this;
-			setContentView(R.layout.layout_ext_scenes);
+			setContentView(R.layout.layout_categories);
 
-			scenesPagerSetting();
-			ImageButton galleryScenarioBttn = (ImageButton) this.findViewById(R.id.new_scene_gallery);
-			galleryScenarioBttn.setOnClickListener(new View.OnClickListener() {
+			categoriesPagerSetting();
+			ImageButton createCategoryBttn = (ImageButton) this.findViewById(R.id.add_image);
+			createCategoryBttn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
+					DialogFragment newFragment = new TextDialogFragment();
+					newFragment.show(getSupportFragmentManager(), "insert_text");
+					categoriesPagerSetting();
+				/*	ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
 					gridView = sgf.getmGridView();
 					Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-					self.startActivityForResult(i, RESULT_LOAD_IMAGE);
+					self.startActivityForResult(i, RESULT_LOAD_IMAGE);*/
 				}
 			});
 		}
 
-		private void scenesPagerSetting() {
+		private void categoriesPagerSetting() {
 			viewPager = (ViewPager) this.findViewById(R.id.pager);
 			pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-			ArrayList<ScenarioView> scenarios = new ArrayList<ScenarioView>();
+			ArrayList<ScenarioView> thumbnails = new ArrayList<ScenarioView>();
 
-			if (datasource == null ) {
-				datasource = new CategoryTalkerDataSource(this.getApplicationContext());
+			if (categoryDatasource == null ) {
+				categoryDatasource = new CategoryTalkerDataSource(this.getApplicationContext());
 			}
-		    datasource.open();
-			List<CategoryDAO> allImages = datasource.getImageCategories();
-		    datasource.close();
-		    ScenarioView scenario = null;
-			for (CategoryDAO scenarioDAO : allImages) {
-				scenario = new ScenarioView();
-				scenario.setId(scenarioDAO.getId());
-				scenario.setName(scenarioDAO.getName());
-				scenario.setPath(getResources().getString(R.drawable.casa));
-				scenarios.add(scenario);
+			if (imageDatasource == null ) {
+				imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
 			}
-			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios);
+		    categoryDatasource.open();
+			List<CategoryDAO> allImages = categoryDatasource.getImageCategories();
+		    categoryDatasource.close();
+		    ScenarioView thumbnail = null;
+			for (CategoryDAO categoryDAO : allImages) {
+				thumbnail = new ScenarioView();
+				thumbnail.setId(categoryDAO.getId());
+				thumbnail.setName(categoryDAO.getName());
+				thumbnail.setPath(getResources().getString(R.drawable.history_panel));
+				thumbnails.add(thumbnail);
+			}
+			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails);
 
 			pagerAdapter = new PagerScenesAdapter(this.getSupportFragmentManager(), gridFragments);
 			viewPager.setAdapter(pagerAdapter);
@@ -120,23 +133,23 @@ public class NewImageActivity extends ActionBarActivity implements DeleteScenari
 			CategoryDAO scenario = null;
 			if (requestCode == RESULT_LOAD_IMAGE && null != data) {
 				Uri imageUri = data.getData();
-				String scenarioName = imageUri.getLastPathSegment(); 
+				String categoryName = imageUri.getLastPathSegment(); 
 		        Bitmap bitmap = null;
 				try {/*Entra al if cuando se elige una foto de google +*/
 					if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
 						InputStream is = getContentResolver().openInputStream(imageUri);
 						bitmap = BitmapFactory.decodeStream(is);
-						scenarioName = scenarioName.substring(35);
+						categoryName = categoryName.substring(35);
 					} else {
 						bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 					}
 					bytes = ImageUtils.transformImage(bitmap);
 					Context ctx = this.getApplicationContext();
-					ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx);
-					File file = new File(ctx.getFilesDir(), scenarioName);
-					datasource.open();
-					scenario = datasource.createCategory(scenarioName);
-					datasource.close();
+					ImageUtils.saveFileInternalStorage(categoryName, bitmap, ctx);
+					File file = new File(ctx.getFilesDir(), categoryName);
+					categoryDatasource.open();
+					scenario = categoryDatasource.createCategory(categoryName, 0);
+					categoryDatasource.close();
 					GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 					ScenarioView scenarioView = new ScenarioView();
 					scenarioView.setId(scenario.getId());
@@ -144,7 +157,7 @@ public class NewImageActivity extends ActionBarActivity implements DeleteScenari
 					scenarioView.setPath(getResources().getString(R.drawable.casa));
 					GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
 					gsa.addItem(gridItem);
-					scenesPagerSetting();
+					categoriesPagerSetting();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -158,20 +171,39 @@ public class NewImageActivity extends ActionBarActivity implements DeleteScenari
 		}
 
 		@Override
-		public void onDialogPositiveClickDeleteScenarioDialogListener(ScenarioView scenarioView) {
+		public void onDialogPositiveClickDeleteScenarioDialogListener(ScenarioView categoryView) {
 			boolean deleted = true;
-			if (scenarioView.getPath().contains("/")) {
-				File file = new File(scenarioView.getPath());
-				deleted = file.delete();
+			imageDatasource.open();
+			List<ImageDAO> innnerImages = imageDatasource.getImagesForCategory(categoryView.getId());
+			for (ImageDAO imageDAO : innnerImages) {
+				if (imageDAO.getPath().contains("/")) {
+					File file = new File(imageDAO.getPath());
+					deleted = file.delete();
+				}
 			}
+			imageDatasource.close();
 			if (deleted){
-				datasource.open();
-				datasource.deleteCategory(scenarioView.getId());
-				datasource.close();
+				categoryDatasource.open();
+				categoryDatasource.deleteCategory(categoryView.getId());
+				categoryDatasource.close();
 			} else {
 				Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 				Log.e("NewScene", "Unexpected error deleting imagen.");
 			}
-			scenesPagerSetting();
+			categoriesPagerSetting();
 		}
+		
+		@Override
+		public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
+			Dialog dialogView = dialog.getDialog();
+			EditText inputText = (EditText) dialogView
+					.findViewById(R.id.insert_text_input);
+			if (categoryDatasource == null ) {
+				categoryDatasource = new CategoryTalkerDataSource(this);
+			}
+		    categoryDatasource.open();
+			categoryDatasource.createCategory(inputText.getText().toString(), 0);
+			categoriesPagerSetting();
+		}
+		
 }

@@ -14,7 +14,7 @@ public class CategoryTalkerDataSource {
 	private SQLiteDatabase database;
 	private final ResourceSQLiteHelper dbHelper;
 	private final String[] allColumns = { ResourceSQLiteHelper.CATEGORY_COLUMN_ID,
-			ResourceSQLiteHelper.CATEGORY_COLUMN_NAME };
+			ResourceSQLiteHelper.CATEGORY_COLUMN_NAME, ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT };
 
 	public CategoryTalkerDataSource(Context context) {
 		dbHelper = new ResourceSQLiteHelper(context);
@@ -28,9 +28,10 @@ public class CategoryTalkerDataSource {
 		dbHelper.close();
 	}
 
-	public CategoryDAO createCategory(String name) {
+	public CategoryDAO createCategory(String name, int isContactCategory) {
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_NAME, name);
+		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT, isContactCategory);		
 		long insertId = database.insert(ResourceSQLiteHelper.CATEGORY_TABLE, null, values);
 		Cursor cursor = database.query(ResourceSQLiteHelper.CATEGORY_TABLE, allColumns,
 				ResourceSQLiteHelper.CATEGORY_COLUMN_ID + " = " + insertId, null, null, null, null);
@@ -111,5 +112,10 @@ public class CategoryTalkerDataSource {
 			ResourceSQLiteHelper.CATEGORY_COLUMN_ID + " = " + keyID, null);
 	}
 	
-	
+	public void updateCategory(Long keyID, String name) {
+		ContentValues values = new ContentValues();
+		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_NAME,name);
+		database.update(ResourceSQLiteHelper.CATEGORY_TABLE, values,
+				ResourceSQLiteHelper.CATEGORY_COLUMN_ID + " = " + keyID, null);
+	}
 }
