@@ -32,7 +32,7 @@ import ar.uba.fi.talker.utils.ScenarioView;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class NewContactActivity extends ActionBarActivity implements ChangeNameDialogListener, DeleteScenarioDialogListener, TextDialogListener {
+public class NewCategoryContactActivity extends ActionBarActivity implements ChangeNameDialogListener, DeleteScenarioDialogListener, TextDialogListener {
 
 	 	private CategoryTalkerDataSource categoryDatasource;
 		private ImageTalkerDataSource imageDatasource;

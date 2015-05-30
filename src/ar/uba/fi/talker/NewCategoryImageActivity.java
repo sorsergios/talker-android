@@ -25,16 +25,19 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import ar.uba.fi.talker.adapter.GridAdapter;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.CategoryDAO;
 import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.fragment.ChangeNameConversationDialogFragment.ChangeNameDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
+import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
@@ -42,7 +45,7 @@ import ar.uba.fi.talker.utils.ScenarioView;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class NewImageActivity extends ActionBarActivity implements DeleteScenarioDialogListener, TextDialogListener {
+public class NewCategoryImageActivity extends ActionBarActivity implements DeleteScenarioDialogListener, TextDialogListener, ChangeNameDialogListener{
 
 		private static int RESULT_LOAD_IMAGE = 1;
 		
@@ -52,7 +55,7 @@ public class NewImageActivity extends ActionBarActivity implements DeleteScenari
 		private PagerScenesAdapter pagerAdapter;
 		private CategoryTalkerDataSource categoryDatasource;
 		private ImageTalkerDataSource imageDatasource;
-		
+		private int position;
 		
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
@@ -206,4 +209,15 @@ public class NewImageActivity extends ActionBarActivity implements DeleteScenari
 			categoriesPagerSetting();
 		}
 		
+		@Override
+		public void onDialogPositiveClickChangeNameDialogListener(DialogFragment dialog) {
+			Dialog dialogView = dialog.getDialog();
+			EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
+			GridAdapter gsa = (GridAdapter) gridView.getAdapter();
+			String newCategoryName = inputText.getText().toString();
+			((GridConversationItems)gsa.getItem(position)).getConversationDAO().setName(newCategoryName);
+			gsa.notifyDataSetInvalidated();
+			categoryDatasource.updateCategory(GridAdapter.getItemSelectedId(), newCategoryName);
+		}
+
 }

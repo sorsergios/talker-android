@@ -52,8 +52,8 @@
             android:summary="@string/settings_images_explain"
             android:title="@string/settings_element_text" />        
         <PreferenceScreen
-                android:title="@string/insert_image_title"
-                android:summary="@string/insert_image_title">
+                android:title="@string/settings_image_title"
+                android:summary="@string/settings_image_sumary">
  
             <intent android:action=".activities.NewImageActivity" />
  
@@ -66,8 +66,8 @@
             android:summary="@string/settings_people_explain"
             android:title="@string/settings_element_text" />
         <PreferenceScreen
-                android:title="@string/insert_contact_title"
-                android:summary="@string/insert_contact_title">
+                android:title="@string/settings_people_title"
+                android:summary="@string/settings_people_summary">
  
             <intent android:action=".activities.NewContactActivity" />
  
