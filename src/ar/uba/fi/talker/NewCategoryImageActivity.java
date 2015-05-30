@@ -41,14 +41,13 @@ import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
+import ar.uba.fi.talker.utils.ResultConstant;
 import ar.uba.fi.talker.utils.ScenarioView;
 
 import com.viewpagerindicator.PageIndicator;
 
 public class NewCategoryImageActivity extends ActionBarActivity implements DeleteScenarioDialogListener, TextDialogListener, ChangeNameDialogListener{
 
-		private static int RESULT_LOAD_IMAGE = 1;
-		
 		private GridView gridView = null;
 		private PageIndicator pageIndicator;
 		private ViewPager viewPager;
@@ -134,7 +133,7 @@ public class NewCategoryImageActivity extends ActionBarActivity implements Delet
 			/* Está configurado para de empezar la conversación directamente y guardar el escenario nuevo en la base */
 			byte[] bytes = null;
 			CategoryDAO scenario = null;
-			if (requestCode == RESULT_LOAD_IMAGE && null != data) {
+			if (requestCode == ResultConstant.RESULT_LOAD_IMAGE && null != data) {
 				Uri imageUri = data.getData();
 				String categoryName = imageUri.getLastPathSegment(); 
 		        Bitmap bitmap = null;

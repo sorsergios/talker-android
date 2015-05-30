@@ -41,7 +41,6 @@ import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.EraserStroke;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
-import ar.uba.fi.talker.dao.TalkerSettingManager;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment.DatePickerDialogListener;
@@ -54,15 +53,15 @@ import ar.uba.fi.talker.fragment.SaveAllConfirmationDialogFragment.SaveAllConfir
 import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.paint.PaintManager;
+import ar.uba.fi.talker.preferences.TalkerSettingManager;
 import ar.uba.fi.talker.utils.ImageUtils;
+import ar.uba.fi.talker.utils.ResultConstant;
 import ar.uba.fi.talker.view.Scenario;
 
 public class CanvasActivity extends ActionBarActivity implements
 		TextDialogListener, InsertImageDialogListener,
 		EraseAllConfirmationDialogListener, OnDateSetListener, 
 		DatePickerDialogListener, SaveAllConfirmationDialogListener {
-
-	private static final int RESULT_SETTINGS = 200;
 
 	final String TAG = "CanvasActivity";
 
@@ -72,9 +71,6 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	private View activeTool;
 	private ImageTalkerDataSource datasourceImage;
-	
-	private static int RESULT_LOAD_IMAGE = 1;
-	private static int RESULT_INSERT_NEW_IMAGE = 100;
 	
 	private void setActiveTool(View view) {
 		if (activeTool != null) {
@@ -105,7 +101,7 @@ public class CanvasActivity extends ActionBarActivity implements
 
 				Intent i = new Intent(getApplicationContext(),
 						UserSettingActivity.class);
-				startActivityForResult(i, RESULT_SETTINGS);
+				startActivityForResult(i, ResultConstant.RESULT_SETTINGS);
 			}
 		});
 		
@@ -280,7 +276,7 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if ((requestCode == RESULT_LOAD_IMAGE || requestCode == RESULT_INSERT_NEW_IMAGE) && resultCode == Activity.RESULT_OK && null != data) {
+		if ((requestCode == ResultConstant.RESULT_LOAD_IMAGE || requestCode == ResultConstant.RESULT_INSERT_NEW_IMAGE) && resultCode == Activity.RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
 
 			String[] filePathColumn = { MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION };
@@ -294,12 +290,12 @@ public class CanvasActivity extends ActionBarActivity implements
 			Matrix matrix = new Matrix();
 			matrix.postRotate(orientation);
 			cursor.close();
-			if (requestCode == RESULT_INSERT_NEW_IMAGE){
+			if (requestCode == ResultConstant.RESULT_INSERT_NEW_IMAGE){
 				saveNewImage(data, selectedImage);
 			}
 			this.onDialogPositiveClickInsertImageDialogListener(selectedImage, matrix);
 
-		} else if (requestCode == RESULT_SETTINGS && resultCode == Activity.RESULT_CANCELED) {
+		} else if (requestCode == ResultConstant.RESULT_SETTINGS && resultCode == Activity.RESULT_CANCELED) {
 			PaintManager.setSettings(TalkerSettingManager.getSettings(this));
 		}
 		super.onActivityResult(requestCode, resultCode, data);

@@ -37,9 +37,6 @@
     <string name="settings_people_explain">SELECCIONE PARA VER LAS ETIQUETAS AL INSERTAR PERSONAS</string>
     <string name="settings_people_title">PERSONALIZAR CONTACTOS</string>
     <string name="settings_people_summary">SELECCIONE PARA PERSONALIZAR LOS CONTACTOS Y CATEGORÍAS</string>
-    <string name="settings_user">USUARIO</string>
-    <string name="settings_login">ENTRAR</string>
-    <string name="settings_logout">SALIR</string>
     <string name="settings_element_text">USAR ETIQUETAS?</string>
 
      <!-- pantalla keys -->

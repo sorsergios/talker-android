@@ -1,4 +1,4 @@
-package ar.uba.fi.talker.dao;
+package ar.uba.fi.talker.preferences;
 
 import java.util.Map;
 

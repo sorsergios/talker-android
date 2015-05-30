@@ -31,6 +31,7 @@ import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
+import ar.uba.fi.talker.utils.ResultConstant;
 import ar.uba.fi.talker.utils.ScenarioView;
 
 import com.viewpagerindicator.PageIndicator;
@@ -38,8 +39,6 @@ import com.viewpagerindicator.PageIndicator;
 public class NewSceneActivity extends ActionBarActivity implements DeleteScenarioDialogListener {
 
 	// Use this instance of the interface to deliver action events
-	private static int RESULT_LOAD_IMAGE = 1;
-	
 	private GridView gridView = null;
 	private PageIndicator pageIndicator;
 	private ViewPager viewPager;
@@ -61,7 +60,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
 				gridView = sgf.getmGridView();
 				Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-				self.startActivityForResult(i, RESULT_LOAD_IMAGE);
+				self.startActivityForResult(i, ResultConstant.RESULT_LOAD_IMAGE);
 			}
 		});
 	}
@@ -113,7 +112,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 		/* Está configurado para de empezar la conversación directamente y guardar el escenario nuevo en la base */
 		byte[] bytes = null;
 		ScenarioDAO scenario = null;
-		if (requestCode == RESULT_LOAD_IMAGE && null != data) {
+		if (requestCode == ResultConstant.RESULT_LOAD_IMAGE && null != data) {
 			Uri imageUri = data.getData();
 			String scenarioName = imageUri.getLastPathSegment(); 
 	        Bitmap bitmap = null;

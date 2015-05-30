@@ -18,11 +18,10 @@ import ar.uba.fi.talker.dao.ConversationDAO;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment.ExitAplicationDialogListener;
+import ar.uba.fi.talker.utils.ResultConstant;
 
 public class TalkerMainActivity extends ActionBarActivity implements ExitAplicationDialogListener {
 
-	private static final int RESULT_SETTINGS = 200;
-	
     private static Context context;
 	final TalkerMainActivity self = this;
 
@@ -81,7 +80,7 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 			public void onClick(View v) {
 				Intent i = new Intent(getApplicationContext(),
 						UserSettingActivity.class);
-				startActivityForResult(i, RESULT_SETTINGS);
+				startActivityForResult(i, ResultConstant.RESULT_SETTINGS);
 			}
 		});
 		

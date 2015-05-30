@@ -29,6 +29,7 @@ import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 import ar.uba.fi.talker.paint.PaintManager;
+import ar.uba.fi.talker.utils.ResultConstant;
 
 public class InsertImageDialogFragment extends ParentDialogFragment {
 
@@ -38,7 +39,7 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 	private AlertDialog alert;
 	private View viewSelected;
 	private Boolean isContactSearch = false;
-	private final int RESULT_INSERT_NEW_IMAGE = 100;
+	
 	public static long categId = 0;
 	private CategoryTalkerDataSource categoryTalkerDataSource;
 	private ImageTalkerDataSource imageTalkerDataSource;
@@ -102,7 +103,7 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 				Intent i = new Intent(
 						Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				getActivity().startActivityForResult(i, RESULT_INSERT_NEW_IMAGE);
+				getActivity().startActivityForResult(i, ResultConstant.RESULT_INSERT_NEW_IMAGE);
 				getDialog().dismiss();
 			}
 		});
