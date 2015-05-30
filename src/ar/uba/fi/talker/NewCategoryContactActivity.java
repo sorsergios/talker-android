@@ -66,7 +66,7 @@ public class NewCategoryContactActivity extends ActionBarActivity implements Cha
 				imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
 			}
 			ScenarioView categView = null;
-			if (imageDatasource == null ) {
+			if (categoryDatasource == null ) {
 				categoryDatasource = new CategoryTalkerDataSource(this);
 			}
 		    categoryDatasource.open();

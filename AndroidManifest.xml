@@ -61,7 +61,7 @@
             android:label="@string/insert_image_title"
             android:screenOrientation="landscape" >
             <intent-filter>
-           		<action android:name=".activities.NewImageActivity" />
+           		<action android:name=".activities.NewCategoryImageActivity" />
            		<category android:name="android.intent.category.DEFAULT" />
        		</intent-filter>
         </activity>
@@ -71,7 +71,7 @@
             android:label="@string/insert_contact_title"
             android:screenOrientation="landscape" >
             <intent-filter>
-           		<action android:name=".activities.NewContactActivity" />
+           		<action android:name=".activities.NewCategoryContactActivity" />
            		<category android:name="android.intent.category.DEFAULT" />
        		</intent-filter>
         </activity>

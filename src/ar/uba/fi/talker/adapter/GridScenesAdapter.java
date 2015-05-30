@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import ar.uba.fi.talker.NewCategoryContactActivity;
 import ar.uba.fi.talker.NewCategoryImageActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.listener.OnClickListenerGridElement;
@@ -86,7 +87,8 @@ public class GridScenesAdapter extends BaseAdapter {
 
 		    convertView.setTag(mViewHolder);
 		    OnClickListener onClickListenerGridElement=null;
-		    if(context.getClass().toString().equals(NewCategoryImageActivity.class.toString())){
+		    if(context.getClass().toString().equals(NewCategoryImageActivity.class.toString()) ||
+		    		context.getClass().toString().equals(NewCategoryContactActivity.class.toString())){
 		    	onClickListenerGridElement=new OnClickListenerGridElementSettings(context,gridItem,this);
 		    }else{
 		    	onClickListenerGridElement=new OnClickListenerGridElement(context,gridItem,this);	

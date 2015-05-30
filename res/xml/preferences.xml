@@ -51,7 +51,7 @@
         <PreferenceScreen
             android:summary="@string/settings_image_sumary"
             android:title="@string/settings_image_title" >
-            <intent android:action=".activities.NewImageActivity" />
+            <intent android:action=".activities.NewCategoryImageActivity" />
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_people" >
@@ -63,7 +63,7 @@
         <PreferenceScreen
             android:summary="@string/settings_people_summary"
             android:title="@string/settings_people_title" >
-            <intent android:action=".activities.NewContactActivity" />
+            <intent android:action=".activities.NewCategoryContactActivity" />
         </PreferenceScreen>
     </PreferenceCategory>
 
