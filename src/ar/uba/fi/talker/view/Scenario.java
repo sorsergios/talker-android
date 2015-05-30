@@ -23,6 +23,7 @@ import ar.uba.fi.talker.component.Component;
 import ar.uba.fi.talker.component.ComponentFactory;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.DateCalendar;
+import ar.uba.fi.talker.component.DragComponent;
 import ar.uba.fi.talker.component.Image;
 import ar.uba.fi.talker.component.Text;
 import ar.uba.fi.talker.paint.PaintManager;
@@ -74,13 +75,16 @@ public class Scenario extends FrameLayout {
 		
 		bundle.putParcelable("instanceState", super.onSaveInstanceState());
 		if (childCount > 0) {
-			bundle.putInt("childCount", childCount);
-			
-			for (int index = 0; childCount > 0; index++, childCount--) {
+			int realChildCount = 0;
+			for (; childCount > 0; childCount--) {
 				Component child = (Component) this.getChildAt(0);
 				this.removeView(child);
-				bundle.putParcelable(CHILD_LABEL + index, child);
+				if (child.getVisibility() == VISIBLE) {
+					bundle.putParcelable(CHILD_LABEL + realChildCount, child);
+					realChildCount++;
+				}
 			}
+			bundle.putInt("childCount", realChildCount);
 		}
 		
 		return bundle;
@@ -93,6 +97,9 @@ public class Scenario extends FrameLayout {
 			int childCount = bundle.getInt("childCount");
 			for (int index = 0; index < childCount; index++) {
 				Component child = bundle.getParcelable(CHILD_LABEL + index);
+				if (child instanceof DragComponent) {
+					draggableComponents.add(child);
+				}
 				this.addView(child);
 			}
 			state = bundle.getParcelable("instanceState");
@@ -106,6 +113,14 @@ public class Scenario extends FrameLayout {
 	}
 
 	@Override
+	public void invalidate() {
+		super.invalidate();
+		for (Component child : draggableComponents) {
+			child.invalidate();
+		}
+	}
+	
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -117,6 +132,9 @@ public class Scenario extends FrameLayout {
 			for (Component child : draggableComponents) {
 				if (child.isPointInnerBounds(point)) {
 					foundElement = true;
+					if (child.isPointInnerEraseBounds(point)) {
+						child.setVisibility(GONE);
+					}
 					activeComponent = child;
 					activeComponent.toggleActive();
 				}

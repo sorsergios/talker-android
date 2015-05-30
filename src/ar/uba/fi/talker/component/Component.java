@@ -36,6 +36,10 @@ public abstract class Component extends View implements Parcelable {
 		return false;
 	}
 
+	public boolean isPointInnerEraseBounds(Point point) {
+		return false;
+	}
+	
 	@Override
 	public boolean performClick() {
 		return active && super.performClick();

@@ -38,8 +38,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
+import ar.uba.fi.talker.component.EraserStroke;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
-import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
 import ar.uba.fi.talker.dao.TalkerSettingManager;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
@@ -82,8 +82,9 @@ public class CanvasActivity extends ActionBarActivity implements
 		}
 		this.activeTool = view;
 		this.activeTool.getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.MULTIPLY);
+		EraserStroke.enabled = false;
 	}
-		
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -123,8 +124,10 @@ public class CanvasActivity extends ActionBarActivity implements
 			@Override
 			public void onClick(View v) {
 				scenario.setActiveComponentType(ComponentType.ERASER);
-				scenario.invalidate();
 				CanvasActivity.this.setActiveTool(v);
+				EraserStroke.enabled = true;
+				
+				scenario.invalidate();
 			}
 		});
 
@@ -318,7 +321,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			File file = new File(ctx.getFilesDir(), imageName);
 			datasourceImage = new ImageTalkerDataSource(this);
 			datasourceImage.open();
-		    ImageDAO image = datasourceImage.createImage(file.getPath(), imageName, InsertImageDialogFragment.categId);
+		    datasourceImage.createImage(file.getPath(), imageName, InsertImageDialogFragment.categId);
 			datasourceImage.close();
 		} catch (IOException e) {
 			e.printStackTrace();
