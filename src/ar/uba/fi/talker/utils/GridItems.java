@@ -3,17 +3,17 @@ package ar.uba.fi.talker.utils;
 public class GridItems {
 
 	private int id;
-	private ElementGridView scenarioView;
+	private ElementGridView elementGridView;
 
-	public GridItems(int id, ElementGridView scenarioView) {
+	public GridItems(int id, ElementGridView elementGridView) {
 		this.id = id;
-		this.scenarioView = scenarioView;
+		this.elementGridView = elementGridView;
 	}
-
-	public ElementGridView getScenarioView() {
-		return scenarioView;
+	
+	public ElementGridView getElementGridView() {
+		return elementGridView;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
