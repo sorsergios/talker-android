@@ -15,8 +15,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +46,7 @@ import ar.uba.fi.talker.utils.ScenarioView;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class NewCategoryImageActivity extends ActionBarActivity implements DeleteScenarioDialogListener, TextDialogListener, ChangeNameDialogListener{
+public class NewCategoryImageActivity extends FragmentActivity implements DeleteScenarioDialogListener, TextDialogListener, ChangeNameDialogListener{
 
 		private GridView gridView = null;
 		private PageIndicator pageIndicator;

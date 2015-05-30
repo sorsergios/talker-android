@@ -7,8 +7,8 @@ import java.util.List;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -32,7 +32,7 @@ import ar.uba.fi.talker.utils.ScenarioView;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class NewCategoryContactActivity extends ActionBarActivity implements ChangeNameDialogListener, DeleteScenarioDialogListener, TextDialogListener {
+public class NewCategoryContactActivity extends FragmentActivity implements ChangeNameDialogListener, DeleteScenarioDialogListener, TextDialogListener {
 
 	 	private CategoryTalkerDataSource categoryDatasource;
 		private ImageTalkerDataSource imageDatasource;

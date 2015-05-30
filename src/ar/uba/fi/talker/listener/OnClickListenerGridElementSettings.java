@@ -1,7 +1,7 @@
 package ar.uba.fi.talker.listener;
 
 import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
@@ -25,7 +25,7 @@ public class OnClickListenerGridElementSettings implements OnClickListener {
 	public void onClick(View view) {
 	view.setBackgroundColor(context.getResources().getColor(R.color.selectionViolet));
 		
-		ActionBarActivity activity = (ActionBarActivity) context;		
+		FragmentActivity activity = (FragmentActivity) context;		
 		SceneActionFragment fragment = new SceneActionFragment(gridItem, view, baseAdapter);
 		OnClickListener onClickListener = new OnClickStartActionSettings(activity, gridItem, fragment);
 		fragment.setOnClickStartAction(onClickListener);
