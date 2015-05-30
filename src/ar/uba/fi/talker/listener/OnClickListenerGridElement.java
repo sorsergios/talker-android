@@ -27,6 +27,8 @@ public class OnClickListenerGridElement implements OnClickListener {
 		
 		ActionBarActivity activity = (ActionBarActivity) context;
 		SceneActionFragment fragment = new SceneActionFragment(gridItem, view, baseAdapter);
+		OnClickListener onClickListener = new OnClickStartActionDefault(activity, gridItem, fragment);
+		fragment.setOnClickStartAction(onClickListener);
 		fragment.onAttach(activity);
 		fragment.show(activity.getSupportFragmentManager(), "action-scene");
 		

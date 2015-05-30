@@ -3,6 +3,7 @@ package ar.uba.fi.talker.fragment;
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -25,7 +26,6 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		this.gridItem = gridItems;
 		this.view = view;
 		this.adapter = adapter;
-		this.onClickStartAction = new OnClickStartActionDefault(this.getActivity(), gridItem,this);
 	}
 	
 	public void setOnClickStartAction(OnClickListener onClickStartAction){
