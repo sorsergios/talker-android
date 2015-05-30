@@ -213,9 +213,8 @@ public class Scenario extends FrameLayout {
 				.getLayoutParams();
 		layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-
 		this.addView(alterComponent, layoutParams);
-
+		
 		((Image) alterComponent).setContent(image, label);
 		alterComponent.toggleActive();
 		draggableComponents.add(alterComponent);
@@ -229,8 +228,8 @@ public class Scenario extends FrameLayout {
 				.getLayoutParams();
 		layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-		
 		this.addView(alterComponent, layoutParams);
+
 		((DateCalendar) alterComponent).setContent(calendar, idImage);
 		alterComponent.toggleActive();
 		draggableComponents.add(alterComponent);
