@@ -113,8 +113,6 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		/* Está configurado para de empezar la conversación directamente y guardar el escenario nuevo en la base */
-		byte[] bytes = null;
 		ImageDAO imageDAO = null;
 		if (requestCode == RESULT_LOAD_IMAGE && null != data) {
 			Uri imageUri = data.getData();
@@ -128,10 +126,8 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				} else {
 					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				}
-				bytes = ImageUtils.transformImage(bitmap);
-				Context ctx = this.getApplicationContext();
-				ImageUtils.saveFileInternalStorage(imageName, bitmap, ctx);
-				File file = new File(ctx.getFilesDir(), imageName);
+				ImageUtils.saveFileInternalStorage(imageName, bitmap, this.getApplicationContext());
+				File file = new File(this.getApplicationContext().getFilesDir(), imageName);
 				if (datasource == null){
 					datasource = new ImageTalkerDataSource(this.getApplicationContext());
 				}
@@ -139,15 +135,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				imageDAO = datasource.createImage(file.getPath(), imageName, keyId);
 				datasource.close();
 				if (gridView == null ){
-					ElementGridView element = new ElementGridView();
-					List<ElementGridView> imageViews = new ArrayList<ElementGridView>();
-					imageViews.add(element);
-					List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews);
-					ScenesGridFragment sgf = gridFragments.get(0);
-					GridScenesAdapter mGridAdapter = new GridScenesAdapter(this, sgf.getGridItems());
-					gridView.setAdapter(mGridAdapter);
-					//ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-					gridView = sgf.getmGridView();
+					setGridViewAdapter();
 				}
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 				ElementGridView elementGridView = new ElementGridView();
@@ -159,13 +147,19 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			Bundle extras = new Bundle();
-			extras.putByteArray("BMP",bytes);
-			Intent intent = new Intent(this.getApplicationContext(), CanvasActivity.class);
-			intent.putExtras(extras);
-			startActivity(intent);
-		}		
+		}
+		this.imagesPagerSetting();
+	}
+
+	private void setGridViewAdapter() {
+		ElementGridView element = new ElementGridView();
+		List<ElementGridView> imageViews = new ArrayList<ElementGridView>();
+		imageViews.add(element);
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews);
+		ScenesGridFragment sgf = gridFragments.get(0);
+		GridScenesAdapter mGridAdapter = new GridScenesAdapter(this, sgf.getGridItems());
+		gridView = new GridView(this);
+		gridView.setAdapter(mGridAdapter);
 	}
 
 }
