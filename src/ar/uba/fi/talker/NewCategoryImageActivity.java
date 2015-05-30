@@ -42,7 +42,7 @@ import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 import ar.uba.fi.talker.utils.ResultConstant;
-import ar.uba.fi.talker.utils.ScenarioView;
+import ar.uba.fi.talker.utils.ElementGridView;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -70,10 +70,6 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 					DialogFragment newFragment = new TextDialogFragment();
 					newFragment.show(getSupportFragmentManager(), "insert_text");
 					categoriesPagerSetting();
-				/*	ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-					gridView = sgf.getmGridView();
-					Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-					self.startActivityForResult(i, RESULT_LOAD_IMAGE);*/
 				}
 			});
 		}
@@ -81,7 +77,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 		private void categoriesPagerSetting() {
 			viewPager = (ViewPager) this.findViewById(R.id.pager);
 			pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-			ArrayList<ScenarioView> thumbnails = new ArrayList<ScenarioView>();
+			ArrayList<ElementGridView> thumbnails = new ArrayList<ElementGridView>();
 
 			if (categoryDatasource == null ) {
 				categoryDatasource = new CategoryTalkerDataSource(this.getApplicationContext());
@@ -92,9 +88,9 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 		    categoryDatasource.open();
 			List<CategoryDAO> allImages = categoryDatasource.getImageCategories();
 		    categoryDatasource.close();
-		    ScenarioView thumbnail = null;
+		    ElementGridView thumbnail = null;
 			for (CategoryDAO categoryDAO : allImages) {
-				thumbnail = new ScenarioView();
+				thumbnail = new ElementGridView();
 				thumbnail.setId(categoryDAO.getId());
 				thumbnail.setName(categoryDAO.getName());
 				thumbnail.setPath(getResources().getString(R.drawable.history_panel));
@@ -153,7 +149,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 					scenario = categoryDatasource.createCategory(categoryName, 0);
 					categoryDatasource.close();
 					GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
-					ScenarioView scenarioView = new ScenarioView();
+					ElementGridView scenarioView = new ElementGridView();
 					scenarioView.setId(scenario.getId());
 					scenarioView.setName(scenario.getName());
 					scenarioView.setPath(getResources().getString(R.drawable.casa));
@@ -173,7 +169,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 		}
 
 		@Override
-		public void onDialogPositiveClickDeleteScenarioDialogListener(ScenarioView categoryView) {
+		public void onDialogPositiveClickDeleteScenarioDialogListener(ElementGridView categoryView) {
 			boolean deleted = true;
 			imageDatasource.open();
 			List<ImageDAO> innnerImages = imageDatasource.getImagesForCategory(categoryView.getId());

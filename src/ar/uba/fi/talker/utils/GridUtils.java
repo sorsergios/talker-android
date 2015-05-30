@@ -32,9 +32,9 @@ public final class GridUtils {
 		return gridFragments;
 	}
 	
-	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, List<ScenarioView> scenarioViews) {
+	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, List<ElementGridView> scenarioViews) {
 
-		Iterator<ScenarioView> it = scenarioViews.iterator();
+		Iterator<ElementGridView> it = scenarioViews.iterator();
 		int maxImages = calculateImagesPerPage(activity);
 		List<ScenesGridFragment> gridFragments = new ArrayList<ScenesGridFragment>();
 		while (it.hasNext()) {

@@ -32,7 +32,7 @@ import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 import ar.uba.fi.talker.utils.ResultConstant;
-import ar.uba.fi.talker.utils.ScenarioView;
+import ar.uba.fi.talker.utils.ElementGridView;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -68,7 +68,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 	private void scenesPagerSetting() {
 		viewPager = (ViewPager) this.findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-		ArrayList<ScenarioView> scenarios = new ArrayList<ScenarioView>();
+		ArrayList<ElementGridView> scenarios = new ArrayList<ElementGridView>();
 
 		if (datasource == null ) {
 			datasource = new ScenarioTalkerDataSource(this.getApplicationContext());
@@ -77,7 +77,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 		List<ScenarioDAO> allImages = datasource.getAllImages();
 	    datasource.close();
 		for (ScenarioDAO scenarioDAO: allImages) {
-			scenarios.add(new ScenarioView(scenarioDAO));
+			scenarios.add(new ElementGridView(scenarioDAO));
 		}
 		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios);
 
@@ -132,7 +132,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 				scenario = datasource.createScenario(file.getPath(), scenarioName);
 				datasource.close();
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
-				ScenarioView scenarioView = new ScenarioView(scenario);
+				ElementGridView scenarioView = new ElementGridView(scenario);
 				GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
 				gsa.addItem(gridItem);
 				scenesPagerSetting();
@@ -149,7 +149,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 	}
 
 	@Override
-	public void onDialogPositiveClickDeleteScenarioDialogListener(ScenarioView scenarioView) {
+	public void onDialogPositiveClickDeleteScenarioDialogListener(ElementGridView scenarioView) {
 		boolean deleted = true;
 		if (scenarioView.getPath().contains("/")) {
 			File file = new File(scenarioView.getPath());

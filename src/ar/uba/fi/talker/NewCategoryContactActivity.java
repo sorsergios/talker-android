@@ -28,7 +28,7 @@ import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridUtils;
-import ar.uba.fi.talker.utils.ScenarioView;
+import ar.uba.fi.talker.utils.ElementGridView;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -36,6 +36,7 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 
 	 	private CategoryTalkerDataSource categoryDatasource;
 		private ImageTalkerDataSource imageDatasource;
+		//private ContactTalkerDataSource contactDatasource;
 		private GridView gridView = null;
 		public PageIndicator pageIndicator;
 		private ViewPager viewPager;
@@ -61,11 +62,11 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 		private void categoriesPagerSetting() {
 			viewPager = (ViewPager) this.findViewById(R.id.pager);
 			pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-			ArrayList<ScenarioView> categViews = new ArrayList<ScenarioView>();
+			ArrayList<ElementGridView> categViews = new ArrayList<ElementGridView>();
 			if (imageDatasource == null ) {
 				imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
 			}
-			ScenarioView categView = null;
+			ElementGridView categView = null;
 			if (categoryDatasource == null ) {
 				categoryDatasource = new CategoryTalkerDataSource(this);
 			}
@@ -73,8 +74,9 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 			List<CategoryDAO> allImages = categoryDatasource.getContactCategories();
 			for (int i = 0; i < allImages.size(); i++) {
 				CategoryDAO categoryDAO = (CategoryDAO) allImages.get(i);
-				categView = new ScenarioView();
+				categView = new ElementGridView();
 				categView.setId(categoryDAO.getId());
+				//da
 				categView.setPath(getResources().getString(R.drawable.history_panel));
 				categView.setName(categoryDAO.getName());
 				categViews.add(categView);
@@ -99,7 +101,7 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 
 		@Override
 		public void onDialogPositiveClickDeleteScenarioDialogListener(
-				ScenarioView categoryView) {
+				ElementGridView categoryView) {
 			boolean deleted = true;
 			imageDatasource.open();
 			List<ImageDAO> innnerImages = imageDatasource.getImagesForCategory(categoryView.getId());

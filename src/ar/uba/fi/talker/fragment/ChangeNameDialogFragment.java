@@ -16,15 +16,15 @@ import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
-import ar.uba.fi.talker.utils.ScenarioView;
+import ar.uba.fi.talker.utils.ElementGridView;
 
 public class ChangeNameDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {
 
-	private ScenarioView scenarioView;
+	private ElementGridView scenarioView;
 	private BaseAdapter adapter;
 	private EditText input;
 	
-	public ChangeNameDialogFragment(ScenarioView scenarioView, BaseAdapter adapter) {
+	public ChangeNameDialogFragment(ElementGridView scenarioView, BaseAdapter adapter) {
 		this.scenarioView = scenarioView;
 		this.adapter = adapter; 
 	}
@@ -70,12 +70,12 @@ public class ChangeNameDialogFragment extends ParentDialogFragment implements Di
 		dialog.dismiss();
 	}
 
-	private class ScenarioNameChanger extends AsyncTask<ScenarioView, ProgressBar, Boolean> {
+	private class ScenarioNameChanger extends AsyncTask<ElementGridView, ProgressBar, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(ScenarioView... params) {
+		protected Boolean doInBackground(ElementGridView... params) {
 			ScenarioTalkerDataSource datasource = new ScenarioTalkerDataSource(ChangeNameDialogFragment.this.getActivity().getApplicationContext());
-			ScenarioView scenarioView = params[0];
+			ElementGridView scenarioView = params[0];
 			datasource.open();
 			datasource.updateScenario(scenarioView.getId(), scenarioView.getName());
 			datasource.close();
@@ -84,12 +84,12 @@ public class ChangeNameDialogFragment extends ParentDialogFragment implements Di
 		
 	}
 	
-	private class ConversationNameChanger extends AsyncTask<ScenarioView, ProgressBar, Boolean> {
+	private class ConversationNameChanger extends AsyncTask<ElementGridView, ProgressBar, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(ScenarioView... params) {
+		protected Boolean doInBackground(ElementGridView... params) {
 			ConversationTalkerDataSource datasource = new ConversationTalkerDataSource(ChangeNameDialogFragment.this.getActivity().getApplicationContext());
-			ScenarioView scenarioView = params[0];
+			ElementGridView scenarioView = params[0];
 			datasource.open();
 			datasource.updateConversation(scenarioView.getId(), scenarioView.getName());
 			datasource.close();

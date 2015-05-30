@@ -2,21 +2,21 @@ package ar.uba.fi.talker.utils;
 
 import ar.uba.fi.talker.dao.ScenarioDAO;
 
-public class ScenarioView {
+public class ElementGridView {
 	
 	private long id;
 	private String path;
 	private String name;
 	private boolean scenario;
 	
-	public ScenarioView(ScenarioDAO scenarioDAO) {
+	public ElementGridView(ScenarioDAO scenarioDAO) {
 		this.id = scenarioDAO.getId();
 		this.path = scenarioDAO.getPath();
 		this.name = scenarioDAO.getName();
 		scenario = true;
 	}
 
-	public ScenarioView() {
+	public ElementGridView() {
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class ScenarioView {
 	 * @param name
 	 * @param pathSnapshot
 	 */
-	public ScenarioView(int id, String path, String name, String pathSnapshot) {
+	public ElementGridView(int id, String path, String name, String pathSnapshot) {
 		this.id = id;
 		this.path = pathSnapshot;
 		this.name = name;

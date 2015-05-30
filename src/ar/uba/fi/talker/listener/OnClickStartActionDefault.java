@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.utils.GridItems;
-import ar.uba.fi.talker.utils.ScenarioView;
+import ar.uba.fi.talker.utils.ElementGridView;
 
 public class OnClickStartActionDefault implements OnClickListener {
 
@@ -28,7 +28,7 @@ public class OnClickStartActionDefault implements OnClickListener {
 	public void onClick(View v) {
 		
 		Bundle extras = new Bundle();
-		ScenarioView scenarioView = gridItem.getScenarioView();
+		ElementGridView scenarioView = gridItem.getScenarioView();
 		if (scenarioView.getPath() != null && scenarioView.getPath().contains("/")){
 			extras.putString("path", scenarioView.getPath());
 		} else {

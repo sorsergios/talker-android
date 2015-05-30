@@ -29,7 +29,7 @@ import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
-import ar.uba.fi.talker.utils.ScenarioView;
+import ar.uba.fi.talker.utils.ElementGridView;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -49,31 +49,34 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		Bundle b = getIntent().getExtras();
 		keyId= b.getInt("keyId");
 		setContentView(R.layout.layout_images);
+		imagesPagerSetting();
 
 		ImageButton createCategoryBttn = (ImageButton) this.findViewById(R.id.new_scene_gallery);
 		createCategoryBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-				gridView = sgf.getmGridView();
+				try {
+					ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
+					gridView = sgf.getmGridView();
+				} catch (Exception e) {
+				}
 				Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 				startActivityForResult(i, RESULT_LOAD_IMAGE);
 			}
 		});
-		imagesPagerSetting();
 	}
 
 	private void imagesPagerSetting() {
 		viewPager = (ViewPager) this.findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-		ArrayList<ScenarioView> thumbnails = new ArrayList<ScenarioView>();
+		ArrayList<ElementGridView> thumbnails = new ArrayList<ElementGridView>();
 
 		datasource = new ImageTalkerDataSource(this);
 	    datasource.open();
 		List<ImageDAO> allImages = datasource.getImagesForCategory(keyId);
-		ScenarioView thumbnail = null;
+		ElementGridView thumbnail = null;
 		for (ImageDAO imageDAO : allImages) {
-			thumbnail = new ScenarioView();
+			thumbnail = new ElementGridView();
 			thumbnail.setId(imageDAO.getId());
 			thumbnail.setName(imageDAO.getName());
 			thumbnail.setPath(imageDAO.getPath());
@@ -88,7 +91,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(
-			ScenarioView scenarioView) {
+			ElementGridView scenarioView) {
 		
 		boolean deleted = true;
 		if (scenarioView.getPath().contains("/")) {
@@ -135,12 +138,21 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				datasource.open();
 				imageDAO = datasource.createImage(file.getPath(), imageName, keyId);
 				datasource.close();
+				if (gridView == null ){
+					ElementGridView element = new ElementGridView();
+					List<ElementGridView> imageViews = new ArrayList<ElementGridView>();
+					imageViews.add(element);
+					List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews);
+					ScenesGridFragment sgf = gridFragments.get(0);
+					//ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
+					gridView = sgf.getmGridView();
+				}
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
-				ScenarioView scenarioView = new ScenarioView();
-				scenarioView.setId(imageDAO.getId());
-				scenarioView.setName(imageDAO.getName());
-				scenarioView.setPath(imageDAO.getPath());
-				GridItems gridItem = new GridItems(imageDAO.getId(), scenarioView);
+				ElementGridView elementGridView = new ElementGridView();
+				elementGridView.setId(imageDAO.getId());
+				elementGridView.setName(imageDAO.getName());
+				elementGridView.setPath(imageDAO.getPath());
+				GridItems gridItem = new GridItems(imageDAO.getId(), elementGridView);
 				gsa.addItem(gridItem);
 			} catch (IOException e) {
 				e.printStackTrace();

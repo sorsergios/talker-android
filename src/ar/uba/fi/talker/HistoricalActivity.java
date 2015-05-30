@@ -22,7 +22,7 @@ import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.Delete
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridUtils;
-import ar.uba.fi.talker.utils.ScenarioView;
+import ar.uba.fi.talker.utils.ElementGridView;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -45,15 +45,15 @@ public class HistoricalActivity extends ActionBarActivity implements ChangeNameD
 	private void conversationPagerSetting() {
 		viewPager = (ViewPager) this.findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-		ArrayList<ScenarioView> conversViews = new ArrayList<ScenarioView>();
+		ArrayList<ElementGridView> conversViews = new ArrayList<ElementGridView>();
 
-		ScenarioView conversView = null;
+		ElementGridView conversView = null;
 		datasource = new ConversationTalkerDataSource(this);
 	    datasource.open();
 		List<ConversationDAO> allImages = datasource.getAllConversations();
 		for (int i = 0; i < allImages.size(); i++) {
 			ConversationDAO conversationDAO = (ConversationDAO) allImages.get(i);
-			conversView = new ScenarioView(conversationDAO.getId(), conversationDAO.getPath(), conversationDAO.getName(), conversationDAO.getPathSnapshot());
+			conversView = new ElementGridView(conversationDAO.getId(), conversationDAO.getPath(), conversationDAO.getName(), conversationDAO.getPathSnapshot());
 			conversViews.add(conversView);
 		}
 		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, conversViews);
@@ -76,7 +76,7 @@ public class HistoricalActivity extends ActionBarActivity implements ChangeNameD
 
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(
-			ScenarioView scenarioView) {
+			ElementGridView scenarioView) {
 		
 		boolean deleted = true;
 		if (scenarioView.getPath().contains("/")) {
