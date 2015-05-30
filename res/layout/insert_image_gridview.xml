@@ -39,6 +39,7 @@
         android:background="@color/lightblueback"
         android:contentDescription="@string/calc_open"
         android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  
         android:src="@drawable/sign_add"
         android:visibility="gone">
     </ImageButton>

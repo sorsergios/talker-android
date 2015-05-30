@@ -31,7 +31,8 @@
         android:layout_alignBottom="@+id/pager"
         android:layout_alignLeft="@+id/pager"
         android:enabled="false"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
+		android:adjustViewBounds="true"  
         android:src="@drawable/sign_add"
         android:visibility="visible" />
 
