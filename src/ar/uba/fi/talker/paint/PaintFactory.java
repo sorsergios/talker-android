@@ -13,6 +13,9 @@ import ar.uba.fi.talker.component.Setting;
  */
 public final class PaintFactory {
 
+	public static Integer LABEL_TEXT_SIZE = 40;
+	
+	
 	public static Paint createPaint(PaintType type) {
 
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -28,6 +31,12 @@ public final class PaintFactory {
 			paint.setFakeBoldText(true);
 
 			break;
+		case LABEL:
+			paint.setStyle(Paint.Style.FILL_AND_STROKE);
+			paint.setFlags(Paint.LINEAR_TEXT_FLAG);
+			paint.setStrokeJoin(Paint.Join.MITER);
+			paint.setFakeBoldText(true);
+			break;
 		case REGULAR:
 		default:
 			paint.setStyle(Paint.Style.STROKE);
@@ -39,15 +48,24 @@ public final class PaintFactory {
 	}
 
 	public static void definePaint(Paint paint, PaintType type, Setting settings) {
+		Integer textColor;
+		Integer shadowColor;
 		switch (type) {
 		case ERASE:
 			paint.setStrokeWidth(settings.getEraserSize());
 			break;
 		case TEXT:
 			paint.setTextSize(settings.getTextSize());
-			int textColor = Color.parseColor(settings.getTextColor());
+			textColor = Color.parseColor(settings.getTextColor());
 			paint.setColor(textColor);
-			int shadowColor = PaintFactory.getComplimentColor(textColor);
+			shadowColor = PaintFactory.getComplimentColor(textColor);
+			paint.setShadowLayer(5, 0, 0, shadowColor);
+			break;
+		case LABEL:
+			paint.setTextSize(LABEL_TEXT_SIZE);
+			textColor = Color.BLACK;
+			paint.setColor(textColor);
+			shadowColor = PaintFactory.getComplimentColor(textColor);
 			paint.setShadowLayer(5, 0, 0, shadowColor);
 			break;
 		case REGULAR:

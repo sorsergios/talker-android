@@ -284,10 +284,12 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	
 	/*IMAGES OF CONTACT CATEGORIES*/
 	private static Integer[] mThumbIdsImagesForCateg5 = {
+		R.drawable.con_1,
 		R.drawable.con_1
 	};
 	private static Integer[] mThumbTextsImagesForCateg5 = {
-		R.string.con_1
+		R.string.con_1,
+		R.string.con_2
 	};
 	
 }

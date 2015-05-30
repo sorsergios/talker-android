@@ -13,7 +13,7 @@ import ar.uba.fi.talker.paint.PaintType;
 
 public class Text extends DragComponent {
 
-	private String value;
+	protected String value;
 
 	public Text(Context context) {
 		super(context);
