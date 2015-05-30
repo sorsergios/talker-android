@@ -27,7 +27,7 @@ public class OnClickStartActionSettings implements OnClickListener {
 		//Muestro la grilla de imagenes
 		Intent intent = new Intent(context, ImageSettingsActivity.class);
 		Bundle b = new Bundle();
-		b.putInt("keyId", (int) gridItem.getScenarioView().getId());
+		b.putInt("keyId", (int) gridItem.getElementGridView().getId());
 		intent.putExtras(b);
 		context.startActivity(intent);
 	}

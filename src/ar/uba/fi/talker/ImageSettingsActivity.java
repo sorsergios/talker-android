@@ -144,6 +144,8 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 					imageViews.add(element);
 					List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews);
 					ScenesGridFragment sgf = gridFragments.get(0);
+					GridScenesAdapter mGridAdapter = new GridScenesAdapter(this, sgf.getGridItems());
+					gridView.setAdapter(mGridAdapter);
 					//ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
 					gridView = sgf.getmGridView();
 				}

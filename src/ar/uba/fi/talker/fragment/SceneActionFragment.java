@@ -3,7 +3,6 @@ package ar.uba.fi.talker.fragment;
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -12,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.listener.OnClickStartActionDefault;
 import ar.uba.fi.talker.utils.GridItems;
 
 public class SceneActionFragment extends DialogFragment implements OnClickListener {
@@ -56,7 +54,7 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment newFragment = new ChangeNameDialogFragment(gridItem.getScenarioView(), adapter);
+				DialogFragment newFragment = new ChangeNameDialogFragment(gridItem.getElementGridView(), adapter);
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "insert_text");
 				SceneActionFragment.this.dismiss();
@@ -72,7 +70,7 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(gridItem.getScenarioView());
+				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(gridItem.getElementGridView());
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "delete_scenario");
 				SceneActionFragment.this.dismiss();

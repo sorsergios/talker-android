@@ -51,7 +51,7 @@ public class CategoryActionFragment extends DialogFragment implements OnClickLis
 		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment newFragment = new ChangeNameDialogFragment(gridItem.getScenarioView(), adapter);
+				DialogFragment newFragment = new ChangeNameDialogFragment(gridItem.getElementGridView(), adapter);
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "insert_text");
 				CategoryActionFragment.this.dismiss();
@@ -65,7 +65,7 @@ public class CategoryActionFragment extends DialogFragment implements OnClickLis
 			public void onClick(View v) {
 				
 				Bundle extras = new Bundle();
-				ElementGridView scenarioView = gridItem.getScenarioView();
+				ElementGridView scenarioView = gridItem.getElementGridView();
 				if (scenarioView.getPath() != null && scenarioView.getPath().contains("/")){
 					extras.putString("path", scenarioView.getPath());
 				} else {
@@ -83,7 +83,7 @@ public class CategoryActionFragment extends DialogFragment implements OnClickLis
 		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(gridItem.getScenarioView());
+				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(gridItem.getElementGridView());
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "delete_scenario");
 				CategoryActionFragment.this.dismiss();

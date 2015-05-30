@@ -124,7 +124,7 @@ public class GridAdapter extends BaseAdapter {
 	}
 	
 	public void setItem(GridItems gridItem,String text, int location){
-		gridItem.getScenarioView().setName(text);
+		gridItem.getElementGridView().setName(text);
 	}
 
 	public void removeItem(int location) {

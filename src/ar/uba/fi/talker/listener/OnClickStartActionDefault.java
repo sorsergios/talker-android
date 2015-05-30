@@ -28,7 +28,7 @@ public class OnClickStartActionDefault implements OnClickListener {
 	public void onClick(View v) {
 		
 		Bundle extras = new Bundle();
-		ElementGridView scenarioView = gridItem.getScenarioView();
+		ElementGridView scenarioView = gridItem.getElementGridView();
 		if (scenarioView.getPath() != null && scenarioView.getPath().contains("/")){
 			extras.putString("path", scenarioView.getPath());
 		} else {

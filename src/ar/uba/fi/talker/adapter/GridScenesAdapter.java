@@ -65,7 +65,7 @@ public class GridScenesAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		if (items != null && position >= 0 && position < getCount()) {
-			return items.get(position).getScenarioView().getId();
+			return items.get(position).getElementGridView().getId();
 		}
 		return 0;
 	}
@@ -103,7 +103,7 @@ public class GridScenesAdapter extends BaseAdapter {
 			mViewHolder = (ViewHolder) convertView.getTag();
 		}
 		
-		this.setViewItemContent(mViewHolder, gridItem.getScenarioView());
+		this.setViewItemContent(mViewHolder, gridItem.getElementGridView());
 	
 		return convertView;
 	}
@@ -128,7 +128,7 @@ public class GridScenesAdapter extends BaseAdapter {
 	}
 	
 	public void setItem(GridItems gridItem,String text, int location){
-		gridItem.getScenarioView().setName(text);
+		gridItem.getElementGridView().setName(text);
 	}
 
 	public void removeItem(int location) {

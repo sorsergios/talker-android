@@ -64,4 +64,8 @@ public class ScenesGridFragment extends Fragment {
 	public GridView getmGridView() {
 		return mGridView;
 	}
+	
+	public List<GridItems> getGridItems() {
+		return gridItems;
+	}
 }
