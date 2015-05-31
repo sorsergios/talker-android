@@ -21,6 +21,7 @@
     <item type="id" name="progress_circular"/>
     <item type="id" name="progress_horizontal"/>
     
-    <item name="insert_text_input" type="id"/>	
+    <item name="insert_text_input" type="id"/>
+    <item name="insert_text_input_phone" type="id"/>	
     
 </resources>

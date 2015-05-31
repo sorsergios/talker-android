@@ -6,36 +6,42 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
+import ar.uba.fi.talker.dao.ContactTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.fragment.ContactDialogFragment;
+import ar.uba.fi.talker.fragment.ContactDialogFragment.ContactDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
+import ar.uba.fi.talker.utils.ElementGridView;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
-import ar.uba.fi.talker.utils.ElementGridView;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class ImageSettingsActivity extends FragmentActivity implements DeleteScenarioDialogListener {
+public class ImageSettingsActivity extends FragmentActivity implements DeleteScenarioDialogListener, ContactDialogListener {
 
-    private ImageTalkerDataSource datasource;
+    private ImageTalkerDataSource imageDatasource;
+    private ContactTalkerDataSource contactDatasource;
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private GridView gridView = null;
@@ -59,6 +65,8 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				@Override
 				public void onClick(View v) {
 					//TODO: abrir un dialog con los campos para completar el contacto
+					DialogFragment newFragment = new ContactDialogFragment();
+					newFragment.show(getSupportFragmentManager(), "insert_contact");
 				}
 			});			
 		} else {
@@ -88,9 +96,9 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
 		ArrayList<ElementGridView> thumbnails = new ArrayList<ElementGridView>();
 
-		datasource = new ImageTalkerDataSource(this);
-	    datasource.open();
-		List<ImageDAO> allImages = datasource.getImagesForCategory(keyId);
+		imageDatasource = new ImageTalkerDataSource(this);
+	    imageDatasource.open();
+		List<ImageDAO> allImages = imageDatasource.getImagesForCategory(keyId);
 		ElementGridView thumbnail = null;
 		for (ImageDAO imageDAO : allImages) {
 			thumbnail = new ElementGridView();
@@ -116,9 +124,9 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 			deleted = file.delete();
 		}
 		if (deleted){
-			datasource.open();
-			datasource.deleteImage(scenarioView.getId());
-			datasource.close();
+			imageDatasource.open();
+			imageDatasource.deleteImage(scenarioView.getId());
+			imageDatasource.close();
 		} else {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 			Log.e("NewScene", "Unexpected error deleting imagen.");
@@ -145,12 +153,12 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				}
 				ImageUtils.saveFileInternalStorage(imageName, bitmap, this.getApplicationContext());
 				File file = new File(this.getApplicationContext().getFilesDir(), imageName);
-				if (datasource == null){
-					datasource = new ImageTalkerDataSource(this.getApplicationContext());
+				if (imageDatasource == null){
+					imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
 				}
-				datasource.open();
-				imageDAO = datasource.createImage(file.getPath(), imageName, keyId);
-				datasource.close();
+				imageDatasource.open();
+				imageDAO = imageDatasource.createImage(file.getPath(), imageName, keyId);
+				imageDatasource.close();
 				if (gridView == null ){
 					setGridViewAdapter();
 				}
@@ -177,6 +185,18 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		GridScenesAdapter mGridAdapter = new GridScenesAdapter(this, sgf.getGridItems());
 		gridView = new GridView(this);
 		gridView.setAdapter(mGridAdapter);
+	}
+
+	@Override
+	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
+		Dialog dialogView = dialog.getDialog();
+		EditText inputAddress = (EditText) dialogView.findViewById(R.id.insert_text_input);
+		EditText inputPhone = (EditText) dialogView.findViewById(R.id.insert_text_input_phone);
+		if (contactDatasource == null ) {
+			contactDatasource = new ContactTalkerDataSource(this);
+		}
+	    contactDatasource.open();
+		contactDatasource.createContact(keyId, inputPhone.getText().toString(), inputAddress.getText().toString());		
 	}
 
 }

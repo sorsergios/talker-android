@@ -37,12 +37,12 @@ import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.Delete
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
+import ar.uba.fi.talker.utils.ElementGridView;
 import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 import ar.uba.fi.talker.utils.ResultConstant;
-import ar.uba.fi.talker.utils.ElementGridView;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -126,8 +126,6 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 		@Override
 		public void onActivityResult(int requestCode, int resultCode, Intent data) {
 			super.onActivityResult(requestCode, resultCode, data);
-			/* Está configurado para de empezar la conversación directamente y guardar el escenario nuevo en la base */
-			byte[] bytes = null;
 			CategoryDAO scenario = null;
 			if (requestCode == ResultConstant.RESULT_LOAD_IMAGE && null != data) {
 				Uri imageUri = data.getData();
@@ -141,10 +139,8 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 					} else {
 						bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 					}
-					bytes = ImageUtils.transformImage(bitmap);
 					Context ctx = this.getApplicationContext();
 					ImageUtils.saveFileInternalStorage(categoryName, bitmap, ctx);
-					File file = new File(ctx.getFilesDir(), categoryName);
 					categoryDatasource.open();
 					scenario = categoryDatasource.createCategory(categoryName, 0);
 					categoryDatasource.close();
@@ -159,12 +155,6 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
-				Bundle extras = new Bundle();
-				extras.putByteArray("BMP",bytes);
-				Intent intent = new Intent(this.getApplicationContext(), CanvasActivity.class);
-				intent.putExtras(extras);
-				startActivity(intent);
 			}		
 		}
 
