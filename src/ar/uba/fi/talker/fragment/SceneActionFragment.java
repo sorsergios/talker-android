@@ -1,18 +1,17 @@
 package ar.uba.fi.talker.fragment;
 
 import android.app.ActionBar.LayoutParams;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import ar.uba.fi.talker.ImageSettingsActivity;
-import ar.uba.fi.talker.NewCategoryImageActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.utils.GridItems;
 
@@ -65,12 +64,29 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		});
 
 		View startScenarioBttn = actions.findViewById(R.id.new_scene_start);
-		startScenarioBttn.setOnClickListener(onClickStartAction);
 		if (ImageSettingsActivity.class.toString().equals(getActivity().getClass().toString())) {
 			ImageSettingsActivity activity = (ImageSettingsActivity)getActivity();
 			if (!activity.isContact()){
 				startScenarioBttn.setVisibility(View.GONE);
+			} else {
+				startScenarioBttn.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						
+						ContactInfoFragment newFragment = new ContactInfoFragment();
+						
+						Bundle args = new Bundle();
+						args.putInt("imageId", (int)gridItem.getElementGridView().getId());
+						newFragment.setArguments(args);
+						newFragment.onAttach(getActivity());
+						newFragment.show(getActivity().getSupportFragmentManager(), "show_contact_info");
+				        SceneActionFragment.this.dismiss();
+				        
+					}
+				});	
 			}
+		} else {
+			startScenarioBttn.setOnClickListener(onClickStartAction);
 		}
 		View deleteScenarioBttn = actions.findViewById(R.id.new_scene_delete_scenario_name);
 		deleteScenarioBttn.setOnClickListener(new OnClickListener() {

@@ -62,6 +62,16 @@ public class ContactTalkerDataSource {
 		return contact;
 	}
 
+	public ContactDAO getContactByID(long keyId) {
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.CONTACT_TABLE + " WHERE "
+				+ ResourceSQLiteHelper.CONTACT_COLUMN_ID + " = " + keyId, null);
+		cursor.moveToFirst();
+		ContactDAO contact = cursorToContact(cursor);
+		cursor.close();
+		return contact;
+	}
+
 	public void deleteContactByImageID(long keyID) {
 		database.delete(ResourceSQLiteHelper.CONTACT_TABLE,
 			ResourceSQLiteHelper.CONTACT_COLUMN_IMAGE_ID + " = " + keyID, null);

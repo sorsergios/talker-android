@@ -49,15 +49,5 @@
         android:enabled="false"
         android:scaleType="fitXY"
         android:src="@drawable/start" />
-     
-     <ImageView
-        android:id="@+id/new_scene_gallery"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginLeft="15dp"
-        android:clickable="true"
-        android:contentDescription="@string/new_scene_exit"
-        android:enabled="false"
-        android:scaleType="fitXY"
-        android:src="@drawable/gallery" />
+
 </LinearLayout>
