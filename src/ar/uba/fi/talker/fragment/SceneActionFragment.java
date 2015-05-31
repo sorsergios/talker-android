@@ -1,6 +1,7 @@
 package ar.uba.fi.talker.fragment;
 
 import android.app.ActionBar.LayoutParams;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.BaseAdapter;
+import ar.uba.fi.talker.ImageSettingsActivity;
+import ar.uba.fi.talker.NewCategoryImageActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.utils.GridItems;
 
@@ -62,10 +65,13 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		});
 
 		View startScenarioBttn = actions.findViewById(R.id.new_scene_start);
-		
-				
 		startScenarioBttn.setOnClickListener(onClickStartAction);
-		
+		if (ImageSettingsActivity.class.toString().equals(getActivity().getClass().toString())) {
+			ImageSettingsActivity activity = (ImageSettingsActivity)getActivity();
+			if (!activity.isContact()){
+				startScenarioBttn.setVisibility(View.GONE);
+			}
+		}
 		View deleteScenarioBttn = actions.findViewById(R.id.new_scene_delete_scenario_name);
 		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -76,18 +82,7 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 				SceneActionFragment.this.dismiss();
 			}
 		});
-		
-		View galleryScenarioBttn = actions.findViewById(R.id.new_scene_gallery);
-		galleryScenarioBttn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				DialogFragment newFragment = new InsertImageDialogFragment();
-				newFragment.onAttach(getActivity());
-				newFragment.show(getActivity().getSupportFragmentManager(), "insert_text");
-				SceneActionFragment.this.dismiss();
-			}
-		});
-		galleryScenarioBttn.setVisibility(View.GONE);
+
 		// Use the Builder class for convenient dialog construction
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setView(actions);

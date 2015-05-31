@@ -232,4 +232,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		contactDatasource.close();
 	}
 
+	public boolean isContact() {
+		return isContact;
+	}
 }
