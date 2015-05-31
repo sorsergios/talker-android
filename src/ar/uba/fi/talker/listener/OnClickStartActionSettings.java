@@ -39,6 +39,7 @@ public class OnClickStartActionSettings implements OnClickListener {
 		    
 		intent.putExtras(b);
 		context.startActivity(intent);
+		parent.dismiss();
 	}
 
 }
