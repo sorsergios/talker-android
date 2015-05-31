@@ -7,6 +7,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import ar.uba.fi.talker.ImageSettingsActivity;
+import ar.uba.fi.talker.NewCategoryContactActivity;
+import ar.uba.fi.talker.NewCategoryImageActivity;
 import ar.uba.fi.talker.utils.GridItems;
 
 public class OnClickStartActionSettings implements OnClickListener {
@@ -28,6 +30,13 @@ public class OnClickStartActionSettings implements OnClickListener {
 		Intent intent = new Intent(context, ImageSettingsActivity.class);
 		Bundle b = new Bundle();
 		b.putInt("keyId", (int) gridItem.getElementGridView().getId());
+		if (context.getClass().toString()
+				.equals(NewCategoryImageActivity.class.toString())) {
+			b.putBoolean("isContact", false);
+		} else {
+			b.putBoolean("isContact", true);
+		}
+		    
 		intent.putExtras(b);
 		context.startActivity(intent);
 	}

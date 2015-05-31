@@ -41,6 +41,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 	private GridView gridView = null;
 	private PagerScenesAdapter pagerAdapter;
 	private int keyId;
+	private boolean isContact;
 	private static int RESULT_LOAD_IMAGE = 1;
 	
 	@Override
@@ -48,22 +49,38 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		super.onCreate(savedInstanceState);
 		Bundle b = getIntent().getExtras();
 		keyId= b.getInt("keyId");
-		setContentView(R.layout.layout_images);
-		imagesPagerSetting();
+		isContact= b.getBoolean("isContact");
+		if (isContact){
+			setContentView(R.layout.layout_contacts);
+			imagesPagerSetting();
 
-		ImageButton createCategoryBttn = (ImageButton) this.findViewById(R.id.new_scene_gallery);
-		createCategoryBttn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				try {
-					ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-					gridView = sgf.getmGridView();
-				} catch (Exception e) {
+			ImageButton createContactBttn = (ImageButton) this.findViewById(R.id.add_contact);
+			createContactBttn.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//TODO: abrir un dialog con los campos para completar el contacto
 				}
-				Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-				startActivityForResult(i, RESULT_LOAD_IMAGE);
-			}
-		});
+			});			
+		} else {
+			setContentView(R.layout.layout_images);
+			imagesPagerSetting();
+
+			ImageButton createImageBttn = (ImageButton) this.findViewById(R.id.new_image_gallery);
+			createImageBttn.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					try {
+						ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
+						gridView = sgf.getmGridView();
+					} catch (Exception e) {
+						Log.i("newImage", "Agrego una imagen a una nueva categoria");
+					}
+					Intent i = new Intent(Intent.ACTION_PICK,
+							android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+					startActivityForResult(i, RESULT_LOAD_IMAGE);
+				}
+			});
+		}
 	}
 
 	private void imagesPagerSetting() {
