@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
@@ -28,7 +29,8 @@ public class ContactDialogFragment extends ParentDialogFragment {
 
 	// Use this instance of the interface to deliver action events
 	ContactDialogListener listener;
-	private static int RESULT_LOAD_IMAGE = 1;
+	private static int RESULT_LOAD_IMAGE_CONTACT = 3;
+	ImageView imageView = null;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -42,17 +44,25 @@ public class ContactDialogFragment extends ParentDialogFragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		Bundle bundle=getActivity().getIntent().getExtras();
+		if (bundle.get("imageUri") != null)
+			imageView.setImageURI((Uri) bundle.get("imageUri"));
+	}
+	
+	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the Builder class for convenient dialog construction
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		ImageView imageView = new ImageView(getActivity());
+		imageView = new ImageView(getActivity());
 		imageView.setImageResource(R.drawable.image_icon);
+		imageView.setId(R.id.image);
 		imageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(Intent.ACTION_PICK,
-						android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-				startActivityForResult(i, RESULT_LOAD_IMAGE);
+				Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+				getActivity().startActivityForResult(i, RESULT_LOAD_IMAGE_CONTACT);
 			}
 		});
 		EditText inputPhone = new EditText(getActivity());

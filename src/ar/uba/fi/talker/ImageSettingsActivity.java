@@ -1,6 +1,7 @@
 package ar.uba.fi.talker;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -10,9 +11,11 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images.Media;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -21,6 +24,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
@@ -49,6 +53,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 	private int keyId;
 	private boolean isContact;
 	private static int RESULT_LOAD_IMAGE = 1;
+	private static int RESULT_LOAD_IMAGE_CONTACT = 3;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +69,6 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 			createContactBttn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					//TODO: abrir un dialog con los campos para completar el contacto
 					DialogFragment newFragment = new ContactDialogFragment();
 					newFragment.show(getSupportFragmentManager(), "insert_contact");
 				}
@@ -154,7 +158,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				ImageUtils.saveFileInternalStorage(imageName, bitmap, this.getApplicationContext());
 				File file = new File(this.getApplicationContext().getFilesDir(), imageName);
 				if (imageDatasource == null){
-					imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
+						imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
 				}
 				imageDatasource.open();
 				imageDAO = imageDatasource.createImage(file.getPath(), imageName, keyId);
@@ -172,6 +176,23 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		} else if (requestCode == RESULT_LOAD_IMAGE_CONTACT && null != data){
+			Uri imageUri = data.getData();
+			String imageName = imageUri.getLastPathSegment();
+			if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
+				imageName = imageName.substring(35);
+			}
+			try {
+				Bitmap ima1 = Media.getBitmap(this.getContentResolver(), imageUri);
+				data.putExtra("imageUri", imageUri);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//scenario.addImage(Bitmap.createBitmap(ima1, 0, 0, ima1.getWidth(), ima1.getHeight(), matrix, true), null);
 		}
 		this.imagesPagerSetting();
 	}
@@ -190,13 +211,25 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 	@Override
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
 		Dialog dialogView = dialog.getDialog();
+		ImageView imageView = (ImageView) dialogView.findViewById(R.id.image);
+		Drawable drawable = imageView.getDrawable();
+		String name = ""+imageView.getId();
+		String path = ""+imageView.getId();
+		if (imageDatasource == null ) {
+			imageDatasource = new ImageTalkerDataSource(this);
+		}
+	    imageDatasource.open();
+	    ImageDAO imagedao= imageDatasource.createImage(path, name, keyId);
+		imageDatasource.close();
+		
 		EditText inputAddress = (EditText) dialogView.findViewById(R.id.insert_text_input);
 		EditText inputPhone = (EditText) dialogView.findViewById(R.id.insert_text_input_phone);
 		if (contactDatasource == null ) {
 			contactDatasource = new ContactTalkerDataSource(this);
 		}
 	    contactDatasource.open();
-		contactDatasource.createContact(keyId, inputPhone.getText().toString(), inputAddress.getText().toString());		
+		contactDatasource.createContact(imagedao.getId(), inputPhone.getText().toString(), inputAddress.getText().toString());
+		contactDatasource.close();
 	}
 
 }
