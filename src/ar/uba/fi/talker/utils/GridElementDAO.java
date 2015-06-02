@@ -2,42 +2,42 @@ package ar.uba.fi.talker.utils;
 
 import ar.uba.fi.talker.dao.ScenarioDAO;
 
-public class ElementGridView {
-	
+/**
+ * @author emontes
+ * 
+ * 
+ *         Creates the view from a Conversation attributes.
+ * 
+ * 
+ */
+public class GridElementDAO {
+
 	private long id;
 	private String path;
 	private String name;
-	private boolean scenario;
-	
-	public ElementGridView(ScenarioDAO scenarioDAO) {
+	private boolean isScenarioElement;
+
+	public GridElementDAO(ScenarioDAO scenarioDAO) {
 		this.id = scenarioDAO.getId();
 		this.path = scenarioDAO.getPath();
 		this.name = scenarioDAO.getName();
-		scenario = true;
+		isScenarioElement = true;
 	}
 
-	public ElementGridView() {
+	public GridElementDAO() {
 	}
 
-	/**
-	 * Creates the view from a Conversation attributes.
-	 * 
-	 * @param id
-	 * @param path
-	 * @param name
-	 * @param pathSnapshot
-	 */
-	public ElementGridView(int id, String path, String name, String pathSnapshot) {
+	public GridElementDAO(int id, String path, String name, String pathSnapshot) {
 		this.id = id;
 		this.path = pathSnapshot;
 		this.name = name;
-		scenario = false;
+		isScenarioElement = false;
 	}
 
 	public long getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -58,7 +58,11 @@ public class ElementGridView {
 		this.name = name;
 	}
 
-	public boolean isScenario() {
-		return scenario;
+	public boolean isScenarioElement() {
+		return isScenarioElement;
+	}
+
+	public void setScenarioElement(boolean isScenarioElement) {
+		this.isScenarioElement = isScenarioElement;
 	}
 }

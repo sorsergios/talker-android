@@ -35,7 +35,7 @@ import ar.uba.fi.talker.fragment.ContactDialogFragment;
 import ar.uba.fi.talker.fragment.ContactDialogFragment.ContactDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
-import ar.uba.fi.talker.utils.ElementGridView;
+import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
@@ -98,14 +98,14 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 	private void imagesPagerSetting() {
 		viewPager = (ViewPager) this.findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-		ArrayList<ElementGridView> thumbnails = new ArrayList<ElementGridView>();
+		ArrayList<GridElementDAO> thumbnails = new ArrayList<GridElementDAO>();
 
 		imageDatasource = new ImageTalkerDataSource(this);
 	    imageDatasource.open();
 		List<ImageDAO> allImages = imageDatasource.getImagesForCategory(keyId);
-		ElementGridView thumbnail = null;
+		GridElementDAO thumbnail = null;
 		for (ImageDAO imageDAO : allImages) {
-			thumbnail = new ElementGridView();
+			thumbnail = new GridElementDAO();
 			thumbnail.setId(imageDAO.getId());
 			thumbnail.setName(imageDAO.getName());
 			thumbnail.setPath(imageDAO.getPath());
@@ -120,7 +120,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(
-			ElementGridView scenarioView) {
+			GridElementDAO scenarioView) {
 		
 		boolean deleted = true;
 		if (scenarioView.getPath().contains("/")) {
@@ -167,7 +167,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 					setGridViewAdapter();
 				}
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
-				ElementGridView elementGridView = new ElementGridView();
+				GridElementDAO elementGridView = new GridElementDAO();
 				elementGridView.setId(imageDAO.getId());
 				elementGridView.setName(imageDAO.getName());
 				elementGridView.setPath(imageDAO.getPath());
@@ -198,8 +198,8 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 	}
 
 	private void setGridViewAdapter() {
-		ElementGridView element = new ElementGridView();
-		List<ElementGridView> imageViews = new ArrayList<ElementGridView>();
+		GridElementDAO element = new GridElementDAO();
+		List<GridElementDAO> imageViews = new ArrayList<GridElementDAO>();
 		imageViews.add(element);
 		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews);
 		ScenesGridFragment sgf = gridFragments.get(0);

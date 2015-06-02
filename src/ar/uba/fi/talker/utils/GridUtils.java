@@ -12,9 +12,9 @@ import ar.uba.fi.talker.fragment.ScenesGridFragment;
 
 public final class GridUtils {
 	
-	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, List<ElementGridView> gridElementViews) {
+	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, List<GridElementDAO> gridElementViews) {
 
-		Iterator<ElementGridView> it = gridElementViews.iterator();
+		Iterator<GridElementDAO> it = gridElementViews.iterator();
 		int maxImages = calculateImagesPerPage(activity);
 		List<ScenesGridFragment> gridFragments = new ArrayList<ScenesGridFragment>();
 		while (it.hasNext()) {

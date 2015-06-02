@@ -64,26 +64,6 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 		Button mannerOfUseBttn = (Button) findViewById(R.id.manner_of_use_button);
 		init();
 		
-		exitBttn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				DialogFragment newFragment = new ExitApplicationConfirmationDialogFragment();
-				newFragment.onAttach(self);
-				newFragment.show(self.getSupportFragmentManager(),"exit");
-			}
-		});
-		
-		settingsBttn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(),
-						UserSettingActivity.class);
-				startActivityForResult(i, ResultConstant.RESULT_SETTINGS);
-			}
-		});
-		
 		scenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -102,11 +82,33 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 			}
 		});
 		
+		settingsBttn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(getApplicationContext(),
+						UserSettingActivity.class);
+				startActivityForResult(i, ResultConstant.RESULT_SETTINGS);
+			}
+		});
+		
 		mannerOfUseBttn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				//TODO tutorial o explicacion
+				Intent i = new Intent(getApplicationContext(),
+						MannerOfUseActivity.class);
+				startActivity(i);
+			}
+		});
+		
+		exitBttn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				DialogFragment newFragment = new ExitApplicationConfirmationDialogFragment();
+				newFragment.onAttach(self);
+				newFragment.show(self.getSupportFragmentManager(),"exit");
 			}
 		});
 	}

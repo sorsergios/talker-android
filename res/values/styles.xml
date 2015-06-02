@@ -18,6 +18,8 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:buttonStyle">@style/SmallButton</item>
         <item name="android:listSeparatorTextViewStyle">@style/PreferenceListHeader</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="SmallButton" parent="android:style/Widget.Button">

@@ -16,15 +16,15 @@ import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
-import ar.uba.fi.talker.utils.ElementGridView;
+import ar.uba.fi.talker.utils.GridElementDAO;
 
 public class ChangeNameDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {
 
-	private ElementGridView scenarioView;
-	private BaseAdapter adapter;
+	private final GridElementDAO scenarioView;
+	private final BaseAdapter adapter;
 	private EditText input;
 	
-	public ChangeNameDialogFragment(ElementGridView scenarioView, BaseAdapter adapter) {
+	public ChangeNameDialogFragment(GridElementDAO scenarioView, BaseAdapter adapter) {
 		this.scenarioView = scenarioView;
 		this.adapter = adapter; 
 	}
@@ -60,7 +60,7 @@ public class ChangeNameDialogFragment extends ParentDialogFragment implements Di
 		if (which == AlertDialog.BUTTON_POSITIVE && input.getText().length() != 0) {
 			String text = input.getText().toString();
 			scenarioView.setName(text);
-			if (scenarioView.isScenario()) {
+			if (scenarioView.isScenarioElement()) {
 				new ScenarioNameChanger().execute(scenarioView);				
 			} else {
 				new ConversationNameChanger().execute(scenarioView);
@@ -70,12 +70,12 @@ public class ChangeNameDialogFragment extends ParentDialogFragment implements Di
 		dialog.dismiss();
 	}
 
-	private class ScenarioNameChanger extends AsyncTask<ElementGridView, ProgressBar, Boolean> {
+	private class ScenarioNameChanger extends AsyncTask<GridElementDAO, ProgressBar, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(ElementGridView... params) {
+		protected Boolean doInBackground(GridElementDAO... params) {
 			ScenarioTalkerDataSource datasource = new ScenarioTalkerDataSource(ChangeNameDialogFragment.this.getActivity().getApplicationContext());
-			ElementGridView scenarioView = params[0];
+			GridElementDAO scenarioView = params[0];
 			datasource.open();
 			datasource.updateScenario(scenarioView.getId(), scenarioView.getName());
 			datasource.close();
@@ -84,12 +84,12 @@ public class ChangeNameDialogFragment extends ParentDialogFragment implements Di
 		
 	}
 	
-	private class ConversationNameChanger extends AsyncTask<ElementGridView, ProgressBar, Boolean> {
+	private class ConversationNameChanger extends AsyncTask<GridElementDAO, ProgressBar, Boolean> {
 
 		@Override
-		protected Boolean doInBackground(ElementGridView... params) {
+		protected Boolean doInBackground(GridElementDAO... params) {
 			ConversationTalkerDataSource datasource = new ConversationTalkerDataSource(ChangeNameDialogFragment.this.getActivity().getApplicationContext());
-			ElementGridView scenarioView = params[0];
+			GridElementDAO scenarioView = params[0];
 			datasource.open();
 			datasource.updateConversation(scenarioView.getId(), scenarioView.getName());
 			datasource.close();

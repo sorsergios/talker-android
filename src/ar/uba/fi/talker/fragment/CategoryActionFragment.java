@@ -14,7 +14,7 @@ import android.widget.BaseAdapter;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.utils.GridItems;
-import ar.uba.fi.talker.utils.ElementGridView;
+import ar.uba.fi.talker.utils.GridElementDAO;
 
 public class CategoryActionFragment extends DialogFragment implements OnClickListener {
 
@@ -65,7 +65,7 @@ public class CategoryActionFragment extends DialogFragment implements OnClickLis
 			public void onClick(View v) {
 				
 				Bundle extras = new Bundle();
-				ElementGridView scenarioView = gridItem.getElementGridView();
+				GridElementDAO scenarioView = gridItem.getElementGridView();
 				if (scenarioView.getPath() != null && scenarioView.getPath().contains("/")){
 					extras.putString("path", scenarioView.getPath());
 				} else {

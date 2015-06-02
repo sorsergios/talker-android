@@ -37,7 +37,7 @@ import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.Delete
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
-import ar.uba.fi.talker.utils.ElementGridView;
+import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
@@ -77,7 +77,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 		private void categoriesPagerSetting() {
 			viewPager = (ViewPager) this.findViewById(R.id.pager);
 			pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-			ArrayList<ElementGridView> thumbnails = new ArrayList<ElementGridView>();
+			ArrayList<GridElementDAO> thumbnails = new ArrayList<GridElementDAO>();
 
 			if (categoryDatasource == null ) {
 				categoryDatasource = new CategoryTalkerDataSource(this.getApplicationContext());
@@ -88,9 +88,9 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 		    categoryDatasource.open();
 			List<CategoryDAO> allImages = categoryDatasource.getImageCategories();
 		    categoryDatasource.close();
-		    ElementGridView thumbnail = null;
+		    GridElementDAO thumbnail = null;
 			for (CategoryDAO categoryDAO : allImages) {
-				thumbnail = new ElementGridView();
+				thumbnail = new GridElementDAO();
 				thumbnail.setId(categoryDAO.getId());
 				thumbnail.setName(categoryDAO.getName());
 				thumbnail.setPath(getResources().getString(R.drawable.history_panel));
@@ -145,7 +145,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 					scenario = categoryDatasource.createCategory(categoryName, 0);
 					categoryDatasource.close();
 					GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
-					ElementGridView scenarioView = new ElementGridView();
+					GridElementDAO scenarioView = new GridElementDAO();
 					scenarioView.setId(scenario.getId());
 					scenarioView.setName(scenario.getName());
 					scenarioView.setPath(getResources().getString(R.drawable.casa));
@@ -159,7 +159,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 		}
 
 		@Override
-		public void onDialogPositiveClickDeleteScenarioDialogListener(ElementGridView categoryView) {
+		public void onDialogPositiveClickDeleteScenarioDialogListener(GridElementDAO categoryView) {
 			boolean deleted = true;
 			imageDatasource.open();
 			List<ImageDAO> innnerImages = imageDatasource.getImagesForCategory(categoryView.getId());

@@ -10,14 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.utils.ElementGridView;
+import ar.uba.fi.talker.utils.GridElementDAO;
 
 public class SceneAdapter extends BaseAdapter {
 
-	private List<ElementGridView> scenes;
+	private List<GridElementDAO> scenes;
 	private Context context;
 
-	public SceneAdapter(Context context, List<ElementGridView> scenes) {
+	public SceneAdapter(Context context, List<GridElementDAO> scenes) {
 		this.scenes = scenes;
 		this.context = context;
 	}
@@ -44,7 +44,7 @@ public class SceneAdapter extends BaseAdapter {
 				: convertView; 
 
 		ImageView imageView = (ImageView) viewHolder.findViewById(R.id.image);
-		ElementGridView scenarioView = scenes.get(position);
+		GridElementDAO scenarioView = scenes.get(position);
 		if (scenarioView.getPath() != null && scenarioView.getPath().contains("/")){
 			Uri uri = Uri.parse(scenarioView.getPath());
 			imageView.setImageURI(uri);

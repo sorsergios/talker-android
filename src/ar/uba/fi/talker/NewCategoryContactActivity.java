@@ -28,7 +28,7 @@ import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 import ar.uba.fi.talker.utils.GridConversationItems;
 import ar.uba.fi.talker.utils.GridUtils;
-import ar.uba.fi.talker.utils.ElementGridView;
+import ar.uba.fi.talker.utils.GridElementDAO;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -62,11 +62,11 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 		private void categoriesPagerSetting() {
 			viewPager = (ViewPager) this.findViewById(R.id.pager);
 			pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-			ArrayList<ElementGridView> categViews = new ArrayList<ElementGridView>();
+			ArrayList<GridElementDAO> categViews = new ArrayList<GridElementDAO>();
 			if (imageDatasource == null ) {
 				imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
 			}
-			ElementGridView categView = null;
+			GridElementDAO categView = null;
 			if (categoryDatasource == null ) {
 				categoryDatasource = new CategoryTalkerDataSource(this);
 			}
@@ -74,7 +74,7 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 			List<CategoryDAO> allImages = categoryDatasource.getContactCategories();
 			for (int i = 0; i < allImages.size(); i++) {
 				CategoryDAO categoryDAO = (CategoryDAO) allImages.get(i);
-				categView = new ElementGridView();
+				categView = new GridElementDAO();
 				categView.setId(categoryDAO.getId());
 				//da
 				categView.setPath(getResources().getString(R.drawable.history_panel));
@@ -101,7 +101,7 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 
 		@Override
 		public void onDialogPositiveClickDeleteScenarioDialogListener(
-				ElementGridView categoryView) {
+				GridElementDAO categoryView) {
 			boolean deleted = true;
 			imageDatasource.open();
 			List<ImageDAO> innnerImages = imageDatasource.getImagesForCategory(categoryView.getId());

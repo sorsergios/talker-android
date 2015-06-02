@@ -172,6 +172,7 @@
     <string name="con_1">MARIANA GARCÍA</string>
 	<string name="con_2">PEPE GUANO</string>
     
-    
+     <!-- manner of use -->
+	<string name="title_activity_manner_of_use">USO</string>
     
 </resources>

@@ -101,12 +101,13 @@ public class Image extends DragComponent {
 
 	}
 
-	/** Draw a text bubble */
-	private void drawBubble(final Canvas c, final int x, final int y, final int width, final int height, final String text,
+
+
+	private int drawBubble(final Canvas canvas, final int x, final int y, final int width, final int height, final String text,
 			final Paint paint) {
 		final TextInRectangle textRect = new TextInRectangle(paint);
 
-		final int h = textRect.prepare(text, width - 8, height - 8);
+		final int pixelHeight = textRect.prepare(text, width - 8, height - 8);
 
 		// draw bubble
 		final Paint p = new Paint();
@@ -114,8 +115,10 @@ public class Image extends DragComponent {
 		p.setStyle(Paint.Style.FILL);
 		p.setAntiAlias(true);
 
-		c.drawRoundRect(new RectF(x, y, x + width, y + h + 8), 4, 4, p);
-		textRect.draw(c, x + 4, y + 4);
+		canvas.drawRoundRect(new RectF(x, y, x + width, y + pixelHeight + 8), 4, 4, p);
+		textRect.draw(canvas, x + 4, y + 4);
+		
+		return y + pixelHeight + 8;
 	}
 
 }

@@ -18,7 +18,7 @@ import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.listener.OnClickListenerGridElement;
 import ar.uba.fi.talker.listener.OnClickListenerGridElementSettings;
 import ar.uba.fi.talker.utils.GridItems;
-import ar.uba.fi.talker.utils.ElementGridView;
+import ar.uba.fi.talker.utils.GridElementDAO;
 
 public class GridScenesAdapter extends BaseAdapter {
 
@@ -108,7 +108,7 @@ public class GridScenesAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void setViewItemContent(ViewHolder viewHolder, ElementGridView scenarioView) {
+	private void setViewItemContent(ViewHolder viewHolder, GridElementDAO scenarioView) {
 		if (scenarioView.getPath().contains("/")){
 			Uri uri = Uri.parse(scenarioView.getPath());
 			viewHolder.imageView.setImageURI(uri);

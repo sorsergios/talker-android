@@ -122,7 +122,6 @@ public class CanvasActivity extends ActionBarActivity implements
 				scenario.setActiveComponentType(ComponentType.ERASER);
 				CanvasActivity.this.setActiveTool(v);
 				EraserStroke.enabled = true;
-				
 				scenario.invalidate();
 			}
 		});
