@@ -12,13 +12,7 @@ import java.util.Stack;
 public class CalculatorState {
 
 	private enum CalcStatus {
-		ANY_SIMBOL,
-		ONLY_NUMBER,
-		OPEN,
-		CLOSE,
-		ONLY_DECIMAL,
-		NO_DOT,
-		SOLVED
+		ANY_SIMBOL, ONLY_NUMBER, OPEN, CLOSE, ONLY_DECIMAL, NO_DOT, SOLVED
 	}
 
 	private Stack<CalcStatus> states;
@@ -106,12 +100,14 @@ public class CalculatorState {
 	public void stateBack() {
 		if (!states.isEmpty()) {
 			states.pop();
-			if (CalcStatus.OPEN.equals(states.peek())) {
-				states.pop();
-				sections--;
-			} else if (CalcStatus.CLOSE.equals(states.peek())) {
-				states.pop();
-				sections++;
+			if (!states.isEmpty()) {
+				if (CalcStatus.OPEN.equals(states.peek())) {
+					states.pop();
+					sections--;
+				} else if (CalcStatus.CLOSE.equals(states.peek())) {
+					states.pop();
+					sections++;
+				}
 			}
 		}
 		if (states.isEmpty()) {
