@@ -11,7 +11,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -183,16 +182,13 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				imageName = imageName.substring(35);
 			}
 			try {
-				Bitmap ima1 = Media.getBitmap(this.getContentResolver(), imageUri);
+				Media.getBitmap(this.getContentResolver(), imageUri);
 				data.putExtra("imageUri", imageUri);
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e("SETTING", "Imagen no encontrada", e);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e("SETTING", "Error en la imagen", e);
 			}
-			//scenario.addImage(Bitmap.createBitmap(ima1, 0, 0, ima1.getWidth(), ima1.getHeight(), matrix, true), null);
 		}
 		this.imagesPagerSetting();
 	}
@@ -212,7 +208,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
 		Dialog dialogView = dialog.getDialog();
 		ImageView imageView = (ImageView) dialogView.findViewById(R.id.image);
-		Drawable drawable = imageView.getDrawable();
+		
 		String name = ""+imageView.getId();
 		String path = ""+imageView.getId();
 		if (imageDatasource == null ) {

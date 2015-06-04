@@ -174,5 +174,6 @@
     
      <!-- manner of use -->
 	<string name="title_activity_manner_of_use">USO</string>
+	<string name="image">Image</string>
     
 </resources>

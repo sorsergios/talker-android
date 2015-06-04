@@ -1,15 +1,12 @@
 package ar.uba.fi.talker.fragment;
 
-import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.BaseAdapter;
 import ar.uba.fi.talker.ImageSettingsActivity;
 import ar.uba.fi.talker.R;
@@ -32,18 +29,10 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		this.onClickStartAction = onClickStartAction;
 	}
 	
-	
 	@Override
-	public void onStart() {
-		super.onStart();
-		Window window = getDialog().getWindow();
-		window.setLayout(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-	}
-	
-	@Override
-	public void dismiss() {
+	public void onDestroy() {
 		this.view.setBackgroundColor(Color.WHITE);
-		super.dismiss();
+		super.onDestroy();
 	}
 	
 	@Override

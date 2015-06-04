@@ -84,6 +84,8 @@ public class CategoryTalkerDataSource {
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			CategoryDAO category = cursorToCategory(cursor);
+			ImageDAO image = getFirstImagesForCategory(category.getId());
+			category.setImage(image);
 			categories.add(category);
 			cursor.moveToNext();
 		}
@@ -100,6 +102,8 @@ public class CategoryTalkerDataSource {
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			CategoryDAO category = cursorToCategory(cursor);
+			ImageDAO image = getFirstImagesForCategory(category.getId());
+			category.setImage(image);
 			categories.add(category);
 			cursor.moveToNext();
 		}
@@ -117,5 +121,29 @@ public class CategoryTalkerDataSource {
 		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_NAME,name);
 		database.update(ResourceSQLiteHelper.CATEGORY_TABLE, values,
 				ResourceSQLiteHelper.CATEGORY_COLUMN_ID + " = " + keyID, null);
+	}
+
+	public ImageDAO getFirstImagesForCategory(long keyId) {
+		
+		Cursor cursor = database.query(ResourceSQLiteHelper.IMAGE_TABLE, new String[]{"*"},
+				ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY + " = " + keyId, null, null, null, 
+				ResourceSQLiteHelper.IMAGE_COLUMN_ID, "1");
+		cursor.moveToFirst();
+		
+		ImageDAO image = null;
+		if (!cursor.isAfterLast()) {
+			image = cursorToImages(cursor);
+		}
+		cursor.close();
+		return image;
+	}
+	
+	private ImageDAO cursorToImages(Cursor cursor) {
+		ImageDAO image = new ImageDAO();
+		image.setId(cursor.getInt(0));
+		image.setPath(cursor.getString(1));
+		image.setName(cursor.getString(2));
+		image.setIdCategory(cursor.getInt(3));
+		return image;
 	}
 }
