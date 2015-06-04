@@ -3,6 +3,7 @@ package ar.uba.fi.talker.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dao.CategoryDAO;
+import ar.uba.fi.talker.dao.ImageDAO;
 
 public class InsertImageCategoryAdapter extends BaseAdapter {
 	private final Context context;
@@ -43,16 +45,26 @@ public class InsertImageCategoryAdapter extends BaseAdapter {
 			// set image based on selected text
 			ImageView imageView = (ImageView) gridViewItem.findViewById(R.id.grid_item_image);
 
-			//FIXME acá viene la lógica de elegir imagen representativa de la categoría o construir un mosaico del interior de la categoría
-			imageView.setImageResource(R.drawable.ic_launcher);
-			
+			this.setImageContent(imageView, categories.get(position).getImage());
 		} else {
 			gridViewItem = convertView;
 		}
 
 		return gridViewItem;
 	}
-
+	
+	private void setImageContent(ImageView imageView, ImageDAO imageDAO) {
+		if (imageDAO != null && imageDAO.getPath().contains("/")){
+			Uri uri = Uri.parse(imageDAO.getPath());
+			imageView.setImageURI(uri);
+		} else if (imageDAO != null) {
+			int idCode = Integer.valueOf(imageDAO.getPath());
+			imageView.setImageResource(idCode);
+		} else {
+			imageView.setImageResource(R.drawable.history_panel);
+		}
+	}
+	
 	@Override
 	public int getCount() {
 		return categories.size();

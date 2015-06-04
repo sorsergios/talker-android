@@ -8,6 +8,7 @@ public class CategoryDAO {
 
 	private int id;
 	private String name;
+	private ImageDAO image;
 
 	public CategoryDAO() {
 	}
@@ -31,6 +32,14 @@ public class CategoryDAO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setImage(ImageDAO image) {
+		this.image = image;
+	}
+	
+	public ImageDAO getImage() {
+		return image;
 	}
 
 }

@@ -93,7 +93,11 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 				thumbnail = new GridElementDAO();
 				thumbnail.setId(categoryDAO.getId());
 				thumbnail.setName(categoryDAO.getName());
-				thumbnail.setPath(getResources().getString(R.drawable.history_panel));
+				if (categoryDAO.getImage() != null) {
+					thumbnail.setPath(categoryDAO.getImage().getPath());
+				} else {
+					thumbnail.setPath(String.valueOf(R.drawable.history_panel));
+				}
 				thumbnails.add(thumbnail);
 			}
 			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails);
