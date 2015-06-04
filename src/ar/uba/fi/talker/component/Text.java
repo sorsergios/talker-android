@@ -43,8 +43,35 @@ public class Text extends DragComponent {
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
+		int left = point.x + deltaPoint.x;
+		int top = point.y + deltaPoint.y;
 		Paint paint = PaintManager.getPaint(PaintType.TEXT);
-		canvas.drawText(value, point.x+deltaPoint.x, point.y+deltaPoint.y, paint);
+		canvas.drawText(value, left, top, paint);
+		if (EraserStroke.enabled) {
+			Rect bounds = this.getBounds();
+			left = left + bounds.right - (eraseBitmap.getWidth() / 2);
+			top = top + bounds.top - (eraseBitmap.getHeight() / 2);
+			canvas.drawBitmap(eraseBitmap, left, top, paint);
+		}
+	}
+	
+	@Override
+	public boolean isPointInnerBounds(Point outerPoint) {
+		Rect bounds = this.getBounds();
+		return (point.x < outerPoint.x 
+				&& point.y - (eraseBitmap.getHeight()/2) > outerPoint.y
+				&& point.x + bounds.right + (eraseBitmap.getWidth()/2)  > outerPoint.x 
+				&& point.y + bounds.top < outerPoint.y);
+	}
+
+	@Override
+	public boolean isPointInnerEraseBounds(Point outerPoint) {
+		Rect bounds = this.getBounds();
+		return (EraserStroke.enabled 
+				&& point.x + bounds.right - (eraseBitmap.getWidth() / 2) < outerPoint.x
+				&& point.y + bounds.top + eraseBitmap.getHeight()/2  > outerPoint.y
+				&& point.x + bounds.right + (eraseBitmap.getWidth() / 2) > outerPoint.x 
+				&& point.y + bounds.top - eraseBitmap.getHeight()/2 < outerPoint.y);
 	}
 	
 	public void setValue(Editable text) {
@@ -54,16 +81,5 @@ public class Text extends DragComponent {
 		this.invalidate();
 	}
 	
-	@Override
-	public boolean isPointInnerBounds(Point outerPoint) {
-		Rect bounds = this.getBounds();
-		
-		return (point.x < outerPoint.x 
-				&& point.y > outerPoint.y
-				&& point.x + bounds.right > outerPoint.x
-				&& point.y + bounds.top < outerPoint.y
-		);
-			
-	}
 
 }

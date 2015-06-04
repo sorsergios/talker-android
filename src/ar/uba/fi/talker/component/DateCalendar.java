@@ -50,21 +50,36 @@ public class DateCalendar extends DragComponent {
 	
 	@Override
 	public void onDraw(Canvas canvas) {
+		int left = point.x + deltaPoint.x;
+		int top = point.y + deltaPoint.y;
 		if (mImage != null) {
-			canvas.drawBitmap(mImage, point.x+deltaPoint.x, point.y+deltaPoint.y, paint);
+			canvas.drawBitmap(mImage, left, top, paint);
+		}
+		if (EraserStroke.enabled) {
+			left = left + mImage.getWidth() - (eraseBitmap.getWidth() / 2);
+			top = top - (eraseBitmap.getHeight() / 2);
+			canvas.drawBitmap(eraseBitmap, left, top, paint);
 		}
 	}
 	
 	@Override
 	public boolean isPointInnerBounds(Point outerPoint) {
-		return (mImage != null
+		return (mImage != null 
 				&& point.x < outerPoint.x 
-				&& point.y < outerPoint.y
-				&& point.x + mImage.getWidth() > outerPoint.x
-				&& point.y + mImage.getHeight() > outerPoint.y
-		);
+				&& point.y - eraseBitmap.getHeight() < outerPoint.y
+				&& point.x + mImage.getWidth() + eraseBitmap.getWidth() > outerPoint.x 
+				&& point.y + mImage.getHeight() > outerPoint.y);
 	}
 
+	@Override
+	public boolean isPointInnerEraseBounds(Point outerPoint) {
+		return (EraserStroke.enabled 
+				&& point.x + mImage.getWidth() - (eraseBitmap.getWidth() / 2) < outerPoint.x
+				&& point.y - eraseBitmap.getHeight() / 2 < outerPoint.y
+				&& point.x + mImage.getWidth() + (eraseBitmap.getWidth() / 2) > outerPoint.x 
+				&& point.y + eraseBitmap.getHeight() / 2 > outerPoint.y);
+	}
+	
 	public void setContent(Calendar calendar, int idImage) {
 		String dateText = String.format("%1$tA %1$td %1$tB %1$tY", calendar);
 		String dayParams[] = dateText.split(" "); 
