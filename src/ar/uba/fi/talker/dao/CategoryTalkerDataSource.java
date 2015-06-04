@@ -84,6 +84,8 @@ public class CategoryTalkerDataSource {
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			CategoryDAO category = cursorToCategory(cursor);
+			ImageDAO image = getFirstImagesForCategory(category.getId());
+			category.setImage(image);
 			categories.add(category);
 			cursor.moveToNext();
 		}
