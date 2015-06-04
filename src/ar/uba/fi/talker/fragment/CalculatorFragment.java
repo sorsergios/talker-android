@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.calculator.CalculatorClear;
@@ -64,11 +65,13 @@ public class CalculatorFragment extends ParentDialogFragment implements OnClickL
 		calculator = View.inflate(getActivity(), R.layout.calculator, null);
 
 		text = (TextView) calculator.findViewById(R.id.calc_text);
+		final HorizontalScrollView scroll = (HorizontalScrollView) calculator.findViewById(R.id.textScrollView);
 		for (int i = 0; i < this.buttons.size(); i++) {
 			Button button = (Button) calculator.findViewById(this.buttons.keyAt(i));
 			
 			CalculatorExpression expression = this.buttons.valueAt(i);
 			expression.setTextView(text);
+			expression.setScrollView(scroll);
 			button.setOnClickListener(expression);
 		}
 		
@@ -85,7 +88,7 @@ public class CalculatorFragment extends ParentDialogFragment implements OnClickL
 	@Override
 	public void onClick(View v) {
 		Button button = (Button) calculator.findViewById(R.id.buttonResult);
-		button.callOnClick();
+		button.performClick();
 		TextView inputText = (TextView) calculator.findViewById(R.id.calc_text);
 		if (inputText != null && inputText.getEditableText() != null){
 			Scenario scenario = (Scenario) getActivity().findViewById(R.id.gestureOverlayView1);

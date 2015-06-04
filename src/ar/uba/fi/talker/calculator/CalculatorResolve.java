@@ -182,7 +182,7 @@ public class CalculatorResolve extends CalculatorExpression {
 				double result = resuelve(output);
 				DecimalFormat df = new DecimalFormat("#.##");
 				String aString = df.format(result);
-				getTextView().append(" = " + aString);
+				this.appendText(" = " + aString);
 			} catch (Exception e) {
 				Log.e("CALCULATOR", "Ocurrió un error en el calculo", e);
 			}

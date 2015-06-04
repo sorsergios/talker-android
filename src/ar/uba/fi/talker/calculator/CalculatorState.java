@@ -80,7 +80,7 @@ public class CalculatorState {
 
 	public void setClose() {
 		states.add(CalcStatus.CLOSE);
-		states.add(CalcStatus.ONLY_NUMBER);
+		states.add(CalcStatus.ANY_SIMBOL);
 		sections--;
 	}
 

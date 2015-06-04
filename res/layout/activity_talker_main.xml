@@ -17,15 +17,6 @@
        	android:drawableStart="@drawable/manner_of_use" />
 
     <Button
-        android:id="@+id/new_conversation_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/manner_of_use_button"
-        android:drawableTop="@drawable/app_icon"
-        android:gravity="center"
-        android:text="@string/new_conversation" />
-
-    <Button
         android:id="@+id/action_settings_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,5 +41,15 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:drawableStart="@drawable/exit" />
+
+    <Button
+        android:id="@+id/new_conversation_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:drawableTop="@drawable/app_icon"
+        android:gravity="center"
+        android:text="@string/new_conversation" />
 
 </RelativeLayout>

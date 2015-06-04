@@ -12,6 +12,6 @@ public class CalculatorClearAll extends CalculatorExpression {
 	@Override
 	public void onClick(View v) {
 		getState().clearStates();
-		this.getTextView().setText(null);
+		this.changeText(null);
 	}
 }

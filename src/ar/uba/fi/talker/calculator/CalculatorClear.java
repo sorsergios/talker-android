@@ -21,7 +21,7 @@ public class CalculatorClear extends CalculatorExpression {
 				int cut = (lastChar == ' ' ? SIMBOL : NUMBER);
 				text = text.subSequence(0, text.length()-cut);
 				
-				this.getTextView().setText(text);
+				this.changeText(text);
 			}
 		}
 	}

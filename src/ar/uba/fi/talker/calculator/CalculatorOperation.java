@@ -19,8 +19,8 @@ public class CalculatorOperation extends CalculatorExpression {
 			if (getState().isSolved()) {
 				this.setNewText();
 			}
-			getState().setOperation();
-			getTextView().append(" " + text + " ");
+			this.getState().setOperation();
+			this.appendText(" " + text + " ");
 		} 
 	}
 
@@ -29,6 +29,6 @@ public class CalculatorOperation extends CalculatorExpression {
 		CharSequence result = textView.getText();
 		int equal = result.toString().indexOf("=");
 		CharSequence subSequence = result.subSequence(equal+2, result.length());
-		textView.setText(subSequence);
+		this.changeText(subSequence);
 	}
 }
