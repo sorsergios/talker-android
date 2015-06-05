@@ -26,7 +26,7 @@ public class OnClickListenerGridElementSettings implements OnClickListener {
 	view.setBackgroundColor(context.getResources().getColor(R.color.selectionViolet));
 		
 		FragmentActivity activity = (FragmentActivity) context;		
-		SceneActionFragment fragment = new SceneActionFragment(gridItem, view, baseAdapter, context);
+		SceneActionFragment fragment = new SceneActionFragment(gridItem, view, baseAdapter);
 		OnClickListener onClickListener = new OnClickStartActionSettings(activity, gridItem, fragment);
 		fragment.setOnClickStartAction(onClickListener);
 		fragment.onAttach(activity);

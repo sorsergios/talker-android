@@ -71,7 +71,7 @@ public class MannerOfUseActivity extends ActionBarActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			return new ScreenSlidePageFragment();
+			return new ScreenSlidePageFragment(position);
 		}
 
 		@Override
