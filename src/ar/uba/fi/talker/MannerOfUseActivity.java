@@ -7,6 +7,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -36,6 +39,14 @@ public class MannerOfUseActivity extends ActionBarActivity {
 		mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 		pageIndicator.setViewPager(mPager);
+
+		ImageButton backBttn = (ImageButton) findViewById(R.id.useSceneActionBack);
+		backBttn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 
 	@Override
