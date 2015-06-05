@@ -1,6 +1,7 @@
 package ar.uba.fi.talker.view;
 
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -128,12 +129,15 @@ public class Scenario extends FrameLayout {
 			int eventX = (int) event.getAxisValue(MotionEvent.AXIS_X);
 			int eventY = (int) event.getAxisValue(MotionEvent.AXIS_Y);
 			Point point = new Point(eventX, eventY);
-
-			for (Component child : draggableComponents) {
+			
+			Iterator<Component> i = draggableComponents.iterator();
+			while (i.hasNext()) {
+				Component child = i.next();
 				if (child.isPointInnerBounds(point)) {
 					foundElement = true;
 					if (child.isPointInnerEraseBounds(point)) {
 						child.setVisibility(GONE);
+					    i.remove();
 					}
 					activeComponent = child;
 					activeComponent.toggleActive();
