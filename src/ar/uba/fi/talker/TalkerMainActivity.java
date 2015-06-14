@@ -18,6 +18,7 @@ import ar.uba.fi.talker.dao.ConversationDAO;
 import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
 import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment.ExitAplicationDialogListener;
+import ar.uba.fi.talker.utils.PreferenceMapper;
 import ar.uba.fi.talker.utils.ResultConstant;
 
 public class TalkerMainActivity extends ActionBarActivity implements ExitAplicationDialogListener {
@@ -41,10 +42,10 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 			edit.putString(resources.getString(R.string.settings_text_color_key), "#000000");
 			edit.putString(resources.getString(R.string.settings_text_size_key), "100");
 			edit.putString(resources.getString(R.string.settings_pencil_color_key), "#00abea");
-			edit.putString(resources.getString(R.string.settings_pencil_size_key), "20");
-			edit.putString(resources.getString(R.string.settings_eraser_size_key), "20");
-			edit.putBoolean(resources.getString(R.string.settings_image_tag_key), false);
-			edit.putBoolean(resources.getString(R.string.settings_contact_tag_key), false);
+			edit.putString(resources.getString(R.string.settings_pencil_size_key), PreferenceMapper.SIZE_MEDIUM);
+			edit.putString(resources.getString(R.string.settings_eraser_size_key), PreferenceMapper.SIZE_BIG);
+			edit.putBoolean(resources.getString(R.string.settings_image_tag_key), true);
+			edit.putBoolean(resources.getString(R.string.settings_contact_tag_key), true);
 			edit.apply();
 		}
     }
@@ -87,7 +88,7 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(getApplicationContext(),
-						UserSettingActivity.class);
+						MyPreferenceActivity.class);
 				startActivityForResult(i, ResultConstant.RESULT_SETTINGS);
 			}
 		});
