@@ -6,87 +6,87 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import ar.uba.fi.talker.dao.ScenarioDAO;
 
-public class ScenarioTalkerDataSource {
-	
-	private SQLiteDatabase database;
-	private ResourceSQLiteHelper dbHelper;
+public class ScenarioTalkerDataSource extends TalkerDataSource<ScenarioDAO> {
+
 	private String[] allColumns = { ResourceSQLiteHelper.SCENARIO_COLUMN_ID,
 			ResourceSQLiteHelper.SCENARIO_COLUMN_PATH,
 			ResourceSQLiteHelper.SCENARIO_COLUMN_NAME };
-
+	
 	public ScenarioTalkerDataSource(Context context) {
-		dbHelper = new ResourceSQLiteHelper(context);
+		super(context);
 	}
-
-	public void open() throws SQLException {
-		database = dbHelper.getWritableDatabase();
-	}
-
-	public void close() {
-		dbHelper.close();
-	}
-
-	public ScenarioDAO createScenario(String path, String name) {
+	
+	@Override
+	public long add(ScenarioDAO scenario) {
 		ContentValues values = new ContentValues();
-		values.put(ResourceSQLiteHelper.SCENARIO_COLUMN_PATH, path);
-		values.put(ResourceSQLiteHelper.SCENARIO_COLUMN_NAME, name);
+		values.put(ResourceSQLiteHelper.SCENARIO_COLUMN_PATH, scenario.getPath());
+		values.put(ResourceSQLiteHelper.SCENARIO_COLUMN_NAME, scenario.getName());
+		
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
 		long insertId = database.insert(ResourceSQLiteHelper.SCENARIO_TABLE, null, values);
+		database.close();
+		return insertId;
+	}
+	
+	@Override
+	public ScenarioDAO get(long id) {
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		Cursor cursor = database.query(ResourceSQLiteHelper.SCENARIO_TABLE, allColumns,
-				ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " = " + insertId, null, null, null, null);
+				ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " = " + id, null, null, null, null);
 		cursor.moveToFirst();
-		ScenarioDAO newScenario = cursorToImages(cursor);
+		ScenarioDAO scenario = cursorToScenario(cursor);
 		cursor.close();
-		return newScenario;
+		database.close();
+		return scenario;
 	}
+	
+	@Override
+	public void update(ScenarioDAO scenario) {
+		ContentValues values = new ContentValues();
+		values.put(ResourceSQLiteHelper.SCENARIO_COLUMN_NAME, scenario.getName());
 
-	public void deleteScenario(Long keyID) {
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
+		database.update(ResourceSQLiteHelper.SCENARIO_TABLE, values,
+				ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " = " + scenario.getId(), null);
+		database.close();
+	}
+	
+	@Override
+	public void delete(ScenarioDAO scenario) {
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
 		database.delete(ResourceSQLiteHelper.SCENARIO_TABLE,
-				ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " = " + keyID, null);
+				ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " = " + scenario.getId(), null);
+		database.close();
 	}
 
-	public List<ScenarioDAO> getAllImages() {
+	@Override
+	public List<ScenarioDAO> getAll() {
 		List<ScenarioDAO> images = new ArrayList<ScenarioDAO>();
 
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		Cursor cursor = database.query(ResourceSQLiteHelper.SCENARIO_TABLE,
 				allColumns, null, null, null, null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
-			ScenarioDAO scenario = cursorToImages(cursor);
+			ScenarioDAO scenario = cursorToScenario(cursor);
 			images.add(scenario);
 			cursor.moveToNext();
 		}
 		cursor.close();
+		database.close();
 		return images;
 	}
 
-	private ScenarioDAO cursorToImages(Cursor cursor) {
+	private ScenarioDAO cursorToScenario(Cursor cursor) {
 		ScenarioDAO scenario = new ScenarioDAO();
 		scenario.setId(cursor.getInt(0));
 		scenario.setPath(cursor.getString(1));
 		scenario.setName(cursor.getString(2));
 		return scenario;
 	}
-	
-	public ScenarioDAO getScenarioByID(int keyId) {
-		Cursor cursor = database.rawQuery("SELECT * FROM "
-				+ ResourceSQLiteHelper.SCENARIO_TABLE + " WHERE "
-				+ ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " = " + keyId, null);
-		cursor.moveToFirst();
-		ScenarioDAO scenario = cursorToImages(cursor);
-		cursor.close();
-		return scenario;
-	}
-	
-	public void updateScenario(Long keyID, String name) {
-		ContentValues values = new ContentValues();
-		values.put(ResourceSQLiteHelper.SCENARIO_COLUMN_NAME,name);
-		database.update(ResourceSQLiteHelper.SCENARIO_TABLE, values,
-				ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " = " + keyID, null);
-	}
-	
+
 }

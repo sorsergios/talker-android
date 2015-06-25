@@ -76,9 +76,7 @@ public class ChangeNameDialogFragment extends ParentDialogFragment implements Di
 		protected Boolean doInBackground(GridElementDAO... params) {
 			ScenarioTalkerDataSource datasource = new ScenarioTalkerDataSource(ChangeNameDialogFragment.this.getActivity().getApplicationContext());
 			GridElementDAO scenarioView = params[0];
-			datasource.open();
-			datasource.updateScenario(scenarioView.getId(), scenarioView.getName());
-			datasource.close();
+			datasource.update(scenarioView);
 			return true;
 		}
 		

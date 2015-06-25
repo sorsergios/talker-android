@@ -53,7 +53,7 @@ public class HistoricalActivity extends ActionBarActivity implements ChangeNameD
 		List<ConversationDAO> allImages = datasource.getAllConversations();
 		for (int i = 0; i < allImages.size(); i++) {
 			ConversationDAO conversationDAO = (ConversationDAO) allImages.get(i);
-			conversView = new GridElementDAO(conversationDAO.getId(), conversationDAO.getPath(), conversationDAO.getName(), conversationDAO.getPathSnapshot());
+			conversView = new GridElementDAO(conversationDAO.getId(), conversationDAO.getName(), conversationDAO.getPathSnapshot());
 			conversViews.add(conversView);
 		}
 		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, conversViews);

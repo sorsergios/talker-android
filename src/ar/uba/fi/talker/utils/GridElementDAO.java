@@ -10,52 +10,22 @@ import ar.uba.fi.talker.dao.ScenarioDAO;
  * 
  * 
  */
-public class GridElementDAO {
+public class GridElementDAO extends ScenarioDAO {
 
-	private long id;
-	private String path;
-	private String name;
 	private boolean isScenarioElement;
 
 	public GridElementDAO(ScenarioDAO scenarioDAO) {
-		this.id = scenarioDAO.getId();
-		this.path = scenarioDAO.getPath();
-		this.name = scenarioDAO.getName();
+		super(scenarioDAO.getId(), scenarioDAO.getPath(), scenarioDAO.getName());
 		isScenarioElement = true;
 	}
 
-	public GridElementDAO() {
-	}
-
-	public GridElementDAO(int id, String path, String name, String pathSnapshot) {
-		this.id = id;
-		this.path = pathSnapshot;
-		this.name = name;
+	public GridElementDAO(int id, String name, String pathSnapshot) {
+		super(id, pathSnapshot, name);
 		isScenarioElement = false;
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public GridElementDAO() {
+		super();
 	}
 
 	public boolean isScenarioElement() {

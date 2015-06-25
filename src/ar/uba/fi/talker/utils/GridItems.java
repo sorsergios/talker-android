@@ -2,10 +2,10 @@ package ar.uba.fi.talker.utils;
 
 public class GridItems {
 
-	private int id;
+	private long id;
 	private GridElementDAO elementGridView;
 
-	public GridItems(int id, GridElementDAO elementGridView) {
+	public GridItems(long id, GridElementDAO elementGridView) {
 		this.id = id;
 		this.elementGridView = elementGridView;
 	}
@@ -14,7 +14,7 @@ public class GridItems {
 		return elementGridView;
 	}
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 }
