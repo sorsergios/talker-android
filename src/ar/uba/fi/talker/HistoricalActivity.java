@@ -16,7 +16,7 @@ import android.widget.Toast;
 import ar.uba.fi.talker.adapter.GridAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ConversationDAO;
-import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ConversationTalkerDataSource;
 import ar.uba.fi.talker.fragment.ChangeNameConversationDialogFragment.ChangeNameDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;

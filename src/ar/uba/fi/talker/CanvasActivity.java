@@ -39,8 +39,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.EraserStroke;
-import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
-import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ConversationTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment.DatePickerDialogListener;
@@ -208,22 +208,26 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	private void setBackground() {
 		Intent intent = getIntent();
+		boolean isHistory = false;
+		if (intent.hasExtra("history")) {
+			isHistory = intent.getBooleanExtra("history", false);
+		}
 		if(intent.hasExtra("BMP")) {
 		    Bundle extras = intent.getExtras();
 		    byte[] bytes = extras.getByteArray("BMP");
 		    Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 		    
-		    scenario.setBackgroundImage(image);
+		    scenario.setBackgroundImage(image, isHistory);
 		} else if (intent.hasExtra("code")) {
 		    Bundle extras = intent.getExtras();
 		    int code = extras.getInt("code");
 		    Bitmap image = BitmapFactory.decodeResource(getResources(), code);
-		    scenario.setBackgroundImage(image);
+		    scenario.setBackgroundImage(image, isHistory);
 		} else if (intent.hasExtra("path")) {
 		    Bundle extras = intent.getExtras();
 		    String path = extras.getString("path");
 		    Bitmap image = BitmapFactory.decodeFile(path);
-		    scenario.setBackgroundImage(image);
+		    scenario.setBackgroundImage(image, isHistory);
 		}
 	}
 	

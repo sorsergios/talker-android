@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import ar.uba.fi.talker.dao.ConversationDAO;
-import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ConversationTalkerDataSource;
 import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment.ExitAplicationDialogListener;
 import ar.uba.fi.talker.utils.ResultConstant;

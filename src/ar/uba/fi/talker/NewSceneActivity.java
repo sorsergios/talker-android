@@ -16,8 +16,6 @@ import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -25,14 +23,14 @@ import android.widget.Toast;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ScenarioDAO;
-import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
+import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 import ar.uba.fi.talker.utils.ResultConstant;
-import ar.uba.fi.talker.utils.GridElementDAO;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -85,39 +83,19 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 		viewPager.setAdapter(pagerAdapter);
 		pageIndicator.setViewPager(viewPager);
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.scenes, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		/* Está configurado para de empezar la conversación directamente y guardar el escenario nuevo en la base */
+		/* With requestCode == ResultConstant.RESULT_LOAD_IMAGE saves the image on DB and begins conversation */
 		byte[] bytes = null;
-		ScenarioDAO scenario = null;
 		if (requestCode == ResultConstant.RESULT_LOAD_IMAGE && null != data) {
 			Uri imageUri = data.getData();
 			String scenarioName = imageUri.getLastPathSegment(); 
 	        Bitmap bitmap = null;
-			try {/*Entra al if cuando se elige una foto de google +*/
+			try {
 				if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
+					/* if image belongs to google+*/
 					InputStream is = getContentResolver().openInputStream(imageUri);
 					bitmap = BitmapFactory.decodeStream(is);
 					scenarioName = scenarioName.substring(35);
@@ -129,7 +107,8 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 				ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx);
 				File file = new File(ctx.getFilesDir(), scenarioName);
 				datasource.open();
-				scenario = datasource.createScenario(file.getPath(), scenarioName);
+
+				ScenarioDAO scenario = datasource.createScenario(file.getPath(), scenarioName);
 				datasource.close();
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 				GridElementDAO scenarioView = new GridElementDAO(scenario);

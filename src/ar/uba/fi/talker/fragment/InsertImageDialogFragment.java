@@ -25,9 +25,9 @@ import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.adapter.InsertImageAdapter;
 import ar.uba.fi.talker.adapter.InsertImageCategoryAdapter;
 import ar.uba.fi.talker.dao.CategoryDAO;
-import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
-import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dataSource.CategoryTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.utils.ResultConstant;
 

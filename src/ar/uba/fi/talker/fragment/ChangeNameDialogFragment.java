@@ -14,8 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
-import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ConversationTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.utils.GridElementDAO;
 
 public class ChangeNameDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {

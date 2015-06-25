@@ -18,8 +18,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -29,16 +27,16 @@ import ar.uba.fi.talker.adapter.GridAdapter;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.CategoryDAO;
-import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
-import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dataSource.CategoryTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
 import ar.uba.fi.talker.fragment.ChangeNameConversationDialogFragment.ChangeNameDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
-import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridConversationItems;
+import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
@@ -106,26 +104,6 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 			viewPager.setAdapter(pagerAdapter);
 			pageIndicator.setViewPager(viewPager);
 		}
-		
-		@Override
-		public boolean onCreateOptionsMenu(Menu menu) {
-			// Inflate the menu; this adds items to the action bar if it is present.
-			getMenuInflater().inflate(R.menu.scenes, menu);
-			return true;
-		}
-
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			// Handle action bar item clicks here. The action bar will
-			// automatically handle clicks on the Home/Up button, so long
-			// as you specify a parent activity in AndroidManifest.xml.
-			int id = item.getItemId();
-			if (id == R.id.action_settings) {
-				return true;
-			}
-			return super.onOptionsItemSelected(item);
-		}
-
 
 		@Override
 		public void onActivityResult(int requestCode, int resultCode, Intent data) {
