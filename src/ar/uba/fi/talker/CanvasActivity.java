@@ -244,10 +244,16 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	@Override
 	public void onDialogPositiveClickInsertImageDialogListener(Uri uri, Matrix matrix) {
-		
+
+		Bitmap bitmap=null;
 		try {
-			Bitmap ima1 = Media.getBitmap(this.getContentResolver(), uri);
-			scenario.addImage(Bitmap.createBitmap(ima1, 0, 0, ima1.getWidth(), ima1.getHeight(), matrix, true), null);
+			if (uri != null && uri.getHost().contains("com.google.android.apps.photos.content")){
+				InputStream is = getContentResolver().openInputStream(uri);
+				bitmap = BitmapFactory.decodeStream(is);
+			} else {
+				bitmap = Media.getBitmap(this.getContentResolver(), uri);
+			}
+			scenario.addImage(Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true), null);
 		} catch (FileNotFoundException e) {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 			Log.e("CANVAS", "Unexpected error adding imagen.", e);
@@ -301,26 +307,27 @@ public class CanvasActivity extends ActionBarActivity implements
 	}
 
 	private void saveNewImage(Intent data, Uri selectedImage) {
+		datasourceImage = new ImageTalkerDataSource(this);
+		datasourceImage.open();
 		String imageName = selectedImage.getLastPathSegment(); 
 		Bitmap bitmap = null;
 		try {
 			if (selectedImage != null && selectedImage.getHost().contains("com.google.android.apps.photos.content")){
 				InputStream is = getContentResolver().openInputStream(selectedImage);
 				bitmap = BitmapFactory.decodeStream(is);
-				imageName = imageName.substring(35);
+				imageName = "IMAGE_" + String.valueOf(datasourceImage.getLastImageID() + 1);
 			} else {
 				bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
 			}
 			Context ctx = this.getApplicationContext();
 			ImageUtils.saveFileInternalStorage(imageName, bitmap, ctx);
 			File file = new File(ctx.getFilesDir(), imageName);
-			datasourceImage = new ImageTalkerDataSource(this);
-			datasourceImage.open();
-		    datasourceImage.createImage(file.getPath(), imageName, InsertImageDialogFragment.categId);
-			datasourceImage.close();
+			
+		    datasourceImage.createImage(file.getPath(), "", InsertImageDialogFragment.categId);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		datasourceImage.close();
 	}
 
 

@@ -29,6 +29,16 @@ public class ScenarioTalkerDataSource {
 		dbHelper.close();
 	}
 
+	public int getLastScenarioID() {
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.SCENARIO_TABLE + " ORDER BY "
+				+ ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " DESC LIMIT 1", null);
+		cursor.moveToFirst();
+		ScenarioDAO scenario = cursorToImages(cursor);
+		cursor.close();
+		return scenario.getId();
+	}
+	
 	public ScenarioDAO createScenario(String path, String name) {
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.SCENARIO_COLUMN_PATH, path);

@@ -117,18 +117,17 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 			String scenarioName = imageUri.getLastPathSegment(); 
 	        Bitmap bitmap = null;
 			try {/*Entra al if cuando se elige una foto de google +*/
+				datasource.open();
 				if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
 					InputStream is = getContentResolver().openInputStream(imageUri);
 					bitmap = BitmapFactory.decodeStream(is);
-					scenarioName = scenarioName.substring(35);
+					scenarioName = "SCENARIO_" + String.valueOf(datasource.getLastScenarioID() + 1);
 				} else {
 					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				}
-				bytes = ImageUtils.transformImage(bitmap);
 				Context ctx = this.getApplicationContext();
 				ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx);
 				File file = new File(ctx.getFilesDir(), scenarioName);
-				datasource.open();
 				scenario = datasource.createScenario(file.getPath(), scenarioName);
 				datasource.close();
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
@@ -141,6 +140,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 			}
 			
 			Bundle extras = new Bundle();
+			bytes = ImageUtils.transformImage(bitmap);
 			extras.putByteArray("BMP",bytes);
 			Intent intent = new Intent(this.getApplicationContext(), CanvasActivity.class);
 			intent.putExtras(extras);
