@@ -100,7 +100,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			public void onClick(View v) {
 
 				Intent i = new Intent(getApplicationContext(),
-						UserSettingActivity.class);
+						MyPreferenceActivity.class);
 				startActivityForResult(i, ResultConstant.RESULT_SETTINGS);
 			}
 		});
