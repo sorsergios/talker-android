@@ -97,7 +97,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 					/* if image belongs to google+*/
 					InputStream is = getContentResolver().openInputStream(imageUri);
 					bitmap = BitmapFactory.decodeStream(is);
-					scenarioName = scenarioName.substring(35);
+					scenarioName = "SCENARIO_" + String.valueOf(datasource.getLastScenarioID() + 1);
 				} else {
 					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				}
@@ -105,6 +105,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 				Log.e("ADD_SCENARIO", "Unexpected problem new scenario process.", e);
 			}
 			
+
 			Intent intent = new Intent(this.getApplicationContext(), CanvasActivity.class);
 			if (bitmap != null) {
 				new ImageSaverTask(this.getApplicationContext(), scenarioName).execute(bitmap);

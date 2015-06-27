@@ -23,15 +23,17 @@ public class ScreenSlidePageFragment extends Fragment {
 
 		switch (position) {
 		case 0:
-			view.setImageResource(R.drawable.abc_ab_bottom_solid_dark_holo);
+			view.setImageResource(R.drawable.manner_of_use_1_main);
 			break;
 		case 1:
-			view.setImageResource(R.drawable.contact_icon);
+			view.setImageResource(R.drawable.manner_of_use_2_select_scene);
 			break;
 		case 2:
-			view.setImageResource(R.drawable.calculator_icon);
+			view.setImageResource(R.drawable.manner_of_use_3_select_action);
 			break;
-
+		case 3:
+			view.setImageResource(R.drawable.manner_of_use_4_canvas);
+			break;
 		default:
 			break;
 		}

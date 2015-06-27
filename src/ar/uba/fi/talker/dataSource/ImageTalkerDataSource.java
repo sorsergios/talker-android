@@ -28,7 +28,17 @@ public class ImageTalkerDataSource {
 	public void close() {
 		dbHelper.close();
 	}
-
+	
+	public int getLastImageID() {
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.IMAGE_TABLE + " ORDER BY "
+				+ ResourceSQLiteHelper.IMAGE_COLUMN_ID + " DESC LIMIT 1", null);
+		cursor.moveToFirst();
+		ImageDAO image = cursorToImages(cursor);
+		cursor.close();
+		return image.getId();
+	}
+	
 	public ImageDAO createImage(String path, String name, long categID) {
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_PATH, path);
