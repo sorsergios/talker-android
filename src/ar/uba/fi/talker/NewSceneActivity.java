@@ -97,7 +97,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 					/* if image belongs to google+*/
 					InputStream is = getContentResolver().openInputStream(imageUri);
 					bitmap = BitmapFactory.decodeStream(is);
-					scenarioName = "SCENARIO_" + String.valueOf(datasource.getLastScenarioID() + 1);
+					scenarioName = "SCENARIO_" + String.valueOf(datasource.getLastId() + 1);
 				} else {
 					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				}

@@ -89,4 +89,16 @@ public class ScenarioTalkerDataSource extends TalkerDataSource<ScenarioDAO> {
 		return scenario;
 	}
 
+	public long getLastId() {
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.SCENARIO_TABLE + " ORDER BY "
+				+ ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " DESC LIMIT 1", null);
+		cursor.moveToFirst();
+		ScenarioDAO scenario = cursorToScenario(cursor);
+		cursor.close();
+		database.close();
+		return scenario.getId();
+	}
+
 }
