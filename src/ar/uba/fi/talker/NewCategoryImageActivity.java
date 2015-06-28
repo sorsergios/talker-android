@@ -144,7 +144,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 						bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 					}
 					Context ctx = this.getApplicationContext();
-					ImageUtils.saveFileInternalStorage(categoryName, bitmap, ctx);
+					ImageUtils.saveFileInternalStorage(categoryName, bitmap, ctx, 0);
 					categoryDatasource.open();
 					scenario = categoryDatasource.createCategory(categoryName, 0);
 					categoryDatasource.close();

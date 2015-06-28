@@ -28,11 +28,11 @@ import ar.uba.fi.talker.dao.ScenarioDAO;
 import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
+import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 import ar.uba.fi.talker.utils.ResultConstant;
-import ar.uba.fi.talker.utils.GridElementDAO;
 
 import com.viewpagerindicator.PageIndicator;
 
@@ -116,19 +116,20 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 			Uri imageUri = data.getData();
 			String scenarioName = imageUri.getLastPathSegment(); 
 	        Bitmap bitmap = null;
+	        int orientation = ImageUtils.getImageRotation(this.getApplicationContext(), imageUri);
+	        Context ctx = this.getApplicationContext();
 			try {/*Entra al if cuando se elige una foto de google +*/
 				datasource.open();
 				if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
 					InputStream is = getContentResolver().openInputStream(imageUri);
 					bitmap = BitmapFactory.decodeStream(is);
-					scenarioName = "SCENARIO_" + String.valueOf(datasource.getLastScenarioID() + 1);
 				} else {
 					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				}
-				Context ctx = this.getApplicationContext();
-				ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx);
+				scenarioName = "SCENARIO_" + String.valueOf(datasource.getLastScenarioID() + 1);
+				ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx, orientation);
 				File file = new File(ctx.getFilesDir(), scenarioName);
-				scenario = datasource.createScenario(file.getPath(), scenarioName);
+				scenario = datasource.createScenario(file.getPath(), "");
 				datasource.close();
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 				GridElementDAO scenarioView = new GridElementDAO(scenario);
@@ -140,6 +141,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 			}
 			
 			Bundle extras = new Bundle();
+			bitmap = ImageUtils.resizeBitmapWithOrientation(bitmap, orientation);
 			bytes = ImageUtils.transformImage(bitmap);
 			extras.putByteArray("BMP",bytes);
 			Intent intent = new Intent(this.getApplicationContext(), CanvasActivity.class);

@@ -1,5 +1,9 @@
 package ar.uba.fi.talker.fragment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
@@ -8,17 +12,17 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore.Images.Media;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import ar.uba.fi.talker.R;
@@ -39,14 +43,14 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 	private AlertDialog alert;
 	private View viewSelected;
 	private Boolean isContactSearch = false;
-	
+	private int idSelected = 0;
 	public static long categId = 0;
 	private CategoryTalkerDataSource categoryTalkerDataSource;
 	private ImageTalkerDataSource imageTalkerDataSource;
 	
 	public interface InsertImageDialogListener {
 		public void onDialogPositiveClickInsertImageDialogListener(Uri uri,
-				Matrix matrix);
+				int orientation);
 		public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap, String label);
 		public void onDialogPositiveClickInsertImageDialogListener(Bitmap bitmap);
 		public void onDialogPositiveClickInsertImageDialogListener(
@@ -142,6 +146,7 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				idSelected = (int)id;
 				for (int i = 0; i < parent.getChildCount(); i++) {
 					parent.getChildAt(i).setBackgroundColor(Color.WHITE);	
 				}
@@ -157,10 +162,15 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 							@Override
 							public void onClick(DialogInterface dialog, int id) {
 								if (viewSelected != null){
-									ImageView imageView = (ImageView) viewSelected.findViewById(R.id.grid_item_image);
 									TextView t = (TextView) viewSelected.findViewById(R.id.grid_item_label);
-									imageView.buildDrawingCache();
-									Bitmap bmap = Bitmap.createBitmap(imageView.getDrawingCache());
+									ImageDAO imageDAO = imageTalkerDataSource.getImageByID(idSelected);
+									Bitmap bmap = null;
+									if (imageDAO.getPath().contains("/")){
+										bmap = BitmapFactory.decodeFile(imageDAO.getPath());
+									} else {
+										int idCode = Integer.valueOf(imageDAO.getPath());
+										bmap = BitmapFactory.decodeResource(getActivity().getResources(),idCode);
+									}
 									String imagelabel = t.getText().toString();
 									boolean shouldShowLabel = isContactSearch == Boolean.TRUE ? 
 											PaintManager.getSettings().getIsEnabledLabelContact() : PaintManager.getSettings().getIsEnabledLabelImage();

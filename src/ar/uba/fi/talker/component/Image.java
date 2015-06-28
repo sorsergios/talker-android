@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
+import ar.uba.fi.talker.utils.ImageUtils;
 
 public class Image extends DragComponent {
 
@@ -88,13 +89,11 @@ public class Image extends DragComponent {
 	}
 
 	public void setContent(Bitmap image, String label) {
-		int bWidth = image.getWidth();
-		int bHeight = image.getHeight();
 
-		float parentRatio = (float) bHeight / bWidth;
+		float scale = Math.min(((float)HEIGHT / image.getWidth()), ((float)HEIGHT / image.getHeight()));
 
-		int nHeight = HEIGHT;
-		int nWidth = (int) (HEIGHT / parentRatio);
+		int nHeight = (int)(image.getHeight()*scale);
+		int nWidth = (int)(image.getWidth()*scale);
 
 		mImage = Bitmap.createScaledBitmap(image, nWidth, nHeight, true);
 		this.label = label;

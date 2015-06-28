@@ -154,7 +154,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				} else {
 					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				}
-				ImageUtils.saveFileInternalStorage(imageName, bitmap, this.getApplicationContext());
+				ImageUtils.saveFileInternalStorage(imageName, bitmap, this.getApplicationContext(),0);
 				File file = new File(this.getApplicationContext().getFilesDir(), imageName);
 				if (imageDatasource == null){
 						imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());

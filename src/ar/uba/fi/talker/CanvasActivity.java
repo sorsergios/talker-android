@@ -15,7 +15,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -243,7 +242,7 @@ public class CanvasActivity extends ActionBarActivity implements
 	
 
 	@Override
-	public void onDialogPositiveClickInsertImageDialogListener(Uri uri, Matrix matrix) {
+	public void onDialogPositiveClickInsertImageDialogListener(Uri uri, int orientation) {
 
 		Bitmap bitmap=null;
 		try {
@@ -253,6 +252,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			} else {
 				bitmap = Media.getBitmap(this.getContentResolver(), uri);
 			}
+			Matrix matrix = ImageUtils.generateMatrix(bitmap, orientation);
 			scenario.addImage(Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true), null);
 		} catch (FileNotFoundException e) {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
@@ -283,22 +283,14 @@ public class CanvasActivity extends ActionBarActivity implements
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if ((requestCode == ResultConstant.RESULT_LOAD_IMAGE || requestCode == ResultConstant.RESULT_INSERT_NEW_IMAGE) && resultCode == Activity.RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
-
-			String[] filePathColumn = { MediaStore.Images.Media.DATA, MediaStore.Images.Media.ORIENTATION };
-
-			Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
-			int orientation = -1;
-			if (cursor != null && cursor.moveToFirst()) {
-				orientation = cursor.getInt(cursor.getColumnIndex(filePathColumn[1]));
-			}
+			int orientation = ImageUtils.getImageRotation(this.getApplicationContext(), selectedImage);			
 			Matrix matrix = new Matrix();
 			matrix.postRotate(orientation);
-			cursor.close();
 			if (requestCode == ResultConstant.RESULT_INSERT_NEW_IMAGE){
-				saveNewImage(data, selectedImage);
+				//TODO: pasar a otro thread asi no frena todo
+				saveNewImage(data, selectedImage, orientation);
 			}
-			this.onDialogPositiveClickInsertImageDialogListener(selectedImage, matrix);
+			this.onDialogPositiveClickInsertImageDialogListener(selectedImage, orientation);
 
 		} else if (requestCode == ResultConstant.RESULT_SETTINGS && resultCode == Activity.RESULT_CANCELED) {
 			PaintManager.setSettings(TalkerSettingManager.getSettings(this));
@@ -306,11 +298,12 @@ public class CanvasActivity extends ActionBarActivity implements
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void saveNewImage(Intent data, Uri selectedImage) {
+	private void saveNewImage(Intent data, Uri selectedImage, int orientation) {
 		datasourceImage = new ImageTalkerDataSource(this);
 		datasourceImage.open();
 		String imageName = selectedImage.getLastPathSegment(); 
 		Bitmap bitmap = null;
+		Context ctx = this.getApplicationContext();
 		try {
 			if (selectedImage != null && selectedImage.getHost().contains("com.google.android.apps.photos.content")){
 				InputStream is = getContentResolver().openInputStream(selectedImage);
@@ -319,8 +312,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			} else {
 				bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
 			}
-			Context ctx = this.getApplicationContext();
-			ImageUtils.saveFileInternalStorage(imageName, bitmap, ctx);
+			ImageUtils.saveFileInternalStorage(imageName, bitmap, ctx, orientation);
 			File file = new File(ctx.getFilesDir(), imageName);
 			
 		    datasourceImage.createImage(file.getPath(), "", InsertImageDialogFragment.categId);
@@ -382,7 +374,7 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	public void generateSnapshot(String filename, Context ctx) {
 		Bitmap bitmap = screenShot(scenario);
-		ImageUtils.saveFileInternalStorage(filename, bitmap, ctx);		
+		ImageUtils.saveFileInternalStorage(filename, bitmap, ctx, 0);		
 	}
 	
 	public Bitmap screenShot(View view) {
