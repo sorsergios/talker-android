@@ -112,15 +112,23 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 							+ CATEGORY_COLUMN_IS_CONTACT + " INTEGER DEFAULT 0)");
 				}
 				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
+						+ " VALUES (" + CATEGORY_ID++ + ",\"OBJETOS PERSONALES\")");
+				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
+						+ " VALUES (" + CATEGORY_ID++ + ",\"COMESTIBLES\")");
+				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
 						+ " VALUES (" + CATEGORY_ID++ + ",\"ANIMALES\")");
 				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
-						+ " VALUES (" + CATEGORY_ID++ + ",\"COMIDA\")");
-				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
-						+ " VALUES (" + CATEGORY_ID++ + ",\"OBJETOS\")");
-				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " ) "
-						+ " VALUES (" + CATEGORY_ID++ + ",\"PATIO\")");
+						+ " VALUES (" + CATEGORY_ID++ + ",\"VARIOS\")");
+				
 				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " , " + CATEGORY_COLUMN_IS_CONTACT + " ) "
-						+ " VALUES (" + CATEGORY_ID++ + ",\"FUNDACION\", "+ TRUE +")");
+						+ " VALUES (" + CATEGORY_ID++ + ",\"FAMILIA\", "+ TRUE +")");
+				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " , " + CATEGORY_COLUMN_IS_CONTACT + " ) "
+						+ " VALUES (" + CATEGORY_ID++ + ",\"AMIGOS\", "+ TRUE +")");
+				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " , " + CATEGORY_COLUMN_IS_CONTACT + " ) "
+						+ " VALUES (" + CATEGORY_ID++ + ",\"FAMOSOS\", "+ TRUE +")");
+				db.execSQL("INSERT INTO " + CATEGORY_TABLE + " ( " + CATEGORY_COLUMN_ID + " , " + CATEGORY_COLUMN_NAME + " , " + CATEGORY_COLUMN_IS_CONTACT + " ) "
+						+ " VALUES (" + CATEGORY_ID++ + ",\"PROFESIONALES\", "+ TRUE +")");
+
 			}
 
 			if (!isTableExists(db, IMAGE_TABLE)) {
@@ -133,37 +141,10 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 						+ ") REFERENCES " + CATEGORY_TABLE + "("
 						+ CATEGORY_COLUMN_ID + ") ON DELETE CASCADE)");
 				
-				for (int i = 0; i < mThumbIdsImagesForCateg1.length; i++) {
-					// Generate and insert default data
-					int idCode = mThumbIdsImagesForCateg1[i];
-					String name = context.getResources().getString(mThumbTextsImagesForCateg1[i]);
-
-					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
-							+ IMAGE_COLUMN_PATH + " , " 
-							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
-							+ " VALUES (" + idCode + ", " + 1 + ", '" + name + "')");
-				}
-				for (int i = 0; i < mThumbIdsImagesForCateg2.length; i++) {
-					// Generate and insert default data
-					int idCode = mThumbIdsImagesForCateg2[i];
-					String name = context.getResources().getString(mThumbTextsImagesForCateg2[i]);
-
-					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
-							+ IMAGE_COLUMN_PATH + " , " 
-							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
-							+ " VALUES (" + idCode + ", " + 2 + ", '" + name + "')");
-				}
-				
-				for (int i = 0; i < mThumbIdsImagesForCateg3.length; i++) {
-					// Generate and insert default data
-					int idCode = mThumbIdsImagesForCateg3[i];
-					String name = context.getResources().getString(mThumbTextsImagesForCateg3[i]);
-
-					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
-							+ IMAGE_COLUMN_PATH + " , " 
-							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
-							+ " VALUES (" + idCode + ", " + 3 + ", '" + name + "')");
-				}
+				populateImageCategory(db, mThumbIdsImagesForCateg1, mThumbTextsImagesForCateg1, 1, Boolean.FALSE);
+				populateImageCategory(db, mThumbIdsImagesForCateg2, mThumbTextsImagesForCateg2, 2, Boolean.FALSE);
+				populateImageCategory(db, mThumbIdsImagesForCateg3, mThumbTextsImagesForCateg3, 3, Boolean.FALSE);
+				populateImageCategory(db, mThumbIdsImagesForCateg4, mThumbTextsImagesForCateg4, 4, Boolean.FALSE);
 			}
 			
 			if (!isTableExists(db, CONVERSATION_TABLE)) {
@@ -185,22 +166,38 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 						+ IMAGE_TABLE + "(" + IMAGE_COLUMN_ID
 						+ ") ON DELETE CASCADE)");
 
-				for (int i = 0; i < mThumbIdsImagesForCateg5.length; i++) {
-					// Generate and insert default data
-					int idCode = mThumbIdsImagesForCateg5[i];
-					String name = context.getResources().getString(mThumbTextsImagesForCateg5[i]);
-
-					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
-							+ IMAGE_COLUMN_PATH + " , " 
-							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
-							+ " VALUES (" + idCode + ", " + 5 + ", '" + name + "')");
-					db.execSQL("INSERT INTO " + CONTACT_TABLE + " ( "
-							+ CONTACT_COLUMN_IMAGE_ID + " , " 
-							+ CONTACT_COLUMN_ADDRESS + " , " 
-							+ CONTACT_COLUMN_PHONE + " ) "
-							+ " VALUES ("  + 1 + ", " + "'yerbal 2635'" + ", " + "1559285532" +")");
-				}
+				
+				populateImageCategory(db, mThumbIdsImagesForCateg5, mThumbTextsImagesForCateg5, 5, Boolean.TRUE);
+				populateImageCategory(db, mThumbIdsImagesForCateg6, mThumbTextsImagesForCateg6, 6, Boolean.FALSE);
+				populateImageCategory(db, mThumbIdsImagesForCateg7, mThumbTextsImagesForCateg7, 7, Boolean.FALSE);
+				populateImageCategory(db, mThumbIdsImagesForCateg8, mThumbTextsImagesForCateg8, 8, Boolean.FALSE);
+				
+//				for (int i = 0; i < mThumbIdsImagesForCateg5.length; i++) {
+//					// Generate and insert default data
+//					int idCode = mThumbIdsImagesForCateg5[i];
+//					String name = context.getResources().getString(mThumbTextsImagesForCateg5[i]);
+//					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
+//							+ IMAGE_COLUMN_PATH + " , " 
+//							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
+//							+ " VALUES (" + idCode + ", " + 5 + ", '" + name + "')");
+//					db.execSQL("INSERT INTO " + CONTACT_TABLE + " ( "
+//							+ CONTACT_COLUMN_IMAGE_ID + " , " 
+//							+ CONTACT_COLUMN_ADDRESS + " , " 
+//							+ CONTACT_COLUMN_PHONE + " ) "
+//							+ " VALUES ("  + 1 + ", " + "'yerbal 2635'" + ", " + "1559285532" +")"); //FIXME id column image hardcode en 1?
+//				}
 			}
+		}
+	}
+
+	private void populateImageCategory(SQLiteDatabase db, Integer[] mThumbIdsImagesForCateg, Integer[] mThumbTextsImagesForCateg, int categId, boolean isContact) {
+		for (int i = 0; i < mThumbIdsImagesForCateg.length; i++) {
+			int idCode = mThumbIdsImagesForCateg[i];
+			String name = context.getResources().getString(mThumbTextsImagesForCateg[i]);
+			db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
+					+ IMAGE_COLUMN_PATH + " , " 
+					+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
+					+ " VALUES (" + idCode + ", " + categId + ", '" + name + "')");
 		}
 	}
 
@@ -256,40 +253,81 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	
 	/*IMAGES OF IMAGE CATEGORIES*/
 	private static Integer[] mThumbIdsImagesForCateg1 = {
-		R.drawable.an_1,
-		R.drawable.an_2,
-		R.drawable.an_3
+		R.drawable.obj_1,
+		R.drawable.obj_2,
+		R.drawable.obj_3,
+		R.drawable.obj_4,
+		R.drawable.obj_5
 	};
 	private static Integer[] mThumbTextsImagesForCateg1 = {
-		R.string.an_1,
-		R.string.an_2,
-		R.string.an_3
+		R.string.obj_1,
+		R.string.obj_2,
+		R.string.obj_3,
+		R.string.obj_4,
+		R.string.obj_5
 	};
 	private static Integer[] mThumbIdsImagesForCateg2 = {
-		R.drawable.food_1,
-        R.drawable.food_2,
-        R.drawable.food_3
+		R.drawable.com_1,
+		R.drawable.com_2,
+		R.drawable.com_3,
+		R.drawable.com_4,
+		R.drawable.com_5
 	};
 	private static Integer[] mThumbTextsImagesForCateg2 = {
-		R.string.food_1,
-		R.string.food_2,
-		R.string.food_3
+		R.string.com_1,
+		R.string.com_2,
+		R.string.com_3,
+		R.string.com_4,
+		R.string.com_5
 	};
 	private static Integer[] mThumbIdsImagesForCateg3 = {
-		R.drawable.ob_1
+		R.drawable.ani_1,
+		R.drawable.ani_2,
+		R.drawable.ani_3,
+		R.drawable.ani_4,
+		R.drawable.ani_5
 	};
 	private static Integer[] mThumbTextsImagesForCateg3 = {
-		R.string.ob_1
+		R.string.ani_1,
+		R.string.ani_2,
+		R.string.ani_3,
+		R.string.ani_4,
+		R.string.ani_5
 	};
+	private static Integer[] mThumbIdsImagesForCateg4 = {
+		R.drawable.var_1,
+		R.drawable.var_2,
+		R.drawable.var_3,
+		R.drawable.var_4,
+		R.drawable.var_5
+	};
+	private static Integer[] mThumbTextsImagesForCateg4 = {
+		R.string.var_1,
+		R.string.var_2,
+		R.string.var_3,
+		R.string.var_4,
+		R.string.var_5
+	};
+	
 	
 	/*IMAGES OF CONTACT CATEGORIES*/
 	private static Integer[] mThumbIdsImagesForCateg5 = {
-		R.drawable.con_1,
-		R.drawable.con_1
 	};
 	private static Integer[] mThumbTextsImagesForCateg5 = {
-		R.string.con_1,
-		R.string.con_2
+	};
+	private static Integer[] mThumbIdsImagesForCateg6 = {
+	};
+	private static Integer[] mThumbTextsImagesForCateg6 = {
+	};
+	private static Integer[] mThumbIdsImagesForCateg7 = {
+		R.drawable.famo_1
+	};
+	private static Integer[] mThumbTextsImagesForCateg7 = {
+		R.string.famo_1
+	};
+	private static Integer[] mThumbIdsImagesForCateg8 = {
+	};
+	private static Integer[] mThumbTextsImagesForCateg8 = {
 	};
 	
 }

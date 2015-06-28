@@ -159,19 +159,35 @@
     <string name="exit_app_cancel">NO</string>
     
     <!-- imagenes precargadas -->
-    <string name="ob_1">LÁMPARA</string>
-    
-    <string name="an_1">PERRO</string>
-    <string name="an_2">ELEFANTE</string>
-    <string name="an_3">GATO</string>
-    
-    <string name="food_1">PATY</string>
-    <string name="food_2">LECHUGA</string>
-    <string name="food_3">PIZZA</string>
-    
-    <string name="con_1">MARIANA GARCÍA</string>
-	<string name="con_2">JESI FERREYRA</string>
-    
+	<string name="obj_1">LLAVES</string>
+	<string name="obj_2">COMPUTADORA</string>
+	<string name="obj_3">TELÉFONO</string>
+	<string name="obj_4">DOCUMENTO</string>
+	<string name="obj_5">ANTEOJOS</string>
+
+	<string name="com_1">ASADO</string>
+	<string name="com_2">ENSALADA</string>
+	<string name="com_3">PASTAS</string>
+	<string name="com_4">POSTRE</string>
+	<string name="com_5">VINO</string>
+
+	<string name="ani_1">PERRO</string>
+	<string name="ani_2">GATO</string>
+	<string name="ani_3">PEZ</string>
+	<string name="ani_4">TORTUGA</string>
+	<string name="ani_5">CABALLO</string>
+
+	<string name="var_1">REVÓLVER</string>
+	<string name="var_2">LIBROS</string>
+	<string name="var_3">REGALO</string>
+	<string name="var_4">MÚSICA</string>
+	<string name="var_5">DINERO</string>
+	
+	 <!-- contactos precargados -->
+	 <string name="famo_1">JORGE RIAL</string>
+
+	 
+	 	 
      <!-- manner of use -->
 	<string name="title_activity_manner_of_use">USO</string>
 	<string name="image">Image</string>
