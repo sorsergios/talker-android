@@ -19,7 +19,7 @@ public class GridElementDAO extends ScenarioDAO {
 		isScenarioElement = true;
 	}
 
-	public GridElementDAO(int id, String name, String pathSnapshot) {
+	public GridElementDAO(long id, String name, String pathSnapshot) {
 		super(id, pathSnapshot, name);
 		isScenarioElement = false;
 	}

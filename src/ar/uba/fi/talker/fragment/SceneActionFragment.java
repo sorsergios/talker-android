@@ -9,19 +9,23 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import ar.uba.fi.talker.ImageSettingsActivity;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.dataSource.TalkerDataSource;
+import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.utils.GridItems;
 
 public class SceneActionFragment extends DialogFragment implements OnClickListener {
 
-	private final GridItems gridItem;
-	private final View view;
-	private final BaseAdapter adapter;
+	private GridItems gridItem;
+	private View view;
+	private BaseAdapter adapter;
 	private OnClickListener onClickStartAction = null;
+	protected TalkerDataSource<TalkerDTO> dao;
 
-	public SceneActionFragment(GridItems gridItems, View view, BaseAdapter adapter) {
+	public void init(GridItems gridItems, View view, BaseAdapter adapter, TalkerDataSource dao) {
 		this.gridItem = gridItems;
 		this.view = view;
 		this.adapter = adapter;
+		this.dao = dao;
 	}
 
 	public void setOnClickStartAction(OnClickListener onClickStartAction) {
@@ -47,9 +51,10 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		editNameScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment newFragment = new ChangeNameDialogFragment(gridItem.getElementGridView(), adapter);
-				newFragment.onAttach(getActivity());
-				newFragment.show(getActivity().getSupportFragmentManager(), "insert_text");
+				ChangeNameDialogFragment fragment = new ChangeNameDialogFragment();
+				fragment.init(gridItem.getElementGridView(), adapter, dao);
+				fragment.onAttach(getActivity());
+				fragment.show(getActivity().getSupportFragmentManager(), "insert_text");
 				SceneActionFragment.this.dismiss();
 			}
 		});

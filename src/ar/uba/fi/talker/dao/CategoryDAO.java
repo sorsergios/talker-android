@@ -1,29 +1,23 @@
 package ar.uba.fi.talker.dao;
 
+import ar.uba.fi.talker.dto.TalkerDTO;
+
 /**
  * @author astamato
  * 
  */
-public class CategoryDAO {
+public class CategoryDAO extends TalkerDTO {
 
-	private int id;
 	private String name;
 	private ImageDAO image;
+	private int contactoCategory;
 
 	public CategoryDAO() {
 	}
 
-	public CategoryDAO(int keyId, String name) {
-		this.id = keyId;
+	public CategoryDAO(long keyId, String name) {
+		this.setId(keyId);
 		this.name = name;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -40,6 +34,14 @@ public class CategoryDAO {
 	
 	public ImageDAO getImage() {
 		return image;
+	}
+	
+	public void setContactoCategory(int isContactCategory) {
+		this.contactoCategory = isContactCategory;
+	}
+
+	public int isContactCategory() {
+		return contactoCategory;
 	}
 
 }

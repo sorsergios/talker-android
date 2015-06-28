@@ -1,35 +1,28 @@
 package ar.uba.fi.talker.dao;
 
+import ar.uba.fi.talker.dto.TalkerDTO;
+
 /**
  * @author astamato
  * 
  */
-public class ImageDAO {
+public class ImageDAO extends TalkerDTO {
 
-	private int id;
-	private int idCategory;
+	private long idCategory;
 	private String path;
 	private String name;
 
 	public ImageDAO() {
 	}
 
-	public ImageDAO(int id, int idCategory, String path, String name) {
+	public ImageDAO(int id, long idCategory, String path, String name) {
 		super();
-		this.id = id;
+		this.setId(id);
 		this.idCategory = idCategory;
 		this.path = path;
 		this.name = name;
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	
 	public String getPath() {
 		return path;
 	}
@@ -46,11 +39,11 @@ public class ImageDAO {
 		this.name = name;
 	}
 
-	public int getIdCategory() {
+	public long getIdCategory() {
 		return idCategory;
 	}
 
-	public void setIdCategory(int idCategory) {
+	public void setIdCategory(long idCategory) {
 		this.idCategory = idCategory;
 	}
 

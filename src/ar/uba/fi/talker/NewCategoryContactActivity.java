@@ -70,8 +70,7 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 			if (categoryDatasource == null ) {
 				categoryDatasource = new CategoryTalkerDataSource(this);
 			}
-		    categoryDatasource.open();
-			List<CategoryDAO> allImages = categoryDatasource.getContactCategories();
+			List<CategoryDAO> allImages = categoryDatasource.getAll();
 			for (int i = 0; i < allImages.size(); i++) {
 				CategoryDAO categoryDAO = (CategoryDAO) allImages.get(i);
 				categView = new GridElementDAO();
@@ -96,14 +95,16 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 			String newCategoryName = inputText.getText().toString();
 			((GridConversationItems)gsa.getItem(position)).getConversationDAO().setName(newCategoryName);
 			gsa.notifyDataSetInvalidated();
-			categoryDatasource.updateCategory(GridAdapter.getItemSelectedId(), newCategoryName);
+			CategoryDAO category = new CategoryDAO();
+			category.setId(GridAdapter.getItemSelectedId());
+			category.setName(newCategoryName);
+			categoryDatasource.update(category);
 		}
 
 		@Override
 		public void onDialogPositiveClickDeleteScenarioDialogListener(
 				GridElementDAO categoryView) {
 			boolean deleted = true;
-			imageDatasource.open();
 			List<ImageDAO> innnerImages = imageDatasource.getImagesForCategory(categoryView.getId());
 			for (ImageDAO imageDAO : innnerImages) {
 				if (imageDAO.getPath().contains("/")) {
@@ -111,11 +112,10 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 					deleted = file.delete();
 				}
 			}
-			imageDatasource.close();
 			if (deleted){
-			categoryDatasource.open();
-			categoryDatasource.deleteCategory(categoryView.getId());
-			categoryDatasource.close();
+				CategoryDAO categoryDAO = new CategoryDAO();
+				categoryDAO.setId(categoryView.getId());
+				categoryDatasource.delete(categoryDAO);
 			} else {
 				Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 				Log.e("NewScene", "Unexpected error deleting imagen.");
@@ -131,7 +131,6 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 			if (categoryDatasource == null ) {
 				categoryDatasource = new CategoryTalkerDataSource(this);
 			}
-		    categoryDatasource.open();
 			categoryDatasource.createCategory(inputText.getText().toString(), 1);
 			categoriesPagerSetting();
 		}

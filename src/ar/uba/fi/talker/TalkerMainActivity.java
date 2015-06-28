@@ -116,14 +116,12 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 
 	private void evaluateVisibilityButton(Button historicalBttn) {
 		ConversationTalkerDataSource datasource = new ConversationTalkerDataSource(this);
-		datasource.open();
-		List<ConversationDAO> conversations = datasource.getAllConversations();
+		List<ConversationDAO> conversations = datasource.getAll();
 		if (!conversations.isEmpty()){
 			historicalBttn.setVisibility(View.VISIBLE);
 		} else {
 			historicalBttn.setVisibility(View.GONE);
 		}
-		datasource.close();
 	}
 	
 	@Override

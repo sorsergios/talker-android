@@ -6,51 +6,45 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import ar.uba.fi.talker.dao.ConversationDAO;
 
-public class ConversationTalkerDataSource {
+public class ConversationTalkerDataSource extends TalkerDataSource<ConversationDAO> {
 
-	private SQLiteDatabase database;
-	private final ResourceSQLiteHelper dbHelper;
 	private final String[] allColumns = { ResourceSQLiteHelper.CONVERSATION_COLUMN_ID,
 			ResourceSQLiteHelper.CONVERSATION_COLUMN_PATH,
 			ResourceSQLiteHelper.CONVERSATION_COLUMN_NAME, 
 			ResourceSQLiteHelper.CONVERSATION_COLUMN_SNAPSHOT };
 
 	public ConversationTalkerDataSource(Context context) {
-		dbHelper = new ResourceSQLiteHelper(context);
+		super(context);
 	}
 
-	public void open() throws SQLException {
-		database = dbHelper.getWritableDatabase();
+	private ConversationDAO cursorToConversation(Cursor cursor) {
+		ConversationDAO conversation = new ConversationDAO();
+		conversation.setId(cursor.getInt(0));
+		conversation.setPath(cursor.getString(1));
+		conversation.setName(cursor.getString(2));
+		conversation.setPathSnapshot(cursor.getString(3));
+		return conversation;
 	}
 
-	public void close() {
-		dbHelper.close();
-	}
-
-	public ConversationDAO createConversation(String path, String name, String pathImage) {
-		ContentValues values = new ContentValues();
-		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_PATH, path);
-		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_NAME, name);
-		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_SNAPSHOT, pathImage);
-		long insertId = database.insert(ResourceSQLiteHelper.CONVERSATION_TABLE, null, values);
-		Cursor cursor = database.query(ResourceSQLiteHelper.CONVERSATION_TABLE, allColumns,
-				ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " = " + insertId, null, null, null, null);
+	@Override
+	public ConversationDAO get(long id) {
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.CONVERSATION_TABLE + " WHERE "
+				+ ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " = " + id, null);
 		cursor.moveToFirst();
-		ConversationDAO newConversation = cursorToConversation(cursor);
+		ConversationDAO conversationDAO = cursorToConversation(cursor);
 		cursor.close();
-		return newConversation;
+		database.close();
+		return conversationDAO;
 	}
 
-	public void deleteConversation(Long keyID) {
-		database.delete(ResourceSQLiteHelper.CONVERSATION_TABLE,
-				ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " = " + keyID, null);
-	}
-
-	public List<ConversationDAO> getAllConversations() {
+	@Override
+	public List<ConversationDAO> getAll() {
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		List<ConversationDAO> conversations = new ArrayList<ConversationDAO>();
 
 		Cursor cursor = database.query(ResourceSQLiteHelper.CONVERSATION_TABLE,
@@ -63,32 +57,37 @@ public class ConversationTalkerDataSource {
 			cursor.moveToNext();
 		}
 		cursor.close();
+		database.close();
 		return conversations;
 	}
 
-	private ConversationDAO cursorToConversation(Cursor cursor) {
-		ConversationDAO conversation = new ConversationDAO();
-		conversation.setId(cursor.getInt(0));
-		conversation.setPath(cursor.getString(1));
-		conversation.setName(cursor.getString(2));
-		conversation.setPathSnapshot(cursor.getString(3));
-		return conversation;
-	}
-	
-	public ConversationDAO getConversationByID(int keyId) {
-		Cursor cursor = database.rawQuery("SELECT * FROM "
-				+ ResourceSQLiteHelper.CONVERSATION_TABLE + " WHERE "
-				+ ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " = " + keyId, null);
-		cursor.moveToFirst();
-		ConversationDAO conversationDAO = cursorToConversation(cursor);
-		cursor.close();
-		return conversationDAO;
-	}
-	
-	public void updateConversation(Long keyID, String name) {
+	@Override
+	public long add(ConversationDAO entity) {
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
 		ContentValues values = new ContentValues();
-		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_NAME,name);
+		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_PATH, entity.getPath());
+		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_NAME, entity.getName());
+		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_SNAPSHOT, entity.getPathSnapshot());
+		long insertId = database.insert(ResourceSQLiteHelper.CONVERSATION_TABLE, null, values);
+		database.close();
+		return insertId;
+	}
+
+	@Override
+	public void update(ConversationDAO entity) {
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_NAME, entity.getName());
 		database.update(ResourceSQLiteHelper.CONVERSATION_TABLE, values,
-				ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " = " + keyID, null);
+				ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " = " + entity.getId(), null);
+		database.close();
+	}
+
+	@Override
+	public void delete(ConversationDAO entity) {
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
+		database.delete(ResourceSQLiteHelper.CONVERSATION_TABLE,
+				ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " = " + entity.getId(), null);
+		database.close();
 	}
 }

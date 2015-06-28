@@ -39,6 +39,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.EraserStroke;
+import ar.uba.fi.talker.dao.ConversationDAO;
 import ar.uba.fi.talker.dataSource.ConversationTalkerDataSource;
 import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
@@ -312,7 +313,6 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	private void saveNewImage(Intent data, Uri selectedImage) {
 		datasourceImage = new ImageTalkerDataSource(this);
-		datasourceImage.open();
 		String imageName = selectedImage.getLastPathSegment(); 
 		Bitmap bitmap = null;
 		try {
@@ -331,7 +331,6 @@ public class CanvasActivity extends ActionBarActivity implements
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		datasourceImage.close();
 	}
 
 
@@ -375,12 +374,15 @@ public class CanvasActivity extends ActionBarActivity implements
 		if (datasourceConversation == null ) {
 			datasourceConversation = new ConversationTalkerDataSource(this.getApplicationContext());
 		}
-		datasourceConversation.open();
 		if (filename != null) {
 			Context ctx = this.getApplicationContext();
 			generateSnapshot(filename, ctx);
 			File file = new File(ctx.getFilesDir(), filename);
-			datasourceConversation.createConversation(file.getPath() + ".json", filename, file.getPath());
+			ConversationDAO conversation = new ConversationDAO();
+			conversation.setName(filename);
+			conversation.setPath(file.getPath() + ".json");
+			conversation.setPathSnapshot(file.getPath());
+			datasourceConversation.add(conversation);
 		}
 	}
 
@@ -393,7 +395,6 @@ public class CanvasActivity extends ActionBarActivity implements
 		view.setDrawingCacheEnabled(true); 
 		Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()); 
 		view.setDrawingCacheEnabled(false);
-	  //  Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()Width(),view.getHeight(), Config.ARGB_8888);
 	    Canvas canvas = new Canvas(bitmap);
 	    view.draw(canvas);
 	    return bitmap;
@@ -413,14 +414,6 @@ public class CanvasActivity extends ActionBarActivity implements
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}  
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if (datasourceConversation != null ) {
-			datasourceConversation.close();
-		}
-	}
 	
 }
 

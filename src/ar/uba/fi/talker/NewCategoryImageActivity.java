@@ -83,9 +83,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 			if (imageDatasource == null ) {
 				imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
 			}
-		    categoryDatasource.open();
 			List<CategoryDAO> allImages = categoryDatasource.getImageCategories();
-		    categoryDatasource.close();
 		    GridElementDAO thumbnail = null;
 			for (CategoryDAO categoryDAO : allImages) {
 				thumbnail = new GridElementDAO();
@@ -123,16 +121,14 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 					}
 					Context ctx = this.getApplicationContext();
 					ImageUtils.saveFileInternalStorage(categoryName, bitmap, ctx);
-					categoryDatasource.open();
 					scenario = categoryDatasource.createCategory(categoryName, 0);
-					categoryDatasource.close();
 					GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 					GridElementDAO scenarioView = new GridElementDAO();
 					scenarioView.setId(scenario.getId());
 					scenarioView.setName(scenario.getName());
 					scenarioView.setPath(getResources().getString(R.drawable.casa));
 					GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
-					gsa.addItem(gridItem);
+					gsa.add(gridItem);
 					categoriesPagerSetting();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -143,7 +139,6 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 		@Override
 		public void onDialogPositiveClickDeleteScenarioDialogListener(GridElementDAO categoryView) {
 			boolean deleted = true;
-			imageDatasource.open();
 			List<ImageDAO> innnerImages = imageDatasource.getImagesForCategory(categoryView.getId());
 			for (ImageDAO imageDAO : innnerImages) {
 				if (imageDAO.getPath().contains("/")) {
@@ -151,11 +146,10 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 					deleted = file.delete();
 				}
 			}
-			imageDatasource.close();
 			if (deleted){
-				categoryDatasource.open();
-				categoryDatasource.deleteCategory(categoryView.getId());
-				categoryDatasource.close();
+				CategoryDAO categoryDAO = new CategoryDAO();
+				categoryDAO.setId(categoryView.getId());
+				categoryDatasource.delete(categoryDAO);
 			} else {
 				Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 				Log.e("NewScene", "Unexpected error deleting imagen.");
@@ -171,7 +165,6 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 			if (categoryDatasource == null ) {
 				categoryDatasource = new CategoryTalkerDataSource(this);
 			}
-		    categoryDatasource.open();
 			categoryDatasource.createCategory(inputText.getText().toString(), 0);
 			categoriesPagerSetting();
 		}
@@ -184,7 +177,11 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 			String newCategoryName = inputText.getText().toString();
 			((GridConversationItems)gsa.getItem(position)).getConversationDAO().setName(newCategoryName);
 			gsa.notifyDataSetInvalidated();
-			categoryDatasource.updateCategory(GridAdapter.getItemSelectedId(), newCategoryName);
+			
+			CategoryDAO categoryDAO = new CategoryDAO();
+			categoryDAO.setId(GridAdapter.getItemSelectedId());
+			categoryDAO.setName(newCategoryName);
+			categoryDatasource.update(categoryDAO);
 		}
 
 }

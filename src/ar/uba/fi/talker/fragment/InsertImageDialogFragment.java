@@ -71,11 +71,9 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 		if (categoryTalkerDataSource == null ) {
 			categoryTalkerDataSource = new CategoryTalkerDataSource(getActivity());
 		}
-		categoryTalkerDataSource.open();
 		if (imageTalkerDataSource == null ) {
 			imageTalkerDataSource = new ImageTalkerDataSource(getActivity());
 		}
-		imageTalkerDataSource.open();
 	    
 		try {
 			listener = (InsertImageDialogListener) activity;
@@ -116,7 +114,7 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 		
 		List<CategoryDAO> categories;
 		if (isContactSearch) {
-			categories = categoryTalkerDataSource.getContactCategories();
+			categories = categoryTalkerDataSource.getAll();
 		} else {
 			categories = categoryTalkerDataSource.getImageCategories();
 		}

@@ -6,61 +6,45 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import ar.uba.fi.talker.dao.ImageDAO;
 
-public class ImageTalkerDataSource {
+public class ImageTalkerDataSource extends TalkerDataSource<ImageDAO> {
 	
-	private SQLiteDatabase database;
-	private final ResourceSQLiteHelper dbHelper;
 	private final String[] allColumns = { ResourceSQLiteHelper.IMAGE_COLUMN_ID, ResourceSQLiteHelper.IMAGE_COLUMN_PATH,
 			ResourceSQLiteHelper.IMAGE_COLUMN_NAME, ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY };
 
 	public ImageTalkerDataSource(Context context) {
-		dbHelper = new ResourceSQLiteHelper(context);
+		super(context);
 	}
 
-	public void open() throws SQLException {
-		database = dbHelper.getWritableDatabase();
-	}
-
-	public void close() {
-		dbHelper.close();
-	}
-	
-	public int getLastImageID() {
+	public long getLastImageID() {
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		Cursor cursor = database.rawQuery("SELECT * FROM "
 				+ ResourceSQLiteHelper.IMAGE_TABLE + " ORDER BY "
 				+ ResourceSQLiteHelper.IMAGE_COLUMN_ID + " DESC LIMIT 1", null);
 		cursor.moveToFirst();
 		ImageDAO image = cursorToImages(cursor);
 		cursor.close();
+		database.close();
 		return image.getId();
 	}
 	
-	public ImageDAO createImage(String path, String name, long categID) {
-		ContentValues values = new ContentValues();
-		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_PATH, path);
-		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_NAME, name);
-		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY, categID);
-		long insertId = database.insert(ResourceSQLiteHelper.IMAGE_TABLE, null, values);
-		Cursor cursor = database.query(ResourceSQLiteHelper.IMAGE_TABLE, allColumns,
-				ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + insertId, null, null, null, null);
-		cursor.moveToFirst();
-		ImageDAO newImage = cursorToImages(cursor);
-		cursor.close();
-		return newImage;
-	}
-
-	public void deleteImage(Long keyID) {
-		database.delete(ResourceSQLiteHelper.IMAGE_TABLE,
-				ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + keyID, null);
+	public ImageDAO createImage(String path, String name, long idCategory) {
+		ImageDAO entity = new ImageDAO();
+		entity.setIdCategory(idCategory);
+		entity.setName(name);
+		entity.setPath(path);
+		
+		long id = this.add(entity);
+		entity.setId(id);
+		return entity;
 	}
 
 	public List<ImageDAO> getAllImages() {
 		List<ImageDAO> images = new ArrayList<ImageDAO>();
 
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		Cursor cursor = database.query(ResourceSQLiteHelper.IMAGE_TABLE,
 				allColumns, null, null, null, null, null);
 
@@ -71,6 +55,7 @@ public class ImageTalkerDataSource {
 			cursor.moveToNext();
 		}
 		cursor.close();
+		database.close();
 		return images;
 	}
 
@@ -83,19 +68,10 @@ public class ImageTalkerDataSource {
 		return image;
 	}
 	
-	public ImageDAO getImageByID(int keyId) {
-		Cursor cursor = database.rawQuery("SELECT * FROM "
-				+ ResourceSQLiteHelper.IMAGE_TABLE + " WHERE "
-				+ ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + keyId, null);
-		cursor.moveToFirst();
-		ImageDAO image = cursorToImages(cursor);
-		cursor.close();
-		return image;
-	}
-	
 	public List<ImageDAO> getImagesForCategory(long keyId) {
 		List<ImageDAO> images = new ArrayList<ImageDAO>();
-		
+
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		Cursor cursor = database.rawQuery("SELECT * FROM "
 				+ ResourceSQLiteHelper.IMAGE_TABLE + " WHERE "
 				+ ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY + " = " + keyId, null);
@@ -106,6 +82,53 @@ public class ImageTalkerDataSource {
 			cursor.moveToNext();
 		}
 		cursor.close();
+		database.close();
 		return images;
+	}
+
+	@Override
+	public ImageDAO get(long id) {
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.IMAGE_TABLE + " WHERE "
+				+ ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + id, null);
+		cursor.moveToFirst();
+		ImageDAO image = cursorToImages(cursor);
+		cursor.close();
+		database.close();
+		return image;
+	}
+
+	@Override
+	public List<ImageDAO> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long add(ImageDAO entity) {
+		ContentValues values = new ContentValues();
+		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_PATH, entity.getPath());
+		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_NAME, entity.getName());
+		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY, entity.getIdCategory());
+
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
+		long insertId = database.insert(ResourceSQLiteHelper.IMAGE_TABLE, null, values);
+		database.close();
+		return insertId;
+	}
+
+	@Override
+	public void update(ImageDAO entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(ImageDAO entity) {
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
+		database.delete(ResourceSQLiteHelper.IMAGE_TABLE,
+				ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + entity.getId(), null);
+		database.close();
 	}
 }

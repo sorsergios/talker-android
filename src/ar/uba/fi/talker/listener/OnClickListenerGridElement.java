@@ -6,19 +6,26 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.dataSource.TalkerDataSource;
+import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.fragment.SceneActionFragment;
 import ar.uba.fi.talker.utils.GridItems;
 
 public class OnClickListenerGridElement implements OnClickListener {
 
 	private final Context context;
-	protected GridItems gridItem = null;
-	protected BaseAdapter baseAdapter=null;
+	private final GridItems gridItem;
+	private final BaseAdapter baseAdapter;
+	private TalkerDataSource<? extends TalkerDTO> dao;
 		
-	public OnClickListenerGridElement(final Context context,GridItems gridItem,BaseAdapter baseAdapter){
+	public OnClickListenerGridElement(final Context context,
+			GridItems gridItem,
+			BaseAdapter baseAdapter,
+			TalkerDataSource<? extends TalkerDTO> dao){
 		this.context=context;
-		this.gridItem=gridItem;
+		this.gridItem = gridItem;
 		this.baseAdapter = baseAdapter;
+		this.dao = dao;
 	}
 	
 	@Override
@@ -26,7 +33,9 @@ public class OnClickListenerGridElement implements OnClickListener {
 		view.setBackgroundColor(context.getResources().getColor(R.color.selectionViolet));
 		
 		ActionBarActivity activity = (ActionBarActivity) context;
-		SceneActionFragment fragment = new SceneActionFragment(gridItem, view, baseAdapter);
+		SceneActionFragment fragment = new SceneActionFragment();
+		fragment.init(gridItem, view, baseAdapter, dao);
+				
 		OnClickListener onClickListener = new OnClickStartActionDefault(activity, gridItem, fragment);
 		fragment.setOnClickStartAction(onClickListener);
 		fragment.onAttach(activity);
@@ -36,10 +45,6 @@ public class OnClickListenerGridElement implements OnClickListener {
 
 	public GridItems getGridItem() {
 		return gridItem;
-	}
-
-	public void setGridItem(GridItems gridItem) {
-		this.gridItem = gridItem;
 	}
 
 }
