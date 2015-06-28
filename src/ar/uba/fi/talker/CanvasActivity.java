@@ -62,6 +62,8 @@ public class CanvasActivity extends ActionBarActivity implements
 		EraseAllConfirmationDialogListener, OnDateSetListener, 
 		DatePickerDialogListener, SaveAllConfirmationDialogListener {
 
+	private static long backPressed;
+	
 	final String TAG = "CanvasActivity";
 
 	private Scenario scenario;
@@ -407,6 +409,16 @@ public class CanvasActivity extends ActionBarActivity implements
 		super.onDestroy();
 		if (datasourceConversation != null ) {
 			datasourceConversation.close();
+		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if (backPressed + 2000 > System.currentTimeMillis()) {
+			super.onBackPressed();
+		} else {
+			Toast.makeText(getBaseContext(), "PARA SALIR, PRESIONA ATRÁS UNA VEZ MÁS!", Toast.LENGTH_SHORT).show();
+			backPressed = System.currentTimeMillis();
 		}
 	}
 	
