@@ -21,6 +21,7 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 	private OnClickListener onClickStartAction = null;
 	protected TalkerDataSource<TalkerDTO> dao;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void init(GridItems gridItems, View view, BaseAdapter adapter, TalkerDataSource dao) {
 		this.gridItem = gridItems;
 		this.view = view;

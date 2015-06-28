@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
+import ar.uba.fi.talker.dataSource.TalkerDataSource;
+import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.utils.GridItems;
 
 public class ScenesGridFragment extends Fragment {
@@ -20,14 +22,16 @@ public class ScenesGridFragment extends Fragment {
 	private GridView mGridView;
 	List<GridItems> gridItems;
 	private Activity activity;
+	private TalkerDataSource<? extends TalkerDTO> dao;
 
 	public ScenesGridFragment() {
 		this.gridItems = new ArrayList<GridItems>();
 	}
 
-	public ScenesGridFragment(List<GridItems> gridItems, Activity activity) {
+	public void init(List<GridItems> gridItems, Activity activity, TalkerDataSource<? extends TalkerDTO> dao) {
 		this.gridItems = gridItems;
 		this.activity = activity;
+		this.dao = dao;
 	}
 	
 	@Override
@@ -55,6 +59,7 @@ public class ScenesGridFragment extends Fragment {
 		if (activity != null) {
 
 			GridScenesAdapter mGridAdapter = new GridScenesAdapter(activity, gridItems);
+			mGridAdapter.setDao(dao);
 			if (mGridView != null) {
 				mGridView.setAdapter(mGridAdapter);
 			}

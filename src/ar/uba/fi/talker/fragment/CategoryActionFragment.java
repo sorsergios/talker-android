@@ -16,9 +16,8 @@ import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dao.CategoryDAO;
 import ar.uba.fi.talker.dataSource.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dataSource.TalkerDataSource;
-import ar.uba.fi.talker.dto.TalkerDTO;
-import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridElementDAO;
+import ar.uba.fi.talker.utils.GridItems;
 
 public class CategoryActionFragment extends DialogFragment implements OnClickListener {
 

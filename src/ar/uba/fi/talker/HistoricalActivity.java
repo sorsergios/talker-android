@@ -55,7 +55,7 @@ public class HistoricalActivity extends ActionBarActivity implements ChangeNameD
 			conversView = new GridElementDAO(conversationDAO.getId(), conversationDAO.getName(), conversationDAO.getPathSnapshot());
 			conversViews.add(conversView);
 		}
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, conversViews);
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, conversViews, datasource);
 
 		pagerAdapter = new PagerScenesAdapter(getSupportFragmentManager(), gridFragments);
 		viewPager.setAdapter(pagerAdapter);

@@ -80,7 +80,7 @@ public class NewCategoryContactActivity extends FragmentActivity implements Chan
 				categView.setName(categoryDAO.getName());
 				categViews.add(categView);
 			}
-			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, categViews);
+			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, categViews, categoryDatasource);
 
 			pagerAdapter = new PagerScenesAdapter(getSupportFragmentManager(), gridFragments);
 			viewPager.setAdapter(pagerAdapter);

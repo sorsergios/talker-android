@@ -96,7 +96,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 				}
 				thumbnails.add(thumbnail);
 			}
-			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails);
+			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails, imageDatasource);
 
 			pagerAdapter = new PagerScenesAdapter(this.getSupportFragmentManager(), gridFragments);
 			viewPager.setAdapter(pagerAdapter);

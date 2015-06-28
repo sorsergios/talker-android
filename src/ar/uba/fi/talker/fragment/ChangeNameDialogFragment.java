@@ -24,7 +24,8 @@ public class ChangeNameDialogFragment extends ParentDialogFragment implements Di
 	private BaseAdapter adapter;
 	private EditText input;
 	private TalkerDataSource<TalkerDTO> dao;
-	
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void init(GridElementDAO scenarioView, BaseAdapter adapter, TalkerDataSource dao) {
 		this.scenarioView = scenarioView;
 		this.adapter = adapter; 

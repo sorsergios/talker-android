@@ -76,7 +76,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 		for (ScenarioDAO scenarioDAO: allImages) {
 			scenarios.add(new GridElementDAO(scenarioDAO));
 		}
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios);
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios, datasource);
 
 		pagerAdapter = new PagerScenesAdapter(this.getSupportFragmentManager(), gridFragments);
 		viewPager.setAdapter(pagerAdapter);

@@ -109,7 +109,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 			thumbnail.setPath(imageDAO.getPath());
 			thumbnails.add(thumbnail);
 		}
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails);
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails, imageDatasource);
 
 		pagerAdapter = new PagerScenesAdapter(getSupportFragmentManager(), gridFragments);
 		viewPager.setAdapter(pagerAdapter);
@@ -128,7 +128,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		if (deleted){
 			ImageDAO entity = new ImageDAO();
 			entity.setId(scenarioView.getId());
-			imageDatasource.delete(entity );
+			imageDatasource.delete(entity);
 		} else {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 			Log.e("NewScene", "Unexpected error deleting imagen.");
@@ -194,7 +194,8 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		GridElementDAO element = new GridElementDAO();
 		List<GridElementDAO> imageViews = new ArrayList<GridElementDAO>();
 		imageViews.add(element);
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews);
+		imageDatasource = new ImageTalkerDataSource(this);
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews, imageDatasource);
 		ScenesGridFragment sgf = gridFragments.get(0);
 		GridScenesAdapter mGridAdapter = new GridScenesAdapter(this, sgf.getGridItems());
 		mGridAdapter.setDao(imageDatasource);
