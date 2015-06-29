@@ -180,7 +180,7 @@ public class Scenario extends FrameLayout {
 		super.onDraw(canvas);
 	}
 
-	public void setBackgroundImage(Bitmap image) {
+	public void setBackgroundImage(Bitmap image, boolean isHistory) {
 		mImage = BackgroundUtil.toGrayscale(image);
 		BitmapDrawable background = new BitmapDrawable(getResources(), mImage);
 		BackgroundUtil.setBackground(this, background);

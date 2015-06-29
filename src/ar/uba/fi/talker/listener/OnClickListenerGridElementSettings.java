@@ -15,7 +15,11 @@ public class OnClickListenerGridElementSettings implements OnClickListener {
 	protected GridItems gridItem = null;
 	protected BaseAdapter baseAdapter=null;
 		
-	public OnClickListenerGridElementSettings(final Context context,GridItems gridItem,BaseAdapter baseAdapter){
+	public OnClickListenerGridElementSettings(
+			final Context context,
+			final GridItems gridItem,
+			final BaseAdapter baseAdapter
+	){
 		this.context=context;
 		this.gridItem=gridItem;
 		this.baseAdapter = baseAdapter;
@@ -26,7 +30,8 @@ public class OnClickListenerGridElementSettings implements OnClickListener {
 	view.setBackgroundColor(context.getResources().getColor(R.color.selectionViolet));
 		
 		FragmentActivity activity = (FragmentActivity) context;		
-		SceneActionFragment fragment = new SceneActionFragment(gridItem, view, baseAdapter);
+		SceneActionFragment fragment = new SceneActionFragment();
+		fragment.init(gridItem, view, baseAdapter, null);
 		OnClickListener onClickListener = new OnClickStartActionSettings(activity, gridItem, fragment);
 		fragment.setOnClickStartAction(onClickListener);
 		fragment.onAttach(activity);

@@ -11,25 +11,21 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ScenarioDAO;
-import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.utils.GridElementDAO;
-import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 import ar.uba.fi.talker.utils.ResultConstant;
@@ -39,7 +35,6 @@ import com.viewpagerindicator.PageIndicator;
 public class NewSceneActivity extends ActionBarActivity implements DeleteScenarioDialogListener {
 
 	// Use this instance of the interface to deliver action events
-	private GridView gridView = null;
 	private PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private PagerScenesAdapter pagerAdapter;
@@ -57,12 +52,16 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 		galleryScenarioBttn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-				gridView = sgf.getmGridView();
 				Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 				self.startActivityForResult(i, ResultConstant.RESULT_LOAD_IMAGE);
 			}
 		});
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		scenesPagerSetting();
 	}
 
 	private void scenesPagerSetting() {
@@ -73,83 +72,80 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 		if (datasource == null ) {
 			datasource = new ScenarioTalkerDataSource(this.getApplicationContext());
 		}
-	    datasource.open();
-		List<ScenarioDAO> allImages = datasource.getAllImages();
-	    datasource.close();
+		List<ScenarioDAO> allImages = datasource.getAll();
 		for (ScenarioDAO scenarioDAO: allImages) {
 			scenarios.add(new GridElementDAO(scenarioDAO));
 		}
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios);
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios, datasource);
 
 		pagerAdapter = new PagerScenesAdapter(this.getSupportFragmentManager(), gridFragments);
 		viewPager.setAdapter(pagerAdapter);
 		pageIndicator.setViewPager(viewPager);
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.scenes, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		/* Está configurado para de empezar la conversación directamente y guardar el escenario nuevo en la base */
+		/* With requestCode == ResultConstant.RESULT_LOAD_IMAGE saves the image on DB and begins conversation */
 		byte[] bytes = null;
-		ScenarioDAO scenario = null;
 		if (requestCode == ResultConstant.RESULT_LOAD_IMAGE && null != data) {
 			Uri imageUri = data.getData();
 			String scenarioName = imageUri.getLastPathSegment(); 
 	        Bitmap bitmap = null;
 	        int orientation = ImageUtils.getImageRotation(this.getApplicationContext(), imageUri);
-	        Context ctx = this.getApplicationContext();
 			try {/*Entra al if cuando se elige una foto de google +*/
-				datasource.open();
 				if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
+					/* if image belongs to google+*/
 					InputStream is = getContentResolver().openInputStream(imageUri);
 					bitmap = BitmapFactory.decodeStream(is);
+					scenarioName = "SCENARIO_" + String.valueOf(datasource.getLastId() + 1);
 				} else {
 					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				}
-				scenarioName = "SCENARIO_" + String.valueOf(datasource.getLastScenarioID() + 1);
-				ImageUtils.saveFileInternalStorage(scenarioName, bitmap, ctx, orientation);
-				File file = new File(ctx.getFilesDir(), scenarioName);
-				scenario = datasource.createScenario(file.getPath(), "");
-				datasource.close();
-				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
-				GridElementDAO scenarioView = new GridElementDAO(scenario);
-				GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
-				gsa.addItem(gridItem);
-				scenesPagerSetting();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.e("ADD_SCENARIO", "Unexpected problem new scenario process.", e);
 			}
 			
-			Bundle extras = new Bundle();
-			bitmap = ImageUtils.resizeBitmapWithOrientation(bitmap, orientation);
-			bytes = ImageUtils.transformImage(bitmap);
-			extras.putByteArray("BMP",bytes);
 			Intent intent = new Intent(this.getApplicationContext(), CanvasActivity.class);
-			intent.putExtras(extras);
+			if (bitmap != null) {
+				new ImageSaverTask(this.getApplicationContext(), scenarioName, orientation).execute(bitmap);
+				bytes = ImageUtils.transformImage(bitmap);
+				Bundle extras = new Bundle();
+				extras.putByteArray("BMP",bytes);
+				intent.putExtras(extras);
+			}
 			startActivity(intent);
-		}		
+		}
 	}
 
+	private class ImageSaverTask extends AsyncTask<Bitmap, Boolean, Boolean> {
+
+		private Context context;
+		private String name;
+		private int orientation;
+
+		public ImageSaverTask(Context context, String name, int orientation) {
+			this.context = context;
+			this.name = name;
+			this.orientation = orientation;
+		}
+		
+		@Override
+		protected Boolean doInBackground(Bitmap... params) {
+			Bitmap bitmap = params[0];
+			ImageUtils.saveFileInternalStorage(name, bitmap , context, orientation);
+			File file = new File(context.getFilesDir(), name);
+
+			ScenarioDAO scenario = new ScenarioDAO();
+			scenario.setName(name);
+			scenario.setPath(file.getPath());
+			
+			datasource.add(scenario);
+			return null;
+		}
+		
+	}
+	
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(GridElementDAO scenarioView) {
 		boolean deleted = true;
@@ -158,9 +154,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 			deleted = file.delete();
 		}
 		if (deleted){
-			datasource.open();
-			datasource.deleteScenario(scenarioView.getId());
-			datasource.close();
+			datasource.delete(scenarioView);
 		} else {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 			Log.e("NewScene", "Unexpected error deleting imagen.");

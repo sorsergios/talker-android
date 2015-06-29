@@ -1,30 +1,24 @@
 package ar.uba.fi.talker.dao;
 
+import ar.uba.fi.talker.dto.TalkerDTO;
+
 /**
  * @author earias
  *
  */
-public class ScenarioDAO {
+public class ScenarioDAO extends TalkerDTO {
 
-	private int id;
 	private String path;
 	private String name;
 
 	public ScenarioDAO() {
 	}
 
-	public ScenarioDAO(int keyId, String path, String name) {
-		this.id = keyId;
+	public ScenarioDAO(long keyId, String path, String name) {
+		super();
+		setId(keyId);
 		this.path = path;
 		this.name = name;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getPath() {

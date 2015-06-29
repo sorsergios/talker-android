@@ -1,9 +1,5 @@
 package ar.uba.fi.talker.fragment;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
@@ -16,7 +12,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore.Images.Media;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -29,9 +24,9 @@ import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.adapter.InsertImageAdapter;
 import ar.uba.fi.talker.adapter.InsertImageCategoryAdapter;
 import ar.uba.fi.talker.dao.CategoryDAO;
-import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
-import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dataSource.CategoryTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.utils.ResultConstant;
 
@@ -75,11 +70,9 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 		if (categoryTalkerDataSource == null ) {
 			categoryTalkerDataSource = new CategoryTalkerDataSource(getActivity());
 		}
-		categoryTalkerDataSource.open();
 		if (imageTalkerDataSource == null ) {
 			imageTalkerDataSource = new ImageTalkerDataSource(getActivity());
 		}
-		imageTalkerDataSource.open();
 	    
 		try {
 			listener = (InsertImageDialogListener) activity;
@@ -120,7 +113,7 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 		
 		List<CategoryDAO> categories;
 		if (isContactSearch) {
-			categories = categoryTalkerDataSource.getContactCategories();
+			categories = categoryTalkerDataSource.getAll();
 		} else {
 			categories = categoryTalkerDataSource.getImageCategories();
 		}
@@ -163,7 +156,7 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 							public void onClick(DialogInterface dialog, int id) {
 								if (viewSelected != null){
 									TextView t = (TextView) viewSelected.findViewById(R.id.grid_item_label);
-									ImageDAO imageDAO = imageTalkerDataSource.getImageByID(idSelected);
+									ImageDAO imageDAO = imageTalkerDataSource.get(idSelected);
 									Bitmap bmap = null;
 									if (imageDAO.getPath().contains("/")){
 										bmap = BitmapFactory.decodeFile(imageDAO.getPath());

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dao.ContactDAO;
-import ar.uba.fi.talker.dao.ContactTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ContactTalkerDataSource;
 
 public class ContactInfoFragment extends DialogFragment {
 

@@ -18,8 +18,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -29,16 +27,16 @@ import ar.uba.fi.talker.adapter.GridAdapter;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.CategoryDAO;
-import ar.uba.fi.talker.dao.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
-import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dataSource.CategoryTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
 import ar.uba.fi.talker.fragment.ChangeNameConversationDialogFragment.ChangeNameDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment;
 import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
-import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridConversationItems;
+import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
@@ -85,9 +83,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 			if (imageDatasource == null ) {
 				imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
 			}
-		    categoryDatasource.open();
 			List<CategoryDAO> allImages = categoryDatasource.getImageCategories();
-		    categoryDatasource.close();
 		    GridElementDAO thumbnail = null;
 			for (CategoryDAO categoryDAO : allImages) {
 				thumbnail = new GridElementDAO();
@@ -100,32 +96,12 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 				}
 				thumbnails.add(thumbnail);
 			}
-			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails);
+			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails, imageDatasource);
 
 			pagerAdapter = new PagerScenesAdapter(this.getSupportFragmentManager(), gridFragments);
 			viewPager.setAdapter(pagerAdapter);
 			pageIndicator.setViewPager(viewPager);
 		}
-		
-		@Override
-		public boolean onCreateOptionsMenu(Menu menu) {
-			// Inflate the menu; this adds items to the action bar if it is present.
-			getMenuInflater().inflate(R.menu.scenes, menu);
-			return true;
-		}
-
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			// Handle action bar item clicks here. The action bar will
-			// automatically handle clicks on the Home/Up button, so long
-			// as you specify a parent activity in AndroidManifest.xml.
-			int id = item.getItemId();
-			if (id == R.id.action_settings) {
-				return true;
-			}
-			return super.onOptionsItemSelected(item);
-		}
-
 
 		@Override
 		public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -145,16 +121,14 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 					}
 					Context ctx = this.getApplicationContext();
 					ImageUtils.saveFileInternalStorage(categoryName, bitmap, ctx, 0);
-					categoryDatasource.open();
 					scenario = categoryDatasource.createCategory(categoryName, 0);
-					categoryDatasource.close();
 					GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
 					GridElementDAO scenarioView = new GridElementDAO();
 					scenarioView.setId(scenario.getId());
 					scenarioView.setName(scenario.getName());
 					scenarioView.setPath(getResources().getString(R.drawable.casa));
 					GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
-					gsa.addItem(gridItem);
+					gsa.add(gridItem);
 					categoriesPagerSetting();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -165,7 +139,6 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 		@Override
 		public void onDialogPositiveClickDeleteScenarioDialogListener(GridElementDAO categoryView) {
 			boolean deleted = true;
-			imageDatasource.open();
 			List<ImageDAO> innnerImages = imageDatasource.getImagesForCategory(categoryView.getId());
 			for (ImageDAO imageDAO : innnerImages) {
 				if (imageDAO.getPath().contains("/")) {
@@ -173,11 +146,10 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 					deleted = file.delete();
 				}
 			}
-			imageDatasource.close();
 			if (deleted){
-				categoryDatasource.open();
-				categoryDatasource.deleteCategory(categoryView.getId());
-				categoryDatasource.close();
+				CategoryDAO categoryDAO = new CategoryDAO();
+				categoryDAO.setId(categoryView.getId());
+				categoryDatasource.delete(categoryDAO);
 			} else {
 				Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 				Log.e("NewScene", "Unexpected error deleting imagen.");
@@ -193,7 +165,6 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 			if (categoryDatasource == null ) {
 				categoryDatasource = new CategoryTalkerDataSource(this);
 			}
-		    categoryDatasource.open();
 			categoryDatasource.createCategory(inputText.getText().toString(), 0);
 			categoriesPagerSetting();
 		}
@@ -206,7 +177,11 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 			String newCategoryName = inputText.getText().toString();
 			((GridConversationItems)gsa.getItem(position)).getConversationDAO().setName(newCategoryName);
 			gsa.notifyDataSetInvalidated();
-			categoryDatasource.updateCategory(GridAdapter.getItemSelectedId(), newCategoryName);
+			
+			CategoryDAO categoryDAO = new CategoryDAO();
+			categoryDAO.setId(GridAdapter.getItemSelectedId());
+			categoryDAO.setName(newCategoryName);
+			categoryDatasource.update(categoryDAO);
 		}
 
 }

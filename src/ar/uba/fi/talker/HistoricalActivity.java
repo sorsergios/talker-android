@@ -16,7 +16,7 @@ import android.widget.Toast;
 import ar.uba.fi.talker.adapter.GridAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ConversationDAO;
-import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ConversationTalkerDataSource;
 import ar.uba.fi.talker.fragment.ChangeNameConversationDialogFragment.ChangeNameDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
@@ -49,14 +49,13 @@ public class HistoricalActivity extends ActionBarActivity implements ChangeNameD
 
 		GridElementDAO conversView = null;
 		datasource = new ConversationTalkerDataSource(this);
-	    datasource.open();
-		List<ConversationDAO> allImages = datasource.getAllConversations();
+		List<ConversationDAO> allImages = datasource.getAll();
 		for (int i = 0; i < allImages.size(); i++) {
 			ConversationDAO conversationDAO = (ConversationDAO) allImages.get(i);
-			conversView = new GridElementDAO(conversationDAO.getId(), conversationDAO.getPath(), conversationDAO.getName(), conversationDAO.getPathSnapshot());
+			conversView = new GridElementDAO(conversationDAO.getId(), conversationDAO.getName(), conversationDAO.getPathSnapshot());
 			conversViews.add(conversView);
 		}
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, conversViews);
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, conversViews, datasource);
 
 		pagerAdapter = new PagerScenesAdapter(getSupportFragmentManager(), gridFragments);
 		viewPager.setAdapter(pagerAdapter);
@@ -68,10 +67,12 @@ public class HistoricalActivity extends ActionBarActivity implements ChangeNameD
 		Dialog dialogView = dialog.getDialog();
 		EditText inputText = (EditText) dialogView.findViewById(R.id.insert_text_input);
 		GridAdapter gsa = (GridAdapter) gridView.getAdapter();
-		String newScenarioName = inputText.getText().toString();
-		((GridConversationItems)gsa.getItem(position)).getConversationDAO().setName(newScenarioName);
+		String newName = inputText.getText().toString();
+		((GridConversationItems)gsa.getItem(position)).getConversationDAO().setName(newName);
 		gsa.notifyDataSetInvalidated();
-		datasource.updateConversation(GridAdapter.getItemSelectedId(), newScenarioName);
+		
+		ConversationDAO conversation = new ConversationDAO(GridAdapter.getItemSelectedId(), null, newName, null); 
+		datasource.update(conversation);
 	}
 
 	@Override
@@ -84,9 +85,9 @@ public class HistoricalActivity extends ActionBarActivity implements ChangeNameD
 			deleted = file.delete();
 		}
 		if (deleted){
-			datasource.open();
-			datasource.deleteConversation(scenarioView.getId());
-			datasource.close();
+			ConversationDAO conversation = new ConversationDAO();
+			conversation.setId(scenarioView.getId()); 
+			datasource.delete(conversation);
 		} else {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 			Log.e("NewScene", "Unexpected error deleting imagen.");

@@ -8,45 +8,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import ar.uba.fi.talker.ImageSettingsActivity;
 import ar.uba.fi.talker.NewCategoryContactActivity;
 import ar.uba.fi.talker.NewCategoryImageActivity;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.dataSource.TalkerDataSource;
+import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.listener.OnClickListenerGridElement;
 import ar.uba.fi.talker.listener.OnClickListenerGridElementSettings;
-import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridElementDAO;
+import ar.uba.fi.talker.utils.GridItems;
 
-public class GridScenesAdapter extends BaseAdapter {
+public class GridScenesAdapter extends ArrayAdapter<GridItems> {
 
 	private class ViewHolder {
 		public ImageView imageView;
 		public TextView textTitle;
 	}
-	
-	private final Context context;
-	private List<GridItems> items;
-    private static Long itemSelectedId;
-    private static int pos;
+
+	private TalkerDataSource<? extends TalkerDTO> dao;
 
 	public GridScenesAdapter(Context context, List<GridItems> gridItems) {
-		this.context = context;
-		items = gridItems;
+		super(context, 0, gridItems);
 	}
-
-	public List<GridItems> getItems() {
-		return items;
-	}
-
-	@Override
-	public int getCount() {
-		if (items != null) {
-			return items.size();
-		}
-		return 0;
+	
+	public void setDao(TalkerDataSource<? extends TalkerDTO> dao){
+		this.dao = dao;
 	}
 
 	@Override
@@ -55,31 +45,17 @@ public class GridScenesAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int position) {
-		if (items != null && position >= 0 && position < getCount()) {
-			return items.get(position);
-		}
-		return null;
-	}
-
-	@Override
 	public long getItemId(int position) {
-		if (items != null && position >= 0 && position < getCount()) {
-			return items.get(position).getElementGridView().getId();
-		}
-		return 0;
-	}
-
-	public void setItemsList(List<GridItems> locations) {
-		this.items = locations;
+		return this.getItem(position).getElementGridView().getId();
 	}
 
 	@Override
 	public View getView(final int position, View convertView, final ViewGroup parent) {
 
 		ViewHolder mViewHolder = new ViewHolder();
-		final GridItems gridItem = items.get(position);
+		final GridItems gridItem = this.getItem(position);
 		if (convertView == null) {
+			Context context = getContext();
 			LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = mInflater.inflate(R.layout.row_grid, parent, false);
 			
@@ -88,12 +64,12 @@ public class GridScenesAdapter extends BaseAdapter {
 
 		    convertView.setTag(mViewHolder);
 		    OnClickListener onClickListenerGridElement=null;
-		    if(context.getClass().toString().equals(NewCategoryImageActivity.class.toString()) ||
+			if(context.getClass().toString().equals(NewCategoryImageActivity.class.toString()) ||
 		    		context.getClass().toString().equals(NewCategoryContactActivity.class.toString()) ||
 		    		context.getClass().toString().equals(ImageSettingsActivity.class.toString())){
 		    	onClickListenerGridElement=new OnClickListenerGridElementSettings(context,gridItem,this);
 		    }else{
-		    	onClickListenerGridElement=new OnClickListenerGridElement(context,gridItem,this);	
+		    	onClickListenerGridElement=new OnClickListenerGridElement(context, gridItem, this, dao);	
 		    }		    
 		    convertView.setOnClickListener(onClickListenerGridElement);
 		    
@@ -118,24 +94,8 @@ public class GridScenesAdapter extends BaseAdapter {
 		}
 		viewHolder.textTitle.setText(scenarioView.getName());
 	}
-
-	public static Long getItemSelectedId() {
-		return itemSelectedId;
-	}
-	
-	public static long getPosition() {
-		return pos;
-	}
 	
 	public void setItem(GridItems gridItem,String text, int location){
 		gridItem.getElementGridView().setName(text);
-	}
-
-	public void removeItem(int location) {
-		items.remove(location);
-	}
-
-	public void addItem(GridItems gridItem) {
-		items.add(gridItem);
 	}
 }
