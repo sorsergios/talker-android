@@ -12,9 +12,6 @@ import ar.uba.fi.talker.dao.ImageDAO;
 
 public class CategoryTalkerDataSource extends TalkerDataSource<CategoryDAO> {
 	
-	private final String[] allColumns = { ResourceSQLiteHelper.CATEGORY_COLUMN_ID,
-			ResourceSQLiteHelper.CATEGORY_COLUMN_NAME, ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT };
-
 	public CategoryTalkerDataSource(Context context) {
 		super(context);
 	}
@@ -100,8 +97,9 @@ public class CategoryTalkerDataSource extends TalkerDataSource<CategoryDAO> {
 		List<CategoryDAO> categories = new ArrayList<CategoryDAO>();
 
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
-		Cursor cursor = database.query(ResourceSQLiteHelper.CATEGORY_TABLE,
-				allColumns, null, null, null, null, null);
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.CATEGORY_TABLE + " WHERE "
+				+ ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT + " = " + ResourceSQLiteHelper.TRUE, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
