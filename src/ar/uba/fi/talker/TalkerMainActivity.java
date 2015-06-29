@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import ar.uba.fi.talker.dao.ConversationDAO;
-import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ConversationTalkerDataSource;
 import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.ExitApplicationConfirmationDialogFragment.ExitAplicationDialogListener;
 import ar.uba.fi.talker.utils.PreferenceMapper;
@@ -116,14 +116,12 @@ public class TalkerMainActivity extends ActionBarActivity implements ExitAplicat
 
 	private void evaluateVisibilityButton(Button historicalBttn) {
 		ConversationTalkerDataSource datasource = new ConversationTalkerDataSource(this);
-		datasource.open();
-		List<ConversationDAO> conversations = datasource.getAllConversations();
+		List<ConversationDAO> conversations = datasource.getAll();
 		if (!conversations.isEmpty()){
 			historicalBttn.setVisibility(View.VISIBLE);
 		} else {
 			historicalBttn.setVisibility(View.GONE);
 		}
-		datasource.close();
 	}
 	
 	@Override

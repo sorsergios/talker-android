@@ -14,19 +14,22 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
-import ar.uba.fi.talker.dao.ScenarioTalkerDataSource;
+import ar.uba.fi.talker.dataSource.TalkerDataSource;
+import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.utils.GridElementDAO;
 
 public class ChangeNameDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {
 
-	private final GridElementDAO scenarioView;
-	private final BaseAdapter adapter;
+	private GridElementDAO scenarioView;
+	private BaseAdapter adapter;
 	private EditText input;
-	
-	public ChangeNameDialogFragment(GridElementDAO scenarioView, BaseAdapter adapter) {
+	private TalkerDataSource<TalkerDTO> dao;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void init(GridElementDAO scenarioView, BaseAdapter adapter, TalkerDataSource dao) {
 		this.scenarioView = scenarioView;
 		this.adapter = adapter; 
+		this.dao = dao;
 	}
 
 	@Override
@@ -60,39 +63,24 @@ public class ChangeNameDialogFragment extends ParentDialogFragment implements Di
 		if (which == AlertDialog.BUTTON_POSITIVE && input.getText().length() != 0) {
 			String text = input.getText().toString();
 			scenarioView.setName(text);
-			if (scenarioView.isScenarioElement()) {
-				new ScenarioNameChanger().execute(scenarioView);				
-			} else {
-				new ConversationNameChanger().execute(scenarioView);
-			}
+			new NameChangerTask(dao).execute(scenarioView);				
 			adapter.notifyDataSetChanged();
 		}
 		dialog.dismiss();
 	}
 
-	private class ScenarioNameChanger extends AsyncTask<GridElementDAO, ProgressBar, Boolean> {
+	private class NameChangerTask extends AsyncTask<GridElementDAO, ProgressBar, Boolean> {
 
-		@Override
-		protected Boolean doInBackground(GridElementDAO... params) {
-			ScenarioTalkerDataSource datasource = new ScenarioTalkerDataSource(ChangeNameDialogFragment.this.getActivity().getApplicationContext());
-			GridElementDAO scenarioView = params[0];
-			datasource.open();
-			datasource.updateScenario(scenarioView.getId(), scenarioView.getName());
-			datasource.close();
-			return true;
+		private TalkerDataSource<TalkerDTO> dao;
+
+		public NameChangerTask(TalkerDataSource<TalkerDTO> dao) {
+			this.dao = dao;
 		}
-		
-	}
-	
-	private class ConversationNameChanger extends AsyncTask<GridElementDAO, ProgressBar, Boolean> {
 
 		@Override
 		protected Boolean doInBackground(GridElementDAO... params) {
-			ConversationTalkerDataSource datasource = new ConversationTalkerDataSource(ChangeNameDialogFragment.this.getActivity().getApplicationContext());
 			GridElementDAO scenarioView = params[0];
-			datasource.open();
-			datasource.updateConversation(scenarioView.getId(), scenarioView.getName());
-			datasource.close();
+			this.dao.update(scenarioView);
 			return true;
 		}
 		

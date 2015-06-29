@@ -1,8 +1,9 @@
 package ar.uba.fi.talker.dao;
 
-public class ConversationDAO {
+import ar.uba.fi.talker.dto.TalkerDTO;
 
-	private int id;
+public class ConversationDAO extends TalkerDTO {
+
 	private String path;
 	private String name;
 	private String pathSnapshot;
@@ -10,20 +11,14 @@ public class ConversationDAO {
 	public ConversationDAO() {
 	}
 
-	public ConversationDAO(int id, String path, String name, String pathSnapshot) {
+	public ConversationDAO(long id, String path, String name, String pathSnapshot) {
 		super();
-		this.id = id;
+		this.setId(id);
 		this.path = path;
 		this.name = name;
 		this.pathSnapshot = pathSnapshot;
 	}
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+
 	public String getPath() {
 		return path;
 	}

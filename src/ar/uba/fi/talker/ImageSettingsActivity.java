@@ -27,9 +27,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
-import ar.uba.fi.talker.dao.ContactTalkerDataSource;
 import ar.uba.fi.talker.dao.ImageDAO;
-import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ContactTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
 import ar.uba.fi.talker.fragment.ContactDialogFragment;
 import ar.uba.fi.talker.fragment.ContactDialogFragment.ContactDialogListener;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
@@ -100,7 +100,6 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		ArrayList<GridElementDAO> thumbnails = new ArrayList<GridElementDAO>();
 
 		imageDatasource = new ImageTalkerDataSource(this);
-	    imageDatasource.open();
 		List<ImageDAO> allImages = imageDatasource.getImagesForCategory(keyId);
 		GridElementDAO thumbnail = null;
 		for (ImageDAO imageDAO : allImages) {
@@ -110,7 +109,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 			thumbnail.setPath(imageDAO.getPath());
 			thumbnails.add(thumbnail);
 		}
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails);
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails, imageDatasource);
 
 		pagerAdapter = new PagerScenesAdapter(getSupportFragmentManager(), gridFragments);
 		viewPager.setAdapter(pagerAdapter);
@@ -127,9 +126,9 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 			deleted = file.delete();
 		}
 		if (deleted){
-			imageDatasource.open();
-			imageDatasource.deleteImage(scenarioView.getId());
-			imageDatasource.close();
+			ImageDAO entity = new ImageDAO();
+			entity.setId(scenarioView.getId());
+			imageDatasource.delete(entity);
 		} else {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 			Log.e("NewScene", "Unexpected error deleting imagen.");
@@ -159,9 +158,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				if (imageDatasource == null){
 						imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
 				}
-				imageDatasource.open();
 				imageDAO = imageDatasource.createImage(file.getPath(), imageName, keyId);
-				imageDatasource.close();
 				if (gridView == null ){
 					setGridViewAdapter();
 				}
@@ -171,7 +168,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				elementGridView.setName(imageDAO.getName());
 				elementGridView.setPath(imageDAO.getPath());
 				GridItems gridItem = new GridItems(imageDAO.getId(), elementGridView);
-				gsa.addItem(gridItem);
+				gsa.add(gridItem);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -197,9 +194,11 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		GridElementDAO element = new GridElementDAO();
 		List<GridElementDAO> imageViews = new ArrayList<GridElementDAO>();
 		imageViews.add(element);
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews);
+		imageDatasource = new ImageTalkerDataSource(this);
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews, imageDatasource);
 		ScenesGridFragment sgf = gridFragments.get(0);
 		GridScenesAdapter mGridAdapter = new GridScenesAdapter(this, sgf.getGridItems());
+		mGridAdapter.setDao(imageDatasource);
 		gridView = new GridView(this);
 		gridView.setAdapter(mGridAdapter);
 	}
@@ -214,9 +213,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		if (imageDatasource == null ) {
 			imageDatasource = new ImageTalkerDataSource(this);
 		}
-	    imageDatasource.open();
 	    ImageDAO imagedao= imageDatasource.createImage(path, name, keyId);
-		imageDatasource.close();
 		
 		EditText inputAddress = (EditText) dialogView.findViewById(R.id.insert_text_input);
 		EditText inputPhone = (EditText) dialogView.findViewById(R.id.insert_text_input_phone);

@@ -38,8 +38,9 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.EraserStroke;
-import ar.uba.fi.talker.dao.ConversationTalkerDataSource;
-import ar.uba.fi.talker.dao.ImageTalkerDataSource;
+import ar.uba.fi.talker.dao.ConversationDAO;
+import ar.uba.fi.talker.dataSource.ConversationTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment.DatePickerDialogListener;
@@ -209,22 +210,26 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	private void setBackground() {
 		Intent intent = getIntent();
+		boolean isHistory = false;
+		if (intent.hasExtra("history")) {
+			isHistory = intent.getBooleanExtra("history", false);
+		}
 		if(intent.hasExtra("BMP")) {
 		    Bundle extras = intent.getExtras();
 		    byte[] bytes = extras.getByteArray("BMP");
 		    Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 		    
-		    scenario.setBackgroundImage(image);
+		    scenario.setBackgroundImage(image, isHistory);
 		} else if (intent.hasExtra("code")) {
 		    Bundle extras = intent.getExtras();
 		    int code = extras.getInt("code");
 		    Bitmap image = BitmapFactory.decodeResource(getResources(), code);
-		    scenario.setBackgroundImage(image);
+		    scenario.setBackgroundImage(image, isHistory);
 		} else if (intent.hasExtra("path")) {
 		    Bundle extras = intent.getExtras();
 		    String path = extras.getString("path");
 		    Bitmap image = BitmapFactory.decodeFile(path);
-		    scenario.setBackgroundImage(image);
+		    scenario.setBackgroundImage(image, isHistory);
 		}
 	}
 	
@@ -302,7 +307,6 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	private void saveNewImage(Intent data, Uri selectedImage, int orientation) {
 		datasourceImage = new ImageTalkerDataSource(this);
-		datasourceImage.open();
 		String imageName = selectedImage.getLastPathSegment(); 
 		Bitmap bitmap = null;
 		Context ctx = this.getApplicationContext();
@@ -321,7 +325,6 @@ public class CanvasActivity extends ActionBarActivity implements
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		datasourceImage.close();
 	}
 
 
@@ -365,12 +368,15 @@ public class CanvasActivity extends ActionBarActivity implements
 		if (datasourceConversation == null ) {
 			datasourceConversation = new ConversationTalkerDataSource(this.getApplicationContext());
 		}
-		datasourceConversation.open();
 		if (filename != null) {
 			Context ctx = this.getApplicationContext();
 			generateSnapshot(filename, ctx);
 			File file = new File(ctx.getFilesDir(), filename);
-			datasourceConversation.createConversation(file.getPath() + ".json", filename, file.getPath());
+			ConversationDAO conversation = new ConversationDAO();
+			conversation.setName(filename);
+			conversation.setPath(file.getPath() + ".json");
+			conversation.setPathSnapshot(file.getPath());
+			datasourceConversation.add(conversation);
 		}
 	}
 
@@ -383,7 +389,6 @@ public class CanvasActivity extends ActionBarActivity implements
 		view.setDrawingCacheEnabled(true); 
 		Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()); 
 		view.setDrawingCacheEnabled(false);
-	  //  Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache()Width(),view.getHeight(), Config.ARGB_8888);
 	    Canvas canvas = new Canvas(bitmap);
 	    view.draw(canvas);
 	    return bitmap;
@@ -403,14 +408,6 @@ public class CanvasActivity extends ActionBarActivity implements
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}  
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if (datasourceConversation != null ) {
-			datasourceConversation.close();
-		}
-	}
 	
 	@Override
 	public void onBackPressed() {

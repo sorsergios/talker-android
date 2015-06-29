@@ -8,11 +8,16 @@ import android.app.Activity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.dataSource.TalkerDataSource;
+import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 
 public final class GridUtils {
 	
-	public static List<ScenesGridFragment> setScenesGridFragments(Activity activity, List<GridElementDAO> gridElementViews) {
+	public static List<ScenesGridFragment> setScenesGridFragments(
+			Activity activity, 
+			List<GridElementDAO> gridElementViews, 
+			TalkerDataSource<? extends TalkerDTO> dao) {
 
 		Iterator<GridElementDAO> it = gridElementViews.iterator();
 		int maxImages = calculateImagesPerPage(activity);
@@ -22,7 +27,9 @@ public final class GridUtils {
 			for (int i = 0; i < maxImages && it.hasNext(); i++) {
 				itmLst.add(new GridItems(i, it.next()));
 			}
-			gridFragments.add(new ScenesGridFragment(itmLst, activity));
+			ScenesGridFragment fragment = new ScenesGridFragment();
+			fragment.init(itmLst, activity, dao);
+			gridFragments.add(fragment);
 		}
 		return gridFragments;
 	}
