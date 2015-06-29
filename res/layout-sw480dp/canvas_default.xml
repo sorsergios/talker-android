@@ -14,44 +14,39 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/pencilOption"
         android:saveEnabled="true" >
-
     </ar.uba.fi.talker.view.Scenario>
 
     <ImageButton
         android:id="@+id/pencilOption"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/pencil"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-		android:adjustViewBounds="true"
-		android:contentDescription="@null"  />
+        android:src="@drawable/pencil" />
 
     <ImageButton
         android:id="@+id/eraserOption"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/pencilOption"
-        android:src="@drawable/eraser"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/pencilOption"
+        android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-		android:adjustViewBounds="true"
-		android:contentDescription="@string/erase_all_accept"/>
-    
+        android:src="@drawable/eraser" />
 
     <ImageButton
         android:id="@+id/textOption"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_above="@+id/gestureOverlayView1"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/insertImageOption"
-        android:src="@drawable/insert_text"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-		android:adjustViewBounds="true"  
-		android:contentDescription="@string/insert_text_accept"/>
-	
+        android:src="@drawable/insert_text" />
+
     <ImageButton
         android:id="@+id/calculatorOption"
         android:layout_width="48dp"
@@ -60,8 +55,7 @@
         android:layout_toRightOf="@+id/insertContactOption"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/calculator_icon"
-        android:contentDescription="@string/calc_open"/>
+        android:src="@drawable/calculator_icon" />
 
     <ImageButton
         android:id="@+id/calendarOption"
@@ -71,8 +65,7 @@
         android:layout_toRightOf="@+id/calculatorOption"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/calendar_icon"
-        android:contentDescription="@null" />
+        android:src="@drawable/calendar_icon" />
 
     <ImageButton
         android:id="@+id/insertContactOption"
@@ -81,31 +74,8 @@
         android:layout_above="@+id/gestureOverlayView1"
         android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/insert_image_accept"
         android:scaleType="fitCenter"
         android:src="@drawable/contact_icon" />
-
-    <ImageButton
-        android:id="@+id/eraseAllOption"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/erase_all_accept"
-        android:scaleType="fitCenter"
-        android:src="@drawable/erase_all" />
-
-    <ImageButton
-        android:id="@+id/saveAll"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/eraseAllOption"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/new_conversation"
-        android:scaleType="fitCenter"
-        android:src="@drawable/save_all" />
 
     <ImageButton
         android:id="@+id/insertImageOption"
@@ -114,7 +84,6 @@
         android:layout_above="@+id/gestureOverlayView1"
         android:layout_toLeftOf="@+id/insertContactOption"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/insert_image_accept"
         android:scaleType="fitCenter"
         android:src="@drawable/image_icon" />
 
@@ -124,9 +93,37 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:contentDescription="@null"
+        android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-		android:adjustViewBounds="true"
         android:src="@drawable/action_settings" />
+
+    <ImageButton
+        android:id="@+id/eraseAllOption"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_toLeftOf="@+id/exit"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/erase_all" />
+
+    <ImageButton
+        android:id="@+id/saveAll"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_above="@+id/gestureOverlayView1"
+        android:layout_toLeftOf="@+id/eraseAllOption"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/save_all" />
+
+    <ImageButton
+        android:id="@+id/exit"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/exit" />
 
 </RelativeLayout>

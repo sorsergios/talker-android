@@ -46,6 +46,8 @@ import ar.uba.fi.talker.fragment.DatePickerFragment;
 import ar.uba.fi.talker.fragment.DatePickerFragment.DatePickerDialogListener;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment;
 import ar.uba.fi.talker.fragment.EraseAllConfirmationDialogFragment.EraseAllConfirmationDialogListener;
+import ar.uba.fi.talker.fragment.ExitConversationConfirmationDialogFragment;
+import ar.uba.fi.talker.fragment.ExitConversationConfirmationDialogFragment.ExitConversationConfirmationDialogListener;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment;
 import ar.uba.fi.talker.fragment.InsertImageDialogFragment.InsertImageDialogListener;
 import ar.uba.fi.talker.fragment.SaveAllConfirmationDialogFragment;
@@ -61,7 +63,7 @@ import ar.uba.fi.talker.view.Scenario;
 public class CanvasActivity extends ActionBarActivity implements
 		TextDialogListener, InsertImageDialogListener,
 		EraseAllConfirmationDialogListener, OnDateSetListener, 
-		DatePickerDialogListener, SaveAllConfirmationDialogListener {
+		DatePickerDialogListener, SaveAllConfirmationDialogListener, ExitConversationConfirmationDialogListener {
 
 	private static long backPressed;
 	
@@ -199,6 +201,17 @@ public class CanvasActivity extends ActionBarActivity implements
 			public void onClick(View v) {
 				DialogFragment newFragment = new SaveAllConfirmationDialogFragment();
 				newFragment.show(getSupportFragmentManager(), "save_all");
+				CanvasActivity.this.setActiveTool(v);
+			}
+		});
+		
+		ImageButton exitOption = (ImageButton) findViewById(R.id.exit);
+		exitOption.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogFragment newFragment = new ExitConversationConfirmationDialogFragment();
+				newFragment.show(getSupportFragmentManager(), "exit_canvas");
+				scenario.invalidate();
 				CanvasActivity.this.setActiveTool(v);
 			}
 		});
@@ -417,6 +430,11 @@ public class CanvasActivity extends ActionBarActivity implements
 			Toast.makeText(getBaseContext(), "PARA SALIR, PRESIONA ATRÁS UNA VEZ MÁS!", Toast.LENGTH_SHORT).show();
 			backPressed = System.currentTimeMillis();
 		}
+	}
+
+	@Override
+	public void onDialogPositiveClickExitConversationConfirmationListener(DialogFragment dialog) {
+		super.onBackPressed();
 	}
 	
 }

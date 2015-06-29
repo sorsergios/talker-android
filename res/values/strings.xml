@@ -87,20 +87,17 @@
     <string name="canvas_done">HECHO</string>
 
     <!-- escenarios precargados -->
-    <string name="casa">CASA</string>
-    <string name="oficina">OFICINA</string>
-    <string name="colectivo">COLECTIVO</string>
-    <string name="escuela">ESCUELA</string>
     <string name="blanco">PIZARRA</string>
-    <string name="living">LIVING</string>
-    <string name="habitacion">HABITACIÓN</string>
-    <string name="cocina">COCINA</string>
-    <string name="banio">BAÑO</string>
-    <string name="aula">AULA</string>
-    <string name="patio">PATIO</string>
+    <string name="esc_1">CASA</string>
+    <string name="esc_2">CALLE</string>
+    <string name="esc_3">CONSULTORIO</string>
+    <string name="esc_4">FIESTA</string>
+    <string name="esc_5">PAISAJE</string>
+    <string name="esc_6">PLANISFERIO</string>
+    <string name="esc_7">COLECTIVO</string>
+    <string name="esc_8">DIARIO</string>
 
     <!-- otras pantallas -->
-
 
     <!-- fragment insert text -->
     <string name="insert_text_title">INSERTAR TEXTO</string>
@@ -141,6 +138,12 @@
     <string name="calc_equal">=</string>
     <string name="close_modal">CERRAR</string>
 
+	<!-- salir conversador -->
+    <string name="exit_canvas_title">TERMINAR CONVERSACIÓN</string>
+    <string name="exit_canvas_message">ESTÁ SEGURO QUE DESEA TERMINAR LA CONVERSACIÓN?</string>
+    <string name="exit_canvas_accept">SI</string>
+    <string name="exit_canvas_cancel">NO</string>
+    
     <!-- historial -->
     <string name="conversation_history">HISTORIAL DE CONVERSACIONES</string>
 

@@ -46,7 +46,7 @@ import com.viewpagerindicator.PageIndicator;
 
 public class NewCategoryImageActivity extends FragmentActivity implements DeleteScenarioDialogListener, TextDialogListener, ChangeNameDialogListener{
 
-		private GridView gridView = null;
+		private final GridView gridView = null;
 		private PageIndicator pageIndicator;
 		private ViewPager viewPager;
 		private PagerScenesAdapter pagerAdapter;
@@ -126,7 +126,7 @@ public class NewCategoryImageActivity extends FragmentActivity implements Delete
 					GridElementDAO scenarioView = new GridElementDAO();
 					scenarioView.setId(scenario.getId());
 					scenarioView.setName(scenario.getName());
-					scenarioView.setPath(getResources().getString(R.drawable.casa));
+//					scenarioView.setPath(getResources().getString(R.drawable.casa));
 					GridItems gridItem = new GridItems(scenario.getId(), scenarioView);
 					gsa.add(gridItem);
 					categoriesPagerSetting();

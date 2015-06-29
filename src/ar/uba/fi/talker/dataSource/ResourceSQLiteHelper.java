@@ -222,33 +222,27 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 	
 	/*IMAGES OF SCENARIO*/
 	private static Integer[] mThumbIdsScenario = {
-		R.drawable.blanco,    
-		R.drawable.casa,
-		R.drawable.oficina,
-	    R.drawable.colectivo, 
-		R.drawable.escuela,
-		R.drawable.living,
-		R.drawable.cocina,
-		R.drawable.habitacion, 
-		R.drawable.banio,
-		R.drawable.aulaescuela,
-		R.drawable.banioescuela,
-		R.drawable.patioescuela
+		R.drawable.blanco,
+		R.drawable.esc_1,
+		R.drawable.esc_2,
+		R.drawable.esc_3,
+		R.drawable.esc_4,
+		R.drawable.esc_5,
+		R.drawable.esc_6,
+		R.drawable.esc_7,
+		R.drawable.esc_8
 	};
 	
 	private static Integer[] mThumbTextsScenario = {
 		R.string.blanco,
-		R.string.casa,
-		R.string.oficina,
-		R.string.colectivo,
-		R.string.escuela,
-		R.string.living,
-		R.string.cocina,
-		R.string.habitacion,
-		R.string.banio,
-		R.string.aula,
-		R.string.banio,
-		R.string.patio
+		R.string.esc_1,
+		R.string.esc_2,
+		R.string.esc_3,
+		R.string.esc_4,
+		R.string.esc_5,
+		R.string.esc_6,
+		R.string.esc_7,
+		R.string.esc_8
 	};
 	
 	/*IMAGES OF IMAGE CATEGORIES*/
