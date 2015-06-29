@@ -215,9 +215,9 @@ public class Scenario extends FrameLayout {
 
 		android.view.ViewGroup.LayoutParams layoutParams = this
 				.getLayoutParams();
-	/*	layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+		layoutParams.height = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		layoutParams.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-		*/this.addView(alterComponent, layoutParams);
+		this.addView(alterComponent, layoutParams);
 		
 		((Image) alterComponent).setContent(image, label);
 		alterComponent.toggleActive();
