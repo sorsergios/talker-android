@@ -20,9 +20,8 @@ public class ImageTalkerDataSource extends TalkerDataSource<ImageDAO> {
 
 	public long getLastImageID() {
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
-		Cursor cursor = database.rawQuery("SELECT * FROM "
-				+ ResourceSQLiteHelper.IMAGE_TABLE + " ORDER BY "
-				+ ResourceSQLiteHelper.IMAGE_COLUMN_ID + " DESC LIMIT 1", null);
+		Cursor cursor = database.query(ResourceSQLiteHelper.IMAGE_TABLE, new String[]{"*"},
+				null, null, null, null, ResourceSQLiteHelper.IMAGE_COLUMN_ID + " DESC ", "1");
 		cursor.moveToFirst();
 		ImageDAO image = cursorToImages(cursor);
 		cursor.close();
@@ -72,9 +71,9 @@ public class ImageTalkerDataSource extends TalkerDataSource<ImageDAO> {
 		List<ImageDAO> images = new ArrayList<ImageDAO>();
 
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
-		Cursor cursor = database.rawQuery("SELECT * FROM "
-				+ ResourceSQLiteHelper.IMAGE_TABLE + " WHERE "
-				+ ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY + " = " + keyId, null);
+		Cursor cursor = database.query(ResourceSQLiteHelper.IMAGE_TABLE, new String[]{"*"},
+				ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY + " = " + keyId, null, null, null, 
+				ResourceSQLiteHelper.IMAGE_COLUMN_NAME + " ASC ", null);	
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			ImageDAO image = cursorToImages(cursor);
@@ -89,9 +88,8 @@ public class ImageTalkerDataSource extends TalkerDataSource<ImageDAO> {
 	@Override
 	public ImageDAO get(long id) {
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
-		Cursor cursor = database.rawQuery("SELECT * FROM "
-				+ ResourceSQLiteHelper.IMAGE_TABLE + " WHERE "
-				+ ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + id, null);
+		Cursor cursor = database.query(ResourceSQLiteHelper.IMAGE_TABLE, new String[]{"*"},
+				ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + id, null, null, null, null, null);
 		cursor.moveToFirst();
 		ImageDAO image = cursorToImages(cursor);
 		cursor.close();

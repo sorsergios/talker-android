@@ -38,9 +38,9 @@ public class CategoryTalkerDataSource extends TalkerDataSource<CategoryDAO> {
 		List<CategoryDAO> categories = new ArrayList<CategoryDAO>();
 
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
-		Cursor cursor = database.rawQuery("SELECT * FROM "
-				+ ResourceSQLiteHelper.CATEGORY_TABLE + " WHERE "
-				+ ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT + " = " + ResourceSQLiteHelper.FALSE, null);
+		Cursor cursor = database.query(ResourceSQLiteHelper.CATEGORY_TABLE, new String[]{"*"},
+				ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT + " = " + ResourceSQLiteHelper.FALSE, null, null, null, 
+				ResourceSQLiteHelper.CATEGORY_COLUMN_NAME + " ASC ", null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			CategoryDAO category = cursorToCategory(cursor);
@@ -82,9 +82,9 @@ public class CategoryTalkerDataSource extends TalkerDataSource<CategoryDAO> {
 	@Override
 	public CategoryDAO get(long id) {
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
-		Cursor cursor = database.rawQuery("SELECT * FROM "
-				+ ResourceSQLiteHelper.CATEGORY_TABLE + " WHERE "
-				+ ResourceSQLiteHelper.CATEGORY_COLUMN_ID + " = " + id, null);
+		Cursor cursor = database.query(ResourceSQLiteHelper.CATEGORY_TABLE, new String[]{"*"},
+				ResourceSQLiteHelper.CATEGORY_COLUMN_ID + " = " + id, null, null, null, 
+				ResourceSQLiteHelper.CATEGORY_COLUMN_ID, "1");
 		cursor.moveToFirst();
 		CategoryDAO category = cursorToCategory(cursor);
 		cursor.close();
@@ -97,10 +97,9 @@ public class CategoryTalkerDataSource extends TalkerDataSource<CategoryDAO> {
 		List<CategoryDAO> categories = new ArrayList<CategoryDAO>();
 
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
-		Cursor cursor = database.rawQuery("SELECT * FROM "
-				+ ResourceSQLiteHelper.CATEGORY_TABLE + " WHERE "
-				+ ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT + " = " + ResourceSQLiteHelper.TRUE, null);
-
+		Cursor cursor = database.query(ResourceSQLiteHelper.CATEGORY_TABLE, new String[] { "*" },
+				ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT + " = " + ResourceSQLiteHelper.TRUE, null, null, null,
+				ResourceSQLiteHelper.CATEGORY_COLUMN_ID, null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			CategoryDAO category = cursorToCategory(cursor);
