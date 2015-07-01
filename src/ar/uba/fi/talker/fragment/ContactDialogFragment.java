@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,17 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.fragment.TextDialogFragment.TextDialogListener;
 
 public class ContactDialogFragment extends ParentDialogFragment {
 
-	public interface ContactDialogListener {
-		public void onDialogPositiveClickTextDialogListener(
-				DialogFragment dialog);
-
-	}
-
-	// Use this instance of the interface to deliver action events
-	ContactDialogListener listener;
+	TextDialogListener listener;
 	private static int RESULT_LOAD_IMAGE_CONTACT = 3;
 	ImageView imageView = null;
 	
@@ -36,7 +29,7 @@ public class ContactDialogFragment extends ParentDialogFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			listener = (ContactDialogListener) activity;
+			listener = (TextDialogListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement ContactDialogListener");
@@ -112,6 +105,7 @@ public class ContactDialogFragment extends ParentDialogFragment {
 				.setTitle(R.string.insert_contact_title)
 				.setPositiveButton(R.string.delete_conversation_accept,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
 								listener.onDialogPositiveClickTextDialogListener(ContactDialogFragment.this);
 								dialog.dismiss();
@@ -119,6 +113,7 @@ public class ContactDialogFragment extends ParentDialogFragment {
 						})
 				.setNegativeButton(R.string.insert_text_cancel,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
 							}
