@@ -34,6 +34,12 @@ public class ScreenSlidePageFragment extends Fragment {
 		case 3:
 			view.setImageResource(R.drawable.manner_of_use_4_canvas);
 			break;
+		case 4:
+			view.setImageResource(R.drawable.manner_of_use_5_history_action);
+			break;
+		case 5:
+			view.setImageResource(R.drawable.manner_of_use_6_config_action);
+			break;
 		default:
 			break;
 		}
