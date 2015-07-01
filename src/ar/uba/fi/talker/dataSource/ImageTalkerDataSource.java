@@ -149,7 +149,13 @@ public class ImageTalkerDataSource extends TalkerDataSource {
 
 	@Override
 	public void update(TalkerDTO entity) {
-		// TODO Auto-generated method stub
+		ContentValues values = new ContentValues();
+		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_NAME, entity.getName());
+
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
+		database.update(this.getTableName(), values,
+				this.getIdColumnName() + " = " + entity.getId(), null);
+		database.close();
 	}
 
 }

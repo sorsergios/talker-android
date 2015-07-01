@@ -15,13 +15,15 @@ public class OnClickListenerGridElement implements OnClickListener {
 	private final Context context;
 	private final GridItems gridItem;
 	private final BaseAdapter baseAdapter;
-	private TalkerDataSource dao;
+	private final TalkerDataSource dao;
 		
-	public OnClickListenerGridElement(final Context context,
-			GridItems gridItem,
-			BaseAdapter baseAdapter,
-			TalkerDataSource dao){
-		this.context=context;
+	public OnClickListenerGridElement(
+			final Context context,
+			final GridItems gridItem,
+			final BaseAdapter baseAdapter,
+			TalkerDataSource dao
+	){
+		this.context = context;
 		this.gridItem = gridItem;
 		this.baseAdapter = baseAdapter;
 		this.dao = dao;
@@ -40,10 +42,6 @@ public class OnClickListenerGridElement implements OnClickListener {
 		fragment.onAttach(activity);
 		fragment.show(activity.getSupportFragmentManager(), "action-scene");
 		
-	}
-
-	public GridItems getGridItem() {
-		return gridItem;
 	}
 
 }

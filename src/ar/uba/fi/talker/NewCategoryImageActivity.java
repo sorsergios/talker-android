@@ -79,7 +79,7 @@ public class NewCategoryImageActivity extends CommonImageSettingsActiviy {
 					categoryDAO.setPath(String.valueOf(R.drawable.history_panel));
 				}
 			}
-			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, allImages, imageDatasource);
+			List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, allImages, categoryDatasource);
 
 			pagerAdapter = new PagerScenesAdapter(this.getSupportFragmentManager(), gridFragments);
 			viewPager.setAdapter(pagerAdapter);

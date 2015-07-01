@@ -37,7 +37,7 @@
         <ListPreference
             android:dialogTitle="@string/settings_eraser_size"
             android:entries="@array/sizeEntries"
-            android:entryValues="@array/sizeValues"
+            android:entryValues="@array/sizeEraseValues"
             android:key="@string/settings_eraser_size_key"
             android:summary="%s"
             android:title="@string/settings_eraser_size" />

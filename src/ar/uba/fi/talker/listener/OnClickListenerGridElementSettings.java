@@ -13,9 +13,9 @@ import ar.uba.fi.talker.utils.GridItems;
 public class OnClickListenerGridElementSettings implements OnClickListener {
 
 	private final Context context;
-	protected GridItems gridItem = null;
-	protected BaseAdapter baseAdapter=null;
-	private TalkerDataSource dao;
+	private final GridItems gridItem;
+	private final BaseAdapter baseAdapter;
+	private final TalkerDataSource dao;
 		
 	public OnClickListenerGridElementSettings(
 			final Context context,
@@ -23,32 +23,25 @@ public class OnClickListenerGridElementSettings implements OnClickListener {
 			final BaseAdapter baseAdapter,
 			TalkerDataSource dao
 	){
-		this.context=context;
-		this.gridItem=gridItem;
+		this.context = context;
+		this.gridItem = gridItem;
 		this.baseAdapter = baseAdapter;
 		this.dao = dao;
 	}
 	
 	@Override
 	public void onClick(View view) {
-	view.setBackgroundColor(context.getResources().getColor(R.color.selectionViolet));
+		view.setBackgroundColor(context.getResources().getColor(R.color.selectionViolet));
 		
 		FragmentActivity activity = (FragmentActivity) context;		
 		SceneActionFragment fragment = new SceneActionFragment();
 		fragment.init(gridItem, view, baseAdapter, dao);
+		
 		OnClickListener onClickListener = new OnClickStartActionSettings(activity, gridItem, fragment);
 		fragment.setOnClickStartAction(onClickListener);
 		fragment.onAttach(activity);
 		fragment.show(activity.getSupportFragmentManager(), "action-scene");
 		
-	}
-
-	public GridItems getGridItem() {
-		return gridItem;
-	}
-
-	public void setGridItem(GridItems gridItem) {
-		this.gridItem = gridItem;
 	}
 
 }
