@@ -23,7 +23,7 @@ public class ScreenSlidePageFragment extends Fragment {
 
 		switch (position) {
 		case 0:
-			view.setImageResource(R.drawable.manner_of_use_1_main);
+			view.setImageResource(R.drawable.manner_of_use_5_history_action);
 			break;
 		case 1:
 			view.setImageResource(R.drawable.manner_of_use_2_select_scene);
@@ -35,9 +35,6 @@ public class ScreenSlidePageFragment extends Fragment {
 			view.setImageResource(R.drawable.manner_of_use_4_canvas);
 			break;
 		case 4:
-			view.setImageResource(R.drawable.manner_of_use_5_history_action);
-			break;
-		case 5:
 			view.setImageResource(R.drawable.manner_of_use_6_config_action);
 			break;
 		default:

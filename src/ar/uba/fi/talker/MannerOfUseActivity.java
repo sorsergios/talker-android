@@ -16,7 +16,7 @@ import com.viewpagerindicator.PageIndicator;
 public class MannerOfUseActivity extends ActionBarActivity {
 
 	public PageIndicator pageIndicator;
-	private static final int NUM_PAGES = 4;
+	private static final int NUM_PAGES = 5;
 
 	/**
 	 * The pager widget, which handles animation and allows swiping horizontally to access previous and next wizard steps.
