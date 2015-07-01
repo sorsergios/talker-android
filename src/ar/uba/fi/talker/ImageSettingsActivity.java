@@ -194,18 +194,20 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 	@Override
 	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
 		Dialog dialogView = dialog.getDialog();
-		ImageView imageView = (ImageView) dialogView.findViewById(R.id.image);
+		ImageView imageView = (ImageView) dialogView.findViewById(R.id.contact_image);
 		
 		String name = ""+imageView.getId();
 		String path = ""+imageView.getId();
 	    ImageDAO imagedao= imageDatasource.createImage(path, name, keyId);
-		
-		EditText inputAddress = (EditText) dialogView.findViewById(R.id.insert_text_input);
+
+		EditText inputName = (EditText) dialogView.findViewById(R.id.insert_text_input_name);
+		EditText inputAddress = (EditText) dialogView.findViewById(R.id.insert_text_input_address);
 		EditText inputPhone = (EditText) dialogView.findViewById(R.id.insert_text_input_phone);
 
 		ContactDAO contactDAO = new ContactDAO();
 		contactDAO.setImageId(imagedao.getId());
 		contactDAO.setPath(imagedao.getPath());
+		contactDAO.setName(inputName.getText().toString());
 		contactDAO.setAddress(inputAddress.getText().toString());
 		contactDAO.setPhone(inputPhone.getText().toString());
 		contactDatasource.add(contactDAO);

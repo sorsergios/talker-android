@@ -194,5 +194,8 @@
      <!-- manner of use -->
 	<string name="title_activity_manner_of_use">USO</string>
 	<string name="image">Image</string>
+	<string name="nombre">NOMBRE</string>
+	<string name="address">DIRECCIÓN</string>
+	<string name="phone">TELÉFONO</string>
     
 </resources>
