@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -27,24 +26,24 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
+import ar.uba.fi.talker.dao.ContactDAO;
 import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dataSource.ContactTalkerDataSource;
 import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
+import ar.uba.fi.talker.dataSource.TalkerDataSource;
+import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.fragment.ContactDialogFragment;
-import ar.uba.fi.talker.fragment.ContactDialogFragment.ContactDialogListener;
-import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
-import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridItems;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class ImageSettingsActivity extends FragmentActivity implements DeleteScenarioDialogListener, ContactDialogListener {
+public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 
-    private ImageTalkerDataSource imageDatasource;
-    private ContactTalkerDataSource contactDatasource;
+    private final ImageTalkerDataSource imageDatasource;
+    private final ContactTalkerDataSource contactDatasource;
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private GridView gridView = null;
@@ -54,18 +53,23 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static int RESULT_LOAD_IMAGE_CONTACT = 3;
 	
+	public ImageSettingsActivity() {
+		imageDatasource = new ImageTalkerDataSource(this);
+		contactDatasource = new ContactTalkerDataSource(this);
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Bundle b = getIntent().getExtras();
 		keyId= b.getInt("keyId");
 		isContact= b.getBoolean("isContact");
-		if (isContact){
-			setContentView(R.layout.layout_contacts);
-			imagesPagerSetting();
+		setContentView(R.layout.layout_images);
+		imagesPagerSetting();
 
-			ImageButton createContactBttn = (ImageButton) this.findViewById(R.id.add_contact);
-			createContactBttn.setOnClickListener(new View.OnClickListener() {
+		ImageButton createImageBttn = (ImageButton) this.findViewById(R.id.new_image_gallery);
+		if (isContact){
+			createImageBttn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					DialogFragment newFragment = new ContactDialogFragment();
@@ -73,10 +77,6 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				}
 			});			
 		} else {
-			setContentView(R.layout.layout_images);
-			imagesPagerSetting();
-
-			ImageButton createImageBttn = (ImageButton) this.findViewById(R.id.new_image_gallery);
 			createImageBttn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -97,19 +97,9 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 	private void imagesPagerSetting() {
 		viewPager = (ViewPager) this.findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-		ArrayList<GridElementDAO> thumbnails = new ArrayList<GridElementDAO>();
 
-		imageDatasource = new ImageTalkerDataSource(this);
 		List<ImageDAO> allImages = imageDatasource.getImagesForCategory(keyId);
-		GridElementDAO thumbnail = null;
-		for (ImageDAO imageDAO : allImages) {
-			thumbnail = new GridElementDAO();
-			thumbnail.setId(imageDAO.getId());
-			thumbnail.setName(imageDAO.getName());
-			thumbnail.setPath(imageDAO.getPath());
-			thumbnails.add(thumbnail);
-		}
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, thumbnails, imageDatasource);
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, allImages, imageDatasource);
 
 		pagerAdapter = new PagerScenesAdapter(getSupportFragmentManager(), gridFragments);
 		viewPager.setAdapter(pagerAdapter);
@@ -118,7 +108,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 
 	@Override
 	public void onDialogPositiveClickDeleteScenarioDialogListener(
-			GridElementDAO scenarioView) {
+			TalkerDTO scenarioView) {
 		
 		boolean deleted = true;
 		if (scenarioView.getPath().contains("/")) {
@@ -128,7 +118,7 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		if (deleted){
 			ImageDAO entity = new ImageDAO();
 			entity.setId(scenarioView.getId());
-			imageDatasource.delete(entity);
+			imageDatasource.delete(entity.getId());
 		} else {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 			Log.e("NewScene", "Unexpected error deleting imagen.");
@@ -155,15 +145,12 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 				}
 				ImageUtils.saveFileInternalStorage(imageName, bitmap, this.getApplicationContext(),0);
 				File file = new File(this.getApplicationContext().getFilesDir(), imageName);
-				if (imageDatasource == null){
-						imageDatasource = new ImageTalkerDataSource(this.getApplicationContext());
-				}
 				imageDAO = imageDatasource.createImage(file.getPath(), imageName, keyId);
 				if (gridView == null ){
 					setGridViewAdapter();
 				}
 				GridScenesAdapter gsa = (GridScenesAdapter) gridView.getAdapter();
-				GridElementDAO elementGridView = new GridElementDAO();
+				TalkerDTO elementGridView = new TalkerDTO();
 				elementGridView.setId(imageDAO.getId());
 				elementGridView.setName(imageDAO.getName());
 				elementGridView.setPath(imageDAO.getPath());
@@ -191,14 +178,15 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 	}
 
 	private void setGridViewAdapter() {
-		GridElementDAO element = new GridElementDAO();
-		List<GridElementDAO> imageViews = new ArrayList<GridElementDAO>();
+		TalkerDTO element = new TalkerDTO();
+		List<TalkerDTO> imageViews = new ArrayList<TalkerDTO>();
 		imageViews.add(element);
-		imageDatasource = new ImageTalkerDataSource(this);
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews, imageDatasource);
+		TalkerDataSource datasource = this.isContact ? contactDatasource : imageDatasource;
+		
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, imageViews, datasource);
 		ScenesGridFragment sgf = gridFragments.get(0);
 		GridScenesAdapter mGridAdapter = new GridScenesAdapter(this, sgf.getGridItems());
-		mGridAdapter.setDao(imageDatasource);
+		mGridAdapter.setDao(datasource);
 		gridView = new GridView(this);
 		gridView.setAdapter(mGridAdapter);
 	}
@@ -210,22 +198,21 @@ public class ImageSettingsActivity extends FragmentActivity implements DeleteSce
 		
 		String name = ""+imageView.getId();
 		String path = ""+imageView.getId();
-		if (imageDatasource == null ) {
-			imageDatasource = new ImageTalkerDataSource(this);
-		}
 	    ImageDAO imagedao= imageDatasource.createImage(path, name, keyId);
 		
 		EditText inputAddress = (EditText) dialogView.findViewById(R.id.insert_text_input);
 		EditText inputPhone = (EditText) dialogView.findViewById(R.id.insert_text_input_phone);
-		if (contactDatasource == null ) {
-			contactDatasource = new ContactTalkerDataSource(this);
-		}
-	    contactDatasource.open();
-		contactDatasource.createContact(imagedao.getId(), inputPhone.getText().toString(), inputAddress.getText().toString());
-		contactDatasource.close();
+
+		ContactDAO contactDAO = new ContactDAO();
+		contactDAO.setImageId(imagedao.getId());
+		contactDAO.setPath(imagedao.getPath());
+		contactDAO.setAddress(inputAddress.getText().toString());
+		contactDAO.setPhone(inputPhone.getText().toString());
+		contactDatasource.add(contactDAO);
 	}
 
 	public boolean isContact() {
 		return isContact;
 	}
+
 }

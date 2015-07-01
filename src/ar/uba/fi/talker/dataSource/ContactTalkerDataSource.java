@@ -1,46 +1,20 @@
 package ar.uba.fi.talker.dataSource;
 
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import ar.uba.fi.talker.dao.ContactDAO;
+import ar.uba.fi.talker.dto.TalkerDTO;
 
-public class ContactTalkerDataSource {
+public class ContactTalkerDataSource extends TalkerDataSource {
 	
-	private SQLiteDatabase database;
-	private final ResourceSQLiteHelper dbHelper;
-	private final String[] allColumns = {
-			ResourceSQLiteHelper.CONTACT_COLUMN_ID,
-			ResourceSQLiteHelper.CONTACT_COLUMN_IMAGE_ID,
-			ResourceSQLiteHelper.CONTACT_COLUMN_PHONE,
-			ResourceSQLiteHelper.CONTACT_COLUMN_ADDRESS };
-
 	public ContactTalkerDataSource(Context context) {
-		dbHelper = new ResourceSQLiteHelper(context);
-	}
-
-	public void open() throws SQLException {
-		database = dbHelper.getWritableDatabase();
-	}
-
-	public void close() {
-		dbHelper.close();
-	}
-
-	public ContactDAO createContact(long imageId, String phone, String address) {
-		ContentValues values = new ContentValues();
-		values.put(ResourceSQLiteHelper.CONTACT_COLUMN_IMAGE_ID, imageId);
-		values.put(ResourceSQLiteHelper.CONTACT_COLUMN_PHONE, phone);
-		values.put(ResourceSQLiteHelper.CONTACT_COLUMN_ADDRESS, address);
-		long insertId = database.insert(ResourceSQLiteHelper.CONTACT_TABLE, null, values);
-		Cursor cursor = database.query(ResourceSQLiteHelper.CONTACT_TABLE, allColumns,
-				ResourceSQLiteHelper.CONTACT_COLUMN_ID + " = " + insertId, null, null, null, null);
-		cursor.moveToFirst();
-		ContactDAO newContact = cursorToContact(cursor);
-		cursor.close();
-		return newContact;
+		super(context);
 	}
 
 	private ContactDAO cursorToContact(Cursor cursor) {
@@ -54,36 +28,99 @@ public class ContactTalkerDataSource {
 	
 	
 	public ContactDAO getContactByImageID(long keyId) {
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		Cursor cursor = database.rawQuery("SELECT * FROM "
 				+ ResourceSQLiteHelper.CONTACT_TABLE + " WHERE "
 				+ ResourceSQLiteHelper.CONTACT_COLUMN_IMAGE_ID + " = " + keyId, null);
 		cursor.moveToFirst();
 		ContactDAO contact = cursorToContact(cursor);
 		cursor.close();
+		database.close();
 		return contact;
 	}
 
-	public ContactDAO getContactByID(long keyId) {
+	@Override
+	public TalkerDTO get(long id) {
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		Cursor cursor = database.rawQuery("SELECT * FROM "
 				+ ResourceSQLiteHelper.CONTACT_TABLE + " WHERE "
-				+ ResourceSQLiteHelper.CONTACT_COLUMN_ID + " = " + keyId, null);
+				+ ResourceSQLiteHelper.CONTACT_COLUMN_ID + " = " + id, null);
 		cursor.moveToFirst();
 		ContactDAO contact = cursorToContact(cursor);
 		cursor.close();
+		database.close();
 		return contact;
 	}
 
-	public void deleteContactByImageID(long keyID) {
-		database.delete(ResourceSQLiteHelper.CONTACT_TABLE,
-			ResourceSQLiteHelper.CONTACT_COLUMN_IMAGE_ID + " = " + keyID, null);
+
+	@Override
+	public List<TalkerDTO> getAll() {
+		List<TalkerDTO> contacts = new ArrayList<TalkerDTO>();
+		
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
+		Cursor cursor = database.rawQuery("SELECT * FROM "
+				+ ResourceSQLiteHelper.CONTACT_TABLE, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			ContactDAO contact = cursorToContact(cursor);
+			contacts.add(contact);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		database.close();
+		return contacts;
 	}
-	
-	public void updateContact(Long keyID, String phone, String address) {
+
+
+	@Override
+	public long add(TalkerDTO entity) {
+		ContactDAO contact = null;
+		if (entity instanceof ContactDAO) {
+			contact = (ContactDAO) entity;
+		} else {
+			throw new InvalidParameterException();
+		}
+
 		ContentValues values = new ContentValues();
-		values.put(ResourceSQLiteHelper.CONTACT_COLUMN_PHONE, phone);
-		values.put(ResourceSQLiteHelper.CONTACT_COLUMN_ADDRESS, address);
-		database.update(ResourceSQLiteHelper.CONTACT_TABLE, values,
-				ResourceSQLiteHelper.CONTACT_COLUMN_ID + " = " + keyID, null);
+		values.put(ResourceSQLiteHelper.CONTACT_COLUMN_IMAGE_ID, contact.getImageId());
+		values.put(ResourceSQLiteHelper.CONTACT_COLUMN_PHONE, contact.getPhone());
+		values.put(ResourceSQLiteHelper.CONTACT_COLUMN_ADDRESS, contact.getAddress());
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
+		long insertId = database.insert(ResourceSQLiteHelper.CONTACT_TABLE, null, values);
+		database.close();
+		contact.setId(insertId);
+		return insertId;
+	}
+
+
+	@Override
+	public void update(TalkerDTO entity) {
+		ContactDAO contact = null;
+		if (entity instanceof ContactDAO) {
+			contact = (ContactDAO) entity;
+		} else {
+			throw new InvalidParameterException();
+		}
+		ContentValues values = new ContentValues();
+		values.put(ResourceSQLiteHelper.CONTACT_COLUMN_PHONE, contact.getPhone());
+		values.put(ResourceSQLiteHelper.CONTACT_COLUMN_ADDRESS, contact.getAddress());
+
+		SQLiteDatabase database = getDbHelper().getWritableDatabase();
+		database.update(this.getTableName(), values,
+				this.getIdColumnName() + " = " + contact.getId(), null);
+		database.close();
+	}
+
+
+	@Override
+	protected String getTableName() {
+		return ResourceSQLiteHelper.CONTACT_TABLE;
+	}
+
+
+	@Override
+	protected String getIdColumnName() {
+		return ResourceSQLiteHelper.CONTACT_COLUMN_ID;
 	}
 }
 

@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import ar.uba.fi.talker.ImageSettingsActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dataSource.TalkerDataSource;
-import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.utils.GridItems;
 
 public class SceneActionFragment extends DialogFragment implements OnClickListener {
@@ -19,9 +18,8 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 	private View view;
 	private BaseAdapter adapter;
 	private OnClickListener onClickStartAction = null;
-	protected TalkerDataSource<TalkerDTO> dao;
+	protected TalkerDataSource dao;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void init(GridItems gridItems, View view, BaseAdapter adapter, TalkerDataSource dao) {
 		this.gridItem = gridItems;
 		this.view = view;

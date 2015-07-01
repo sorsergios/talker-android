@@ -8,7 +8,6 @@ import ar.uba.fi.talker.dto.TalkerDTO;
  */
 public class CategoryDAO extends TalkerDTO {
 
-	private String name;
 	private ImageDAO image;
 	private int contactoCategory;
 
@@ -17,15 +16,7 @@ public class CategoryDAO extends TalkerDTO {
 
 	public CategoryDAO(long keyId, String name) {
 		this.setId(keyId);
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		this.setName(name);
 	}
 
 	public void setImage(ImageDAO image) {

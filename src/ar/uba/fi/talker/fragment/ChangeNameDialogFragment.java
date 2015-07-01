@@ -16,17 +16,15 @@ import android.widget.TextView.OnEditorActionListener;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dataSource.TalkerDataSource;
 import ar.uba.fi.talker.dto.TalkerDTO;
-import ar.uba.fi.talker.utils.GridElementDAO;
 
 public class ChangeNameDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {
 
-	private GridElementDAO scenarioView;
+	private TalkerDTO scenarioView;
 	private BaseAdapter adapter;
 	private EditText input;
-	private TalkerDataSource<TalkerDTO> dao;
+	private TalkerDataSource dao;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void init(GridElementDAO scenarioView, BaseAdapter adapter, TalkerDataSource dao) {
+	public void init(TalkerDTO scenarioView, BaseAdapter adapter, TalkerDataSource dao) {
 		this.scenarioView = scenarioView;
 		this.adapter = adapter; 
 		this.dao = dao;
@@ -69,17 +67,17 @@ public class ChangeNameDialogFragment extends ParentDialogFragment implements Di
 		dialog.dismiss();
 	}
 
-	private class NameChangerTask extends AsyncTask<GridElementDAO, ProgressBar, Boolean> {
+	private class NameChangerTask extends AsyncTask<TalkerDTO, ProgressBar, Boolean> {
 
-		private TalkerDataSource<TalkerDTO> dao;
+		private TalkerDataSource dao;
 
-		public NameChangerTask(TalkerDataSource<TalkerDTO> dao) {
+		public NameChangerTask(TalkerDataSource dao) {
 			this.dao = dao;
 		}
 
 		@Override
-		protected Boolean doInBackground(GridElementDAO... params) {
-			GridElementDAO scenarioView = params[0];
+		protected Boolean doInBackground(TalkerDTO... params) {
+			TalkerDTO scenarioView = params[0];
 			this.dao.update(scenarioView);
 			return true;
 		}

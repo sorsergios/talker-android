@@ -13,10 +13,9 @@ import android.view.Window;
 import android.widget.BaseAdapter;
 import ar.uba.fi.talker.CanvasActivity;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.dao.CategoryDAO;
 import ar.uba.fi.talker.dataSource.CategoryTalkerDataSource;
 import ar.uba.fi.talker.dataSource.TalkerDataSource;
-import ar.uba.fi.talker.utils.GridElementDAO;
+import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.utils.GridItems;
 
 public class CategoryActionFragment extends DialogFragment implements OnClickListener {
@@ -55,7 +54,7 @@ public class CategoryActionFragment extends DialogFragment implements OnClickLis
 			@Override
 			public void onClick(View v) {
 				ChangeNameDialogFragment newFragment = new ChangeNameDialogFragment();
-				TalkerDataSource<CategoryDAO> dao = new CategoryTalkerDataSource(getActivity());
+				TalkerDataSource dao = new CategoryTalkerDataSource(getActivity());
 				newFragment.init(gridItem.getElementGridView(), adapter, dao);
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "insert_text");
@@ -70,7 +69,7 @@ public class CategoryActionFragment extends DialogFragment implements OnClickLis
 			public void onClick(View v) {
 				
 				Bundle extras = new Bundle();
-				GridElementDAO scenarioView = gridItem.getElementGridView();
+				TalkerDTO scenarioView = gridItem.getElementGridView();
 				if (scenarioView.getPath() != null && scenarioView.getPath().contains("/")){
 					extras.putString("path", scenarioView.getPath());
 				} else {

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.dataSource.TalkerDataSource;
 import ar.uba.fi.talker.fragment.SceneActionFragment;
 import ar.uba.fi.talker.utils.GridItems;
 
@@ -14,15 +15,18 @@ public class OnClickListenerGridElementSettings implements OnClickListener {
 	private final Context context;
 	protected GridItems gridItem = null;
 	protected BaseAdapter baseAdapter=null;
+	private TalkerDataSource dao;
 		
 	public OnClickListenerGridElementSettings(
 			final Context context,
 			final GridItems gridItem,
-			final BaseAdapter baseAdapter
+			final BaseAdapter baseAdapter,
+			TalkerDataSource dao
 	){
 		this.context=context;
 		this.gridItem=gridItem;
 		this.baseAdapter = baseAdapter;
+		this.dao = dao;
 	}
 	
 	@Override
@@ -31,7 +35,7 @@ public class OnClickListenerGridElementSettings implements OnClickListener {
 		
 		FragmentActivity activity = (FragmentActivity) context;		
 		SceneActionFragment fragment = new SceneActionFragment();
-		fragment.init(gridItem, view, baseAdapter, null);
+		fragment.init(gridItem, view, baseAdapter, dao);
 		OnClickListener onClickListener = new OnClickStartActionSettings(activity, gridItem, fragment);
 		fragment.setOnClickStartAction(onClickListener);
 		fragment.onAttach(activity);

@@ -1,5 +1,6 @@
 package ar.uba.fi.talker.dataSource;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +9,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import ar.uba.fi.talker.dao.ConversationDAO;
+import ar.uba.fi.talker.dto.TalkerDTO;
 
-public class ConversationTalkerDataSource extends TalkerDataSource<ConversationDAO> {
+public class ConversationTalkerDataSource extends TalkerDataSource {
 
+	@Override
+	protected String getTableName() {
+		return ResourceSQLiteHelper.CONVERSATION_TABLE;
+	}
+	
+	@Override
+	protected String getIdColumnName() {
+		return ResourceSQLiteHelper.CONVERSATION_COLUMN_ID;
+	}
 	private final String[] allColumns = { ResourceSQLiteHelper.CONVERSATION_COLUMN_ID,
 			ResourceSQLiteHelper.CONVERSATION_COLUMN_PATH,
 			ResourceSQLiteHelper.CONVERSATION_COLUMN_NAME, 
@@ -43,9 +54,9 @@ public class ConversationTalkerDataSource extends TalkerDataSource<ConversationD
 	}
 
 	@Override
-	public List<ConversationDAO> getAll() {
+	public List<TalkerDTO> getAll() {
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
-		List<ConversationDAO> conversations = new ArrayList<ConversationDAO>();
+		List<TalkerDTO> conversations = new ArrayList<TalkerDTO>();
 
 		Cursor cursor = database.query(ResourceSQLiteHelper.CONVERSATION_TABLE,
 				allColumns, null, null, null, null, ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " DESC");
@@ -62,19 +73,25 @@ public class ConversationTalkerDataSource extends TalkerDataSource<ConversationD
 	}
 
 	@Override
-	public long add(ConversationDAO entity) {
+	public long add(TalkerDTO entity) {
+		ConversationDAO conversationDAO = null;
+		if (entity instanceof ConversationDAO) {
+			conversationDAO = (ConversationDAO) entity;
+		} else {
+			throw new InvalidParameterException();
+		}
 		SQLiteDatabase database = getDbHelper().getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_PATH, entity.getPath());
 		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_NAME, entity.getName());
-		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_SNAPSHOT, entity.getPathSnapshot());
+		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_SNAPSHOT, conversationDAO.getPathSnapshot());
 		long insertId = database.insert(ResourceSQLiteHelper.CONVERSATION_TABLE, null, values);
 		database.close();
 		return insertId;
 	}
 
 	@Override
-	public void update(ConversationDAO entity) {
+	public void update(TalkerDTO entity) {
 		SQLiteDatabase database = getDbHelper().getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.CONVERSATION_COLUMN_NAME, entity.getName());
@@ -83,11 +100,4 @@ public class ConversationTalkerDataSource extends TalkerDataSource<ConversationD
 		database.close();
 	}
 
-	@Override
-	public void delete(ConversationDAO entity) {
-		SQLiteDatabase database = getDbHelper().getWritableDatabase();
-		database.delete(ResourceSQLiteHelper.CONVERSATION_TABLE,
-				ResourceSQLiteHelper.CONVERSATION_COLUMN_ID + " = " + entity.getId(), null);
-		database.close();
-	}
 }

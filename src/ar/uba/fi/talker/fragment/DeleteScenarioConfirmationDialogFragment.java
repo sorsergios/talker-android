@@ -6,19 +6,19 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import ar.uba.fi.talker.R;
-import ar.uba.fi.talker.utils.GridElementDAO;
+import ar.uba.fi.talker.dto.TalkerDTO;
 
 public class DeleteScenarioConfirmationDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {
 
 	public interface DeleteScenarioDialogListener {
 		public void onDialogPositiveClickDeleteScenarioDialogListener(
-				GridElementDAO scenarioView);
+				TalkerDTO scenarioView);
 	}
 
 	DeleteScenarioDialogListener listener;
-	private GridElementDAO scenarioView;
+	private TalkerDTO scenarioView;
 
-	public DeleteScenarioConfirmationDialogFragment(GridElementDAO scenarioView) {
+	public DeleteScenarioConfirmationDialogFragment(TalkerDTO scenarioView) {
 		this.scenarioView = scenarioView;
 	}
 

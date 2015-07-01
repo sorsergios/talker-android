@@ -9,8 +9,6 @@ import ar.uba.fi.talker.dto.TalkerDTO;
 public class ImageDAO extends TalkerDTO {
 
 	private long idCategory;
-	private String path;
-	private String name;
 
 	public ImageDAO() {
 	}
@@ -18,25 +16,9 @@ public class ImageDAO extends TalkerDTO {
 	public ImageDAO(int id, long idCategory, String path, String name) {
 		super();
 		this.setId(id);
+		this.setName(name);
 		this.idCategory = idCategory;
-		this.path = path;
-		this.name = name;
-	}
-	
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		this.setPath(path);
 	}
 
 	public long getIdCategory() {

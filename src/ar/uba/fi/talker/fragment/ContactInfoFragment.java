@@ -16,34 +16,33 @@ public class ContactInfoFragment extends DialogFragment {
 	private ContactTalkerDataSource contactTalkerDataSource = null;
 	TextView text = new TextView(getActivity());
 	TextView vers = new TextView(getActivity());
+
 	public ContactInfoFragment() {
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		view = inflater.inflate(R.layout.contact_info, container, false);
 		int imageId = getArguments().getInt("imageId");
-		if (contactTalkerDataSource == null){
+		if (contactTalkerDataSource == null) {
 			contactTalkerDataSource = new ContactTalkerDataSource(getActivity());
 		}
-		contactTalkerDataSource.open();
-		ContactDAO contactDAO = contactTalkerDataSource.getContactByImageID(imageId);
+		ContactDAO contactDAO = contactTalkerDataSource
+				.getContactByImageID(imageId);
 		this.change(contactDAO.getAddress(), contactDAO.getPhone());
-		contactTalkerDataSource.close();
-	    text= (TextView) view.findViewById(R.id.textView1);
-	    vers= (TextView)view.findViewById(R.id.textView2);
-	 
-	 
-	    return view;
-	
+		text = (TextView) view.findViewById(R.id.textView1);
+		vers = (TextView) view.findViewById(R.id.textView2);
+
+		return view;
+
 	}
 
-	public void change(String txt, String txt1){
-	        text.setText(txt);
-	        vers.setText(txt1);
-	 
+	public void change(String txt, String txt1) {
+		text.setText(txt);
+		vers.setText(txt1);
+
 	}
 
 }

@@ -11,15 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import ar.uba.fi.talker.ImageSettingsActivity;
-import ar.uba.fi.talker.NewCategoryContactActivity;
-import ar.uba.fi.talker.NewCategoryImageActivity;
+import ar.uba.fi.talker.CommonImageSettingsActiviy;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dataSource.TalkerDataSource;
 import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.listener.OnClickListenerGridElement;
 import ar.uba.fi.talker.listener.OnClickListenerGridElementSettings;
-import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridItems;
 
 public class GridScenesAdapter extends ArrayAdapter<GridItems> {
@@ -29,13 +26,13 @@ public class GridScenesAdapter extends ArrayAdapter<GridItems> {
 		public TextView textTitle;
 	}
 
-	private TalkerDataSource<? extends TalkerDTO> dao;
+	private TalkerDataSource dao;
 
 	public GridScenesAdapter(Context context, List<GridItems> gridItems) {
 		super(context, 0, gridItems);
 	}
 	
-	public void setDao(TalkerDataSource<? extends TalkerDTO> dao){
+	public void setDao(TalkerDataSource dao){
 		this.dao = dao;
 	}
 
@@ -64,10 +61,8 @@ public class GridScenesAdapter extends ArrayAdapter<GridItems> {
 
 		    convertView.setTag(mViewHolder);
 		    OnClickListener onClickListenerGridElement=null;
-			if(context.getClass().toString().equals(NewCategoryImageActivity.class.toString()) ||
-		    		context.getClass().toString().equals(NewCategoryContactActivity.class.toString()) ||
-		    		context.getClass().toString().equals(ImageSettingsActivity.class.toString())){
-		    	onClickListenerGridElement=new OnClickListenerGridElementSettings(context,gridItem,this);
+			if(context instanceof CommonImageSettingsActiviy){
+		    	onClickListenerGridElement=new OnClickListenerGridElementSettings(context, gridItem, this, dao);
 		    }else{
 		    	onClickListenerGridElement=new OnClickListenerGridElement(context, gridItem, this, dao);	
 		    }		    
@@ -84,7 +79,7 @@ public class GridScenesAdapter extends ArrayAdapter<GridItems> {
 		return convertView;
 	}
 
-	private void setViewItemContent(ViewHolder viewHolder, GridElementDAO scenarioView) {
+	private void setViewItemContent(ViewHolder viewHolder, TalkerDTO scenarioView) {
 		if (scenarioView.getPath().contains("/")){
 			Uri uri = Uri.parse(scenarioView.getPath());
 			viewHolder.imageView.setImageURI(uri);

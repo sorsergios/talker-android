@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import ar.uba.fi.talker.paint.PaintManager;
 import ar.uba.fi.talker.paint.PaintType;
-import ar.uba.fi.talker.utils.ImageUtils;
 
 public class Image extends DragComponent {
 

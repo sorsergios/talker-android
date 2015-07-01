@@ -3,7 +3,6 @@ package ar.uba.fi.talker;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -23,9 +22,9 @@ import android.widget.Toast;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ScenarioDAO;
 import ar.uba.fi.talker.dataSource.ScenarioTalkerDataSource;
+import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
-import ar.uba.fi.talker.utils.GridElementDAO;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
 import ar.uba.fi.talker.utils.ResultConstant;
@@ -67,16 +66,12 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 	private void scenesPagerSetting() {
 		viewPager = (ViewPager) this.findViewById(R.id.pager);
 		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-		ArrayList<GridElementDAO> scenarios = new ArrayList<GridElementDAO>();
 
 		if (datasource == null ) {
 			datasource = new ScenarioTalkerDataSource(this.getApplicationContext());
 		}
-		List<ScenarioDAO> allImages = datasource.getAll();
-		for (ScenarioDAO scenarioDAO: allImages) {
-			scenarios.add(new GridElementDAO(scenarioDAO));
-		}
-		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, scenarios, datasource);
+		List<TalkerDTO> allImages = datasource.getAll();
+		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, allImages, datasource);
 
 		pagerAdapter = new PagerScenesAdapter(this.getSupportFragmentManager(), gridFragments);
 		viewPager.setAdapter(pagerAdapter);
@@ -147,14 +142,14 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 	}
 	
 	@Override
-	public void onDialogPositiveClickDeleteScenarioDialogListener(GridElementDAO scenarioView) {
+	public void onDialogPositiveClickDeleteScenarioDialogListener(TalkerDTO scenarioView) {
 		boolean deleted = true;
 		if (scenarioView.getPath().contains("/")) {
 			File file = new File(scenarioView.getPath());
 			deleted = file.delete();
 		}
 		if (deleted){
-			datasource.delete(scenarioView);
+			datasource.delete(scenarioView.getId());
 		} else {
 			Toast.makeText(this, "Ocurrio un error con la imagen.",	Toast.LENGTH_SHORT).show();
 			Log.e("NewScene", "Unexpected error deleting imagen.");
