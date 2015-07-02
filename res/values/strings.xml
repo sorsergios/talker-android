@@ -72,11 +72,19 @@
     <string name="new_scene_inner">INTERIOR</string>
     <string name="new_scene_exit">SALIR</string>
     
-    <string name="delete_scenario_title">BORRAR ESCENARIO</string>
-    <string name="delete_scenario_message">ESTA SEGURO QUE DESEA BORRAR ESCENARIO?</string>
     <string name="delete_scenario_accept">ACEPTAR</string>
     <string name="delete_scenario_cancel">CANCELAR</string>
+    <string name="delete_scenario_title">BORRAR ESCENARIO</string>
+    <string name="delete_scenario_message">ESTA SEGURO QUE DESEA BORRAR ESCENARIO?</string>
+	<string name="delete_resource_title">BORRAR ELEMENTO</string>
+    <string name="delete_resource_message">ESTA SEGURO QUE DESEA BORRAR ESTE O ESTOS ELEMENTOS?</string>
     
+	<string name="delete_image_title">BORRAR IMAGEN</string>
+    <string name="delete_image_message">ESTA SEGURO QUE DESEA BORRAR IMAGEN?</string>
+	<string name="delete_categ_title">BORRAR CATEGORÍA</string>
+    <string name="delete_categ_message">ESTA SEGURO QUE DESEA BORRAR CATEGORÍA?</string>
+    <string name="delete_categ_group_title">BORRAR GRUPO DE CONTACTOS</string>
+    <string name="delete_categ_group_message">ESTA SEGURO QUE DESEA BORRAR GRUPO DE CONTACTOS?</string>
     
     <!-- pantalla elegir interior de escenario -->
     <string name="title_activity_new_scene_inner">SELECCIONE UN INTERIOR DE</string>
@@ -101,6 +109,8 @@
 
     <!-- fragment insert text -->
     <string name="insert_text_title">INSERTAR TEXTO</string>
+    <string name="insert_new_categ_name_title">NOMBRE DE CATEGORÍA NUEVA</string>
+    <string name="insert_new_contact_group_name_title">NOMBRE DE GRUPO DE CONTACTOS NUEVO</string>
     <string name="insert_text_accept">ACEPTAR</string>
     <string name="insert_text_cancel">CANCELAR</string>
 

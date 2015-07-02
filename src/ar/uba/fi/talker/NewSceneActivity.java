@@ -23,7 +23,7 @@ import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ScenarioDAO;
 import ar.uba.fi.talker.dataSource.ScenarioTalkerDataSource;
 import ar.uba.fi.talker.dto.TalkerDTO;
-import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
+import ar.uba.fi.talker.fragment.DeleteResourceConfirmationDialogFragment.DeleteResourceDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.utils.GridUtils;
 import ar.uba.fi.talker.utils.ImageUtils;
@@ -31,7 +31,7 @@ import ar.uba.fi.talker.utils.ResultConstant;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class NewSceneActivity extends ActionBarActivity implements DeleteScenarioDialogListener {
+public class NewSceneActivity extends ActionBarActivity implements DeleteResourceDialogListener {
 
 	// Use this instance of the interface to deliver action events
 	private PageIndicator pageIndicator;
@@ -142,7 +142,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteScenari
 	}
 	
 	@Override
-	public void onDialogPositiveClickDeleteScenarioDialogListener(TalkerDTO scenarioView) {
+	public void onDialogPositiveClickDeleteResourceDialogListener(TalkerDTO scenarioView) {
 		boolean deleted = true;
 		if (scenarioView.getPath().contains("/")) {
 			File file = new File(scenarioView.getPath());

@@ -12,13 +12,13 @@ import ar.uba.fi.talker.adapter.PagerScenesAdapter;
 import ar.uba.fi.talker.dao.ConversationDAO;
 import ar.uba.fi.talker.dataSource.ConversationTalkerDataSource;
 import ar.uba.fi.talker.dto.TalkerDTO;
-import ar.uba.fi.talker.fragment.DeleteScenarioConfirmationDialogFragment.DeleteScenarioDialogListener;
+import ar.uba.fi.talker.fragment.DeleteResourceConfirmationDialogFragment.DeleteResourceDialogListener;
 import ar.uba.fi.talker.fragment.ScenesGridFragment;
 import ar.uba.fi.talker.utils.GridUtils;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class HistoricalActivity extends ActionBarActivity implements DeleteScenarioDialogListener {
+public class HistoricalActivity extends ActionBarActivity implements DeleteResourceDialogListener {
 
     private ConversationTalkerDataSource datasource;
 	public PageIndicator pageIndicator;
@@ -46,7 +46,7 @@ public class HistoricalActivity extends ActionBarActivity implements DeleteScena
 	}
 
 	@Override
-	public void onDialogPositiveClickDeleteScenarioDialogListener(
+	public void onDialogPositiveClickDeleteResourceDialogListener(
 			TalkerDTO scenarioView) {
 		
 		boolean deleted = true;

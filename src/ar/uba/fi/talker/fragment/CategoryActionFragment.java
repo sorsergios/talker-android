@@ -83,11 +83,12 @@ public class CategoryActionFragment extends DialogFragment implements OnClickLis
 			}
 		});
 		
-		View deleteScenarioBttn = actions.findViewById(R.id.new_scene_delete_scenario_name);
-		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
+		View deleteResourceBttn = actions.findViewById(R.id.new_scene_delete_scenario_name);
+		deleteResourceBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(gridItem.getElementGridView());
+				DialogFragment newFragment = new DeleteResourceConfirmationDialogFragment
+						(gridItem.getElementGridView(), R.string.delete_resource_title, R.string.delete_resource_message);
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "delete_scenario");
 				CategoryActionFragment.this.dismiss();

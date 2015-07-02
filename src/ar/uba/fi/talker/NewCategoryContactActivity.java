@@ -50,7 +50,7 @@ public class NewCategoryContactActivity extends CommonImageSettingsActiviy {
 			createCategoryBttn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					DialogFragment newFragment = new TextDialogFragment();
+					TextDialogFragment newFragment = new TextDialogFragment(R.string.insert_new_contact_group_name_title);
 					newFragment.show(getSupportFragmentManager(), "insert_text");
 					categoriesPagerSetting();
 				}
@@ -77,7 +77,7 @@ public class NewCategoryContactActivity extends CommonImageSettingsActiviy {
 		}
 
 		@Override
-		public void onDialogPositiveClickDeleteScenarioDialogListener(
+		public void onDialogPositiveClickDeleteResourceDialogListener(
 				TalkerDTO categoryView) {
 			boolean deleted = true;
 			List<ImageDAO> innnerImages = imageDatasource.getImagesForCategory(categoryView.getId());

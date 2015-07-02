@@ -87,7 +87,8 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment newFragment = new DeleteScenarioConfirmationDialogFragment(gridItem.getElementGridView());
+				DialogFragment newFragment = new DeleteResourceConfirmationDialogFragment
+						(gridItem.getElementGridView(), R.string.delete_scenario_title, R.string.delete_scenario_message);
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "delete_scenario");
 				SceneActionFragment.this.dismiss();

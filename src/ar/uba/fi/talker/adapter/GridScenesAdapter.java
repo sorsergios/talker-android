@@ -16,6 +16,7 @@ import ar.uba.fi.talker.ImageSettingsActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dataSource.TalkerDataSource;
 import ar.uba.fi.talker.dto.TalkerDTO;
+import ar.uba.fi.talker.listener.OnClickListenerContactSettings;
 import ar.uba.fi.talker.listener.OnClickListenerGridElement;
 import ar.uba.fi.talker.listener.OnClickListenerGridElementSettings;
 import ar.uba.fi.talker.utils.GridItems;

@@ -103,7 +103,7 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 	}
 
 	@Override
-	public void onDialogPositiveClickDeleteScenarioDialogListener(
+	public void onDialogPositiveClickDeleteResourceDialogListener(
 			TalkerDTO scenarioView) {
 		
 		boolean deleted = true;

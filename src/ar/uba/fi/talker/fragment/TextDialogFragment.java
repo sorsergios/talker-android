@@ -16,14 +16,20 @@ import ar.uba.fi.talker.R;
 
 public class TextDialogFragment extends ParentDialogFragment {
 
+	private Integer title;
+	
 	public interface TextDialogListener {
 		public void onDialogPositiveClickTextDialogListener(
 				DialogFragment dialog);
 
 	}
-
-	// Use this instance of the interface to deliver action events
+	
 	TextDialogListener listener;
+
+	public TextDialogFragment() {};
+	public TextDialogFragment(Integer title) {
+		this.title = title;
+	}
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -59,9 +65,10 @@ public class TextDialogFragment extends ParentDialogFragment {
 			}
 		});
 		builder.setView(input)
-				.setTitle(R.string.insert_text_title)
+				.setTitle(title != null ? title : R.id.insert_text_input)
 				.setPositiveButton(R.string.delete_conversation_accept,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
 								listener.onDialogPositiveClickTextDialogListener(TextDialogFragment.this);
 								dialog.dismiss();
@@ -69,6 +76,7 @@ public class TextDialogFragment extends ParentDialogFragment {
 						})
 				.setNegativeButton(R.string.insert_text_cancel,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.dismiss();
 							}

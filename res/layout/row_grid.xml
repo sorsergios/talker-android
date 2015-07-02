@@ -16,7 +16,7 @@
     	android:layout_height="@dimen/thumbHeight"
   		android:adjustViewBounds="true"
     	android:scaleType="fitXY"
-		android:contentDescription="@string/insert_image_accept"/>
+		/>
 
     <TextView
         android:id="@+id/text"
