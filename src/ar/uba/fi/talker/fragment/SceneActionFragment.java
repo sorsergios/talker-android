@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import ar.uba.fi.talker.ImageSettingsActivity;
 import ar.uba.fi.talker.NewCategoryImageActivity;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.dao.ContactDAO;
+import ar.uba.fi.talker.dataSource.ContactTalkerDataSource;
 import ar.uba.fi.talker.dataSource.TalkerDataSource;
 import ar.uba.fi.talker.utils.GridItems;
 
@@ -81,10 +83,11 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 					@Override
 					public void onClick(View v) {
 						
-						ContactInfoFragment newFragment = new ContactInfoFragment();
-						
+						ContactDialogFragment newFragment = new ContactDialogFragment();
+						ContactTalkerDataSource contactDS = new ContactTalkerDataSource(getActivity());
+						ContactDAO contact = contactDS.getContactByImageID(gridItem.getElementGridView().getId());
 						Bundle args = new Bundle();
-						args.putInt("imageId", (int)gridItem.getElementGridView().getId());
+						args.putParcelable("contact", contact);
 						newFragment.setArguments(args);
 						newFragment.onAttach(getActivity());
 						newFragment.show(getActivity().getSupportFragmentManager(), "show_contact_info");

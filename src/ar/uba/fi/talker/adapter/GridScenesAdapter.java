@@ -12,11 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import ar.uba.fi.talker.CommonImageSettingsActiviy;
-import ar.uba.fi.talker.ImageSettingsActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dataSource.TalkerDataSource;
 import ar.uba.fi.talker.dto.TalkerDTO;
-import ar.uba.fi.talker.listener.OnClickListenerContactSettings;
 import ar.uba.fi.talker.listener.OnClickListenerGridElement;
 import ar.uba.fi.talker.listener.OnClickListenerGridElementSettings;
 import ar.uba.fi.talker.utils.GridItems;
@@ -64,16 +62,7 @@ public class GridScenesAdapter extends ArrayAdapter<GridItems> {
 		    convertView.setTag(mViewHolder);
 		    OnClickListener onClickListenerGridElement=null;
 			if(context instanceof CommonImageSettingsActiviy){
-				if (context instanceof ImageSettingsActivity) {
-					ImageSettingsActivity activity = (ImageSettingsActivity) context;
-					if (activity.isContact()) {
-						onClickListenerGridElement=new OnClickListenerContactSettings(context, gridItem, this, dao);
-					} else {
-						onClickListenerGridElement=new OnClickListenerGridElementSettings(context, gridItem, this, dao);
-					}
-				} else {
-					onClickListenerGridElement=new OnClickListenerGridElementSettings(context, gridItem, this, dao);
-				}
+				onClickListenerGridElement=new OnClickListenerGridElementSettings(context, gridItem, this, dao);
 		    } else {
 		    	onClickListenerGridElement=new OnClickListenerGridElement(context, gridItem, this, dao);	
 		    }		    

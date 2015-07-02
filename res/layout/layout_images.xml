@@ -30,7 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/pager"
         android:layout_alignLeft="@+id/pager"
-        android:layout_alignParentStart="false"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:src="@drawable/sign_add" />

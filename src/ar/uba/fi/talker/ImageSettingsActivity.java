@@ -50,7 +50,7 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 		imageDatasource = new ImageTalkerDataSource(this);
 		contactDatasource = new ContactTalkerDataSource(this);
 	}
-	
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,6 +89,7 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 			});
 		}
 	}
+	
 
 	private void imagesPagerSetting() {
 		viewPager = (ViewPager) this.findViewById(R.id.pager);
