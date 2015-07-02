@@ -387,7 +387,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			File file = new File(ctx.getFilesDir(), filename);
 			ConversationDAO conversation = new ConversationDAO();
 			conversation.setName(filename);
-			conversation.setPath(file.getPath() + ".json");
+			conversation.setPath(file.getPath());
 			conversation.setPathSnapshot(file.getPath());
 			datasourceConversation.add(conversation);
 		}
