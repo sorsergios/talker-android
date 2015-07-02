@@ -38,7 +38,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import ar.uba.fi.talker.component.ComponentType;
 import ar.uba.fi.talker.component.EraserStroke;
+import ar.uba.fi.talker.dao.ContactDAO;
 import ar.uba.fi.talker.dao.ConversationDAO;
+import ar.uba.fi.talker.dao.ImageDAO;
+import ar.uba.fi.talker.dataSource.ContactTalkerDataSource;
 import ar.uba.fi.talker.dataSource.ConversationTalkerDataSource;
 import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
 import ar.uba.fi.talker.fragment.CalculatorFragment;
@@ -301,14 +304,19 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if ((requestCode == ResultConstant.RESULT_LOAD_IMAGE || requestCode == ResultConstant.RESULT_INSERT_NEW_IMAGE) && resultCode == Activity.RESULT_OK && null != data) {
+		if ((requestCode == ResultConstant.RESULT_LOAD_IMAGE 
+				|| requestCode == ResultConstant.RESULT_INSERT_NEW_IMAGE
+				|| requestCode == ResultConstant.RESULT_INSERT_NEW_CONTACT) 
+				&& resultCode == Activity.RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
 			int orientation = ImageUtils.getImageRotation(this.getApplicationContext(), selectedImage);			
 			Matrix matrix = new Matrix();
 			matrix.postRotate(orientation);
-			if (requestCode == ResultConstant.RESULT_INSERT_NEW_IMAGE){
+			if (requestCode == ResultConstant.RESULT_INSERT_NEW_IMAGE
+					|| requestCode == ResultConstant.RESULT_INSERT_NEW_CONTACT){
+				boolean isContact = requestCode == ResultConstant.RESULT_INSERT_NEW_CONTACT;
 				//TODO: pasar a otro thread asi no frena todo
-				saveNewImage(data, selectedImage, orientation);
+				saveNewImage(data, selectedImage, orientation, isContact);
 			}
 			this.onDialogPositiveClickInsertImageDialogListener(selectedImage, orientation);
 
@@ -318,7 +326,7 @@ public class CanvasActivity extends ActionBarActivity implements
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void saveNewImage(Intent data, Uri selectedImage, int orientation) {
+	private void saveNewImage(Intent data, Uri selectedImage, int orientation, boolean isContact) {
 		datasourceImage = new ImageTalkerDataSource(this);
 		String imageName = selectedImage.getLastPathSegment(); 
 		Bitmap bitmap = null;
@@ -334,7 +342,14 @@ public class CanvasActivity extends ActionBarActivity implements
 			ImageUtils.saveFileInternalStorage(imageName, bitmap, ctx, orientation);
 			File file = new File(ctx.getFilesDir(), imageName);
 			
-		    datasourceImage.createImage(file.getPath(), "", InsertImageDialogFragment.categId);
+		    ImageDAO createImage = datasourceImage.createImage(file.getPath(), "", InsertImageDialogFragment.categId);
+		    
+		    if (isContact) {
+		    	ContactTalkerDataSource dataSourceContact = new ContactTalkerDataSource(this);
+		    	ContactDAO contactDAO = new ContactDAO();
+		    	contactDAO.setImageId(createImage.getId());
+		    	dataSourceContact.add(contactDAO);
+		    }
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

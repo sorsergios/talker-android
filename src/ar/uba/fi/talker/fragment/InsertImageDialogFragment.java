@@ -100,7 +100,8 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 				Intent i = new Intent(
 						Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				getActivity().startActivityForResult(i, ResultConstant.RESULT_INSERT_NEW_IMAGE);
+				int result = isContactSearch ? ResultConstant.RESULT_INSERT_NEW_CONTACT : ResultConstant.RESULT_INSERT_NEW_IMAGE;
+				getActivity().startActivityForResult(i, result);
 				getDialog().dismiss();
 			}
 		});
