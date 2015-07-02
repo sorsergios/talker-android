@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import ar.uba.fi.talker.ImageSettingsActivity;
+import ar.uba.fi.talker.NewCategoryImageActivity;
 import ar.uba.fi.talker.R;
 import ar.uba.fi.talker.dataSource.TalkerDataSource;
 import ar.uba.fi.talker.utils.GridItems;
@@ -20,11 +21,16 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 	private OnClickListener onClickStartAction = null;
 	protected TalkerDataSource dao;
 
+	private Integer title;
+	private Integer message;
+	
 	public void init(GridItems gridItems, View view, BaseAdapter adapter, TalkerDataSource dao) {
 		this.gridItem = gridItems;
 		this.view = view;
 		this.adapter = adapter;
 		this.dao = dao;
+		this.title =  R.string.delete_scenario_title;
+		this.message = R.string.delete_scenario_message;
 	}
 
 	public void setOnClickStartAction(OnClickListener onClickStartAction) {
@@ -59,7 +65,14 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		});
 
 		View startScenarioBttn = builder.findViewById(R.id.new_scene_start);
-		if (ImageSettingsActivity.class.toString().equals(getActivity().getClass().toString())) {
+		
+		if(getActivity() instanceof NewCategoryImageActivity){
+			this.title = R.string.delete_resource_title;
+			this.message = R.string.delete_resource_message;
+		}
+		
+		if (getActivity() instanceof ImageSettingsActivity) {
+			
 			ImageSettingsActivity activity = (ImageSettingsActivity)getActivity();
 			if (!activity.isContact()){
 				startScenarioBttn.setVisibility(View.GONE);
@@ -83,12 +96,12 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 		} else {
 			startScenarioBttn.setOnClickListener(onClickStartAction);
 		}
-		View deleteScenarioBttn = builder.findViewById(R.id.new_scene_delete_scenario_name);
-		deleteScenarioBttn.setOnClickListener(new OnClickListener() {
+		View deleteResourceBttn = builder.findViewById(R.id.new_scene_delete_scenario_name);
+		deleteResourceBttn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				DialogFragment newFragment = new DeleteResourceConfirmationDialogFragment
-						(gridItem.getElementGridView(), R.string.delete_resource_title, R.string.delete_resource_message);
+						(gridItem.getElementGridView(), title, message);
 				newFragment.onAttach(getActivity());
 				newFragment.show(getActivity().getSupportFragmentManager(), "delete_scenario");
 				SceneActionFragment.this.dismiss();
