@@ -170,9 +170,16 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 				populateImageCategory(db, mThumbIdsImagesForCateg5, mThumbTextsImagesForCateg5, 5, Boolean.TRUE);
 				populateImageCategory(db, mThumbIdsImagesForCateg6, mThumbTextsImagesForCateg6, 6, Boolean.FALSE);
 				populateImageCategory(db, mThumbIdsImagesForCateg7, mThumbTextsImagesForCateg7, 7, Boolean.FALSE);
+				populateContactCategory(db, 21);
 				populateImageCategory(db, mThumbIdsImagesForCateg8, mThumbTextsImagesForCateg8, 8, Boolean.FALSE);
 			}
 		}
+	}
+
+	private void populateContactCategory(SQLiteDatabase db, int categId) {
+			db.execSQL("INSERT INTO " + CONTACT_TABLE + " ( "
+					+ CONTACT_COLUMN_IMAGE_ID + " ) "
+					+ " VALUES (" + categId + ")");
 	}
 
 	private void populateImageCategory(SQLiteDatabase db, Integer[] mThumbIdsImagesForCateg, Integer[] mThumbTextsImagesForCateg, int categId, boolean isContact) {

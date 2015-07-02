@@ -19,7 +19,7 @@ public class ContactTalkerDataSource extends TalkerDataSource {
 
 	private ContactDAO cursorToContact(Cursor cursor) {
 		ContactDAO contact = new ContactDAO();
-		contact.setId(cursor.getInt(0));
+		contact.setId(cursor.getLong(0));
 		contact.setImageId(cursor.getLong(1));
 		contact.setPhone(cursor.getString(2));
 		contact.setAddress(cursor.getString(3));
