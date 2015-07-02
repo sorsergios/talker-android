@@ -1,16 +1,18 @@
 package ar.uba.fi.talker.utils;
 
+import ar.uba.fi.talker.dto.TalkerDTO;
+
 public class GridItems {
 
 	private long id;
-	private GridElementDAO elementGridView;
+	private TalkerDTO elementGridView;
 
-	public GridItems(long id, GridElementDAO elementGridView) {
+	public GridItems(long id, TalkerDTO elementGridView) {
 		this.id = id;
 		this.elementGridView = elementGridView;
 	}
 	
-	public GridElementDAO getElementGridView() {
+	public TalkerDTO getElementGridView() {
 		return elementGridView;
 	}
 	

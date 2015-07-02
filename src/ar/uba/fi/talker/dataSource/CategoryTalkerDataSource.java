@@ -1,5 +1,6 @@
 package ar.uba.fi.talker.dataSource;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +10,24 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import ar.uba.fi.talker.dao.CategoryDAO;
 import ar.uba.fi.talker.dao.ImageDAO;
+import ar.uba.fi.talker.dto.TalkerDTO;
 
-public class CategoryTalkerDataSource extends TalkerDataSource<CategoryDAO> {
+public class CategoryTalkerDataSource extends TalkerDataSource {
 	
 	public CategoryTalkerDataSource(Context context) {
 		super(context);
 	}
 
+	@Override
+	protected String getTableName() {
+		return ResourceSQLiteHelper.CATEGORY_TABLE;
+	}
+	
+	@Override
+	protected String getIdColumnName() {
+		return ResourceSQLiteHelper.CATEGORY_COLUMN_ID;
+	}
+	
 	public CategoryDAO createCategory(String name, int isContactCategory) {
 		
 		CategoryDAO categoryDAO = new CategoryDAO();
@@ -93,8 +105,8 @@ public class CategoryTalkerDataSource extends TalkerDataSource<CategoryDAO> {
 	}
 
 	@Override
-	public List<CategoryDAO> getAll() {
-		List<CategoryDAO> categories = new ArrayList<CategoryDAO>();
+	public List<TalkerDTO> getAll() {
+		List<TalkerDTO> categories = new ArrayList<TalkerDTO>();
 
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		Cursor cursor = database.query(ResourceSQLiteHelper.CATEGORY_TABLE, new String[] { "*" },
@@ -113,11 +125,37 @@ public class CategoryTalkerDataSource extends TalkerDataSource<CategoryDAO> {
 		return categories;
 	}
 
+	public List<CategoryDAO> getAllContacts() {
+		List<CategoryDAO> categories = new ArrayList<CategoryDAO>();
+
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
+		Cursor cursor = database.query(ResourceSQLiteHelper.CATEGORY_TABLE, new String[] { "*" },
+				ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT + " = " + ResourceSQLiteHelper.TRUE, null, null, null,
+				ResourceSQLiteHelper.CATEGORY_COLUMN_ID, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			CategoryDAO category = cursorToCategory(cursor);
+			ImageDAO image = getFirstImagesForCategory(category.getId());
+			category.setImage(image);
+			categories.add(category);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		database.close();
+		return categories;
+	}
+	
 	@Override
-	public long add(CategoryDAO entity) {
+	public long add(TalkerDTO entity) {
+		CategoryDAO categoryDAO = null;
+		if (entity instanceof CategoryDAO) {
+			categoryDAO = (CategoryDAO) entity;
+		} else {
+			throw new InvalidParameterException();
+		}
 		ContentValues values = new ContentValues();
-		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_NAME, entity.getName());
-		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT, entity.isContactCategory());
+		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_NAME, categoryDAO.getName());
+		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_IS_CONTACT, categoryDAO.isContactCategory());
 
 		SQLiteDatabase database = getDbHelper().getWritableDatabase();
 		long insertId = database.insert(ResourceSQLiteHelper.CATEGORY_TABLE, null, values);
@@ -126,7 +164,7 @@ public class CategoryTalkerDataSource extends TalkerDataSource<CategoryDAO> {
 	}
 
 	@Override
-	public void update(CategoryDAO entity) {
+	public void update(TalkerDTO entity) {
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.CATEGORY_COLUMN_NAME, entity.getName());
 
@@ -136,11 +174,4 @@ public class CategoryTalkerDataSource extends TalkerDataSource<CategoryDAO> {
 		database.close();
 	}
 
-	@Override
-	public void delete(CategoryDAO entity) {
-		SQLiteDatabase database = getDbHelper().getWritableDatabase();
-		database.delete(ResourceSQLiteHelper.CATEGORY_TABLE,
-				ResourceSQLiteHelper.CATEGORY_COLUMN_ID + " = " + entity.getId(), null);
-		database.close();
-	}
 }

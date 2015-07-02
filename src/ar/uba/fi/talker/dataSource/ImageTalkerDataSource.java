@@ -1,5 +1,6 @@
 package ar.uba.fi.talker.dataSource;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +9,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import ar.uba.fi.talker.dao.ImageDAO;
+import ar.uba.fi.talker.dto.TalkerDTO;
 
-public class ImageTalkerDataSource extends TalkerDataSource<ImageDAO> {
+public class ImageTalkerDataSource extends TalkerDataSource {
 	
 	private final String[] allColumns = { ResourceSQLiteHelper.IMAGE_COLUMN_ID, ResourceSQLiteHelper.IMAGE_COLUMN_PATH,
 			ResourceSQLiteHelper.IMAGE_COLUMN_NAME, ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY };
@@ -18,6 +20,16 @@ public class ImageTalkerDataSource extends TalkerDataSource<ImageDAO> {
 		super(context);
 	}
 
+	@Override
+	protected String getTableName() {
+		return ResourceSQLiteHelper.IMAGE_TABLE;
+	}
+	
+	@Override
+	protected String getIdColumnName() {
+		return ResourceSQLiteHelper.IMAGE_COLUMN_ID;
+	}
+	
 	public long getLastImageID() {
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		Cursor cursor = database.query(ResourceSQLiteHelper.IMAGE_TABLE, new String[]{"*"},
@@ -98,35 +110,53 @@ public class ImageTalkerDataSource extends TalkerDataSource<ImageDAO> {
 	}
 
 	@Override
-	public List<ImageDAO> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<TalkerDTO> getAll() {
+		List<TalkerDTO> images = new ArrayList<TalkerDTO>();
+
+		SQLiteDatabase database = getDbHelper().getReadableDatabase();
+		Cursor cursor = database.query(ResourceSQLiteHelper.IMAGE_TABLE,
+				allColumns, null, null, null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			ImageDAO image = cursorToImages(cursor);
+			images.add(image);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		database.close();
+		return images;
 	}
 
 	@Override
-	public long add(ImageDAO entity) {
+	public long add(TalkerDTO entity) {
+		ImageDAO imageDAO = null;
+		if (entity instanceof ImageDAO) {
+			imageDAO = (ImageDAO) entity;
+		} else {
+			throw new InvalidParameterException();
+		}
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_PATH, entity.getPath());
 		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_NAME, entity.getName());
-		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY, entity.getIdCategory());
+		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_IDCATEGORY, imageDAO.getIdCategory());
 
 		SQLiteDatabase database = getDbHelper().getWritableDatabase();
 		long insertId = database.insert(ResourceSQLiteHelper.IMAGE_TABLE, null, values);
 		database.close();
+		entity.setId(insertId);
 		return insertId;
 	}
 
 	@Override
-	public void update(ImageDAO entity) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void update(TalkerDTO entity) {
+		ContentValues values = new ContentValues();
+		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_NAME, entity.getName());
 
-	@Override
-	public void delete(ImageDAO entity) {
 		SQLiteDatabase database = getDbHelper().getWritableDatabase();
-		database.delete(ResourceSQLiteHelper.IMAGE_TABLE,
-				ResourceSQLiteHelper.IMAGE_COLUMN_ID + " = " + entity.getId(), null);
+		database.update(this.getTableName(), values,
+				this.getIdColumnName() + " = " + entity.getId(), null);
 		database.close();
 	}
+
 }

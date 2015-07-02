@@ -1,30 +1,23 @@
 package ar.uba.fi.talker.dao;
 
-public class ContactDAO {
+import ar.uba.fi.talker.dto.TalkerDTO;
 
-	private int id;
+public class ContactDAO extends TalkerDTO {
+
 	private long imageId;
 	private String phone;
 	private String address;
 
 	public ContactDAO() {
+		super();
 	}
 
 	public ContactDAO(int id, long imageId, String phone, String address) {
 		super();
-		this.id = id;
+		this.setId(id);
 		this.imageId = imageId;
 		this.phone = phone;
 		this.address = address;
-	}
-
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public long getImageId() {

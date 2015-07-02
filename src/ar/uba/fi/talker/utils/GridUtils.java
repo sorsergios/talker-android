@@ -16,10 +16,10 @@ public final class GridUtils {
 	
 	public static List<ScenesGridFragment> setScenesGridFragments(
 			Activity activity, 
-			List<GridElementDAO> gridElementViews, 
-			TalkerDataSource<? extends TalkerDTO> dao) {
+			List<? extends TalkerDTO> gridElementViews, 
+			TalkerDataSource dao) {
 
-		Iterator<GridElementDAO> it = gridElementViews.iterator();
+		Iterator<? extends TalkerDTO> it = gridElementViews.iterator();
 		int maxImages = calculateImagesPerPage(activity);
 		List<ScenesGridFragment> gridFragments = new ArrayList<ScenesGridFragment>();
 		while (it.hasNext()) {

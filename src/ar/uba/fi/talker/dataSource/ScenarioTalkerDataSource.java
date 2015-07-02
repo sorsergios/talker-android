@@ -8,8 +8,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import ar.uba.fi.talker.dao.ScenarioDAO;
+import ar.uba.fi.talker.dto.TalkerDTO;
 
-public class ScenarioTalkerDataSource extends TalkerDataSource<ScenarioDAO> {
+public class ScenarioTalkerDataSource extends TalkerDataSource {
 
 	private String[] allColumns = { ResourceSQLiteHelper.SCENARIO_COLUMN_ID,
 			ResourceSQLiteHelper.SCENARIO_COLUMN_PATH,
@@ -20,7 +21,17 @@ public class ScenarioTalkerDataSource extends TalkerDataSource<ScenarioDAO> {
 	}
 	
 	@Override
-	public long add(ScenarioDAO scenario) {
+	protected String getTableName() {
+		return ResourceSQLiteHelper.SCENARIO_TABLE;
+	}
+	
+	@Override
+	protected String getIdColumnName() {
+		return ResourceSQLiteHelper.SCENARIO_COLUMN_ID;
+	}
+	
+	@Override
+	public long add(TalkerDTO scenario) {
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.SCENARIO_COLUMN_PATH, scenario.getPath());
 		values.put(ResourceSQLiteHelper.SCENARIO_COLUMN_NAME, scenario.getName());
@@ -44,7 +55,7 @@ public class ScenarioTalkerDataSource extends TalkerDataSource<ScenarioDAO> {
 	}
 	
 	@Override
-	public void update(ScenarioDAO scenario) {
+	public void update(TalkerDTO scenario) {
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.SCENARIO_COLUMN_NAME, scenario.getName());
 
@@ -53,18 +64,10 @@ public class ScenarioTalkerDataSource extends TalkerDataSource<ScenarioDAO> {
 				ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " = " + scenario.getId(), null);
 		database.close();
 	}
-	
-	@Override
-	public void delete(ScenarioDAO scenario) {
-		SQLiteDatabase database = getDbHelper().getWritableDatabase();
-		database.delete(ResourceSQLiteHelper.SCENARIO_TABLE,
-				ResourceSQLiteHelper.SCENARIO_COLUMN_ID + " = " + scenario.getId(), null);
-		database.close();
-	}
 
 	@Override
-	public List<ScenarioDAO> getAll() {
-		List<ScenarioDAO> images = new ArrayList<ScenarioDAO>();
+	public List<TalkerDTO> getAll() {
+		List<TalkerDTO> images = new ArrayList<TalkerDTO>();
 
 		SQLiteDatabase database = getDbHelper().getReadableDatabase();
 		Cursor cursor = database.query(ResourceSQLiteHelper.SCENARIO_TABLE,

@@ -29,8 +29,7 @@ public class OnClickStartActionSettings implements OnClickListener {
 		Intent intent = new Intent(context, ImageSettingsActivity.class);
 		Bundle b = new Bundle();
 		b.putInt("keyId", (int) gridItem.getElementGridView().getId());
-		if (context.getClass().toString()
-				.equals(NewCategoryImageActivity.class.toString())) {
+		if (context instanceof NewCategoryImageActivity) {
 			b.putBoolean("isContact", false);
 		} else {
 			b.putBoolean("isContact", true);

@@ -1,129 +1,175 @@
 package ar.uba.fi.talker.fragment;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.text.InputType;
-import android.view.KeyEvent;
+import android.provider.MediaStore;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 import ar.uba.fi.talker.R;
+import ar.uba.fi.talker.dao.ContactDAO;
+import ar.uba.fi.talker.dao.ImageDAO;
+import ar.uba.fi.talker.dataSource.ContactTalkerDataSource;
+import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
+import ar.uba.fi.talker.utils.ImageUtils;
 
-public class ContactDialogFragment extends ParentDialogFragment {
+public class ContactDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {
 
-	public interface ContactDialogListener {
-		public void onDialogPositiveClickTextDialogListener(
-				DialogFragment dialog);
-
-	}
-
-	// Use this instance of the interface to deliver action events
-	ContactDialogListener listener;
 	private static int RESULT_LOAD_IMAGE_CONTACT = 3;
-	ImageView imageView = null;
-	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			listener = (ContactDialogListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement ContactDialogListener");
-		}
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		Bundle bundle=getActivity().getIntent().getExtras();
-		if (bundle.get("imageUri") != null)
-			imageView.setImageURI((Uri) bundle.get("imageUri"));
-	}
+	private ImageView imageView = null;
+	private View contactoView;
+	public ImageDAO image;
+	public ContactDAO contact;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// Use the Builder class for convenient dialog construction
-		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		imageView = new ImageView(getActivity());
-		imageView.setImageResource(R.drawable.image_icon);
-		imageView.setId(R.id.image);
+
+		contactoView = View.inflate(getActivity(), R.layout.contact_form, null);
+		imageView = (ImageView) contactoView.findViewById(R.id.contact_image);
 		imageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-				getActivity().startActivityForResult(i, RESULT_LOAD_IMAGE_CONTACT);
-			}
-		});
-		EditText inputPhone = new EditText(getActivity());
-		inputPhone.setId(R.id.insert_text_input_phone);
-		inputPhone.setHint("Teléfono");
-		inputPhone.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-		inputPhone.setOnEditorActionListener(new OnEditorActionListener() {
-
-			@Override
-			public boolean onEditorAction(TextView v, int actionId,
-					KeyEvent event) {
-
-				if (actionId == EditorInfo.IME_ACTION_DONE) {
-					listener.onDialogPositiveClickTextDialogListener(ContactDialogFragment.this);
-					ContactDialogFragment.this.dismiss();
-					return true;
-				}
-				return false;
-			}
-		});
-		EditText inputAddress = new EditText(getActivity());
-		inputAddress.setId(R.id.insert_text_input);
-		inputAddress.setHint("Dirección");
-		inputAddress.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-		inputAddress.setOnEditorActionListener(new OnEditorActionListener() {
-
-			@Override
-			public boolean onEditorAction(TextView v, int actionId,
-					KeyEvent event) {
-
-				if (actionId == EditorInfo.IME_ACTION_DONE) {
-					listener.onDialogPositiveClickTextDialogListener(ContactDialogFragment.this);
-					ContactDialogFragment.this.dismiss();
-					return true;
-				}
-				return false;
+				ContactDialogFragment.this.startActivityForResult(i, RESULT_LOAD_IMAGE_CONTACT);
 			}
 		});
 
-		LinearLayout lila= new LinearLayout(getActivity());
-		lila.setOrientation(LinearLayout.VERTICAL);
-		lila.addView(imageView);
-		lila.addView(inputPhone);
-		lila.addView(inputAddress);
-		
-		builder.setView(lila)
+		// Use the Builder class for convenient dialog construction
+		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setView(contactoView)
 				.setTitle(R.string.insert_contact_title)
-				.setPositiveButton(R.string.delete_conversation_accept,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								listener.onDialogPositiveClickTextDialogListener(ContactDialogFragment.this);
-								dialog.dismiss();
-							}
-						})
-				.setNegativeButton(R.string.insert_text_cancel,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.dismiss();
-							}
-						});
+				.setPositiveButton(R.string.delete_conversation_accept, this);
 		return builder.create();
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == RESULT_LOAD_IMAGE_CONTACT && null != data) {
+				Uri imageUri = data.getData();
+				String imageName = imageUri.getLastPathSegment(); 
+		        Bitmap bitmap = null;
+		        int orientation = ImageUtils.getImageRotation(this.getActivity(), imageUri);
+				try {/*Entra al if cuando se elige una foto de google +*/
+					ContentResolver contentResolver = getActivity().getContentResolver();
+					InputStream is = contentResolver.openInputStream(imageUri);
+					if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
+						/* if image belongs to google+*/
+						bitmap = BitmapFactory.decodeStream(is);
+					} else {
+						bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri);
+					}
+				} catch (IOException e) {
+					Log.e("ADD_SCENARIO", "Unexpected problem new scenario process.", e);
+				}
+				
+				DisplayMetrics metrics = getResources().getDisplayMetrics();
+				Float size = metrics.density * 300;
+				bitmap = Bitmap.createScaledBitmap(bitmap, size.intValue(), size.intValue(), true);
+				imageView.setImageBitmap(bitmap);
+				new ContactSaverTask(this.getActivity(), imageName, orientation).execute(bitmap);
+			}
+		}
+	}
+
+	private class ContactSaverTask extends AsyncTask<Bitmap, Boolean, File> {
+
+		private final Context context;
+		private final int orientation;
+		private final String imageName;
+
+		public ContactSaverTask(Context context, String imageName, int orientation) {
+			this.context = context;
+			this.imageName = imageName;
+			this.orientation = orientation;
+		}
+		
+		@Override
+		protected void onPostExecute(File result) {
+			image = new ImageDAO();
+			image.setPath(result.getPath());
+			image.setName(result.getName());
+			Bundle arguments = ContactDialogFragment.this.getArguments();
+			image.setIdCategory(arguments.getLong("category"));
+			
+			ImageTalkerDataSource dataSource = new ImageTalkerDataSource(context);
+			long imageId = dataSource.add(image);
+			ContactTalkerDataSource contactDataSource = new ContactTalkerDataSource(context);
+			
+			contact = new ContactDAO();
+			contact.setImageId(imageId);
+			contactDataSource.add(contact);
+		}
+		
+		@Override
+		protected File doInBackground(Bitmap... params) {
+			Bitmap bitmap = params[0];
+			ImageUtils.saveFileInternalStorage(imageName , bitmap , context, orientation);
+			
+			return new File(context.getFilesDir(), imageName);
+		}
+		
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		// Buttons
+		final Dialog dialog = getDialog();
+		Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+		positiveButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				ContactDialogFragment.this.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+			}
+		});
+	}
+	
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+
+		if (which == DialogInterface.BUTTON_POSITIVE) {
+			if (image == null) {
+				Toast.makeText(getActivity(), "DEBE SELECCIONAR UNA IMAGEN", Toast.LENGTH_LONG).show();
+				return;
+			}
+			ImageTalkerDataSource dataSource = new ImageTalkerDataSource(getActivity());
+
+			TextView name = (TextView) contactoView.findViewById(R.id.contact_input_name);
+			image.setName(name.getText().toString());
+			image.setId(contact.getImageId());
+			dataSource.update(image);
+
+			ContactTalkerDataSource contactDataSource = new ContactTalkerDataSource(this.getActivity());
+			TextView address = (TextView) contactoView.findViewById(R.id.contact_input_address);
+			contact.setAddress(address.getText().toString());
+			
+			TextView phone = (TextView) contactoView.findViewById(R.id.contact_input_phone);
+			contact.setPhone(phone.getText().toString());
+			contactDataSource.update(contact);
+			
+			dialog.dismiss();
+		}
+	}
 }

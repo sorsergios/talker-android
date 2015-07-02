@@ -171,21 +171,6 @@ public class ResourceSQLiteHelper extends SQLiteOpenHelper {
 				populateImageCategory(db, mThumbIdsImagesForCateg6, mThumbTextsImagesForCateg6, 6, Boolean.FALSE);
 				populateImageCategory(db, mThumbIdsImagesForCateg7, mThumbTextsImagesForCateg7, 7, Boolean.FALSE);
 				populateImageCategory(db, mThumbIdsImagesForCateg8, mThumbTextsImagesForCateg8, 8, Boolean.FALSE);
-				
-//				for (int i = 0; i < mThumbIdsImagesForCateg5.length; i++) {
-//					// Generate and insert default data
-//					int idCode = mThumbIdsImagesForCateg5[i];
-//					String name = context.getResources().getString(mThumbTextsImagesForCateg5[i]);
-//					db.execSQL("INSERT INTO " + IMAGE_TABLE + " ( "
-//							+ IMAGE_COLUMN_PATH + " , " 
-//							+ IMAGE_COLUMN_IDCATEGORY + " , " + IMAGE_COLUMN_NAME + " ) "
-//							+ " VALUES (" + idCode + ", " + 5 + ", '" + name + "')");
-//					db.execSQL("INSERT INTO " + CONTACT_TABLE + " ( "
-//							+ CONTACT_COLUMN_IMAGE_ID + " , " 
-//							+ CONTACT_COLUMN_ADDRESS + " , " 
-//							+ CONTACT_COLUMN_PHONE + " ) "
-//							+ " VALUES ("  + 1 + ", " + "'yerbal 2635'" + ", " + "1559285532" +")"); //FIXME id column image hardcode en 1?
-//				}
 			}
 		}
 	}

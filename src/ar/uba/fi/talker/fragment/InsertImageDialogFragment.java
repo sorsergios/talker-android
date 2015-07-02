@@ -113,7 +113,7 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 		
 		List<CategoryDAO> categories;
 		if (isContactSearch) {
-			categories = categoryTalkerDataSource.getAll();
+			categories = categoryTalkerDataSource.getAllContacts();
 		} else {
 			categories = categoryTalkerDataSource.getImageCategories();
 		}

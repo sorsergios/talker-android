@@ -10,6 +10,11 @@
         <item name="medium">20</item>
         <item name="big">30</item>
     </string-array>
+    <string-array name="sizeEraseValues">
+        <item name="small">20</item>
+        <item name="medium">40</item>
+        <item name="big">60</item>
+    </string-array>
     <string-array name="textSizeValues">
         <item name="small">50</item>
         <item name="medium">100</item>
