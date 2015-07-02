@@ -136,10 +136,10 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 				if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
 					InputStream is = getContentResolver().openInputStream(imageUri);
 					bitmap = BitmapFactory.decodeStream(is);
-					imageName = "IMAGE_" + String.valueOf(imageDatasource.getLastImageID() + 1);
 				} else {
 					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				}
+				imageName = "IMAGE_" + String.valueOf(imageDatasource.getLastImageID() + 1);
 				ImageUtils.saveFileInternalStorage(imageName, bitmap, this.getApplicationContext(),0);
 				File file = new File(this.getApplicationContext().getFilesDir(), imageName);
 				imageDAO = imageDatasource.createImage(file.getPath(), imageName, keyId);

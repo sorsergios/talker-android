@@ -30,7 +30,6 @@ import ar.uba.fi.talker.dao.ContactDAO;
 import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dataSource.ContactTalkerDataSource;
 import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
-import ar.uba.fi.talker.utils.BitmapUtil;
 import ar.uba.fi.talker.utils.ImageUtils;
 
 public class ContactDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {
@@ -59,7 +58,7 @@ public class ContactDialogFragment extends ParentDialogFragment implements Dialo
 			contact = arguments.getParcelable("contact");
 			image = new ImageTalkerDataSource(getActivity()).get(contact.getImageId());
 			
-			Bitmap bm = BitmapUtil.createFromPath(image.getPath(), getResources());
+			Bitmap bm = BitmapFactory.decodeFile(image.getPath());
 			imageView.setImageBitmap(bm);
 
 			TextView name = (TextView) contactoView.findViewById(R.id.contact_input_name);
@@ -197,11 +196,11 @@ public class ContactDialogFragment extends ParentDialogFragment implements Dialo
 		}
 		dialog.dismiss();
 	}
-//	
-//	@Override
-//	public void onDismiss(DialogInterface dialog) {
-//		getActivity().recreate();
-//		super.onDismiss(dialog);
-//	}
+	
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		getActivity().recreate();
+		super.onDismiss(dialog);
+	}
 	
 }

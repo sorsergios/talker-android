@@ -335,10 +335,10 @@ public class CanvasActivity extends ActionBarActivity implements
 			if (selectedImage != null && selectedImage.getHost().contains("com.google.android.apps.photos.content")){
 				InputStream is = getContentResolver().openInputStream(selectedImage);
 				bitmap = BitmapFactory.decodeStream(is);
-				imageName = "IMAGE_" + String.valueOf(datasourceImage.getLastImageID() + 1);
 			} else {
 				bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
 			}
+			imageName = "IMAGE_" + String.valueOf(datasourceImage.getLastImageID() + 1);
 			ImageUtils.saveFileInternalStorage(imageName, bitmap, ctx, orientation);
 			File file = new File(ctx.getFilesDir(), imageName);
 			

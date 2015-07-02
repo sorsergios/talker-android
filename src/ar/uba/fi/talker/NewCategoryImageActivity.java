@@ -97,10 +97,10 @@ public class NewCategoryImageActivity extends CommonImageSettingsActiviy {
 					if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
 						InputStream is = getContentResolver().openInputStream(imageUri);
 						bitmap = BitmapFactory.decodeStream(is);
-						categoryName = "IMAGE_" + String.valueOf(imageDatasource.getLastImageID() + 1);
 					} else {
 						bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 					}
+					categoryName = "IMAGE_" + String.valueOf(imageDatasource.getLastImageID() + 1);
 					Context ctx = this.getApplicationContext();
 					ImageUtils.saveFileInternalStorage(categoryName, bitmap, ctx, 0);
 					categoriesPagerSetting();

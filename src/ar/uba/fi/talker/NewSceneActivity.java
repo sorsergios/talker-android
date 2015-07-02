@@ -93,7 +93,6 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteResourc
 					/* if image belongs to google+*/
 					InputStream is = getContentResolver().openInputStream(imageUri);
 					bitmap = BitmapFactory.decodeStream(is);
-					scenarioName = "SCENARIO_" + String.valueOf(datasource.getLastId() + 1);
 				} else {
 					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				}
@@ -103,6 +102,7 @@ public class NewSceneActivity extends ActionBarActivity implements DeleteResourc
 			
 			Intent intent = new Intent(this.getApplicationContext(), CanvasActivity.class);
 			if (bitmap != null) {
+				scenarioName = "SCENARIO_" + String.valueOf(datasource.getLastId() + 1);
 				new ImageSaverTask(this.getApplicationContext(), scenarioName, orientation).execute(bitmap);
 				bytes = ImageUtils.transformImage(bitmap);
 				Bundle extras = new Bundle();
