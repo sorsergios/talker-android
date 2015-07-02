@@ -136,7 +136,7 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 				if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
 					InputStream is = getContentResolver().openInputStream(imageUri);
 					bitmap = BitmapFactory.decodeStream(is);
-					imageName = imageName.substring(35);
+					imageName = "IMAGE_" + String.valueOf(imageDatasource.getLastImageID() + 1);
 				} else {
 					bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 				}

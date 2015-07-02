@@ -97,7 +97,7 @@ public class NewCategoryImageActivity extends CommonImageSettingsActiviy {
 					if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
 						InputStream is = getContentResolver().openInputStream(imageUri);
 						bitmap = BitmapFactory.decodeStream(is);
-						categoryName = categoryName.substring(35);
+						categoryName = "IMAGE_" + String.valueOf(imageDatasource.getLastImageID() + 1);
 					} else {
 						bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 					}
