@@ -37,7 +37,7 @@ public class OnClickListenerGridElement implements OnClickListener {
 		SceneActionFragment fragment = new SceneActionFragment();
 		fragment.init(gridItem, view, baseAdapter, dao);
 				
-		OnClickListener onClickListener = new OnClickStartActionDefault(activity, gridItem, fragment);
+		OnClickListener onClickListener = new OnClickStartActionDefault(context, gridItem, fragment);
 		fragment.setOnClickStartAction(onClickListener);
 		fragment.onAttach(activity);
 		fragment.show(activity.getSupportFragmentManager(), "action-scene");

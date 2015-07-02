@@ -152,6 +152,7 @@ public class ImageTalkerDataSource extends TalkerDataSource {
 	public void update(TalkerDTO entity) {
 		ContentValues values = new ContentValues();
 		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_NAME, entity.getName());
+		values.put(ResourceSQLiteHelper.IMAGE_COLUMN_PATH, entity.getPath());
 
 		SQLiteDatabase database = getDbHelper().getWritableDatabase();
 		database.update(this.getTableName(), values,

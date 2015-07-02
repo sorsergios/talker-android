@@ -37,8 +37,8 @@ public class ContactDialogFragment extends ParentDialogFragment implements Dialo
 	private static int RESULT_LOAD_IMAGE_CONTACT = 3;
 	private ImageView imageView = null;
 	private View contactoView;
-	public ImageDAO image;
-	public ContactDAO contact;
+	private ImageDAO image;
+	private ContactDAO contact;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -52,12 +52,29 @@ public class ContactDialogFragment extends ParentDialogFragment implements Dialo
 				ContactDialogFragment.this.startActivityForResult(i, RESULT_LOAD_IMAGE_CONTACT);
 			}
 		});
+		
+		Bundle arguments = ContactDialogFragment.this.getArguments();
+		if (arguments.containsKey("contact")) {
+			contact = arguments.getParcelable("contact");
+			image = new ImageTalkerDataSource(getActivity()).get(contact.getImageId());
+			
+			Bitmap bm = BitmapFactory.decodeFile(image.getPath());
+			imageView.setImageBitmap(bm);
+
+			TextView name = (TextView) contactoView.findViewById(R.id.contact_input_name);
+			name.setText(image.getName());
+			TextView address = (TextView) contactoView.findViewById(R.id.contact_input_address);
+			address.setText(contact.getAddress());
+			TextView phone = (TextView) contactoView.findViewById(R.id.contact_input_phone);
+			phone.setText(contact.getPhone());
+		}
 
 		// Use the Builder class for convenient dialog construction
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setView(contactoView)
 				.setTitle(R.string.insert_contact_title)
-				.setPositiveButton(R.string.delete_conversation_accept, this);
+				.setPositiveButton(R.string.delete_conversation_accept, this)
+				.setNegativeButton(R.string.delete_conversation_cancel, this);
 		return builder.create();
 	}
 
@@ -106,19 +123,26 @@ public class ContactDialogFragment extends ParentDialogFragment implements Dialo
 		
 		@Override
 		protected void onPostExecute(File result) {
-			image = new ImageDAO();
-			image.setPath(result.getPath());
-			image.setName(result.getName());
-			Bundle arguments = ContactDialogFragment.this.getArguments();
-			image.setIdCategory(arguments.getLong("category"));
-			
 			ImageTalkerDataSource dataSource = new ImageTalkerDataSource(context);
-			long imageId = dataSource.add(image);
+			if (image == null) {
+				image = new ImageDAO();
+				image.setPath(result.getPath());
+				image.setName(result.getName());
+				Bundle arguments = ContactDialogFragment.this.getArguments();
+				image.setIdCategory(arguments.getLong("category"));
+				
+				long imageId = dataSource.add(image);
+				image.setId(imageId);
+			} else {
+				image.setPath(result.getPath());
+				dataSource.update(image);
+			}
 			ContactTalkerDataSource contactDataSource = new ContactTalkerDataSource(context);
-			
-			contact = new ContactDAO();
-			contact.setImageId(imageId);
-			contactDataSource.add(contact);
+			if (contact == null) {
+				contact = new ContactDAO();
+				contact.setImageId(image.getId());
+				contactDataSource.add(contact);				
+			}
 		}
 		
 		@Override
@@ -169,7 +193,14 @@ public class ContactDialogFragment extends ParentDialogFragment implements Dialo
 			contact.setPhone(phone.getText().toString());
 			contactDataSource.update(contact);
 			
-			dialog.dismiss();
 		}
+		dialog.dismiss();
 	}
+	
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		getActivity().recreate();
+		super.onDismiss(dialog);
+	}
+	
 }
