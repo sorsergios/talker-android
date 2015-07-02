@@ -75,7 +75,7 @@ public class CanvasActivity extends ActionBarActivity implements
 
 	private View activeTool;
 	private ImageTalkerDataSource datasourceImage;
-	
+		
 	private void setActiveTool(View view) {
 		if (activeTool != null) {
 			this.activeTool.getBackground().setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
@@ -87,6 +87,7 @@ public class CanvasActivity extends ActionBarActivity implements
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.canvas_default);
 		
