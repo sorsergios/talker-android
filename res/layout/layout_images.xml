@@ -26,13 +26,13 @@
 
     <ImageButton
         android:id="@+id/new_image_gallery"
-        android:layout_width="60dp"
+        android:layout_width="70dp"
         android:layout_height="60dp"
         android:layout_alignBottom="@+id/pager"
         android:layout_alignLeft="@+id/pager"
-        android:enabled="false"
-        android:scaleType="fitXY"
+        android:layout_alignParentStart="false"
         android:contentDescription="@string/insert_contact_title"
+        android:scaleType="fitXY"
         android:src="@drawable/sign_add"
         android:visibility="visible" />
 

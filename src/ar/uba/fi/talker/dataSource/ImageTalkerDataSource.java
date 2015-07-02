@@ -144,6 +144,7 @@ public class ImageTalkerDataSource extends TalkerDataSource {
 		SQLiteDatabase database = getDbHelper().getWritableDatabase();
 		long insertId = database.insert(ResourceSQLiteHelper.IMAGE_TABLE, null, values);
 		database.close();
+		entity.setId(insertId);
 		return insertId;
 	}
 

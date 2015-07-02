@@ -1,32 +1,26 @@
 package ar.uba.fi.talker;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Images.Media;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 import ar.uba.fi.talker.adapter.GridScenesAdapter;
 import ar.uba.fi.talker.adapter.PagerScenesAdapter;
-import ar.uba.fi.talker.dao.ContactDAO;
 import ar.uba.fi.talker.dao.ImageDAO;
 import ar.uba.fi.talker.dataSource.ContactTalkerDataSource;
 import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
@@ -51,7 +45,6 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 	private int keyId;
 	private boolean isContact;
 	private static int RESULT_LOAD_IMAGE = 1;
-	private static int RESULT_LOAD_IMAGE_CONTACT = 3;
 	
 	public ImageSettingsActivity() {
 		imageDatasource = new ImageTalkerDataSource(this);
@@ -73,9 +66,12 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 				@Override
 				public void onClick(View v) {
 					DialogFragment newFragment = new ContactDialogFragment();
+					Bundle args = new Bundle();
+					args.putLong("category", keyId);
+					newFragment.setArguments(args);
 					newFragment.show(getSupportFragmentManager(), "insert_contact");
 				}
-			});			
+			});
 		} else {
 			createImageBttn.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -159,20 +155,6 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else if (requestCode == RESULT_LOAD_IMAGE_CONTACT && null != data){
-			Uri imageUri = data.getData();
-			String imageName = imageUri.getLastPathSegment();
-			if (imageUri != null && imageUri.getHost().contains("com.google.android.apps.photos.content")){
-				imageName = imageName.substring(35);
-			}
-			try {
-				Media.getBitmap(this.getContentResolver(), imageUri);
-				data.putExtra("imageUri", imageUri);
-			} catch (FileNotFoundException e) {
-				Log.e("SETTING", "Imagen no encontrada", e);
-			} catch (IOException e) {
-				Log.e("SETTING", "Error en la imagen", e);
-			}
 		}
 		this.imagesPagerSetting();
 	}
@@ -191,30 +173,13 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 		gridView.setAdapter(mGridAdapter);
 	}
 
-	@Override
-	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
-		Dialog dialogView = dialog.getDialog();
-		ImageView imageView = (ImageView) dialogView.findViewById(R.id.contact_image);
-		
-		String name = ""+imageView.getId();
-		String path = ""+imageView.getId();
-	    ImageDAO imagedao= imageDatasource.createImage(path, name, keyId);
-
-		EditText inputName = (EditText) dialogView.findViewById(R.id.insert_text_input_name);
-		EditText inputAddress = (EditText) dialogView.findViewById(R.id.insert_text_input_address);
-		EditText inputPhone = (EditText) dialogView.findViewById(R.id.insert_text_input_phone);
-
-		ContactDAO contactDAO = new ContactDAO();
-		contactDAO.setImageId(imagedao.getId());
-		contactDAO.setPath(imagedao.getPath());
-		contactDAO.setName(inputName.getText().toString());
-		contactDAO.setAddress(inputAddress.getText().toString());
-		contactDAO.setPhone(inputPhone.getText().toString());
-		contactDatasource.add(contactDAO);
-	}
-
 	public boolean isContact() {
 		return isContact;
+	}
+
+	@Override
+	public void onDialogPositiveClickTextDialogListener(DialogFragment dialog) {
+		// nothing to do
 	}
 
 }

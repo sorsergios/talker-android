@@ -25,7 +25,7 @@
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/insert_text_input_name"
+                android:id="@+id/contact_input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/nombre"
@@ -36,7 +36,7 @@
             </EditText>
 
             <EditText
-                android:id="@+id/insert_text_input_address"
+                android:id="@+id/contact_input_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/address"
@@ -44,7 +44,7 @@
                 android:textAllCaps="true" />
 
             <EditText
-                android:id="@+id/insert_text_input_phone"
+                android:id="@+id/contact_input_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/phone"
