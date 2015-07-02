@@ -76,7 +76,7 @@
     <string name="delete_scenario_cancel">CANCELAR</string>
     <string name="delete_scenario_title">BORRAR ESCENARIO</string>
     <string name="delete_scenario_message">ESTA SEGURO QUE DESEA BORRAR ESCENARIO?</string>
-	<string name="delete_resource_title">BORRAR ELEMENTO</string>
+	<string name="delete_resource_title">BORRAR ELEMENTOS</string>
     <string name="delete_resource_message">ESTA SEGURO QUE DESEA BORRAR ESTE O ESTOS ELEMENTOS?</string>
     
 	<string name="delete_image_title">BORRAR IMAGEN</string>
