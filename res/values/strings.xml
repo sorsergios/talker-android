@@ -10,6 +10,9 @@
     <string name="manner_of_use">MODO DE USO</string>
     <string name="exit">SALIR</string>
 
+	<string name="generic_accept">ACEPTAR</string>
+    <string name="generic_cancel">CANCELAR</string>
+    
     <!-- pantalla configuración -->
     <string name="title_activity_settings">CONFIGURACIÓN</string>
     <string name="settings_back">ATRAS</string>
@@ -199,8 +202,6 @@
 	 <!-- contactos precargados -->
 	 <string name="famo_1">JORGE RIAL</string>
 
-	 
-	 	 
      <!-- manner of use -->
 	<string name="title_activity_manner_of_use">USO</string>
 	<string name="image">Image</string>
