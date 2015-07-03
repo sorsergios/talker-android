@@ -37,7 +37,7 @@ public class ContactDialogFragment extends ParentDialogFragment implements View.
 
 	private static int RESULT_LOAD_IMAGE_CONTACT = 3;
 	private ImageView imageView = null;
-	private View contactoView;
+	private View contactView;
 	private ImageDAO image;
 	private ContactDAO contact;
 	
@@ -49,8 +49,8 @@ public class ContactDialogFragment extends ParentDialogFragment implements View.
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-		contactoView = View.inflate(getActivity(), R.layout.contact_form, null);
-		imageView = (ImageView) contactoView.findViewById(R.id.contact_image);
+		contactView = View.inflate(getActivity(), R.layout.contact_form, null);
+		imageView = (ImageView) contactView.findViewById(R.id.contact_image);
 		imageView.setOnClickListener(this);
 		
 		Bundle arguments = ContactDialogFragment.this.getArguments();
@@ -61,20 +61,20 @@ public class ContactDialogFragment extends ParentDialogFragment implements View.
 			Bitmap bm = BitmapFactory.decodeFile(image.getPath());
 			imageView.setImageBitmap(bm);
 
-			TextView name = (TextView) contactoView.findViewById(R.id.contact_input_name);
+			TextView name = (TextView) contactView.findViewById(R.id.contact_input_name);
 			name.setText(image.getName());
-			TextView address = (TextView) contactoView.findViewById(R.id.contact_input_address);
+			TextView address = (TextView) contactView.findViewById(R.id.contact_input_address);
 			address.setText(contact.getAddress());
-			TextView phone = (TextView) contactoView.findViewById(R.id.contact_input_phone);
+			TextView phone = (TextView) contactView.findViewById(R.id.contact_input_phone);
 			phone.setText(contact.getPhone());
 		}
 
 		// Use the Builder class for convenient dialog construction
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setView(contactoView)
+		builder.setView(contactView)
 				.setTitle(R.string.insert_contact_title)
-				.setPositiveButton(R.string.delete_conversation_accept, this)
-				.setNegativeButton(R.string.delete_conversation_cancel, this);
+				.setPositiveButton(R.string.generic_accept, this)
+				.setNegativeButton(R.string.generic_cancel, this);
 		return builder.create();
 	}
 
@@ -181,16 +181,16 @@ public class ContactDialogFragment extends ParentDialogFragment implements View.
 			}
 			ImageTalkerDataSource dataSource = new ImageTalkerDataSource(getActivity());
 
-			TextView name = (TextView) contactoView.findViewById(R.id.contact_input_name);
+			TextView name = (TextView) contactView.findViewById(R.id.contact_input_name);
 			image.setName(name.getText().toString());
 			image.setId(contact.getImageId());
 			dataSource.update(image);
 
 			ContactTalkerDataSource contactDataSource = new ContactTalkerDataSource(this.getActivity());
-			TextView address = (TextView) contactoView.findViewById(R.id.contact_input_address);
+			TextView address = (TextView) contactView.findViewById(R.id.contact_input_address);
 			contact.setAddress(address.getText().toString());
 			
-			TextView phone = (TextView) contactoView.findViewById(R.id.contact_input_phone);
+			TextView phone = (TextView) contactView.findViewById(R.id.contact_input_phone);
 			contact.setPhone(phone.getText().toString());
 			contactDataSource.update(contact);
 			

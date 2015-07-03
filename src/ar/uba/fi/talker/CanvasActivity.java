@@ -405,6 +405,7 @@ public class CanvasActivity extends ActionBarActivity implements
 			conversation.setPath(file.getPath());
 			conversation.setPathSnapshot(file.getPath());
 			datasourceConversation.add(conversation);
+			Toast.makeText(this, "LA CONVERSACIÓN SE HA GUARDADO CORRECTAMENTE", Toast.LENGTH_LONG).show();
 		}
 	}
 
