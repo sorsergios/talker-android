@@ -212,8 +212,6 @@ public class InsertImageDialogFragment extends ParentDialogFragment {
 						addButton.setVisibility(View.GONE);
 						flipper.showPrevious();
 					} else {
-						addButton = (ImageButton)gridViewContainer.findViewById(R.id.add_image);
-						addButton.setVisibility(View.VISIBLE);
 						dialog.dismiss();
 					}
 				}
