@@ -44,8 +44,9 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy implements
 	private GridView gridView = null;
 	private int keyId;
 	private boolean isContact;
-	protected ContactDialogFragment newFragment;
 	private static int RESULT_LOAD_IMAGE = 1;
+	
+	public static ContactDialogFragment newFragment;
 	
 	public ImageSettingsActivity() {
 		imageDatasource = new ImageTalkerDataSource(this);
@@ -68,11 +69,11 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy implements
 			createImageBttn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					newFragment = new ContactDialogFragment();
+					ImageSettingsActivity.newFragment = new ContactDialogFragment();
 					Bundle args = new Bundle();
 					args.putLong("category", keyId);
-					newFragment.setArguments(args);
-					newFragment.show(getSupportFragmentManager(), "insert_contact");
+					ImageSettingsActivity.newFragment.setArguments(args);
+					ImageSettingsActivity.newFragment.show(getSupportFragmentManager(), "insert_contact");
 				}
 			});
 		} else {
@@ -179,7 +180,7 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy implements
 
 	@Override
 	public void onDismiss(DialogInterface dialog) {
-		newFragment.onDismiss(dialog);
+		ImageSettingsActivity.newFragment.onDismiss(dialog);
 		this.imagesPagerSetting();
 	}
 	

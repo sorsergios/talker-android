@@ -84,6 +84,7 @@ public class SceneActionFragment extends DialogFragment implements OnClickListen
 					public void onClick(View v) {
 						
 						ContactDialogFragment newFragment = new ContactDialogFragment();
+						ImageSettingsActivity.newFragment = newFragment;
 						ContactTalkerDataSource contactDS = new ContactTalkerDataSource(getActivity());
 						ContactDAO contact = contactDS.getContactByImageID(gridItem.getElementGridView().getId());
 						Bundle args = new Bundle();
