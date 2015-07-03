@@ -65,7 +65,7 @@ public class TextDialogFragment extends ParentDialogFragment {
 			}
 		});
 		builder.setView(input)
-				.setTitle(title != null ? title : R.id.insert_text_input)
+				.setTitle(title != null ? title : R.string.insert_text_title)
 				.setPositiveButton(R.string.delete_conversation_accept,
 						new DialogInterface.OnClickListener() {
 							@Override
