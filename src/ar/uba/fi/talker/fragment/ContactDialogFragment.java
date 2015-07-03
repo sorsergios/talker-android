@@ -18,7 +18,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -100,11 +99,9 @@ public class ContactDialogFragment extends ParentDialogFragment implements View.
 					Log.e("ADD_SCENARIO", "Unexpected problem new scenario process.", e);
 				}
 				
-				DisplayMetrics metrics = getResources().getDisplayMetrics();
-				Float size = metrics.density * 300;
-				bitmap = Bitmap.createScaledBitmap(bitmap, size.intValue(), size.intValue(), true);
+				bitmap = ImageUtils.resizeBitmapWithOrientation(bitmap, orientation);
 				imageView.setImageBitmap(bitmap);
-				new ContactSaverTask(this.getActivity(), imageName, orientation).execute(bitmap);
+				new ContactSaverTask(this.getActivity(), imageName).execute(bitmap);
 			}
 		}
 	}
@@ -112,13 +109,11 @@ public class ContactDialogFragment extends ParentDialogFragment implements View.
 	private class ContactSaverTask extends AsyncTask<Bitmap, Boolean, File> {
 
 		private final Context context;
-		private final int orientation;
 		private final String imageName;
 
-		public ContactSaverTask(Context context, String imageName, int orientation) {
+		public ContactSaverTask(Context context, String imageName) {
 			this.context = context;
 			this.imageName = imageName;
-			this.orientation = orientation;
 		}
 		
 		@Override
@@ -148,7 +143,7 @@ public class ContactDialogFragment extends ParentDialogFragment implements View.
 		@Override
 		protected File doInBackground(Bitmap... params) {
 			Bitmap bitmap = params[0];
-			ImageUtils.saveFileInternalStorage(imageName , bitmap , context, orientation);
+			ImageUtils.saveFileInternalStorage(imageName , bitmap , context, 0);
 			
 			return new File(context.getFilesDir(), imageName);
 		}
