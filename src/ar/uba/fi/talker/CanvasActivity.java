@@ -227,8 +227,8 @@ public class CanvasActivity extends ActionBarActivity implements
 	private void setBackground() {
 		Intent intent = getIntent();
 		boolean isHistory = false;
-		if (intent.hasExtra("history")) {
-			isHistory = intent.getBooleanExtra("history", false);
+		if (intent.hasExtra("isHistory")) {
+			isHistory = intent.getBooleanExtra("isHistory", false);
 		}
 		if(intent.hasExtra("BMP")) {
 		    Bundle extras = intent.getExtras();

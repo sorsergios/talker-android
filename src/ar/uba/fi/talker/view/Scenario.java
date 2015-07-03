@@ -181,8 +181,12 @@ public class Scenario extends FrameLayout {
 	}
 
 	public void setBackgroundImage(Bitmap image, boolean isHistory) {
-		mImage = BackgroundUtil.toGrayscale(image);
-		BitmapDrawable background = new BitmapDrawable(getResources(), mImage);
+		if (isHistory) {
+			mImage = image;
+		} else {
+			mImage = BackgroundUtil.toGrayscale(image);
+		}
+		BitmapDrawable background = new BitmapDrawable(getResources(), mImage);			
 		BackgroundUtil.setBackground(this, background);
 	}
 

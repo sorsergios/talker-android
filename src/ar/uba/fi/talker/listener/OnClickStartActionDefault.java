@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import ar.uba.fi.talker.CanvasActivity;
+import ar.uba.fi.talker.HistoricalActivity;
 import ar.uba.fi.talker.dto.TalkerDTO;
 import ar.uba.fi.talker.utils.GridItems;
 
@@ -35,7 +36,11 @@ public class OnClickStartActionDefault implements OnClickListener {
 			int idCode = Integer.valueOf(scenarioView.getPath());
 			extras.putInt("code", idCode);
 		}
+
 		Intent intent = new Intent(context, CanvasActivity.class);
+		if (context instanceof HistoricalActivity) {
+			extras.putBoolean("isHistory", true);
+		}
 		intent.putExtras(extras);
 		parent.startActivity(intent);
 		parent.dismiss();
