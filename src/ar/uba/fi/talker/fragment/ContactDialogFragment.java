@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,7 +33,7 @@ import ar.uba.fi.talker.dataSource.ContactTalkerDataSource;
 import ar.uba.fi.talker.dataSource.ImageTalkerDataSource;
 import ar.uba.fi.talker.utils.ImageUtils;
 
-public class ContactDialogFragment extends ParentDialogFragment implements DialogInterface.OnClickListener {
+public class ContactDialogFragment extends ParentDialogFragment implements View.OnClickListener, DialogInterface.OnClickListener {
 
 	private static int RESULT_LOAD_IMAGE_CONTACT = 3;
 	private ImageView imageView = null;
@@ -40,18 +41,17 @@ public class ContactDialogFragment extends ParentDialogFragment implements Dialo
 	private ImageDAO image;
 	private ContactDAO contact;
 	
+	public ContactDialogFragment() {
+		this.image = null;
+		this.contact = null;
+	}
+	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
 		contactoView = View.inflate(getActivity(), R.layout.contact_form, null);
 		imageView = (ImageView) contactoView.findViewById(R.id.contact_image);
-		imageView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-				ContactDialogFragment.this.startActivityForResult(i, RESULT_LOAD_IMAGE_CONTACT);
-			}
-		});
+		imageView.setOnClickListener(this);
 		
 		Bundle arguments = ContactDialogFragment.this.getArguments();
 		if (arguments.containsKey("contact")) {
@@ -160,6 +160,7 @@ public class ContactDialogFragment extends ParentDialogFragment implements Dialo
 		super.onStart();
 		// Buttons
 		final Dialog dialog = getDialog();
+		dialog.setOnDismissListener((OnDismissListener) getActivity());
 		Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
 		positiveButton.setOnClickListener(new OnClickListener() {
 			
@@ -196,11 +197,11 @@ public class ContactDialogFragment extends ParentDialogFragment implements Dialo
 		}
 		dialog.dismiss();
 	}
-	
+
 	@Override
-	public void onDismiss(DialogInterface dialog) {
-		getActivity().recreate();
-		super.onDismiss(dialog);
+	public void onClick(View v) {
+		Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+		this.startActivityForResult(i, RESULT_LOAD_IMAGE_CONTACT);
 	}
 	
 }

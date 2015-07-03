@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,16 +35,16 @@ import ar.uba.fi.talker.utils.ImageUtils;
 
 import com.viewpagerindicator.PageIndicator;
 
-public class ImageSettingsActivity extends CommonImageSettingsActiviy {
+public class ImageSettingsActivity extends CommonImageSettingsActiviy implements DialogInterface.OnDismissListener {
 
     private final ImageTalkerDataSource imageDatasource;
     private final ContactTalkerDataSource contactDatasource;
 	public PageIndicator pageIndicator;
 	private ViewPager viewPager;
 	private GridView gridView = null;
-	private PagerScenesAdapter pagerAdapter;
 	private int keyId;
 	private boolean isContact;
+	protected ContactDialogFragment newFragment;
 	private static int RESULT_LOAD_IMAGE = 1;
 	
 	public ImageSettingsActivity() {
@@ -58,14 +59,16 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 		keyId= b.getInt("keyId");
 		isContact= b.getBoolean("isContact");
 		setContentView(R.layout.layout_images);
-		imagesPagerSetting();
-
+		viewPager = (ViewPager) this.findViewById(R.id.pager);
+		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
+		
+		this.imagesPagerSetting();
 		ImageButton createImageBttn = (ImageButton) this.findViewById(R.id.new_image_gallery);
 		if (isContact){
 			createImageBttn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					DialogFragment newFragment = new ContactDialogFragment();
+					newFragment = new ContactDialogFragment();
 					Bundle args = new Bundle();
 					args.putLong("category", keyId);
 					newFragment.setArguments(args);
@@ -76,12 +79,6 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 			createImageBttn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					try {
-						ScenesGridFragment sgf = pagerAdapter.getItem(viewPager.getCurrentItem());
-						gridView = sgf.getmGridView();
-					} catch (Exception e) {
-						Log.i("newImage", "Agrego una imagen a una nueva categoria");
-					}
 					Intent i = new Intent(Intent.ACTION_PICK,
 							android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 					startActivityForResult(i, RESULT_LOAD_IMAGE);
@@ -92,13 +89,10 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 	
 
 	private void imagesPagerSetting() {
-		viewPager = (ViewPager) this.findViewById(R.id.pager);
-		pageIndicator = (PageIndicator) this.findViewById(R.id.pagerIndicator);
-
 		List<ImageDAO> allImages = imageDatasource.getImagesForCategory(keyId);
 		List<ScenesGridFragment> gridFragments = GridUtils.setScenesGridFragments(this, allImages, imageDatasource);
 
-		pagerAdapter = new PagerScenesAdapter(getSupportFragmentManager(), gridFragments);
+		PagerScenesAdapter pagerAdapter = new PagerScenesAdapter(getSupportFragmentManager(), gridFragments);
 		viewPager.setAdapter(pagerAdapter);
 		pageIndicator.setViewPager(viewPager);
 	}
@@ -183,4 +177,10 @@ public class ImageSettingsActivity extends CommonImageSettingsActiviy {
 		// nothing to do
 	}
 
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		newFragment.onDismiss(dialog);
+		this.imagesPagerSetting();
+	}
+	
 }
